@@ -7,7 +7,7 @@ from funfactory.settings_base import *
 # If you did not install Playdoh with the funfactory installer script
 # you may need to edit this value. See the docs about installing from a
 # clone.
-PROJECT_MODULE = 'project'
+PROJECT_MODULE = 'webpay'
 
 # Defines the views served for root URLs.
 ROOT_URLCONF = '%s.urls' % PROJECT_MODULE
