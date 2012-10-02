@@ -7,7 +7,7 @@ before_install:
 
 install:
   - pip install --no-deps -r requirements/test.txt --use-mirrors
-  - cp solitude/settings/local.py{-dist,}
+  - cp webpay/settings/local.py{-dist,}
   - mysqladmin create playdoh_app
 script: ./manage.py test
 notifications:
