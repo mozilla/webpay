@@ -1,23 +1,8 @@
-playdoh
+webpay
 =======
 
-Mozilla's Playdoh is a web application template based on [Django][django].
+Webpay is an implementation of the [WebPaymentProvider] spec.
 
-Patches are welcome! Feel free to fork and contribute to this project on
-[github][gh-playdoh].
+More to come.
 
-Full [documentation][docs] is available as well.
-
-
-[django]: http://www.djangoproject.com/
-[gh-playdoh]: https://github.com/mozilla/playdoh
-[docs]: http://playdoh.rtfd.org/
-
-
-License
--------
-This software is licensed under the [New BSD License][BSD]. For more
-information, read the file ``LICENSE``.
-
-[BSD]: http://creativecommons.org/licenses/BSD/
-
+[WebPaymentProvider]: https://wiki.mozilla.org/WebAPI/WebPaymentProvider
