@@ -1,6 +1,3 @@
-# This is your project's main settings file that can be committed to your
-# repo. If you need to override a setting locally, use settings_local.py
-
 from funfactory.settings_base import *
 
 # Name of the top-level module where you put all your apps.
@@ -15,8 +12,7 @@ ROOT_URLCONF = '%s.urls' % PROJECT_MODULE
 INSTALLED_APPS = list(INSTALLED_APPS) + [
     # Application base, containing global templates.
     '%s.base' % PROJECT_MODULE,
-    # Example code. Can (and should) be removed for actual projects.
-    '%s.examples' % PROJECT_MODULE,
+    'lib.pay',
 ]
 
 LOCALE_PATHS = (
@@ -64,17 +60,17 @@ DOMAIN_METHODS['messages'] = [
         'tower.management.commands.extract.extract_tower_template'),
 ]
 
-# # Use this if you have localizable HTML files:
-# DOMAIN_METHODS['lhtml'] = [
-#    ('**/templates/**.lhtml',
-#        'tower.management.commands.extract.extract_tower_template'),
-# ]
-
-# # Use this if you have localizable JS files:
-# DOMAIN_METHODS['javascript'] = [
-#    # Make sure that this won't pull in strings from external libraries you
-#    # may use.
-#    ('media/js/**.js', 'javascript'),
-# ]
-
 LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))
+
+MIDDLEWARE_CLASSES = (
+    #'funfactory.middleware.LocaleURLMiddleware',
+    'multidb.middleware.PinningRouterMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'session_csrf.CsrfMiddleware', # Must be after auth middleware.
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'commonware.middleware.FrameOptionsHeader',
+    'mobility.middleware.DetectMobileMiddleware',
+    'mobility.middleware.XMobileMiddleware',
+)
