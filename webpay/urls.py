@@ -11,6 +11,7 @@ patch()
 
 urlpatterns = patterns('',
     (r'', include('lib.pay.urls')),
+    (r'^services', include('lib.services.urls')),
     (r'^robots\.txt$',
         lambda r: HttpResponse(
             "User-agent: *\n%s: /" % 'Allow' if settings.ENGAGE_ROBOTS else 'Disallow' ,
