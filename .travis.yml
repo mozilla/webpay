@@ -14,5 +14,5 @@ notifications:
   irc:
     channels:
       - "irc.mozilla.org#amo-bots"
-    on_succes: change
+    on_success: change
     on_failure: always
