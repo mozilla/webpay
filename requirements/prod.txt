@@ -12,10 +12,13 @@ django-multidb-router==0.5
 django-nose==1.1
 django-statsd-mozilla==0.3.7
 funfactory==2.1.1
+importlib==1.0.2
 kombu==2.4.7
 jingo==0.4
+mock==1.0b1
 moz_inapp_pay==1.0.2
 nose==1.2.1
+ordereddict==1.1
 python-dateutil==2.1
 requests==0.14.0
 six==1.2.0
