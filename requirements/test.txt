@@ -1,4 +1,2 @@
 -r prod.txt
 -r compiled.txt
-
-mock==1.0b1
