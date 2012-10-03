@@ -3,5 +3,5 @@ from django.conf.urls.defaults import patterns, url
 import views
 
 urlpatterns = patterns('',
-    url(r'^verify$', views.verify, name='verify'),
+    url(r'^mozpay$', views.verify, name='verify'),
 )

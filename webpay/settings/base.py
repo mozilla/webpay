@@ -13,6 +13,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     # Application base, containing global templates.
     '%s.base' % PROJECT_MODULE,
     'lib.pay',
+    'tower'
 ]
 
 LOCALE_PATHS = (
@@ -63,7 +64,7 @@ DOMAIN_METHODS['messages'] = [
 LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))
 
 MIDDLEWARE_CLASSES = (
-    #'funfactory.middleware.LocaleURLMiddleware',
+    'funfactory.middleware.LocaleURLMiddleware',
     'multidb.middleware.PinningRouterMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -74,3 +75,7 @@ MIDDLEWARE_CLASSES = (
     'mobility.middleware.DetectMobileMiddleware',
     'mobility.middleware.XMobileMiddleware',
 )
+
+# This is the key and secret for the JWT.
+KEY = ''
+SECRET = ''

@@ -1,0 +1,8 @@
+{% block content %}
+    {% if error %}
+        <h1>Error</h1>
+        <pre>{{ error }}</pre>
+    {% else %}
+        <p>JWT processed</p>
+    {% endif %}
+{% endblock %}
