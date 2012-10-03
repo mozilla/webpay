@@ -9,7 +9,8 @@ from . import base
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'playdoh_app',
+        'NAME': 'zamboni',
+        'TEST_NAME': 'test_zamboni_webpay',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '',
