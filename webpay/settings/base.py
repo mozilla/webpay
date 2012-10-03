@@ -59,6 +59,13 @@ DOMAIN_METHODS['messages'] = [
         'tower.management.commands.extract.extract_tower_template'),
     ('templates/**.html',
         'tower.management.commands.extract.extract_tower_template'),
+
+    ('lib/pay/**.py',
+        'tower.management.commands.extract.extract_tower_python'),
+    ('lib/pay/templates/**.html',
+        'tower.management.commands.extract.extract_tower_template'),
+    ('lib/pay/templates/pay/**.html',
+        'tower.management.commands.extract.extract_tower_template'),
 ]
 
 LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))

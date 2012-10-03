@@ -11,6 +11,7 @@ import commonware.log
 from moz_inapp_pay.exc import InvalidJWT, RequestExpired
 from moz_inapp_pay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
+from tower import ugettext as _
 
 log = commonware.log.getLogger('w.pay')
 
@@ -22,7 +23,7 @@ def verify(request):
     try:
         res = verify_jwt(data, settings.KEY, settings.SECRET)
     except (TypeError, InvalidJWT, RequestExpired):
-        error = {'Error parsing JWT'}
+        error = _('Error parsing JWT')
         log.error(error, exc_info=True)
         if settings.DEBUG:
             error = '\n'.join(traceback.format_exception(*sys.exc_info()))
