@@ -1,21 +1,16 @@
 ========================================
-Welcome to this project's documentation!
+Web Pay
 ========================================
 
-This is a documentation template for a **web application based on Playdoh**.
-Feel free to change this to your liking.
+Web Pay is an implementation of the Web Payment Provider server. It's not
+completely standalone, but it has minimal interaction with zamboni and can be
+run and deployed independently.
 
+It's currently a work in progress and requires.
 
-About playdoh
--------------
+* Access to the zamboni db. For extra points this can be a read only slave.
 
-This project is based on **playdoh**. Mozilla's Playdoh is an open source
-web application template based on `Django <http://www.djangoproject.com/>`_.
-
-To learn more about it, step by the `playdoh project page
-<https://github.com/mozilla/playdoh>`_.
-
-Contents
+  Contents
 --------
 
 .. toctree::

@@ -83,6 +83,16 @@ MIDDLEWARE_CLASSES = (
     'mobility.middleware.XMobileMiddleware',
 )
 
-# This is the key and secret for the JWT.
+# This is the key and secret for purchases, our special marketplace key and
+# secret for selling apps.
 KEY = ''
 SECRET = ''
+
+# The issuer of these, will be the domain, eg: marketplace.mozilla.org
+ISSUER = ''
+
+# Temporary, this should be going into solitude.
+INAPP_KEY_PATHS = {}
+
+# Set this to True to get nice long verbose messages.
+VERBOSE_LOGGING = False

@@ -1,14 +1,10 @@
 # Copied from moz_inapp_pay. Will remove when tests are included in bundle.
 import calendar
-from datetime import datetime, timedelta
 import json
 import time
 import unittest
 
 import jwt
-from nose.tools import eq_, raises
-
-import moz_inapp_pay
 
 
 class JWTtester(unittest.TestCase):
@@ -18,14 +14,14 @@ class JWTtester(unittest.TestCase):
     def setUp(self):
         self.verifier = None
 
-    def payload(self, app_id=None, exp=None, iat=None,
+    def payload(self, iss=None, aud=None, exp=None, iat=None,
                 typ='mozilla/postback/pay/v1', extra_req=None, extra_res=None):
-        if not app_id:
-            app_id = self.key
+        iss = iss or self.key
+        aud = aud or 'marketplace.mozilla.org'
         if not iat:
             iat = calendar.timegm(time.gmtime())
         if not exp:
-            exp = iat + 3600 # expires in 1 hour
+            exp = iat + 3600  # Expires in 1 hour.
 
         req = {'price': '0.99',
                'currency': 'USD',
@@ -40,8 +36,8 @@ class JWTtester(unittest.TestCase):
             res.update(extra_res)
 
         return {
-            'iss': 'marketplace.mozilla.org',
-            'aud': app_id,
+            'iss': iss,
+            'aud': aud,
             'typ': typ,
             'exp': exp,
             'iat': iat,
@@ -55,7 +51,7 @@ class JWTtester(unittest.TestCase):
         if not payload:
             payload = json.dumps(self.payload(**payload_kw))
         encoded = jwt.encode(payload, app_secret, algorithm='HS256')
-        return unicode(encoded) # e.g. django always passes unicode
+        return unicode(encoded)  # e.g. django always passes unicode.
 
     def verify(self, request=None, update=None, update_request=None,
                verifier=None):
