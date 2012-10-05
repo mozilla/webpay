@@ -15,7 +15,8 @@ class JWTtester(unittest.TestCase):
         self.verifier = None
 
     def payload(self, iss=None, aud=None, exp=None, iat=None,
-                typ='mozilla/postback/pay/v1', extra_req=None, extra_res=None):
+                typ='mozilla/postback/pay/v1', extra_req=None, extra_res=None,
+                include_response=True):
         iss = iss or self.key
         aud = aud or 'marketplace.mozilla.org'
         if not iat:
@@ -23,27 +24,32 @@ class JWTtester(unittest.TestCase):
         if not exp:
             exp = iat + 3600  # Expires in 1 hour.
 
-        req = {'price': '0.99',
-               'currency': 'USD',
-               'name': 'My bands latest album',
-               'description': '320kbps MP3 download, DRM free!',
-               'productdata': 'my_product_id=1234'}
+        req = {
+            'price': [{
+                'amount': '0.99',
+                'currency': 'USD',
+            }],
+            'name': 'My bands latest album',
+            'description': '320kbps MP3 download, DRM free!',
+            'productdata': 'my_product_id=1234'
+        }
         if extra_req:
             req.update(extra_req)
 
-        res = {'transactionID': '1234'}
-        if extra_res:
-            res.update(extra_res)
-
-        return {
+        payload = {
             'iss': iss,
             'aud': aud,
             'typ': typ,
             'exp': exp,
             'iat': iat,
             'request': req,
-            'response': res,
         }
+        if include_response:
+            res = {'transactionID': '1234'}
+            if extra_res:
+                res.update(extra_res)
+            payload['response'] = res
+        return payload
 
     def request(self, app_secret=None, payload=None, **payload_kw):
         if not app_secret:

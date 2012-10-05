@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import json
 import os
 
 from django import test
@@ -41,6 +42,17 @@ class Base(JWTtester, test.TestCase):
 @mock.patch.object(settings, 'DEBUG', True)
 class TestVerify(Base):
 
+    def payload(self, **kw):
+        kw.setdefault('iss', settings.KEY)
+        return super(TestVerify, self).payload(**kw)
+
+    def request(self, **kw):
+        # This simulates payment requests which do not have response.
+        kw.setdefault('include_response', False)
+        kw.setdefault('iss', settings.KEY)
+        kw.setdefault('app_secret', settings.SECRET)
+        return super(TestVerify, self).request(**kw)
+
     def get(self, payload):
         return self.client.get('%s?req=%s' % (self.url, payload))
 
@@ -69,8 +81,32 @@ class TestVerify(Base):
         eq_(self.get(u'Հ').status_code, 400)
 
     def test_purchase(self):
-        payload = self.request(iss=settings.KEY, app_secret=settings.SECRET)
+        payload = self.request()
         eq_(self.get(payload).status_code, 200)
+
+    def test_missing_price(self):
+        payjwt = self.payload()
+        del payjwt['request']['price']
+        payload = self.request(payload=json.dumps(payjwt))
+        eq_(self.get(payload).status_code, 400)
+
+    def test_empty_price(self):
+        payjwt = self.payload()
+        payjwt['request']['price'] = []
+        payload = self.request(payload=json.dumps(payjwt))
+        eq_(self.get(payload).status_code, 400)
+
+    def test_missing_description(self):
+        payjwt = self.payload()
+        del payjwt['request']['description']
+        payload = self.request(payload=json.dumps(payjwt))
+        eq_(self.get(payload).status_code, 400)
+
+    def test_missing_name(self):
+        payjwt = self.payload()
+        del payjwt['request']['name']
+        payload = self.request(payload=json.dumps(payjwt))
+        eq_(self.get(payload).status_code, 400)
 
     def test_debug(self):
         with self.settings(VERBOSE_LOGGING=True):

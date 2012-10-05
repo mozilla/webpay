@@ -33,7 +33,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-SITE_URL = 'http://127.0.0.1:8000'
+SITE_URL = 'http://localhost:8000'
 LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = 'examples.home'
 LOGIN_REDIRECT_URL_FAILURE = 'examples.home'
@@ -91,8 +91,15 @@ SECRET = ''
 # The issuer of these, will be the domain, eg: marketplace.mozilla.org
 ISSUER = ''
 
+# The issuer of all notifications (i.e. the webpay server).
+NOTIFY_ISSUER = 'marketplace.mozilla.org'
+
 # Temporary, this should be going into solitude.
 INAPP_KEY_PATHS = {}
 
 # Set this to True to get nice long verbose messages.
 VERBOSE_LOGGING = False
+
+# When False, the developer can toggle HTTPS on/off.
+# This is useful for development and testing.
+INAPP_REQUIRE_HTTPS = True
