@@ -1,21 +1,17 @@
-import json
 import sys
 import traceback
 
-from django import http
 from django.conf import settings
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
 import commonware.log
-import jwt
 from moz_inapp_pay.exc import InvalidJWT, RequestExpired
 from moz_inapp_pay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
 from forms import VerifyForm
-from models import InappConfig
 
 log = commonware.log.getLogger('w.pay')
 
@@ -36,9 +32,13 @@ def verify(request):
         return _error(request, msg=u'Form error')
 
     try:
-        res = verify_jwt(form.cleaned_data['req'],
-                         settings.ISSUER,
-                         form.secret)
+        verify_jwt(form.cleaned_data['req'],
+                   settings.ISSUER,
+                   form.secret,
+                   required_keys=('request.price',  # An array of
+                                                    # price/currency
+                                  'request.name',
+                                  'request.description'))
     except (TypeError, InvalidJWT, RequestExpired):
         return _error(request, msg=u'JWT error')
 
