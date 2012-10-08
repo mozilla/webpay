@@ -81,11 +81,14 @@ MIDDLEWARE_CLASSES = (
 KEY = ''
 SECRET = ''
 
-# The issuer of these, will be the domain, eg: marketplace.mozilla.org
-ISSUER = ''
+# The domain of the webpay server. Example: webpay.somewhere.org
+DOMAIN = 'localhost'
+
+# The issuer of the special marketplace app purchase JWTs.
+ISSUER = DOMAIN
 
 # The issuer of all notifications (i.e. the webpay server).
-NOTIFY_ISSUER = 'marketplace.mozilla.org'
+NOTIFY_ISSUER = DOMAIN
 
 # Temporary, this should be going into solitude.
 INAPP_KEY_PATHS = {}

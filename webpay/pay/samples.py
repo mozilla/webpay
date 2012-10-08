@@ -4,6 +4,8 @@ import json
 import time
 import unittest
 
+from django.conf import settings
+
 import jwt
 
 
@@ -18,7 +20,7 @@ class JWTtester(unittest.TestCase):
                 typ='mozilla/postback/pay/v1', extra_req=None, extra_res=None,
                 include_response=True):
         iss = iss or self.key
-        aud = aud or 'marketplace.mozilla.org'
+        aud = aud or settings.DOMAIN
         if not iat:
             iat = calendar.timegm(time.gmtime())
         if not exp:

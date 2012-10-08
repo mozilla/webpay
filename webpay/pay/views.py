@@ -33,7 +33,7 @@ def verify(request):
 
     try:
         verify_jwt(form.cleaned_data['req'],
-                   settings.ISSUER,
+                   settings.DOMAIN,  # JWT audience.
                    form.secret,
                    required_keys=('request.price',  # An array of
                                                     # price/currency
