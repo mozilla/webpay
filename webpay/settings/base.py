@@ -64,7 +64,7 @@ DOMAIN_METHODS['messages'] = [
 LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))
 
 MIDDLEWARE_CLASSES = (
-    'funfactory.middleware.LocaleURLMiddleware',
+    'webpay.base.middleware.LocaleMiddleware',
     'multidb.middleware.PinningRouterMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
