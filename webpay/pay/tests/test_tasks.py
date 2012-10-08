@@ -17,9 +17,9 @@ from requests.exceptions import RequestException, Timeout
 from webpay.pay.models import (Addon, Contribution, InappConfig, InappPayment,
                             InappPayNotice)
 from webpay.pay import tasks
-from samples import JWTtester
+from webpay.pay.samples import JWTtester
 
-from .tests import sample
+from .test_views import sample
 
 
 class TestNotifyApp(JWTtester, test.TestCase):

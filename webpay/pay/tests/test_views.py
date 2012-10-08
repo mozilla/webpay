@@ -9,10 +9,10 @@ from django.core.urlresolvers import reverse
 from gelato.constants import base
 import mock
 from nose.tools import eq_
-from samples import JWTtester
 
 from webpay.pay.forms import VerifyForm
 from webpay.pay.models import Addon, InappConfig
+from webpay.pay.samples import JWTtester
 
 sample = os.path.join(os.path.dirname(__file__), 'sample.key')
 
