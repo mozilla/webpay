@@ -12,7 +12,7 @@ ROOT_URLCONF = '%s.urls' % PROJECT_MODULE
 INSTALLED_APPS = list(INSTALLED_APPS) + [
     # Application base, containing global templates.
     '%s.base' % PROJECT_MODULE,
-    'lib.pay',
+    'webpay.pay',
     'tower'
 ]
 
@@ -58,13 +58,6 @@ DOMAIN_METHODS['messages'] = [
     ('%s/**/templates/**.html' % PROJECT_MODULE,
         'tower.management.commands.extract.extract_tower_template'),
     ('templates/**.html',
-        'tower.management.commands.extract.extract_tower_template'),
-
-    ('lib/pay/**.py',
-        'tower.management.commands.extract.extract_tower_python'),
-    ('lib/pay/templates/**.html',
-        'tower.management.commands.extract.extract_tower_template'),
-    ('lib/pay/templates/pay/**.html',
         'tower.management.commands.extract.extract_tower_template'),
 ]
 

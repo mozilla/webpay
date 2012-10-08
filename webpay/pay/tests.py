@@ -11,8 +11,8 @@ import mock
 from nose.tools import eq_
 from samples import JWTtester
 
-from lib.pay.forms import VerifyForm
-from lib.pay.models import Addon, InappConfig
+from webpay.pay.forms import VerifyForm
+from webpay.pay.models import Addon, InappConfig
 
 sample = os.path.join(os.path.dirname(__file__), 'sample.key')
 

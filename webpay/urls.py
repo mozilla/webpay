@@ -10,7 +10,7 @@ patch()
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'', include('lib.pay.urls')),
+    (r'', include('webpay.pay.urls')),
     (r'^services', include('lib.services.urls')),
     (r'^robots\.txt$',
         lambda r: HttpResponse(

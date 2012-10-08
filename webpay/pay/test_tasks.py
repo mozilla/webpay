@@ -14,9 +14,9 @@ import mock
 from nose.tools import eq_
 from requests.exceptions import RequestException, Timeout
 
-from lib.pay.models import (Addon, Contribution, InappConfig, InappPayment,
+from webpay.pay.models import (Addon, Contribution, InappConfig, InappPayment,
                             InappPayNotice)
-from lib.pay import tasks
+from webpay.pay import tasks
 from samples import JWTtester
 
 from .tests import sample
@@ -78,7 +78,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             tasks.payment_notify(self.payment.pk)
 
-    @fudge.patch('lib.pay.utils.requests')
+    @fudge.patch('webpay.pay.utils.requests')
     def test_notify_pay(self, fake_req):
         url = self.url(self.postback)
         payload = self.payload(typ='mozilla/payments/pay/postback/v1')
@@ -102,7 +102,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
         eq_(notice.url, url)
         eq_(notice.payment.pk, self.payment.pk)
 
-    @fudge.patch('lib.pay.utils.requests')
+    @fudge.patch('webpay.pay.utils.requests')
     def test_notify_refund_chargeback(self, fake_req):
         url = self.url(self.chargeback)
         payload = self.payload(typ='mozilla/payments/pay/chargeback/v1')
@@ -128,7 +128,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
         eq_(notice.url, url)
         eq_(notice.payment.pk, self.payment.pk)
 
-    @fudge.patch('lib.pay.utils.requests')
+    @fudge.patch('webpay.pay.utils.requests')
     def test_notify_reversal_chargeback(self, fake_req):
         url = self.url(self.chargeback)
 
@@ -149,7 +149,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
         eq_(notice.success, True)
 
     @mock.patch.object(settings, 'INAPP_REQUIRE_HTTPS', True)
-    @fudge.patch('lib.pay.utils.requests')
+    @fudge.patch('webpay.pay.utils.requests')
     def test_force_https(self, fake_req):
         self.inapp_update(is_https=False)
         url = self.url(self.postback, protocol='https')
@@ -161,7 +161,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
         eq_(notice.last_error, '')
 
     @mock.patch.object(settings, 'INAPP_REQUIRE_HTTPS', False)
-    @fudge.patch('lib.pay.utils.requests')
+    @fudge.patch('webpay.pay.utils.requests')
     def test_configurable_https(self, fake_req):
         self.inapp_update(is_https=True)
         url = self.url(self.postback, protocol='https')
@@ -173,7 +173,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
         eq_(notice.last_error, '')
 
     @mock.patch.object(settings, 'INAPP_REQUIRE_HTTPS', False)
-    @fudge.patch('lib.pay.utils.requests')
+    @fudge.patch('webpay.pay.utils.requests')
     def test_configurable_http(self, fake_req):
         self.inapp_update(is_https=False)
         url = self.url(self.postback, protocol='http')
@@ -184,7 +184,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
         notice = InappPayNotice.objects.get()
         eq_(notice.last_error, '')
 
-    @fudge.patch('lib.pay.utils.requests')
+    @fudge.patch('webpay.pay.utils.requests')
     def test_notify_timeout(self, fake_req):
         fake_req.expects('post').raises(Timeout())
         self.notify()
@@ -193,15 +193,15 @@ class TestNotifyApp(JWTtester, test.TestCase):
         er = notice.last_error
         assert er.startswith('Timeout:'), 'Unexpected: %s' % er
 
-    @mock.patch('lib.pay.tasks.payment_notify.retry')
-    @mock.patch('lib.pay.utils.requests.post')
+    @mock.patch('webpay.pay.tasks.payment_notify.retry')
+    @mock.patch('webpay.pay.utils.requests.post')
     def test_retry_http_error(self, post, retry):
         post.side_effect = RequestException('500 error')
         self.notify()
         assert post.called, 'notification not sent'
         assert retry.called, 'task was not retried after error'
 
-    @fudge.patch('lib.pay.utils.requests')
+    @fudge.patch('webpay.pay.utils.requests')
     def test_any_error(self, fake_req):
         fake_req.expects('post').raises(RequestException('some http error'))
         self.notify()
@@ -210,7 +210,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
         er = notice.last_error
         assert er.startswith('RequestException:'), 'Unexpected: %s' % er
 
-    @fudge.patch('lib.pay.utils.requests')
+    @fudge.patch('webpay.pay.utils.requests')
     def test_bad_status(self, fake_req):
         (fake_req.expects('post').returns_fake()
                                  .has_attr(text='')
@@ -223,7 +223,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
         er = notice.last_error
         assert er.startswith('HTTPError:'), 'Unexpected: %s' % er
 
-    @fudge.patch('lib.pay.utils.requests')
+    @fudge.patch('webpay.pay.utils.requests')
     def test_invalid_app_response(self, fake_req):
         (fake_req.expects('post').returns_fake()
                                  .provides('raise_for_status')
@@ -232,7 +232,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
         notice = InappPayNotice.objects.get()
         eq_(notice.success, False)
 
-    @fudge.patch('lib.pay.utils.requests')
+    @fudge.patch('webpay.pay.utils.requests')
     def test_signed_app_response(self, fake_req):
         app_payment = self.payload()
 
