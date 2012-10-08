@@ -1,6 +1,6 @@
 {% block content %}
     {% if error %}
-        <h1>_('Error')</h1>
+        <h1>{{ _('Error') }}</h1>
         <pre>{{ error }}</pre>
     {% else %}
         <p>JWT processed</p>
