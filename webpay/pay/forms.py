@@ -19,8 +19,10 @@ class VerifyForm(forms.Form):
         data = self.cleaned_data['req']
         try:
             decoded = jwt.decode(data.encode('ascii', 'ignore'), verify=False)
-        except jwt.DecodeError:
-            raise forms.ValidationError(_('Error decoding request.'))
+        except jwt.DecodeError, exc:
+            # L10n: first argument is a detailed error message.
+            err = _('Error decoding JWT: {0}').format(exc)
+            raise forms.ValidationError(err)
 
         app_id = json.loads(decoded).get('iss', '')
         if app_id == settings.KEY:
@@ -36,4 +38,3 @@ class VerifyForm(forms.Form):
             self.key, self.secret = app_id, cfg.get_private_key()
 
         return data
-

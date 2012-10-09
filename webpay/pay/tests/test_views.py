@@ -113,16 +113,18 @@ class TestVerify(Base):
             payload = self.request(app_secret=self.secret + '.nope')
             res = self.get(payload)
             eq_(res.status_code, 400)
-            assert res.content
-            # TODO: assert it shows a big error message.
+            # Output should show exception message.
+            self.assertContains(res,
+                'InvalidJWT: Signature verification failed',
+                status_code=400)
 
     def test_not_debug(self):
         with self.settings(VERBOSE_LOGGING=False):
             payload = self.request(app_secret=self.secret + '.nope')
             res = self.get(payload)
             eq_(res.status_code, 400)
-            assert res.content
-            # TODO: assert it does not show a big error message.
+            # Output should show a generic error message without details.
+            self.assertContains(res, 'Error processing', status_code=400)
 
 
 @mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')
