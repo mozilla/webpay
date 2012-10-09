@@ -1,6 +1,5 @@
 Babel==0.9.6
 Django==1.4.1
-PyJWT==0.1.4
 anyjson==0.3.3
 billiard==2.7.3.17
 cef==0.3
@@ -42,3 +41,5 @@ translate-toolkit==1.9.0
 
 -e git://github.com/mozilla/django-session-csrf.git@94e2858a427a6b278e41c051643f3c226f096f21#egg=django-session-csrf
 -e git://github.com/mozilla/nuggets.git@96e80a64aa4bfcfef4f43fc3ab6966450ccd7325#egg=nuggets
+
+-e git://github.com/rtilder/pyjwt.git@aa3be513795c1a623dfc61c6c0a688198ea5d303#egg=PyJWT
