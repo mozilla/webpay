@@ -61,7 +61,11 @@ DOMAIN_METHODS['messages'] = [
         'tower.management.commands.extract.extract_tower_template'),
 ]
 
-LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))
+LOGGING = dict(loggers = dict(playdoh = {'level': logging.DEBUG},
+                              w = {'handlers': ['unicode']}),
+               handlers = {'unicode': {'class':
+                                       'webpay.unicode_log.UnicodeHandler'}})
+
 
 MIDDLEWARE_CLASSES = (
     'webpay.base.middleware.LocaleMiddleware',
