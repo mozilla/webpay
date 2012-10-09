@@ -57,7 +57,7 @@ class JWTtester(unittest.TestCase):
         if not app_secret:
             app_secret = self.secret
         if not payload:
-            payload = json.dumps(self.payload(**payload_kw))
+            payload = self.payload(**payload_kw)
         encoded = jwt.encode(payload, app_secret, algorithm='HS256')
         return unicode(encoded)  # e.g. django always passes unicode.
 

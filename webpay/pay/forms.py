@@ -1,5 +1,3 @@
-import json
-
 from django import forms
 from django.conf import settings
 
@@ -18,13 +16,13 @@ class VerifyForm(forms.Form):
     def clean_req(self):
         data = self.cleaned_data['req']
         try:
-            decoded = jwt.decode(data.encode('ascii', 'ignore'), verify=False)
+            payload = jwt.decode(data.encode('ascii', 'ignore'), verify=False)
         except jwt.DecodeError, exc:
             # L10n: first argument is a detailed error message.
             err = _('Error decoding JWT: {0}').format(exc)
             raise forms.ValidationError(err)
 
-        app_id = json.loads(decoded).get('iss', '')
+        app_id = payload.get('iss', '')
         if app_id == settings.KEY:
             # This is an app purchase because it matches the settings.
             self.key, self.secret = app_id, settings.SECRET
