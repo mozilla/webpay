@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-import json
 import os
 
 from django import test
@@ -87,25 +86,25 @@ class TestVerify(Base):
     def test_missing_price(self):
         payjwt = self.payload()
         del payjwt['request']['price']
-        payload = self.request(payload=json.dumps(payjwt))
+        payload = self.request(payload=payjwt)
         eq_(self.get(payload).status_code, 400)
 
     def test_empty_price(self):
         payjwt = self.payload()
         payjwt['request']['price'] = []
-        payload = self.request(payload=json.dumps(payjwt))
+        payload = self.request(payload=payjwt)
         eq_(self.get(payload).status_code, 400)
 
     def test_missing_description(self):
         payjwt = self.payload()
         del payjwt['request']['description']
-        payload = self.request(payload=json.dumps(payjwt))
+        payload = self.request(payload=payjwt)
         eq_(self.get(payload).status_code, 400)
 
     def test_missing_name(self):
         payjwt = self.payload()
         del payjwt['request']['name']
-        payload = self.request(payload=json.dumps(payjwt))
+        payload = self.request(payload=payjwt)
         eq_(self.get(payload).status_code, 400)
 
     def test_debug(self):
