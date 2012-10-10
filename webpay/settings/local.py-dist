@@ -6,6 +6,11 @@ from . import base
 # To extend any settings from settings/base.py here's an example:
 #INSTALLED_APPS = base.INSTALLED_APPS + ['debug_toolbar']
 
+# This is pretty nice for development:
+#MIDDLEWARE_CLASSES = list(base.MIDDLEWARE_CLASSES) + [
+#    'webpay.base.middleware.LogExceptionsMiddleware',
+#]
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

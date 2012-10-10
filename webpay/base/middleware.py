@@ -1,8 +1,22 @@
+import sys
+import traceback
+
 from django.conf import settings
 from django.utils.cache import patch_vary_headers
 from django.utils.translation.trans_real import parse_accept_lang_header
 
 import tower
+
+
+class LogExceptionsMiddleware:
+    """
+    Logs any exception to the console.
+
+    This is useful for development when testing out Ajax calls that
+    would not otherwise show the Django debug page.
+    """
+    def process_exception(self, request, exception):
+        traceback.print_exception(*sys.exc_info())
 
 
 class LocaleMiddleware(object):
