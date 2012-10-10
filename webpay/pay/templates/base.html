@@ -2,9 +2,21 @@
 <html LANG="{{ LANG }}" dir="{{ DIR }}">
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>{% block page_title %}{{ _('Web Pay') }}{% endblock %}</title>
+
+    {% block site_css %}
+      {{ css('pay') }}
+    {% endblock %}
+
   </head>
   <body>
     {% block content %}{% endblock %}
+    {% block site_js %}
+      <script async defer src="https://login.persona.org/include.js"></script>
+      <script src="{{ static(url('jsi18n'))|urlparams(lang=LANG) }}"></script>
+      {{ js('pay') }}
+    {% endblock %}
   </body>
 </html>

@@ -16,6 +16,31 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'tower'
 ]
 
+# A list of our CSS and JS assets for jingo-minify.
+MINIFY_BUNDLES = {
+    'css': {
+        'pay': (
+            'css/pay/pay.less',
+        ),
+    },
+    'js': {
+        'pay': (
+            'js/lib/jquery-1.8.js',
+            'js/lib/underscore.js',
+            'js/lib/format.js',
+            'pay/pay.js',
+        ),
+    }
+}
+
+# jingo-minify: Style sheet media attribute default
+CSS_MEDIA_DEFAULT = 'all'
+
+# LESS CSS OPTIONS (Debug only)
+LESS_PREPROCESS = False  # Compile LESS with Node, rather than client-side JS?
+LESS_LIVE_REFRESH = False  # Refresh the CSS on save?
+LESS_BIN = 'lessc'
+
 LOCALE_PATHS = (
     os.path.join(ROOT, PROJECT_MODULE, 'locale'),
 )
