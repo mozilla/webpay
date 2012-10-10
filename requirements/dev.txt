@@ -3,3 +3,4 @@
 # package for developers (testing, docs, etc.), it goes in this file.
 -r prod.txt
 -r compiled.txt
+nosenicedots==0.3

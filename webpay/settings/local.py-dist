@@ -93,3 +93,12 @@ ENGAGE_ROBOTS = True
 # you'll want to uncomment these:
 #LESS_PREPROCESS = True  # Compile LESS with Node, rather than client-side JS?
 #LESS_LIVE_REFRESH = True  # Refresh the CSS on save?
+
+# Get some nice test output.
+#NOSE_PLUGINS = [
+#    'nosenicedots.NiceDots',
+#]
+#NOSE_ARGS = [
+#    '--logging-clear-handlers',
+#    '--with-nicedots',
+#]
