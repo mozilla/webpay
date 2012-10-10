@@ -22,13 +22,24 @@ pip install -U --exists-action=w --no-deps -q -r requirements/test.txt
 cat > webpay/settings/local.py <<SETTINGS
 from webpay.settings.base import *
 LOG_LEVEL = logging.ERROR
-DATABASES['default']['NAME'] = 'zamboni_mkt'
-DATABASES['default']['HOST'] = 'localhost'
-DATABASES['default']['USER'] = 'hudson'
-DATABASES['default']['ENGINE'] = 'mysql_pool'
-DATABASES['default']['TEST_NAME'] = 'test_zamboni_webpay'
-DATABASES['default']['TEST_CHARSET'] = 'utf8'
-DATABASES['default']['TEST_COLLATION'] = 'utf8_general_ci'
+DATABASES = {
+    'default': {
+        'ENGINE': 'mysql_pool',
+        'NAME': 'zamboni_mkt',
+        'TEST_NAME': 'test_zamboni_webpay',
+        'USER': 'hudson',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
+        'OPTIONS': {
+            'init_command': 'SET storage_engine=InnoDB',
+            'charset' : 'utf8',
+            'use_unicode' : True,
+        },
+        'TEST_CHARSET': 'utf8',
+        'TEST_COLLATION': 'utf8_general_ci',
+    },
+}
 CACHE_BACKEND = 'caching.backends.locmem://'
 CELERY_ALWAYS_EAGER = True
 STATIC_URL = ''
