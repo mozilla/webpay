@@ -40,7 +40,6 @@ DATABASES = {
         'TEST_COLLATION': 'utf8_general_ci',
     },
 }
-CACHE_BACKEND = 'caching.backends.locmem://'
 CELERY_ALWAYS_EAGER = True
 STATIC_URL = ''
 DEBUG = True
