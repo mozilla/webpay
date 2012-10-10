@@ -43,6 +43,7 @@ DATABASES = {
 CACHE_BACKEND = 'caching.backends.locmem://'
 CELERY_ALWAYS_EAGER = True
 STATIC_URL = ''
+DEBUG = True
 SECRET_KEY = 'cheese will make you live forever'
 
 SETTINGS
