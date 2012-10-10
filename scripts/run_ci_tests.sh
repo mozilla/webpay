@@ -24,7 +24,7 @@ from webpay.settings.base import *
 LOG_LEVEL = logging.ERROR
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql_pool',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'zamboni_mkt',
         'TEST_NAME': 'test_zamboni_webpay',
         'USER': 'hudson',
