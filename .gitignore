@@ -13,6 +13,9 @@ build
 *-all.css
 *-min.js
 *-all.js
+*.js.tmp
+*.css.tmp
+*.less.css
 .noseids
 tmp/*
 *~

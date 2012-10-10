@@ -85,3 +85,11 @@ ENGAGE_ROBOTS = True
 # Uncomment this line if you are running a local development install without
 # HTTPS to disable HTTPS-only cookies.
 #SESSION_COOKIE_SECURE = False
+
+# Uncomment this to see descriptive errors on the JWT verification screen.
+#VERBOSE_LOGGING = True
+
+# For local development (i.e. when not serving bundled CSS/JS)
+# you'll want to uncomment these:
+#LESS_PREPROCESS = True  # Compile LESS with Node, rather than client-side JS?
+#LESS_LIVE_REFRESH = True  # Refresh the CSS on save?

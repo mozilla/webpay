@@ -15,7 +15,7 @@
     {% block content %}{% endblock %}
     {% block site_js %}
       <script async defer src="https://login.persona.org/include.js"></script>
-      <script src="{{ static(url('jsi18n'))|urlparams(lang=LANG) }}"></script>
+      <script src="{{ url('jsi18n')|urlparams(lang=LANG) }}"></script>
       {{ js('pay') }}
     {% endblock %}
   </body>

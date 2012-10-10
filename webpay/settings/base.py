@@ -16,6 +16,11 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'tower'
 ]
 
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a
+# trailing slash if there is a path component (optional in other cases).
+# Examples: "http://media.lawrence.com", "http://example.com/media/"
+MEDIA_URL = '/mozpay/media/'
+
 # A list of our CSS and JS assets for jingo-minify.
 MINIFY_BUNDLES = {
     'css': {
@@ -28,7 +33,7 @@ MINIFY_BUNDLES = {
             'js/lib/jquery-1.8.js',
             'js/lib/underscore.js',
             'js/lib/format.js',
-            'pay/pay.js',
+            'js/pay/pay.js',
         ),
     }
 }
@@ -36,10 +41,15 @@ MINIFY_BUNDLES = {
 # jingo-minify: Style sheet media attribute default
 CSS_MEDIA_DEFAULT = 'all'
 
+# Tell jingo-minify to use the media URL instead.
+JINGO_MINIFY_USE_STATIC = False
+
 # LESS CSS OPTIONS (Debug only)
 LESS_PREPROCESS = False  # Compile LESS with Node, rather than client-side JS?
 LESS_LIVE_REFRESH = False  # Refresh the CSS on save?
 LESS_BIN = 'lessc'
+UGLIFY_BIN = 'uglify'
+CLEANCSS_BIN = 'cleancss'
 
 LOCALE_PATHS = (
     os.path.join(ROOT, PROJECT_MODULE, 'locale'),
@@ -64,7 +74,9 @@ LOGIN_REDIRECT_URL = 'examples.home'
 LOGIN_REDIRECT_URL_FAILURE = 'examples.home'
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
+    'jingo_minify.helpers.build_ids',
     'django_browserid.context_processors.browserid_form',
+    'webpay.base.context_processors.static_url',
 ]
 
 # Should robots.txt deny everything or disallow a calculated list of URLs we

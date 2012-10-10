@@ -1,6 +1,7 @@
 from django.conf import settings
-from django.conf.urls.defaults import patterns, include
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf.urls.defaults import patterns, include, url
+from django.views.decorators.cache import cache_page
+from django.views.i18n import javascript_catalog
 
 from funfactory.monkeypatches import patch
 patch()
@@ -12,6 +13,9 @@ patch()
 urlpatterns = patterns('',
     (r'^mozpay/services/', include('webpay.services.urls')),
     (r'^mozpay/', include('webpay.pay.urls')),
+    url('^mozpay/jsi18n.js$',
+        cache_page(60 * 60 * 24 * 365)(javascript_catalog),
+        {'domain': 'javascript', 'packages': ['webpay']}, name='jsi18n'),
 
     # This is served by marketplace.
     #(r'^robots\.txt$',
@@ -28,6 +32,10 @@ urlpatterns = patterns('',
     # (r'^admin/', include(admin.site.urls)),
 )
 
-## In DEBUG mode, serve media files through Django.
-if settings.DEBUG:
-    urlpatterns += staticfiles_urlpatterns()
+if settings.TEMPLATE_DEBUG:
+    # Remove leading and trailing slashes so the regex matches.
+    media_url = settings.MEDIA_URL.lstrip('/').rstrip('/')
+    urlpatterns += patterns('',
+        (r'^%s/(?P<path>.*)$' % media_url, 'django.views.static.serve',
+         {'document_root': settings.MEDIA_ROOT}),
+    )
