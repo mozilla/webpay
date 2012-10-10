@@ -99,7 +99,7 @@ DOMAIN_METHODS['messages'] = [
 ]
 
 LOGGING = dict(loggers = dict(playdoh = {'level': logging.DEBUG},
-                              w = {'handlers': ['unicode']}),
+                              w = {'handlers': ['console', 'unicode']}),
                handlers = {'unicode': {'class':
                                        'webpay.unicode_log.UnicodeHandler'}})
 
