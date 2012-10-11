@@ -65,7 +65,7 @@ JINGO_EXCLUDE_APPS = [
 # BrowserID configuration
 AUTHENTICATION_BACKENDS = [
     'django_browserid.auth.BrowserIDBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    #'django.contrib.auth.backends.ModelBackend',
 ]
 
 SITE_URL = 'http://localhost:8000'

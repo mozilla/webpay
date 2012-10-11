@@ -11,6 +11,7 @@ patch()
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+    (r'^mozpay/auth/', include('webpay.auth.urls')),
     (r'^mozpay/services/', include('webpay.services.urls')),
     (r'^mozpay/', include('webpay.pay.urls')),
     url('^mozpay/jsi18n.js$',
