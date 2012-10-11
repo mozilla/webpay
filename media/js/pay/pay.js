@@ -27,7 +27,8 @@ $(function() {
           }
         });
 
-        navigator.id.request();
+        //navigator.id.request();  // This would be really nice but pop-up
+                                   // blockers do not agree.
         $('#signin').click(function(ev) {
             console.log('signing in manually');
             ev.preventDefault();
