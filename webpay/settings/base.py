@@ -13,7 +13,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'webpay.base',  # Needed for global templates, etc.
     'webpay.pay',
     'webpay.services',
-    'tower'
+    'tower',
 ]
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a

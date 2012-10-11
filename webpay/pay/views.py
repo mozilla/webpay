@@ -20,7 +20,7 @@ def _error(request, msg='', exception=None):
             msg = u'%s: %s' % (exception.__class__.__name__, exception)
         if msg:
             external = msg
-    return render(request, 'pay/verify.html', {'error': external}, status=400)
+    return render(request, 'pay/error.html', {'error': external}, status=400)
 
 
 @anonymous_csrf_exempt

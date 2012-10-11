@@ -1,10 +1,11 @@
 {% extends "pay/base.html" %}
 
+{% block body_attrs -%}
+  data-beginflow="true"
+  data-verifyurl="{{ url('auth.verify') }}"
+{%- endblock %}
+
 {% block content %}
-    {% if error %}
-        <h1>{{ _('Error') }}</h1>
-        <pre>{{ error }}</pre>
-    {% else %}
-        <p>JWT processed</p>
-    {% endif %}
+  <p>Logging you in to begin payment...</p>
+  <p>Oh no! Popup blocker? <a id="signin" href="#">Sign in</a></p>
 {% endblock %}
