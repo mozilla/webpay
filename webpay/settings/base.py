@@ -122,6 +122,11 @@ MIDDLEWARE_CLASSES = (
 KEY = ''
 SECRET = ''
 
+# Marketplace's postback/chargeback URLs where app purchase JWT notifications
+# are sent.
+MKT_POSTBACK = 'https://marketplace-dev.allizom.org/services/bluevia/postback'
+MKT_CHARGEBACK = 'https://marketplace-dev.allizom.org/services/bluevia/chargeback'
+
 # The domain of the webpay server. Example: webpay.somewhere.org
 DOMAIN = 'localhost'
 

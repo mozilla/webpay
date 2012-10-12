@@ -3,6 +3,7 @@
 
 $(function() {
     "use strict";
+
     if ($('body').data('beginflow')) {
         var verifyUrl = $('body').data('verifyurl');
 
@@ -34,5 +35,10 @@ $(function() {
             ev.preventDefault();
             navigator.id.request();
         });
+    }
+
+    if ($('body').data('docomplete')) {
+        console.log('payment complete, closing window');
+        window.paymentSuccess();
     }
 });

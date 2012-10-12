@@ -1,35 +1,30 @@
 from urllib2 import HTTPError
 import logging
-import urlparse
 
-from gelato.constants import payments
 import requests
 from requests.exceptions import RequestException
 
 log = logging.getLogger('w.pay.utils')
 
 
-def send_pay_notice(notice_type, signed_notice, config, contrib,
+def send_pay_notice(url, notice_type, signed_notice, trans_id,
                     notifier_task):
     """
     Send app a notification about a payment or chargeback.
 
     Parameters:
 
+    **url**
+        Absolute URL to notify.
     **notice_type**
         constant to indicate the type of notification being sent
     **signed_notice**
         encoded JWT with request and response
-    **config**
-        InappConfig object that specifies notification URLs
-    **contrib**
-        Contribution instance for the payment in question
+    **trans_id**
+        Transaction ID of the notice. The recipient must respond
+        with this ID.
     **notifier_task**
         celery task object
-
-    The *signed_notice* will be sent to the URL found in the *config*.
-    If there's an error in the app's response, *notifier_task* will be
-    retried up to five times.
 
     A tuple of (url, success, last_error) is returned.
 
@@ -40,15 +35,7 @@ def send_pay_notice(notice_type, signed_notice, config, contrib,
     **last_error**
         String to indicate the last exception message in the case of failure.
     """
-    if notice_type == payments.INAPP_NOTICE_PAY:
-        uri = config.postback_url
-    elif notice_type == payments.INAPP_NOTICE_CHARGEBACK:
-        uri = config.chargeback_url
-    else:
-        raise NotImplementedError('Unknown type: %s' % notice_type)
-    url = urlparse.urlunparse((config.app_protocol(),
-                               config.addon.parsed_app_domain.netloc, uri, '',
-                               '', ''))
+    log.info('about to notify %s of notice type %s' % (url, notice_type))
     exception = None
     success = False
     try:
@@ -56,24 +43,24 @@ def send_pay_notice(notice_type, signed_notice, config, contrib,
         res.raise_for_status()  # raise exception for non-200s
         res_content = res.text
     except (HTTPError, RequestException), exception:
-        log.error('Notice for contrib %s raised exception in URL %s'
-                  % (contrib.pk, url), exc_info=True)
+        log.error('Notice for transaction %s raised exception in URL %s'
+                  % (trans_id, url), exc_info=True)
         try:
             notifier_task.retry(exc=exception)
         except:
-            log.exception('while retrying contrib %s notice; '
-                          'notification URL: %s' % (contrib.pk, url))
+            log.exception('while retrying trans %s notice; '
+                          'notification URL: %s' % (trans_id, url))
     else:
-        if res_content == str(contrib.pk):
+        if res_content == str(trans_id):
             success = True
-            log.debug('app config %s responded OK for contrib %s notification'
-                      % (config.pk, contrib.pk))
+            log.debug('URL %s responded OK for transaction %s '
+                      'notification' % (url, trans_id))
         else:
-            log.error('app config %s did not respond with contribution ID %s '
-                      'for notification' % (config.pk, contrib.pk))
+            log.error('URL %s did not respond with transaction %s '
+                      'for notification' % (url, trans_id))
     if exception:
         last_error = u'%s: %s' % (exception.__class__.__name__, exception)
     else:
         last_error = ''
 
-    return url, success, last_error
+    return success, last_error
