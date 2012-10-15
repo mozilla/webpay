@@ -48,7 +48,7 @@ JINGO_MINIFY_USE_STATIC = False
 LESS_PREPROCESS = False  # Compile LESS with Node, rather than client-side JS?
 LESS_LIVE_REFRESH = False  # Refresh the CSS on save?
 LESS_BIN = 'lessc'
-UGLIFY_BIN = 'uglify'
+UGLIFY_BIN = 'uglifyjs'
 CLEANCSS_BIN = 'cleancss'
 
 LOCALE_PATHS = (
