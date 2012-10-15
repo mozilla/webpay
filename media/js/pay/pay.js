@@ -1,5 +1,6 @@
 // You probably want to throw this all away.
 // This is just a proof to kick things off.
+//
 
 $(function() {
     "use strict";
