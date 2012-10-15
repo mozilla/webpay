@@ -42,4 +42,5 @@ $(function() {
         console.log('payment complete, closing window');
         paymentSuccess();
     }
+    log.info('check it, paymentSuccess() is ' + paymentSuccess);
 });
