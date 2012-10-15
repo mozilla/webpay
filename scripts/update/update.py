@@ -76,6 +76,7 @@ def deploy(ctx):
 def pre_update(ctx, ref=settings.UPDATE_REF):
     ctx.local('date')
     update_code(ref)
+    compress_assets()
     update_info(ref)
 
 
