@@ -13,6 +13,9 @@ class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('--iss', help='JWT issuer. Default: %default',
                     default=settings.KEY),
+        make_option('--aud', help='JWT audience. Default: %default',
+                    default=settings.DOMAIN),
+        make_option('--secret', help='secret to sign JWT. Default is settings.SECRET.'),
         make_option('--typ', help='JWT type. Default: %default',
                     default='mozilla/payments/pay/v1'),
         make_option('--amount', help='JWT price amount. Default: %default',
@@ -26,7 +29,7 @@ class Command(BaseCommand):
         exp = iat + 3600  # Expires in 1 hour.
         req = {
             'iss': options['iss'],
-            'aud': settings.DOMAIN,
+            'aud': options['aud'],
             'iat': iat,
             'typ': options['typ'],
             'exp': exp,
@@ -40,4 +43,4 @@ class Command(BaseCommand):
                 'productdata': 'my_product_id=1234'
             }
         }
-        print jwt.encode(req, settings.SECRET)
+        print jwt.encode(req, options['secret'] or settings.SECRET)
