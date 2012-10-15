@@ -1,6 +1,5 @@
 // You probably want to throw this all away.
 // This is just a proof to kick things off.
-//
 
 $(function() {
     "use strict";
@@ -40,6 +39,6 @@ $(function() {
 
     if ($('body').data('docomplete')) {
         console.log('payment complete, closing window');
-        window.paymentSuccess();
+        paymentSuccess();
     }
 });
