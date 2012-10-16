@@ -7,7 +7,14 @@
 
 {% block extra_head %}
   <script>
-    console.log('does paymentSuccess exist in head? ' + paymentSuccess);
+    setTimeout(function() {
+      console.log('does paymentSuccess exist now?');
+      try {
+        console.log(paymentSuccess);
+      } catch(e) {
+        console.log('caught error: ' + e);
+      }
+    }, 1000);
   </script>
 {% endblock %}
 
