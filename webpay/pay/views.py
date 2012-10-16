@@ -4,7 +4,6 @@ from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 
 import commonware.log
-from commonware.response.decorators import xframe_allow
 from moz_inapp_pay.exc import InvalidJWT, RequestExpired
 from moz_inapp_pay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
@@ -28,7 +27,6 @@ def _error(request, msg='', exception=None):
 
 @anonymous_csrf_exempt
 @require_GET
-@xframe_allow
 def verify(request):
     form = VerifyForm(request.GET)
     if not form.is_valid():
@@ -53,7 +51,6 @@ def verify(request):
 
 @anonymous_csrf_exempt
 @require_POST
-@xframe_allow
 def complete(request):
     if 'pay_request' not in request.session:
         return http.HttpResponseBadRequest()
