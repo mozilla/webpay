@@ -5,6 +5,12 @@
   data-verifyurl="{{ url('auth.verify') }}"
 {%- endblock %}
 
+{% block extra_head %}
+  <script>
+    console.log('does paymentSuccess exist in head? ' + paymentSuccess);
+  </script>
+{% endblock %}
+
 {% block content %}
   <p>Sign in to continue with the payment: <a id="signin" href="#">Sign in</a></p>
   <p>
