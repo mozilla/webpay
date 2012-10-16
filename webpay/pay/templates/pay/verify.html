@@ -5,20 +5,15 @@
   data-verifyurl="{{ url('auth.verify') }}"
 {%- endblock %}
 
-{% block extra_head %}
-  <script>
-    setTimeout(function() {
-      console.log('does paymentSuccess exist now?');
-      try {
-        console.log(paymentSuccess);
-      } catch(e) {
-        console.log('caught error: ' + e);
-      }
-    }, 1000);
-  </script>
-{% endblock %}
-
 {% block content %}
+  <script>
+    console.log('does paymentSuccess exist in body?');
+    try {
+      console.log(paymentSuccess);
+    } catch(e) {
+      console.log('caught error: ' + e);
+    }
+  </script>
   <p>Sign in to continue with the payment: <a id="signin" href="#">Sign in</a></p>
   <p>
     <form action="{{ url('pay.complete') }}" method="post">
