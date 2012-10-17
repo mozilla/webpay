@@ -148,13 +148,13 @@ def _prepare_mkt_notice(notice_type, key, pay_request):
                          % key)
     log.info('preparing mkt notice from %s' % pay_request)
     if notice_type == payments.INAPP_NOTICE_PAY:
-        if 'postbackURL' in pay_request:
-            url = pay_request['postbackURL']
+        if 'postbackURL' in pay_request['request']:
+            url = pay_request['request']['postbackURL']
         else:
             url = settings.MKT_POSTBACK
     elif notice_type == payments.INAPP_NOTICE_CHARGEBACK:
-        if 'chargebackURL' in pay_request:
-            url = pay_request['chargebackURL']
+        if 'chargebackURL' in pay_request['request']:
+            url = pay_request['request']['chargebackURL']
         else:
             url = settings.MKT_CHARGEBACK
     else:
