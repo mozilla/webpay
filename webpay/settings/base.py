@@ -98,8 +98,10 @@ DOMAIN_METHODS['messages'] = [
         'tower.management.commands.extract.extract_tower_template'),
 ]
 
+HAS_SYSLOG = True # syslog is used if HAS_SYSLOG and NOT DEBUG.
+# See settings/local.py for SYSLOG_TAG, etc
 LOGGING = dict(loggers = dict(playdoh = {'level': logging.DEBUG},
-                              w = {'handlers': ['console', 'unicode']}),
+                              w = {'level': logging.INFO}),
                handlers = {'unicode': {'class':
                                        'webpay.unicode_log.UnicodeHandler'}})
 
