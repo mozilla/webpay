@@ -21,6 +21,15 @@ class VerifyForm(forms.Form):
             # L10n: first argument is a detailed error message.
             err = _('Error decoding JWT: {0}').format(exc)
             raise forms.ValidationError(err)
+        if not isinstance(payload, dict):
+            # It seems that some JWT libs are encoding strings of JSON
+            # objects, not actual objects. For now we treat this as an
+            # error. If it becomes a headache for developers we can make a
+            # guess and check the string for a JSON object.
+            raise forms.ValidationError(
+                # L10n: first argument is a data type, such as <unicode>
+                _('The JWT did not decode to a JSON object. Its type was {0}.')
+                .format(type(payload)))
 
         app_id = payload.get('iss', '')
         if app_id == settings.KEY:
