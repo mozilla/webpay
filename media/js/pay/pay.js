@@ -37,15 +37,14 @@ $(function() {
             navigator.id.request();
         });
     }
-});
 
-$('body').load(function() {
     if ($('body').data('docomplete')) {
         callPaySuccess();
     }
 
     function callPaySuccess() {
-        // There *might* be a delay before paymentSuccess gets injected into scope.
+        // There is a delay before paymentSuccess gets injected into scope it
+        // seems.
         if (typeof paymentSuccess === 'undefined') {
             console.log('waiting for paymentSuccess to appear in scope');
             window.setTimeout(callPaySuccess, 500);
