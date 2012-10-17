@@ -1,19 +1,26 @@
-import urlparse
+import uuid
 
 from django.conf import settings
 from django.db import connection
 from django.db import models
 
-from gelato.constants import base, payments
-from jinja2.filters import do_dictsort
+from tower import ugettext_lazy as _
+
+TRANS_PAY = 1
+TRANS_REFUND = 2
+
+TRANS_STATE_PENDING = 1
+TRANS_STATE_FAILED = 2
+TRANS_STATE_COMPLETED = 3
+
+ISSUER_ACTIVE = 1
+ISSUER_INACTIVE = 2
+ISSUER_REVOKED = 3
 
 
 class BlobField(models.Field):
-    """MySQL blob column.
-
-    This is for using AES_ENCYPT() to store values.
-    It could maybe turn into a fancy transparent encypt/decrypt field
-    like http://djangosnippets.org/snippets/2489/
+    """
+    MySQL blob column.
     """
     description = "blob"
 
@@ -21,18 +28,25 @@ class BlobField(models.Field):
         return 'blob'
 
 
-class InappConfig(models.Model):
-    addon = models.ForeignKey('Addon', unique=False)
+class Issuer(models.Model):
+    """Apps that can issue payment JWTs."""
+    status = models.IntegerField(choices=[(ISSUER_ACTIVE, _('Active')),
+                                          (ISSUER_INACTIVE, _('Inactive')),
+                                          (ISSUER_REVOKED, _('Revoked'))],
+                                 default=ISSUER_ACTIVE)
+    domain = models.CharField(max_length=255)
     chargeback_url = models.CharField(
         max_length=200, verbose_name=u'Chargeback URL',
-        help_text=u'Relative URL in your app that the marketplace posts '
+        help_text=u'Relative URL to domain for posting a JWT '
                   u'a chargeback to. For example: /payments/chargeback')
     postback_url = models.CharField(
         max_length=200, verbose_name=u'Postback URL',
-        help_text=u'Relative URL in your app that the marketplace will '
-                  u'post a confirmed transaction to. For example: '
+        help_text=u'Relative URL to domain for '
+                  u'posting a confirmed transaction to. For example: '
                   u'/payments/postback')
-    public_key = models.CharField(max_length=255, unique=True, db_index=True)
+    issuer_key = models.CharField(max_length=255, unique=True, db_index=True,
+                                  help_text='Value from the iss (issuer) '
+                                            'field in payment JWTs')
 
     # It feels like all the key and timestamps should be done in solitude,
     # so this is just a temp setting.
@@ -44,8 +58,8 @@ class InappConfig(models.Model):
     # Allow https to be configurable only if it's declared in settings.
     # This is intended for development.
     is_https = models.BooleanField(
-            default=True,
-            help_text=u'Use SSL when posting to app')
+        default=True,
+        help_text=u'Use SSL when posting to app')
 
     _encrypted_private_key = BlobField(blank=True, null=True,
                                        db_column='private_key')
@@ -56,7 +70,7 @@ class InappConfig(models.Model):
             raw_value = raw_value.encode('ascii')
         timestamp, key = _get_key()
         cursor = connection.cursor()
-        cursor.execute('UPDATE addon_inapp SET '
+        cursor.execute('UPDATE issuers SET '
                        'private_key = AES_ENCRYPT(%s, %s), '
                        'key_timestamp = %s WHERE id=%s',
                        [raw_value, key, timestamp, self.id])
@@ -66,7 +80,7 @@ class InappConfig(models.Model):
         timestamp, key = _get_key(timestamp=self.key_timestamp)
         cursor = connection.cursor()
         cursor.execute('select AES_DECRYPT(private_key, %s) '
-                       'from addon_inapp where id=%s', [key, self.id])
+                       'from issuers where id=%s', [key, self.id])
         secret = cursor.fetchone()[0]
         if not secret:
             raise ValueError('Secret was empty! It either was not set or '
@@ -81,7 +95,7 @@ class InappConfig(models.Model):
             return 'https' if self.is_https else 'http'
 
     class Meta:
-        db_table = 'addon_inapp'
+        db_table = 'issuers'
 
 
 def _get_key(timestamp=None):
@@ -103,54 +117,48 @@ def _get_key(timestamp=None):
         return timestamp, fp.read()
 
 
-class Addon(models.Model):
-    status = models.PositiveIntegerField(
-        choices=base.STATUS_CHOICES.items(), db_index=True, default=0)
-    app_domain = models.CharField(max_length=255, blank=True, null=True,
-                                  db_index=True)
-
-    @property
-    def parsed_app_domain(self):
-        return urlparse.urlparse(self.app_domain)
-
-    class Meta:
-        db_table = 'addons'
-
-
-class Contribution(models.Model):
-    addon = models.ForeignKey(Addon)
-    # use amo's DecimalCharField?
+class Transaction(models.Model):
+    """A payment transaction initiated by an issuer."""
+    uuid = models.CharField(max_length=128,
+                            help_text='Unique transaction UUID',
+                            primary_key=True)
+    typ = models.IntegerField(choices=[(TRANS_PAY, _('Payment')),
+                                       (TRANS_REFUND, _('Refund'))],
+                              default=TRANS_PAY)
+    state = models.IntegerField(
+        db_index=True,
+        choices=[(TRANS_STATE_PENDING, _('Pending')),
+                 (TRANS_STATE_FAILED, _('Failed')),
+                 (TRANS_STATE_COMPLETED, _('Completed'))],
+        default=TRANS_STATE_PENDING)
+    issuer_key = models.CharField(max_length=255,
+                                  db_index=True,
+                                  help_text='Issuer of the payment JWT')
+    issuer = models.ForeignKey(Issuer, blank=True)
     amount = models.DecimalField(max_digits=9, decimal_places=2, null=True)
-    currency = models.CharField(
-                    max_length=3,
-                    choices=do_dictsort(payments.PAYPAL_CURRENCIES),
-                    default=payments.CURRENCY_DEFAULT)
-    uuid = models.CharField(max_length=255, null=True)
-    type = models.PositiveIntegerField(
-                    default=payments.CONTRIB_TYPE_DEFAULT,
-                    choices=do_dictsort(payments.CONTRIB_TYPES))
-
-
-class InappPayment(models.Model):
-    config = models.ForeignKey(InappConfig)
-    contribution = models.ForeignKey(Contribution,
-                                     related_name='inapp_payment')
+    currency = models.CharField(max_length=3)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=255, blank=True)
-    app_data = models.CharField(max_length=255, blank=True)
+    json_request = models.TextField(
+        help_text='Original JSON object for the payment')
+    notify_url = models.CharField(max_length=255, null=True, blank=True)
+    last_error = models.CharField(max_length=255, null=True, blank=True)
+
+    @classmethod
+    def create(cls, **kw):
+        kw.setdefault('uuid', uuid.uuid4().hex)
+        return cls.objects.create(**kw)
 
     class Meta:
-        db_table = 'addon_inapp_payment'
-        unique_together = ('config', 'contribution')
+        db_table = 'transactions'
 
 
-class InappPayNotice(models.Model):
-    """In-app payment notification sent to the app."""
-    notice = models.IntegerField(choices=payments.INAPP_NOTICE_CHOICES)
-    payment = models.ForeignKey(InappPayment)
+class Notice(models.Model):
+    """Notifications sent to issuers about transactions."""
+    transaction = models.ForeignKey(Transaction)
     url = models.CharField(max_length=255)
     success = models.BooleanField()  # App responded OK to notification.
     last_error = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
-        db_table = 'addon_inapp_notice'
+        db_table = 'notices'

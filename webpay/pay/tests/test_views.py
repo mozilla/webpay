@@ -6,12 +6,11 @@ from django import test
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
-from gelato.constants import base
 import mock
 from nose.tools import eq_
 
 from webpay.pay.forms import VerifyForm
-from webpay.pay.models import Addon, InappConfig
+from webpay.pay.models import Issuer, ISSUER_ACTIVE, ISSUER_INACTIVE
 from webpay.pay.samples import JWTtester
 
 sample = os.path.join(os.path.dirname(__file__), 'sample.key')
@@ -29,10 +28,10 @@ class Base(JWTtester, test.TestCase):
     def create(self, key=None, secret=None):
         key = key or self.key
         secret = secret or self.secret
-        self.app = Addon.objects.create(status=base.STATUS_PUBLIC)
-        self.inapp = InappConfig.objects.create(addon=self.app, public_key=key)
+        self.iss = Issuer.objects.create(issuer_key=key,
+                                         status=ISSUER_ACTIVE)
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
-            self.inapp.set_private_key(secret)
+            self.iss.set_private_key(secret)
 
 
 @mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')
@@ -154,9 +153,8 @@ class TestForm(Base):
             assert not form.is_valid()
 
     def test_not_public(self):
-        self.app.status = base.STATUS_PENDING
-        self.app.save()
-
+        self.iss.status = ISSUER_INACTIVE
+        self.iss.save()
         payload = self.request(iss=self.key, app_secret=self.secret)
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             form = VerifyForm({'req': payload})

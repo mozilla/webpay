@@ -14,8 +14,7 @@ from . import base
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'zamboni',
-        'TEST_NAME': 'test_zamboni_webpay',
+        'NAME': 'webpay',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '',

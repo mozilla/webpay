@@ -1,5 +1,6 @@
 import calendar
 from decimal import Decimal
+import json
 import time
 import urllib2
 
@@ -8,15 +9,13 @@ from django.conf import settings
 
 import fudge
 from fudge.inspector import arg
-from gelato.constants import base, payments
 import jwt
 import mock
-from nose.exc import SkipTest
 from nose.tools import eq_
 from requests.exceptions import RequestException, Timeout
 
-from webpay.pay.models import (Addon, Contribution, InappConfig, InappPayment,
-                            InappPayNotice)
+from webpay.pay.models import (Issuer, Notice, Transaction,
+                               TRANS_STATE_COMPLETED, TRANS_REFUND)
 from webpay.pay import tasks
 from webpay.pay.samples import JWTtester
 
@@ -33,51 +32,38 @@ class TestNotifyApp(JWTtester, test.TestCase):
         self.domain = 'somenonexistantappdomain.com'
         self.inapp_key = '1234'
         self.inapp_secret = 'politics is just lies, smoke, and mirrors'
-        self.app = Addon.objects.create(status=base.STATUS_PUBLIC,
-                                        app_domain='https://' + self.domain)
         self.postback = '/postback'
         self.chargeback = '/chargeback'
-        self.inapp = InappConfig.objects.create(addon=self.app,
-                                                public_key=self.inapp_key,
-                                                postback_url=self.postback,
-                                                chargeback_url=self.chargeback)
+        self.iss = Issuer.objects.create(domain=self.domain,
+                                         issuer_key=self.inapp_key,
+                                         postback_url=self.postback,
+                                         chargeback_url=self.chargeback)
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
-            self.inapp.set_private_key(self.inapp_secret)
+            self.iss.set_private_key(self.inapp_secret)
 
-        self.contrib = self.make_contrib()
-        self.payment = self.make_payment(contrib=self.contrib)
-
-    def inapp_update(self, **kw):
-        InappConfig.objects.filter(pk=self.inapp.pk).update(**kw)
-
-    def make_contrib(self, **contrib_kw):
-        payload = self.payload()
-        kw = dict(addon_id=self.app.pk,
-                  amount=Decimal(payload['request']['price'][0]['amount']),
-                  currency=payload['request']['price'][0]['currency'],
-                  uuid='1234',
-                  type=payments.CONTRIB_INAPP_PENDING)
-        kw.update(contrib_kw)
-        return Contribution.objects.create(**kw)
-
-    def make_payment(self, contrib=None):
         app_payment = self.payload()
-        if not contrib:
-            contrib = self.make_contrib()
-        return InappPayment.objects.create(
-                            config=self.inapp,
-                            contribution=contrib,
-                            name=app_payment['request']['name'],
-                            description=app_payment['request']['description'],
-                            app_data=app_payment['request']['productdata'])
+        self.trans = Transaction.create(
+            state=TRANS_STATE_COMPLETED,
+            issuer=self.iss,
+            issuer_key=self.iss.issuer_key,
+            amount=Decimal(app_payment['request']['price'][0]['amount']),
+            currency=app_payment['request']['price'][0]['currency'],
+            name=app_payment['request']['name'],
+            description=app_payment['request']['description'],
+            json_request=json.dumps(app_payment))
+
+    def iss_update(self, **kw):
+        Issuer.objects.filter(pk=self.iss.pk).update(**kw)
 
     def do_chargeback(self, reason):
+        self.trans.typ = TRANS_REFUND
+        self.trans.save()
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
-            tasks.chargeback_notify(reason, payment_id=self.payment.pk)
+            tasks.chargeback_notify(self.trans.pk, reason)
 
     def notify(self):
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
-            tasks.payment_notify(payment_id=self.payment.pk)
+            tasks.payment_notify(self.trans.pk)
 
     @fudge.patch('webpay.pay.utils.requests')
     def test_notify_pay(self, fake_req):
@@ -88,21 +74,19 @@ class TestNotifyApp(JWTtester, test.TestCase):
             dd = jwt.decode(req, verify=False)
             eq_(dd['request'], payload['request'])
             eq_(dd['typ'], payload['typ'])
-            jwt.decode(req, self.inapp.get_private_key(), verify=True)
+            jwt.decode(req, self.iss.get_private_key(), verify=True)
             return True
 
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
                                             timeout=5)
                                  .returns_fake()
-                                 .has_attr(text=str(self.contrib.pk))
+                                 .has_attr(text=str(self.trans.pk))
                                  .expects('raise_for_status'))
         self.notify()
-        # TODO(Kumar): fixme: save payment for app purchase.
-        #notice = InappPayNotice.objects.get()
-        #eq_(notice.notice, payments.INAPP_NOTICE_PAY)
-        #eq_(notice.success, True)
-        #eq_(notice.url, url)
-        #eq_(notice.payment.pk, self.payment.pk)
+        notice = Notice.objects.get()
+        eq_(notice.transaction.pk, self.trans.pk)
+        eq_(notice.success, True)
+        eq_(notice.url, url)
 
     @fudge.patch('webpay.pay.utils.requests')
     def test_notify_refund_chargeback(self, fake_req):
@@ -113,23 +97,21 @@ class TestNotifyApp(JWTtester, test.TestCase):
             dd = jwt.decode(req, verify=False)
             eq_(dd['request'], payload['request'])
             eq_(dd['typ'], payload['typ'])
-            eq_(dd['response']['transactionID'], self.contrib.pk)
+            eq_(dd['response']['transactionID'], self.trans.pk)
             eq_(dd['response']['reason'], 'refund')
-            jwt.decode(req, self.inapp.get_private_key(), verify=True)
+            jwt.decode(req, self.iss.get_private_key(), verify=True)
             return True
 
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
                                             timeout=5)
                                  .returns_fake()
-                                 .has_attr(text=str(self.contrib.pk))
+                                 .has_attr(text=str(self.trans.pk))
                                  .expects('raise_for_status'))
         self.do_chargeback('refund')
-        # TODO(Kumar): fixme: save payment for app purchase.
-        #notice = InappPayNotice.objects.get()
-        #eq_(notice.notice, payments.INAPP_NOTICE_CHARGEBACK)
-        #eq_(notice.success, True)
-        #eq_(notice.url, url)
-        #eq_(notice.payment.pk, self.payment.pk)
+        notice = Notice.objects.get()
+        eq_(notice.transaction.pk, self.trans.pk)
+        eq_(notice.success, True)
+        eq_(notice.url, url)
 
     @fudge.patch('webpay.pay.utils.requests')
     def test_notify_reversal_chargeback(self, fake_req):
@@ -143,63 +125,58 @@ class TestNotifyApp(JWTtester, test.TestCase):
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
                                             timeout=5)
                                  .returns_fake()
-                                 .has_attr(text=str(self.contrib.pk))
+                                 .has_attr(text=str(self.trans.pk))
                                  .expects('raise_for_status'))
         self.do_chargeback('reversal')
-        # TODO(Kumar): fixme: save payment for app purchase.
-        #notice = InappPayNotice.objects.get()
-        #eq_(notice.notice, payments.INAPP_NOTICE_CHARGEBACK)
-        #eq_(notice.last_error, '')
-        #eq_(notice.success, True)
+        notice = Notice.objects.get()
+        eq_(notice.transaction.pk, self.trans.pk)
+        eq_(notice.last_error, '')
+        eq_(notice.success, True)
 
     @mock.patch.object(settings, 'INAPP_REQUIRE_HTTPS', True)
     @fudge.patch('webpay.pay.utils.requests')
     def test_force_https(self, fake_req):
-        self.inapp_update(is_https=False)
+        self.iss_update(is_https=False)
         url = self.url(self.postback, protocol='https')
         (fake_req.expects('post').with_args(url, arg.any(), timeout=arg.any())
                                  .returns_fake()
                                  .is_a_stub())
         self.notify()
-        # TODO(Kumar): fixme: save payment for app purchase.
-        #notice = InappPayNotice.objects.get()
-        #eq_(notice.last_error, '')
+        notice = Notice.objects.get()
+        eq_(notice.last_error, '')
 
     @mock.patch.object(settings, 'INAPP_REQUIRE_HTTPS', False)
     @fudge.patch('webpay.pay.utils.requests')
     def test_configurable_https(self, fake_req):
-        self.inapp_update(is_https=True)
+        self.iss_update(is_https=True)
         url = self.url(self.postback, protocol='https')
         (fake_req.expects('post').with_args(url, arg.any(), timeout=arg.any())
                                  .returns_fake()
                                  .is_a_stub())
         self.notify()
-        # TODO(Kumar): fixme: save payment for app purchase.
-        #notice = InappPayNotice.objects.get()
-        #eq_(notice.last_error, '')
+        notice = Notice.objects.get()
+        eq_(notice.last_error, '')
 
     @mock.patch.object(settings, 'INAPP_REQUIRE_HTTPS', False)
     @fudge.patch('webpay.pay.utils.requests')
     def test_configurable_http(self, fake_req):
-        self.inapp_update(is_https=False)
+        self.iss_update(is_https=False)
         url = self.url(self.postback, protocol='http')
         (fake_req.expects('post').with_args(url, arg.any(), timeout=arg.any())
                                  .returns_fake()
                                  .is_a_stub())
         self.notify()
-        # TODO(Kumar): fixme: save payment for app purchase.
-        #notice = InappPayNotice.objects.get()
-        #eq_(notice.last_error, '')
+        notice = Notice.objects.get()
+        eq_(notice.last_error, '')
 
     @fudge.patch('webpay.pay.utils.requests')
     def test_notify_timeout(self, fake_req):
         fake_req.expects('post').raises(Timeout())
         self.notify()
-        # TODO(Kumar): fixme: save payment for app purchase.
-        #notice = InappPayNotice.objects.get()
-        #eq_(notice.success, False)
-        #er = notice.last_error
-        #assert er.startswith('Timeout:'), 'Unexpected: %s' % er
+        notice = Notice.objects.get()
+        eq_(notice.success, False)
+        er = notice.last_error
+        assert er.startswith('Timeout:'), 'Unexpected: %s' % er
 
     @mock.patch('webpay.pay.tasks.payment_notify.retry')
     @mock.patch('webpay.pay.utils.requests.post')
@@ -211,24 +188,22 @@ class TestNotifyApp(JWTtester, test.TestCase):
 
     @fudge.patch('webpay.pay.utils.requests')
     def test_any_error(self, fake_req):
-        raise SkipTest('fixme: save payment for app purchase')
         fake_req.expects('post').raises(RequestException('some http error'))
         self.notify()
-        notice = InappPayNotice.objects.get()
+        notice = Notice.objects.get()
         eq_(notice.success, False)
         er = notice.last_error
         assert er.startswith('RequestException:'), 'Unexpected: %s' % er
 
     @fudge.patch('webpay.pay.utils.requests')
     def test_bad_status(self, fake_req):
-        raise SkipTest('fixme: save payment for app purchase')
         (fake_req.expects('post').returns_fake()
                                  .has_attr(text='')
                                  .expects('raise_for_status')
                                  .raises(urllib2.HTTPError('url', 500, 'Error',
                                                            [], None)))
         self.notify()
-        notice = InappPayNotice.objects.get()
+        notice = Notice.objects.get()
         eq_(notice.success, False)
         er = notice.last_error
         assert er.startswith('HTTPError:'), 'Unexpected: %s' % er
@@ -239,9 +214,8 @@ class TestNotifyApp(JWTtester, test.TestCase):
                                  .provides('raise_for_status')
                                  .has_attr(text='<not a valid response>'))
         self.notify()
-        # TODO(Kumar): fixme: save payment for app purchase.
-        #notice = InappPayNotice.objects.get()
-        #eq_(notice.success, False)
+        notice = Notice.objects.get()
+        eq_(notice.success, False)
 
     @fudge.patch('webpay.pay.utils.requests')
     def test_signed_app_response(self, fake_req):
@@ -250,10 +224,10 @@ class TestNotifyApp(JWTtester, test.TestCase):
         # Ensure that the JWT sent to the app for payment notification
         # includes the same payment data that the app originally sent.
         def is_valid(payload):
-            data = jwt.decode(payload, self.inapp.get_private_key(),
+            data = jwt.decode(payload, self.iss.get_private_key(),
                               verify=True)
             eq_(data['iss'], settings.NOTIFY_ISSUER)
-            eq_(data['aud'], self.inapp.public_key)
+            eq_(data['aud'], self.iss.issuer_key)
             eq_(data['typ'], 'mozilla/payments/pay/postback/v1')
             eq_(data['request']['price'][0]['amount'],
                 app_payment['request']['price'][0]['amount'])
@@ -264,7 +238,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
                 app_payment['request']['description'])
             eq_(data['request']['productdata'],
                 app_payment['request']['productdata'])
-            eq_(data['response']['transactionID'], self.contrib.pk)
+            eq_(data['response']['transactionID'], self.trans.pk)
             assert data['iat'] <= calendar.timegm(time.gmtime()) + 60, (
                                 'Expected iat to be about now')
             assert data['exp'] > calendar.timegm(time.gmtime()) + 3500, (

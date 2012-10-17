@@ -1,11 +1,10 @@
 from django import forms
 from django.conf import settings
 
-from gelato.constants import base
 import jwt
 from tower import ugettext as _
 
-from models import InappConfig
+from models import Issuer, ISSUER_ACTIVE
 
 
 class VerifyForm(forms.Form):
@@ -38,10 +37,13 @@ class VerifyForm(forms.Form):
         else:
             # In app config, go look it up.
             try:
-                cfg = InappConfig.objects.get(public_key=app_id,
-                                              addon__status=base.STATUS_PUBLIC)
-            except InappConfig.DoesNotExist:
-                raise forms.ValidationError(_('InappConfig does not exist.'))
-            self.key, self.secret = app_id, cfg.get_private_key()
+                issuer = Issuer.objects.get(issuer_key=app_id,
+                                            status=ISSUER_ACTIVE)
+            except Issuer.DoesNotExist:
+                raise forms.ValidationError(
+                    # L10n: the first argument is a key to identify an issuer.
+                    _('No one has been registered for JWT issuer {0}.')
+                    .format(repr(app_id)))
+            self.key, self.secret = app_id, issuer.get_private_key()
 
         return data
