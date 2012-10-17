@@ -39,8 +39,18 @@ $(function() {
     }
 
     if ($('body').data('docomplete')) {
-        console.log('payment complete, closing window');
-        paymentSuccess();
+        callPaySuccess();
     }
-    console.log('check it, paymentSuccess() is ' + paymentSuccess);
+
+    function callPaySuccess() {
+        // There is a delay before paymentSuccess gets injected into scope it
+        // seems.
+        if (typeof paymentSuccess === 'undefined') {
+            console.log('waiting for paymentSuccess to appear in scope');
+            window.setTimeout(callPaySuccess, 500);
+        } else {
+            console.log('payment complete, closing window');
+            paymentSuccess();
+        }
+    }
 });
