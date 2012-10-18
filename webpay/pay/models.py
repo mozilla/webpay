@@ -134,7 +134,7 @@ class Transaction(models.Model):
     issuer_key = models.CharField(max_length=255,
                                   db_index=True,
                                   help_text='Issuer of the payment JWT')
-    issuer = models.ForeignKey(Issuer, blank=True)
+    issuer = models.ForeignKey(Issuer, blank=True, null=True)
     amount = models.DecimalField(max_digits=9, decimal_places=2, null=True)
     currency = models.CharField(max_length=3)
     name = models.CharField(max_length=100)

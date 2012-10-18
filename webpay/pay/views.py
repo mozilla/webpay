@@ -1,3 +1,6 @@
+from decimal import Decimal
+import json
+
 from django import http
 from django.conf import settings
 from django.shortcuts import render
@@ -11,6 +14,8 @@ from tower import ugettext as _
 
 from . import tasks
 from .forms import VerifyForm
+from .models import (Issuer, Transaction, TRANS_STATE_PENDING,
+                     TRANS_STATE_COMPLETED)
 
 log = commonware.log.getLogger('w.pay')
 
@@ -45,17 +50,35 @@ def verify(request):
         log.exception('calling verify_jwt')
         return _error(request, exception=exc)
 
-    request.session['pay_request'] = pay_req
+    # Simulate app purchase!
+    # TODO(Kumar): fixme
+    try:
+        iss = Issuer.objects.get(issuer_key=form.key)
+    except Issuer.DoesNotExist:
+        iss = None  # marketplace
+    trans = Transaction.create(
+       state=TRANS_STATE_PENDING,
+       issuer=iss,
+       issuer_key=form.key,
+       amount=Decimal(pay_req['request']['price'][0]['amount']),
+       currency=pay_req['request']['price'][0]['currency'],
+       name=pay_req['request']['name'],
+       description=pay_req['request']['description'],
+       json_request=json.dumps(pay_req))
+
+    request.session['trans_id'] = trans.pk
     return render(request, 'pay/verify.html')
 
 
 @anonymous_csrf_exempt
 @require_POST
 def complete(request):
-    if 'pay_request' not in request.session:
+    if 'trans_id' not in request.session:
         return http.HttpResponseBadRequest()
     # Simulate app purchase!
     # TODO(Kumar): fixme
-    tasks.payment_notify.delay(pay_request=request.session['pay_request'],
-                               public_key=settings.KEY)
+    trans = Transaction.objects.get(pk=request.session['trans_id'])
+    trans.state = TRANS_STATE_COMPLETED
+    trans.save()
+    tasks.payment_notify.delay(trans.pk)
     return render(request, 'pay/complete.html')

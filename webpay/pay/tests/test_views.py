@@ -10,7 +10,8 @@ import mock
 from nose.tools import eq_
 
 from webpay.pay.forms import VerifyForm
-from webpay.pay.models import Issuer, ISSUER_ACTIVE, ISSUER_INACTIVE
+from webpay.pay.models import (Issuer, ISSUER_ACTIVE, ISSUER_INACTIVE,
+                               Transaction, TRANS_STATE_PENDING)
 from webpay.pay.samples import JWTtester
 
 sample = os.path.join(os.path.dirname(__file__), 'sample.key')
@@ -82,6 +83,10 @@ class TestVerify(Base):
     def test_purchase(self):
         payload = self.request()
         eq_(self.get(payload).status_code, 200)
+        trans = Transaction.objects.get()
+        eq_(trans.state, TRANS_STATE_PENDING)
+        eq_(trans.issuer, None)
+        eq_(trans.issuer_key, settings.KEY)
 
     def test_missing_price(self):
         payjwt = self.payload()
