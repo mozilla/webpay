@@ -162,4 +162,5 @@ def _prepare_mkt_notice(notice_type, key, pay_request):
     # Simulate app purchase!
     # TODO(Kumar): fixme
     trans_id = -1
-    return settings.KEY, settings.SECRET, url, pay_request, trans_id
+    return (settings.KEY, settings.SECRET, url, pay_request['request'],
+            trans_id)
