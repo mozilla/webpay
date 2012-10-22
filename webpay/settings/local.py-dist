@@ -110,4 +110,4 @@ ENGAGE_ROBOTS = True
 # Solitude settings (needed for live server or really testing the solitude
 # API.)
 
-SOLITUDE_URL = 'localhost:9000'
+SOLITUDE_URL = 'http://localhost:9000'
