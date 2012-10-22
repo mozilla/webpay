@@ -17,14 +17,16 @@ urlpatterns = patterns('',
     url('^mozpay/jsi18n.js$',
         cache_page(60 * 60 * 24 * 365)(javascript_catalog),
         {'domain': 'javascript', 'packages': ['webpay']}, name='jsi18n'),
-
+    url(r'^mozpay/pin/', include('webpay.pin.urls')),
     # This is served by marketplace.
-    #(r'^robots\.txt$',
-    #    lambda r: HttpResponse(
-    #        "User-agent: *\n%s: /" % 'Allow' if settings.ENGAGE_ROBOTS else 'Disallow' ,
-    #        mimetype="text/plain"
-    #    )
-    #),
+    # (r'^robots\.txt$',
+    #  lambda r: HttpResponse(
+    #      "User-agent: *\n%s: /" % (
+    #          'Allow' if settings.ENGAGE_ROBOTS else 'Disallow'
+    #      ),
+    #      mimetype="text/plain"
+    #  )
+    # ),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),

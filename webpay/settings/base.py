@@ -12,6 +12,7 @@ ROOT_URLCONF = '%s.urls' % PROJECT_MODULE
 INSTALLED_APPS = list(INSTALLED_APPS) + [
     'webpay.base',  # Needed for global templates, etc.
     'webpay.pay',
+    'webpay.pin',
     'webpay.services',
     'tower',
 ]
@@ -98,12 +99,12 @@ DOMAIN_METHODS['messages'] = [
         'tower.management.commands.extract.extract_tower_template'),
 ]
 
-HAS_SYSLOG = True # syslog is used if HAS_SYSLOG and NOT DEBUG.
+HAS_SYSLOG = True  # syslog is used if HAS_SYSLOG and NOT DEBUG.
 # See settings/local.py for SYSLOG_TAG, etc
-LOGGING = dict(loggers = dict(playdoh = {'level': logging.DEBUG},
-                              w = {'level': logging.INFO}),
-               handlers = {'unicode': {'class':
-                                       'webpay.unicode_log.UnicodeHandler'}})
+LOGGING = dict(loggers=dict(playdoh={'level': logging.DEBUG},
+                            w={'level': logging.INFO}),
+               handlers={'unicode': {'class':
+                                     'webpay.unicode_log.UnicodeHandler'}})
 
 
 MIDDLEWARE_CLASSES = (
@@ -112,7 +113,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'session_csrf.CsrfMiddleware', # Must be after auth middleware.
+    'session_csrf.CsrfMiddleware',  # Must be after auth middleware.
     'django.contrib.messages.middleware.MessageMiddleware',
     'commonware.middleware.FrameOptionsHeader',
     'mobility.middleware.DetectMobileMiddleware',
