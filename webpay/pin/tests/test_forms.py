@@ -77,6 +77,7 @@ class ChangePinFormTest(BasePinFormTestCase):
         assert not form.is_valid()
         assert 'Incorrect PIN' in str(form.errors)
 
+    @patch.object(client, 'verify_pin', lambda x, y: False)
     def test_too_long_new_pin(self):
         self.data.update({'new_pin': 'way too long pin'})
         form = forms.ChangePinForm(uuid=self.uuid, data=self.data)

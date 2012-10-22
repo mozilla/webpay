@@ -106,3 +106,8 @@ ENGAGE_ROBOTS = True
 #    '--logging-clear-handlers',
 #    '--with-nicedots',
 #]
+
+# Solitude settings (needed for live server or really testing the solitude
+# API.)
+
+SOLITUDE_URL = 'localhost:9000'

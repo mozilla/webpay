@@ -44,4 +44,7 @@ class SolitudeAPI(object):
 
 
 if not client:
-    client = SolitudeAPI(settings.SOLITUDE_URL)
+    if getattr(settings, 'SOLITUDE_URL', False):
+        client = SolitudeAPI(settings.SOLITUDE_URL)
+    else:
+        client = SolitudeAPI('http://example.com')
