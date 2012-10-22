@@ -1,0 +1,1 @@
+SOLITUDE_URL = None
