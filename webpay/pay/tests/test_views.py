@@ -21,7 +21,7 @@ class Base(JWTtester, test.TestCase):
 
     def setUp(self):
         super(Base, self).setUp()
-        self.url = reverse('pay.verify')
+        self.url = reverse('pay.lobby')
         self.key = 'public.key'
         self.secret = 'private.secret'
         self.create()

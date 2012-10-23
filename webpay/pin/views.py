@@ -1,8 +1,10 @@
+from django import http
 from django.shortcuts import render
 
 from session_csrf import anonymous_csrf_exempt
 
 from lib.solitude.api import client
+from webpay.pay import get_payment_url
 from . import forms
 
 
@@ -34,8 +36,7 @@ def verify(request):
         stub_uuid = 'dat:uuid'
         form = forms.VerifyPinForm(uuid=stub_uuid, data=request.POST)
         if form.is_valid():
-            # TODO(Wraithan): Replace with proper redirect
-            return render(request, 'pin/verify_success.html', {'form': form})
+            return http.HttpResponseRedirect(get_payment_url())
     return render(request, 'pin/verify.html', {'form': form})
 
 

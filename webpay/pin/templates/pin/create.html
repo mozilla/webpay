@@ -1,9 +1,9 @@
-{% extends "pay/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
   <p>Create you PIN:</p>
   <p>
-    <form action="{{ url('pin_create') }}" method="post">
+    <form action="{{ url('pin.create') }}" method="post">
       {{ form.as_p()}}
       <input type="submit" value="Create">
     </form>

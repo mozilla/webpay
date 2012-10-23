@@ -12,6 +12,7 @@ from moz_inapp_pay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
+from webpay.pin.forms import VerifyPinForm
 from . import tasks
 from .forms import VerifyForm
 from .models import (Issuer, Transaction, TRANS_STATE_PENDING,
@@ -32,10 +33,11 @@ def _error(request, msg='', exception=None):
 
 @anonymous_csrf_exempt
 @require_GET
-def verify(request):
+def lobby(request):
     form = VerifyForm(request.GET)
     if not form.is_valid():
         return _error(request, msg=form.errors.as_text())
+    pin_form = VerifyPinForm()
 
     try:
         pay_req = verify_jwt(
@@ -67,7 +69,7 @@ def verify(request):
        json_request=json.dumps(pay_req))
 
     request.session['trans_id'] = trans.pk
-    return render(request, 'pay/verify.html')
+    return render(request, 'pay/lobby.html', {'pin_form': pin_form})
 
 
 @anonymous_csrf_exempt
@@ -77,8 +79,17 @@ def complete(request):
         return http.HttpResponseBadRequest()
     # Simulate app purchase!
     # TODO(Kumar): fixme
-    trans = Transaction.objects.get(pk=request.session['trans_id'])
-    trans.state = TRANS_STATE_COMPLETED
-    trans.save()
-    tasks.payment_notify.delay(trans.pk)
+    if settings.FAKE_PAYMENTS:
+        trans = Transaction.objects.get(pk=request.session['trans_id'])
+        trans.state = TRANS_STATE_COMPLETED
+        trans.save()
+        tasks.payment_notify.delay(trans.pk)
     return render(request, 'pay/complete.html')
+
+
+@anonymous_csrf_exempt
+@require_GET
+def fakepay(request):
+    if not settings.FAKE_PAYMENTS:
+        return http.HttpResponseForbidden()
+    return render(request, 'pay/fakepay.html')

@@ -3,6 +3,7 @@ from django.test import TestCase
 from mock import patch
 
 from lib.solitude.api import client
+from webpay.pay import get_payment_url
 
 
 class PinViewTestCase(TestCase):
@@ -13,7 +14,7 @@ class PinViewTestCase(TestCase):
 
 
 class CreatePinViewTest(PinViewTestCase):
-    url_name = 'pin_create'
+    url_name = 'pin.create'
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
@@ -45,12 +46,12 @@ class CreatePinViewTest(PinViewTestCase):
 
 
 class VerifyPinViewTest(PinViewTestCase):
-    url_name = 'pin_verify'
+    url_name = 'pin.verify'
 
     @patch.object(client, 'verify_pin', lambda x, y: True)
     def test_good_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        assert 'Success' in res.content
+        self.assertRedirects(res, get_payment_url())
 
     @patch.object(client, 'verify_pin', lambda x, y: False)
     def test_bad_pin(self):
@@ -59,7 +60,7 @@ class VerifyPinViewTest(PinViewTestCase):
 
 
 class ChangePinViewTest(PinViewTestCase):
-    url_name = 'pin_change'
+    url_name = 'pin.change'
 
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
     @patch.object(client, 'verify_pin', lambda x, y: True)

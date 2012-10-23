@@ -1,0 +1,12 @@
+<p>Enter your PIN:</p>
+<p>
+  <form action="{{ url('pin.verify') }}" method="post">
+    {{ form.as_p()}}
+    <input type="submit" value="Continue">
+  </form>
+</p>
+{# TODO(Kumar) once PINs are saved per user then
+   we can automatically detect if the user needs
+   to create a PIN for the first time. #}
+<p><a href="{{ url('pin.create') }}">Create a PIN for the first time</a></p>
+<p><a href="{{ url('pin.change') }}">Change PIN</a></p>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block body_attrs -%}
+  data-beginflow="true"
+  data-verify-url="{{ url('auth.verify') }}"
+{%- endblock %}
+
+{% block content %}
+  <div id="begin" class="message">
+    Beginning payment ...
+  </div>
+  <div id="login" class="message hidden">
+    Sign in to continue with the payment: <a id="signin" href="#">Sign in</a>
+  </div>
+  <div id="login-wait" class="message hidden">
+    logging you in to continue payment ...
+  </div>
+  <div id="enter-pin" class="message hidden">
+    {% with form=pin_form %}
+      {% include "pin/includes/verify_form.html" %}
+    {% endwith %}
+  </div>
+{% endblock %}
