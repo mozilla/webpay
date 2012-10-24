@@ -49,7 +49,7 @@ def change(request):
         stub_uuid = 'dat:uuid'
         form = forms.ChangePinForm(uuid=stub_uuid, data=request.POST)
         if form.is_valid():
-            client.change_pin(stub_uuid, form.cleaned_data['new_pin'])
+            client.change_pin(form.buyer, form.cleaned_data['new_pin'])
             # TODO(Wraithan): Replace with proper redirect
             return render(request, 'pin/change_success.html', {'form': form})
     return render(request, 'pin/change.html', {'form': form})

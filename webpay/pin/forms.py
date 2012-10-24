@@ -43,5 +43,6 @@ class ChangePinForm(BasePinForm):
     def clean_old_pin(self, *args, **kwargs):
         old_pin = self.cleaned_data['old_pin']
         if client.verify_pin(self.uuid, old_pin):
+            self.buyer = client.get_buyer(self.uuid)
             return old_pin
         raise forms.ValidationError(_('Incorrect PIN'))

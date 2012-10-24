@@ -67,9 +67,11 @@ class ChangePinFormTest(BasePinFormTestCase):
         self.data = {'old_pin': 'old', 'new_pin': 'new'}
 
     @patch.object(client, 'verify_pin', lambda x, y: True)
+    @patch.object(client, 'get_buyer', lambda x: {'uuid': x})
     def test_correct_pin(self):
         form = forms.ChangePinForm(uuid=self.uuid, data=self.data)
         assert form.is_valid()
+        assert hasattr(form, 'buyer')
 
     @patch.object(client, 'verify_pin', lambda x, y: False)
     def test_incorrect_pin(self):

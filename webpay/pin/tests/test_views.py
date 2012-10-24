@@ -64,6 +64,7 @@ class ChangePinViewTest(PinViewTestCase):
 
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
     @patch.object(client, 'verify_pin', lambda x, y: True)
+    @patch.object(client, 'get_buyer', lambda x: {'uuid': x})
     def test_good_pin(self, change_pin):
         res = self.client.post(self.url, data={'old_pin': '1234',
                                                'new_pin': '4321'})
