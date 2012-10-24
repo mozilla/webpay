@@ -27,6 +27,11 @@ Make yourself a local settings file::
     cp webpay/settings/local.py-dist webpay/settings/local.py
 
 Edit that file and fill in your database credentials.
+
+Sync up your database by running all the migrations::
+
+    schematic ./migrations
+
 Now you should be ready to run the test suite::
 
     python manage.py test
