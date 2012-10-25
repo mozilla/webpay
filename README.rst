@@ -8,13 +8,18 @@ making app purchases or in-app payments on Firefox OS.
 Install
 =======
 
+You need Python 2.6 and MySQL.
+
 Clone the source::
 
     git clone git://github.com/mozilla/webpay.git
 
 Install all dependencies. You probably want to do this within a `virtualenv`_.
+If you use `virtualenvwrapper`_ (recommended) set yourself up with::
 
-::
+    mkvirtualenv --python=python2.6 webpay
+
+Install with::
 
     pip install --no-deps -r requirements/dev.txt
 
@@ -117,3 +122,4 @@ is configured for.
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
 .. _`nightly desktop B2G build`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/
 .. _`Gaia Hacking`: https://wiki.mozilla.org/Gaia/Hacking
+.. _virtualenvwrapper: http://pypi.python.org/pypi/virtualenvwrapper
