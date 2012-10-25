@@ -52,6 +52,11 @@ Try it out at http://localhost:8000/mozpay/ .
 If you see a form error about a missing JWT then
 you are successfully up and running.
 
+If you can't log in with Persona
+check the value of ``SITE_URL`` in your local
+settings. It must match the
+URL bar of how you run your dev server exactly.
+
 Using JWTs for development
 ==========================
 
