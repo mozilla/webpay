@@ -70,9 +70,12 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_URL = 'http://localhost:8000'
-LOGIN_URL = '/'
-LOGIN_REDIRECT_URL = 'examples.home'
-LOGIN_REDIRECT_URL_FAILURE = 'examples.home'
+LOGIN_URL = 'pay.lobby'
+LOGIN_REDIRECT_URL = 'pay.lobby'
+LOGIN_REDIRECT_URL_FAILURE = 'pay.lobby'
+
+# We won't be persisting users in the DB.
+BROWSERID_CREATE_USER = False
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'jingo_minify.helpers.build_ids',
