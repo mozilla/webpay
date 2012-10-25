@@ -32,6 +32,9 @@ Make yourself a local settings file::
     cp webpay/settings/local.py-dist webpay/settings/local.py
 
 Edit that file and fill in your database credentials.
+Be sure to also set this so you can see errors::
+
+    VERBOSE_LOGGING = True
 
 Sync up your database by running all the migrations::
 
