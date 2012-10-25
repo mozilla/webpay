@@ -123,7 +123,7 @@ MIDDLEWARE_CLASSES = (
 
 # This is the key and secret for purchases, our special marketplace key and
 # secret for selling apps.
-KEY = ''
+KEY = 'marketplace'  # would typically be a URL
 SECRET = ''
 
 # Marketplace's postback/chargeback URLs where app purchase JWT notifications
