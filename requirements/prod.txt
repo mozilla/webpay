@@ -4,8 +4,6 @@ anyjson==0.3.3
 billiard==2.7.3.17
 cef==0.3
 celery==2.5.1
-# Temporarily using a fork (below).
-#django-browserid==0.6
 django-celery==2.2.4
 django-mobility==0.1
 django-multidb-router==0.5
@@ -43,9 +41,8 @@ translate-toolkit==1.9.0
 -e git://github.com/fwenzel/django-sha2.git@f4519bf0cc9b1dd7a7d78394fa4aec4504bc86e9#egg=django-sha2
 -e git://github.com/fwenzel/django-mozilla-product-details.git@36ef06539d6b34c4f345fd0d3e16937d0db9a752#egg=django-mozilla-product-details
 
+-e git://github.com/mozilla/django-browserid.git@1c23655faad0cc5ad2c18aebc0472a0ea078cfa8#egg=django-browserid
 -e git://github.com/mozilla/django-session-csrf.git@94e2858a427a6b278e41c051643f3c226f096f21#egg=django-session-csrf
 -e git://github.com/mozilla/nuggets.git@96e80a64aa4bfcfef4f43fc3ab6966450ccd7325#egg=nuggets
 
 -e git://github.com/rtilder/pyjwt.git@aa3be513795c1a623dfc61c6c0a688198ea5d303#egg=PyJWT
-
--e git://github.com/kumar303/django-browserid.git@8ddb4f1fe606b707a8e53883a53751754f505999#egg=django-browserid
