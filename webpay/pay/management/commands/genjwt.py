@@ -36,8 +36,11 @@ class Command(BaseCommand):
             'request': {
                 'price': [{
                     'amount': options['amount'],
-                    'currency': options['cur']
+                    'currency': options['cur'],
+                    # Temporary until bug 805123 lands.
+                    'country': 'xx'
                 }],
+                'defaultPrice': options['cur'],
                 'name': 'My bands latest album',
                 'description': '320kbps MP3 download, DRM free!',
                 'productdata': 'my_product_id=1234'
