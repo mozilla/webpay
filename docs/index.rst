@@ -16,6 +16,7 @@ It's currently a work in progress and requires.
 .. toctree::
    :maxdepth: 1
 
+   solitude_api
 
 Indices and tables
 ------------------

@@ -9,6 +9,10 @@ client = None
 
 
 class SolitudeAPI(object):
+    """A solitude API client.
+
+    :param url: URL of the solitude endpoint.
+    """
 
     def __init__(self, url):
         self.slumber = API(url)
@@ -26,7 +30,15 @@ class SolitudeAPI(object):
         return buyer
 
     def create_buyer(self, uuid, pin=None):
-        res = self.slumber.generic.buyer.post({'uuid': uuid, 'pin': pin})
+        """Creates a buyer with an optional PIN in solitude.
+
+        :param uuid: String to identify the buyer by.
+        :param pin: Optional PIN that will be hashed.
+        :rtype: dictionary
+        """
+
+        res = json.loads(self.slumber.generic.buyer.post({'uuid': uuid,
+                                                          'pin': pin}))
         return self._buyer_from_response(res)
 
     def change_pin(self, buyer_id, pin):
@@ -42,12 +54,25 @@ class SolitudeAPI(object):
         return True if res == '' else False
 
     def get_buyer(self, uuid):
-        res = self.slumber.generic.buyer.get(uuid=uuid)
+        """Retrieves a buyer by the their uuid.
+
+        :param uuid: String to identify the buyer by.
+        :rtype: dictionary
+        """
+
+        res = json.loads(self.slumber.generic.buyer.get(uuid=uuid))
         return self._buyer_from_response(res)
 
     def verify_pin(self, uuid, pin):
-        res = json.loads(self.slumber.buyer.check_pin.post({'uuid': uuid,
-                                                            'pin': pin}))
+        """Checks the buyer's PIN against what is stored in solitude.
+
+        :param uuid: String to identify the buyer by.
+        :param pin: PIN to check
+        :rtype: boolean
+        """
+
+        res = self.slumber.buyer.check_pin.post({'uuid': uuid,
+                                                 'pin': pin})
         return res['valid']
 
 
