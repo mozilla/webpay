@@ -21,10 +21,10 @@ class SolitudeAPITest(TestCase):
         client.create_buyer('dat:uuid', '1234')
 
     def test_change_pin(self):
-        buyer = client.get_buyer(self.uuid)
-        assert client.change_pin(buyer, '4321')
+        buyer_id = client.get_buyer(self.uuid)['id']
+        assert client.change_pin(buyer_id, '4321')
         assert client.verify_pin(self.uuid, '4321')
-        assert client.change_pin(buyer, self.pin)
+        assert client.change_pin(buyer_id, self.pin)
 
     def test_get_buyer(self):
         buyer = client.get_buyer(self.uuid)

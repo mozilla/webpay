@@ -26,7 +26,7 @@ python-dateutil==2.1
 requests==0.14.0
 schematic==0.2
 six==1.2.0
-slumber==0.4.2
+slumber==0.5
 statsd==1.0.0
 translate-toolkit==1.9.0
 

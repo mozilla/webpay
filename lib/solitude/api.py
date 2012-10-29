@@ -29,9 +29,17 @@ class SolitudeAPI(object):
         res = self.slumber.generic.buyer.post({'uuid': uuid, 'pin': pin})
         return self._buyer_from_response(res)
 
-    def change_pin(self, buyer, pin):
-        buyer['pin'] = pin
-        return self.slumber.generic.buyer(id=buyer['id']).put(buyer)
+    def change_pin(self, buyer_id, pin):
+        """Changes a buyer's PIN in solitude.
+
+        :param buyer_id integer: ID of the buyer you'd like to change the PIN
+                                 for.
+        :param pin: PIN to replace the buyer's pin with.
+        :rtype: boolean
+        """
+        res = self.slumber.generic.buyer(id=buyer_id).patch({'pin': pin})
+        # Empty string is a good thing from tastypie for a PATCH.
+        return True if res == '' else False
 
     def get_buyer(self, uuid):
         res = self.slumber.generic.buyer.get(uuid=uuid)
