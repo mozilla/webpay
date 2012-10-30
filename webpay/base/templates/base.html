@@ -36,7 +36,7 @@
       </div>
     </section>
     {% block site_js %}
-      <script src="https://login.persona.org/include.js"></script>
+      <script src="{{ settings.BROWSERID_JS_URL }}"></script>
       <script src="{{ url('jsi18n')|urlparams(lang=LANG) }}"></script>
       {{ js('pay') }}
     {% endblock %}
