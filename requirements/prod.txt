@@ -1,5 +1,5 @@
 Babel==0.9.6
-Django==1.4.1
+Django==1.4.2
 anyjson==0.3.3
 billiard==2.7.3.17
 cef==0.3
