@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <p>Create you PIN:</p>
+  <p>Create your PIN:</p>
   <p>
-    <form action="{{ url('pin.create') }}" method="post">
-      {{ form.as_p()}}
-      <input type="submit" value="Create">
+    <form id="pin" action="{{ url('pin.create') }}" method="post">
+      {{ form.non_field_errors() }}
+      {{ form.pin }}
+      <footer>
+          <a class="button" href="{{ url('pin.change') }}">Forgot PIN</a>
+          <button type="submit">Continue</button></footer>
     </form>
   </p>
+
 {% endblock %}

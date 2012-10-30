@@ -2,6 +2,14 @@
 // This is just a proof to kick things off.
 //
 
+var hasTouch = ('ontouchstart' in window) ||
+               window.DocumentTouch &&
+               document instanceof DocumentTouch;
+
+window.onerror = function(m,f,l) {
+    document.getElementsByTagName('header')[0].innerHTML = f.split('/').pop() + ':' + l + ' ' + m;
+};
+
 $(function() {
     "use strict";
 
@@ -21,6 +29,7 @@ $(function() {
                 console.log('login success');
                 $('.message').hide();
                 $('#enter-pin').fadeIn();
+                $('#enter-pin').trigger('accept-pin');
             })
             .error(function() {
                 console.log('login error');

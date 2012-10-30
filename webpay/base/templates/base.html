@@ -15,7 +15,26 @@
 
   </head>
   <body {% block body_attrs %}{% endblock %}>
-    {% block content %}{% endblock %}
+    <section class="pay">
+      <header></header>
+      <div id="content">
+        {% block content %}{% endblock %}
+      </div>
+      <div class="pad">
+        <a href="javascript:;" data-val="1"><b>1</b></a>
+        <a href="javascript:;" data-val="2"><b>2</b></a>
+        <a href="javascript:;" data-val="3"><b>3</b></a>
+        <a href="javascript:;" data-val="4"><b>4</b></a>
+        <a href="javascript:;" data-val="5"><b>5</b></a>
+        <a href="javascript:;" data-val="6"><b>6</b></a>
+        <a href="javascript:;" data-val="7"><b>7</b></a>
+        <a href="javascript:;" data-val="8"><b>8</b></a>
+        <a href="javascript:;" data-val="9"><b>9</b></a>
+        <a href="javascript:;" data-val="del"><b>x</b></a>
+        <a href="javascript:;" data-val="0"><b>0</b></a>
+        <a href="javascript:;" data-val="go"><b>-></b></a>
+      </div>
+    </section>
     {% block site_js %}
       <script src="https://login.persona.org/include.js"></script>
       <script src="{{ url('jsi18n')|urlparams(lang=LANG) }}"></script>

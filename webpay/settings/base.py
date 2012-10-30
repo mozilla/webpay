@@ -26,7 +26,7 @@ MEDIA_URL = '/mozpay/media/'
 MINIFY_BUNDLES = {
     'css': {
         'pay': (
-            'css/pay/pay.less',
+            'css/pay/pay.css',
         ),
     },
     'js': {
@@ -35,6 +35,8 @@ MINIFY_BUNDLES = {
             'js/lib/underscore.js',
             'js/lib/format.js',
             'js/pay/pay.js',
+            'js/pin/pin.js',
+            'js/pin/pad.js',
         ),
     }
 }
