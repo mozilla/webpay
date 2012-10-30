@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# playdoh documentation build configuration file, created by
+# webpay documentation build configuration file, created by
 # sphinx-quickstart on Tue Jan  4 15:11:09 2011.
 #
 # This file is execfile()d with the current directory set to its containing
@@ -44,8 +44,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'a playdoh-based project'
-copyright = u'2012, the authors'
+project = u'Web Pay'
+copyright = u'2012, Mozilla'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -169,7 +169,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'playdohdoc'
+htmlhelp_basename = 'webpaydoc'
 
 
 # -- Options for LaTeX output -------------------------------------------------
@@ -183,7 +183,7 @@ htmlhelp_basename = 'playdohdoc'
 # Grouping the document tree into LaTeX files. List of tuples (source start
 # file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ('index', 'playdoh.tex', u'playdoh Documentation',
+    ('index', 'webpay.tex', u'webpay Documentation',
      u'Mozilla', 'manual'),
 ]
 
@@ -216,7 +216,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'a-playdoh-app', u"a-playdoh-app's Documentation",
+    ('index', 'webpay', u"webpay's Documentation",
      [u'the authors'], 1)
 ]
 
