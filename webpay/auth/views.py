@@ -6,7 +6,9 @@ from django_browserid import get_audience, verify as verify_assertion
 from django_browserid.forms import BrowserIDForm
 from session_csrf import anonymous_csrf_exempt
 
-log = commonware.log.getLogger('w.pay')
+from utils import set_user
+
+log = commonware.log.getLogger('w.auth')
 
 
 @anonymous_csrf_exempt
@@ -19,6 +21,8 @@ def verify(request):
                                   get_audience(request))
         if result:
             log.info('assertion ok: %s' % result)
+            set_user(request, result['email'])
             return http.HttpResponse('ok')
 
+    request.session.clear()
     return http.HttpResponseBadRequest()

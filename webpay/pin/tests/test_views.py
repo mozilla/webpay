@@ -1,23 +1,28 @@
 from django.core.urlresolvers import reverse
-from django.test import TestCase
 
 from mock import patch
 from nose.tools import eq_
 
 from lib.solitude.api import client
 from lib.solitude.errors import ERROR_STRINGS
+from webpay.auth.tests import SessionTestCase
 from webpay.pay import get_payment_url
 
 
-class PinViewTestCase(TestCase):
+class PinViewTestCase(SessionTestCase):
     url_name = ''
 
     def setUp(self):
         self.url = reverse(self.url_name)
+        self.verify('a:b')
 
 
 class CreatePinViewTest(PinViewTestCase):
     url_name = 'pin.create'
+
+    def test_unauth(self):
+        self.unverify()
+        eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
@@ -76,6 +81,10 @@ class CreatePinViewTest(PinViewTestCase):
 class VerifyPinViewTest(PinViewTestCase):
     url_name = 'pin.verify'
 
+    def test_unauth(self):
+        self.unverify()
+        eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
+
     @patch.object(client, 'verify_pin', lambda x, y: True)
     def test_good_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
@@ -86,9 +95,19 @@ class VerifyPinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not 'Success' in res.content
 
+    @patch.object(client, 'verify_pin')
+    def test_uuid_used(self, verify_pin):
+        verify_pin.return_value = True
+        self.client.post(self.url, data={'pin': '1234'})
+        eq_(verify_pin.call_args[0][0], 'a:b')
+
 
 class ChangePinViewTest(PinViewTestCase):
     url_name = 'pin.change'
+
+    def test_unauth(self):
+        self.unverify()
+        eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
 
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
     @patch.object(client, 'verify_pin', lambda x, y: True)

@@ -23,6 +23,7 @@ nose==1.2.1
 ordereddict==1.1
 django-picklefield==0.2.1
 python-dateutil==2.1
+python-memcached==1.48
 requests==0.14.0
 schematic==0.2
 six==1.2.0

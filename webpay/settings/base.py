@@ -126,6 +126,8 @@ MIDDLEWARE_CLASSES = (
     'mobility.middleware.XMobileMiddleware',
 )
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
 # This is the key and secret for purchases, our special marketplace key and
 # secret for selling apps.
 KEY = 'marketplace'  # would typically be a URL
