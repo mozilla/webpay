@@ -50,8 +50,10 @@ DEBUG = TEMPLATE_DEBUG = True
 DEV = True
 
 # We'll need to re-compile less files. You'll need lessc installed from npm.
+# This only applies to local development when bundles are not used.
 LESS_PREPROCESS = True
 LESS_BIN = 'lessc'
+#LESS_LIVE_REFRESH = True  # Refresh the CSS on save?
 
 # By default, BrowserID expects your app to use http://127.0.0.1:8000
 # Uncomment the following line if you prefer to access your app via localhost
@@ -96,11 +98,6 @@ ENGAGE_ROBOTS = True
 
 # Uncomment this to see descriptive errors on the JWT verification screen.
 #VERBOSE_LOGGING = True
-
-# For local development (i.e. when not serving bundled CSS/JS)
-# you'll want to uncomment these:
-#LESS_PREPROCESS = True  # Compile LESS with Node, rather than client-side JS?
-#LESS_LIVE_REFRESH = True  # Refresh the CSS on save?
 
 # Get some nice test output.
 #NOSE_PLUGINS = [

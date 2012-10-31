@@ -8,7 +8,7 @@ making app purchases or in-app payments on Firefox OS.
 Install
 =======
 
-You need Python 2.6 and MySQL.
+You need Python 2.6, and MySQL, and `less`_ for CSS.
 
 Clone the source::
 
@@ -26,6 +26,14 @@ Install with::
 Create a database to work in::
 
     mysql -u root -e 'create database webpay'
+
+Install lessc with `npm`_ for node.js. This is probably as easy as::
+
+    npm install lessc
+
+Make sure you see a valid path when you type::
+
+    which lessc
 
 Make yourself a local settings file::
 
@@ -131,3 +139,5 @@ is configured for.
 .. _`nightly desktop B2G build`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/
 .. _`Gaia Hacking`: https://wiki.mozilla.org/Gaia/Hacking
 .. _virtualenvwrapper: http://pypi.python.org/pypi/virtualenvwrapper
+.. _less: http://lesscss.org/
+.. _npm: https://npmjs.org/
