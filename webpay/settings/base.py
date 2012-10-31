@@ -107,7 +107,7 @@ DOMAIN_METHODS['messages'] = [
 HAS_SYSLOG = True  # syslog is used if HAS_SYSLOG and NOT DEBUG.
 # See settings/local.py for SYSLOG_TAG, etc
 LOGGING = dict(loggers=dict(playdoh={'level': logging.DEBUG},
-                            django_browserid={'level': logging.INFO},
+                            django_browserid={'level': logging.DEBUG},
                             w={'level': logging.INFO}),
                handlers={'unicode': {'class':
                                      'webpay.unicode_log.UnicodeHandler'}})
