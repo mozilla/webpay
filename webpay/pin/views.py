@@ -19,11 +19,13 @@ def create(request):
         form = forms.CreatePinForm(uuid=stub_uuid, data=request.POST)
         if form.is_valid():
             if hasattr(form, 'buyer'):
-                client.change_pin(form.buyer, form.cleaned_data['pin'])
+                res = client.change_pin(form.buyer, form.cleaned_data['pin'])
             else:
-                client.create_buyer(form.uuid, form.cleaned_data['pin'])
-            # TODO(Wraithan): Replace with proper redirect
-            return render(request, 'pin/create_success.html', {'form': form})
+                res = client.create_buyer(form.uuid, form.cleaned_data['pin'])
+            if form.handle_client_errors(res):
+                # TODO(Wraithan): Replace with proper redirect
+                return render(request, 'pin/create_success.html',
+                              {'form': form})
     return render(request, 'pin/create.html', {'form': form})
 
 
@@ -49,7 +51,9 @@ def change(request):
         stub_uuid = 'dat:uuid'
         form = forms.ChangePinForm(uuid=stub_uuid, data=request.POST)
         if form.is_valid():
-            client.change_pin(form.buyer, form.cleaned_data['new_pin'])
-            # TODO(Wraithan): Replace with proper redirect
-            return render(request, 'pin/change_success.html', {'form': form})
+            res = client.change_pin(form.buyer, form.cleaned_data['pin'])
+            if form.handle_client_errors(res):
+                # TODO(Wraithan): Replace with proper redirect
+                return render(request, 'pin/change_success.html',
+                              {'form': form})
     return render(request, 'pin/change.html', {'form': form})
