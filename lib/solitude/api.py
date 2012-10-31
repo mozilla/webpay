@@ -2,10 +2,10 @@ import json
 
 from django.conf import settings
 
-from .errors import ERROR_STRINGS
-
 from slumber import API
 from slumber.exceptions import HttpClientError
+
+from .errors import ERROR_STRINGS
 
 
 client = None
@@ -35,7 +35,6 @@ class SolitudeAPI(object):
         return buyer
 
     def parse_res(self, res):
-
         if res == '':
             return {}
         if isinstance(res, (str, unicode)):
@@ -45,14 +44,12 @@ class SolitudeAPI(object):
     def safe_run(self, command, *args, **kwargs):
         try:
             res = command(*args, **kwargs)
-            return self.parse_res(res)
         except HttpClientError as e:
             res = self.parse_res(e.response.content)
-            for key,value in res.iteritems():
-                new_value = [ERROR_STRINGS[v] for v in value]
-                res[key] = new_value
+            for key, value in res.iteritems():
+                res[key] = [ERROR_STRINGS[v] for v in value]
             return {'errors': res}
-        pass
+        return self.parse_res(res)
 
     def create_buyer(self, uuid, pin=None):
         """Creates a buyer with an optional PIN in solitude.

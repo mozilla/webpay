@@ -1,4 +1,4 @@
-from tower import ugettext as _
+from tower import ugettext_lazy as _
 
 ERROR_STRINGS = {
     'PIN must be exactly 4 numbers long':

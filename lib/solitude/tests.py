@@ -51,22 +51,19 @@ class SolitudeAPITest(TestCase):
         assert buyer.get('id')
 
     def test_create_buyer_with_alpha_pin(self):
-        uuid = 'with_alpha_pin'
-        buyer = client.create_buyer(uuid, 'lame')
+        buyer = client.create_buyer('with_alpha_pin', 'lame')
         assert buyer.get('errors')
         eq_(buyer['errors'].get('pin'),
             [ERROR_STRINGS['PIN may only consists of numbers']])
 
     def test_create_buyer_with_short_pin(self):
-        uuid = 'with_short_pin'
-        buyer = client.create_buyer(uuid, '123')
+        buyer = client.create_buyer('with_short_pin', '123')
         assert buyer.get('errors')
         eq_(buyer['errors'].get('pin'),
             [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
 
     def test_create_buyer_with_long_pin(self):
-        uuid = 'with_long_pin'
-        buyer = client.create_buyer(uuid, '12345')
+        buyer = client.create_buyer('with_long_pin', '12345')
         assert buyer.get('errors')
         eq_(buyer['errors'].get('pin'),
             [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
