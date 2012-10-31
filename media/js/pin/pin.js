@@ -51,8 +51,13 @@
         updateReels();
     }
 
+    function attemptFormSubmit() {
+        $(pin).closest('form').submit();
+    }
+
     function listenForDigits() {
         $('.pad').addClass('show');
+        $(window).off('.pin');
         $(window).on('keydown.pin', function(e) {
             if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
                 return;
@@ -64,13 +69,16 @@
                 removeDigit();
                 e.preventDefault();
             } else if (e.which == 13) {
-                $(pin).closest('form').submit();
+                attemptFormSubmit();
             }
         });
-        $(window).on('digit', '.pad', function(e, digit) {
+        $(window).on('digit.pin', '.pad', function(e, digit) {
             appendDigit(digit);
         });
-        $(window).on('del', '.pad', removeDigit);
+        $(window).on('del.pin', '.pad', removeDigit);
+        $(window).on('go.pin', '.pad', function(e) {
+            attemptFormSubmit();
+        });
     }
 
     $(window).on('accept-pin', listenForDigits);

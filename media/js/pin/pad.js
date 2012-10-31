@@ -22,6 +22,9 @@ if (hasTouch) {
             case 'del':
                 pad.trigger('del');
                 break;
+            case 'go':
+                pad.trigger('go');
+                break;
         }
     });
 }
