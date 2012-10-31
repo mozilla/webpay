@@ -5,7 +5,7 @@ from nose.exc import SkipTest
 from nose.tools import eq_
 
 from lib.solitude.api import client
-
+from lib.solitude.errors import ERROR_STRINGS
 
 class SolitudeAPITest(TestCase):
 
@@ -22,9 +22,9 @@ class SolitudeAPITest(TestCase):
 
     def test_change_pin(self):
         buyer_id = client.get_buyer(self.uuid)['id']
-        assert client.change_pin(buyer_id, '4321')
+        eq_(client.change_pin(buyer_id, '4321'), {})
         assert client.verify_pin(self.uuid, '4321')
-        assert client.change_pin(buyer_id, self.pin)
+        eq_(client.change_pin(buyer_id, self.pin), {})
 
     def test_get_buyer(self):
         buyer = client.get_buyer(self.uuid)
@@ -44,14 +44,38 @@ class SolitudeAPITest(TestCase):
         assert buyer.get('id')
 
     def test_create_buyer_with_pin(self):
-        uuid = 'with_pin:!234'
+        uuid = 'with_pin'
         buyer = client.create_buyer(uuid, self.pin)
         eq_(buyer.get('uuid'), uuid)
         assert buyer.get('pin')
         assert buyer.get('id')
 
-    def test_verify_pin(self):
+    def test_create_buyer_with_alpha_pin(self):
+        buyer = client.create_buyer('with_alpha_pin', 'lame')
+        assert buyer.get('errors')
+        eq_(buyer['errors'].get('pin'),
+            [ERROR_STRINGS['PIN may only consists of numbers']])
+
+    def test_create_buyer_with_short_pin(self):
+        buyer = client.create_buyer('with_short_pin', '123')
+        assert buyer.get('errors')
+        eq_(buyer['errors'].get('pin'),
+            [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
+
+    def test_create_buyer_with_long_pin(self):
+        buyer = client.create_buyer('with_long_pin', '12345')
+        assert buyer.get('errors')
+        eq_(buyer['errors'].get('pin'),
+            [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
+
+    def test_create_buyer_with_existing_uuid(self):
+        buyer = client.create_buyer(self.uuid, '1234')
+        assert buyer.get('errors')
+        eq_(buyer['errors'].get('uuid'),
+            [ERROR_STRINGS['Buyer with this Uuid already exists.']])
+
+    def test_verify_good_pin(self):
         assert client.verify_pin(self.uuid, self.pin)
 
-    def test_verify_pin(self):
+    def test_verify_alpha_pin(self):
         assert not client.verify_pin(self.uuid, 'lame')

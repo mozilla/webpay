@@ -5,3 +5,5 @@ Sphinx==1.1.3
 docutils==0.9.1
 requests==0.14.0
 slumber==0.5
+
+-e git://github.com/clouserw/tower.git@7711557f55fefa9526402b2731879edf9b128381#egg=tower

@@ -21,7 +21,7 @@ class CreatePinFormTest(BasePinFormTestCase):
         assert not hasattr(form, 'buyer')
 
     @patch.object(client, 'get_buyer', lambda x: {'uuid': x})
-    def test_existing_user(self):
+    def test_existing_buyer(self):
         form = forms.CreatePinForm(uuid=self.uuid, data=self.data)
         assert form.is_valid(), form.errors
         assert hasattr(form, 'buyer')
@@ -64,7 +64,7 @@ class ChangePinFormTest(BasePinFormTestCase):
 
     def setUp(self):
         super(ChangePinFormTest, self).setUp()
-        self.data = {'old_pin': 'old', 'new_pin': 'new'}
+        self.data = {'old_pin': 'old', 'pin': 'new'}
 
     @patch.object(client, 'verify_pin', lambda x, y: True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': x})
@@ -80,8 +80,8 @@ class ChangePinFormTest(BasePinFormTestCase):
         assert 'Incorrect PIN' in str(form.errors)
 
     @patch.object(client, 'verify_pin', lambda x, y: False)
-    def test_too_long_new_pin(self):
-        self.data.update({'new_pin': 'way too long pin'})
+    def test_too_long_pin(self):
+        self.data.update({'pin': 'way too long pin'})
         form = forms.ChangePinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
-        assert 'has at most 4' in str(form.errors['new_pin'])
+        assert 'has at most 4' in str(form.errors['pin'])

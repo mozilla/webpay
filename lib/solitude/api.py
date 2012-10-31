@@ -3,6 +3,9 @@ import json
 from django.conf import settings
 
 from slumber import API
+from slumber.exceptions import HttpClientError
+
+from .errors import ERROR_STRINGS
 
 
 client = None
@@ -19,7 +22,9 @@ class SolitudeAPI(object):
 
     def _buyer_from_response(self, res):
         buyer = {}
-        if res.get('objects'):
+        if res.get('errors'):
+            return res
+        elif res.get('objects'):
             buyer['id'] = res['objects'][0]['resource_pk']
             buyer['pin'] = res['objects'][0]['pin']
             buyer['uuid'] = res['objects'][0]['uuid']
@@ -29,6 +34,23 @@ class SolitudeAPI(object):
             buyer['uuid'] = res['uuid']
         return buyer
 
+    def parse_res(self, res):
+        if res == '':
+            return {}
+        if isinstance(res, (str, unicode)):
+            return json.loads(res)
+        return res
+
+    def safe_run(self, command, *args, **kwargs):
+        try:
+            res = command(*args, **kwargs)
+        except HttpClientError as e:
+            res = self.parse_res(e.response.content)
+            for key, value in res.iteritems():
+                res[key] = [ERROR_STRINGS[v] for v in value]
+            return {'errors': res}
+        return self.parse_res(res)
+
     def create_buyer(self, uuid, pin=None):
         """Creates a buyer with an optional PIN in solitude.
 
@@ -37,8 +59,8 @@ class SolitudeAPI(object):
         :rtype: dictionary
         """
 
-        res = json.loads(self.slumber.generic.buyer.post({'uuid': uuid,
-                                                          'pin': pin}))
+        res = self.safe_run(self.slumber.generic.buyer.post, {'uuid': uuid,
+                                                              'pin': pin})
         return self._buyer_from_response(res)
 
     def change_pin(self, buyer_id, pin):
@@ -47,11 +69,14 @@ class SolitudeAPI(object):
         :param buyer_id integer: ID of the buyer you'd like to change the PIN
                                  for.
         :param pin: PIN to replace the buyer's pin with.
-        :rtype: boolean
+        :rtype: dictionary
         """
-        res = self.slumber.generic.buyer(id=buyer_id).patch({'pin': pin})
+        res = self.safe_run(self.slumber.generic.buyer(id=buyer_id).patch,
+                            {'pin': pin})
         # Empty string is a good thing from tastypie for a PATCH.
-        return True if res == '' else False
+        if 'errors' in res:
+            return res
+        return {}
 
     def get_buyer(self, uuid):
         """Retrieves a buyer by the their uuid.
@@ -60,7 +85,7 @@ class SolitudeAPI(object):
         :rtype: dictionary
         """
 
-        res = json.loads(self.slumber.generic.buyer.get(uuid=uuid))
+        res = self.safe_run(self.slumber.generic.buyer.get, uuid=uuid)
         return self._buyer_from_response(res)
 
     def verify_pin(self, uuid, pin):
@@ -71,8 +96,8 @@ class SolitudeAPI(object):
         :rtype: boolean
         """
 
-        res = self.slumber.buyer.check_pin.post({'uuid': uuid,
-                                                 'pin': pin})
+        res = self.safe_run(self.slumber.buyer.check_pin.post, {'uuid': uuid,
+                                                                'pin': pin})
         return res['valid']
 
 

@@ -163,3 +163,14 @@ SOLITUDE_URL = None
 # Instead of doing a real Bango pay flow, redirect to a fake placeholder
 # for the Bango flow when True.
 FAKE_PAYMENTS = True
+
+# Control which Persona server you use for logins.
+# This is useful for switching to a development Persona server.
+
+# Production:
+#BROWSERID_VERIFICATION_URL = 'https://verifier.login.persona.org/verify'
+#BROWSERID_JS_URL = 'https://login.persona.org/include.js'
+
+# Living on the bleeding B2G edge!
+BROWSERID_VERIFICATION_URL = 'https://notoriousb2g.personatest.org/verify'
+BROWSERID_JS_URL = 'https://notoriousb2g.personatest.org/include.js'
