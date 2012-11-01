@@ -21,10 +21,10 @@
 
 (function() {
     var pin = $('#id_pin');
-    pin.value = '';
+    pin.val('');
     reels = $('.digit .reel');
     function updateReels() {
-        var l = pin.value.length - 1;
+        var l = pin.val().length - 1;
         for (var i=0; i<4; i++) {
             var reel = reels.eq(i);
             if (i <= l) {
@@ -41,13 +41,16 @@
     }
 
     function appendDigit(n) {
-        if (pin.value.length < 4) {
-            pin.value += n.toString();
+        var pinVal = pin.val();
+        if (pinVal.length < 4) {
+            pinVal += n.toString();
         }
+        pin.val(pinVal);
         updateReels();
     }
     function removeDigit() {
-        pin.value = pin.value.substring(0,Math.max(pin.value.length-1));
+        var pinVal = pin.val();
+        pin.val(pinVal.substring(0, Math.max(pinVal.length - 1)));
         updateReels();
     }
 

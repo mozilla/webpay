@@ -1,6 +1,7 @@
 <h2>Enter payment PIN</h2>
 <p>
   <form id="pin" action="{{ url('pin.verify') }}" method="post">
+    {{ form.errors }}
     {{ form.non_field_errors() }}
     {{ form.pin }}
     <footer>
