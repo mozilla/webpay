@@ -6,3 +6,7 @@
 # If you set this to a URL it should look like http://localhost:9000
 # but you probably don't want to use your local dev server.
 SOLITUDE_URL = None
+
+# A bug in jingo, it will only send the signal to allow test cases to properly
+# inspect the result if this is set.
+TEMPLATE_DEBUG = True
