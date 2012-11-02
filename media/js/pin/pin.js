@@ -86,4 +86,7 @@
 
     $(window).on('accept-pin', listenForDigits);
 
+    if ($('#pin:visible').length) {
+        $('#pin').trigger('accept-pin');
+    }
 })();

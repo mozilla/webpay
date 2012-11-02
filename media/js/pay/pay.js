@@ -29,7 +29,7 @@ $(function() {
                 console.log('login success');
                 $('.message').hide();
                 $('#enter-pin').fadeIn();
-                $('#enter-pin').trigger('accept-pin');
+                $('#pin').trigger('accept-pin');
             })
             .error(function() {
                 console.log('login error');

@@ -4,6 +4,7 @@
   <p>Create your PIN:</p>
   <p>
     <form id="pin" action="{{ url('pin.create') }}" method="post">
+      {{ csrf() }}
       {{ form.non_field_errors() }}
       {{ form.pin }}
       <footer>
