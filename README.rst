@@ -162,7 +162,7 @@ Now make a profile to use::
 
     make profile
 
-Next, start up the custom B2G desktop app up with that profile.
+Next, start up the custom B2G desktop app up with that profile::
 
     cd ~/Downloads/B2G-identity-macosx
     ./bin/b2g -jsconsole -profile ~/src/gaia/profile/
