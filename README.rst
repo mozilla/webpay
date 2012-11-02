@@ -133,6 +133,71 @@ To get the correct value for ``some secret`` you'll have to ask someone in
 #marketplace on irc.freenode.net. This value should match what the dev server
 is configured for.
 
+Hack on webpay using the latest B2G desktop
+===========================================
+
+If you're reading this after Dec 2012 then it's probably wayyyyy
+out of date. This is a temporary setup until all patches land.
+
+Download Kumar's B2G build for Mac OSX with identity patches:
+http://people.mozilla.com/~kmcmillan/B2G-identity-macosx.tar.gz
+
+Next, clone this gaia branch for more identity patches::
+
+    git clone -b trusty-ui-stack git://github.com/jedp/gaia.git
+    cd gaia
+
+Inside that custom gaia clone, add a file named ``custom-prefs.js`` and add
+this::
+
+    pref("dom.payment.provider.1.name", "firefoxmarketdev");
+    pref("dom.payment.provider.1.description", "marketplace-dev.allizom.org");
+    pref("dom.payment.provider.1.type", "mozilla/payments/pay/v1");
+    pref("dom.payment.provider.1.uri", "https://marketplace-dev.allizom.org/mozpay/?req=");
+    pref("dom.payment.provider.1.requestMethod", "GET");
+    pref("dom.identity.enabled", true);
+    pref("toolkit.identity.debug", true);
+
+Now make a profile to use::
+
+    make profile
+
+Next, start up the custom B2G desktop app up with that profile.
+
+    cd ~/Downloads/B2G-identity-macosx
+    ./bin/b2g -jsconsole -profile ~/src/gaia/profile/
+
+You may need to adjust the gaia path to wherever you cloned that repo.
+
+B2G desktop should be running. Next you need to install the
+your local marketplace app because you need tweak some settings.
+Add this to your local settings to set it up::
+
+    APP_PURCHASE_SECRET = 'dev secret'
+    SITE_URL = 'http://localhost:8001'
+
+Start up your local server exactly like this::
+
+    ./manage.py --settings=settings_local_mkt  runserver 0.0.0.0:8001
+
+Now you need to install it as an app on B2G.
+You can do that by typing this URL
+into your browser on B2G:
+http://people.mozilla.com/~kmcmillan/installmkt.html
+or
+http://bit.ly/Rh4u1T
+
+Launch the shiny Marketplace app and make a purchase.
+You might need to submit an app locally to make sure it is
+paid. You can also edit one of your apps to make it paid.
+Make sure your waffle switch ``disable-payments`` is not
+active. That is, switch it off.
+
+On B2G search for your paid app and try to make a purchase.
+If everything worked
+you should be connecting to the dev version of webpay at
+https://marketplace-dev.allizom.org/mozpay/
+
 
 .. _WebPaymentProvider: https://wiki.mozilla.org/WebAPI/WebPaymentProvider
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
