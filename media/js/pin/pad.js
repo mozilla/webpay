@@ -1,9 +1,12 @@
-if (hasTouch) {
+//if (hasTouch) {
+// Temporarily turning this on so it works on B2G desktop.
+if (true) {
     var pad = $('.pad').eq(0);
     pad.show();
 // document.getElementsByTagName('header')[0].innerHTML = 'butt';
 
-    pad.on('touchstart', 'a', function(e) {
+    var touchstart = (hasTouch) ? 'touchstart': 'click';
+    pad.on(touchstart, 'a', function(e) {
         var btn = $(this).data('val');
         if (btn === undefined) return;
         switch (btn.toString()) {
