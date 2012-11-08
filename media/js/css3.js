@@ -8,7 +8,7 @@ var css = {
         }
     })(),
     prefixed: function(property) {
-        if (!z.prefix) return property;
-        return '-' + z.prefix + '-' + property;
+        if (!css.prefix) return property;
+        return '-' + css.prefix + '-' + property;
     }
 }
