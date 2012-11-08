@@ -3,7 +3,6 @@
 if (true) {
     var pad = $('.pad').eq(0);
     pad.show();
-// document.getElementsByTagName('header')[0].innerHTML = 'butt';
 
     var touchstart = (hasTouch) ? 'touchstart': 'click';
     pad.on(touchstart, 'a', function(e) {

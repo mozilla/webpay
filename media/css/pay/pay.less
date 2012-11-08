@@ -1,3 +1,5 @@
+@import 'lib';
+
 @font-face {
     font-family: 'Open Sans';
     src: url('https://marketplace-dev-cdn.allizom.org/media/css/mkt/fonts/OpenSans-Regular-webfont.eot');
@@ -130,8 +132,11 @@ form footer button[type=submit] {
     margin: 6px 2px;
     width: 34px;
     -webkit-transition: .3s -webkit-transform ease-out;
-    -moz-transition: .3s -moz-transform ease-out;
-    transition: .3s transform ease-out;
+    -moz-transition:    .3s -moz-transform ease-out;
+    -ms-transition:     .3s -ms-transform ease-out;
+    -o-transition:      .3s -o-transform ease-out;
+    transition:         .3s transform ease-out;
+
 }
 .reel b {
     background: #fff;
@@ -154,72 +159,53 @@ input[name='pin'] {
     display: none;
 }
 
-
 /* Buttons */
-.button,
-button {
-  border: 0;
-  color: #ffffff;
-  display: inline-block;
-  font: 400 13px/31px "Open Sans", "Helvetica Neue", Arial, sans-serif;
-  height: 32px;
-  background-color: #267cc2;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.25);
-  white-space: nowrap;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-  -webkit-box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.2), inset 0px -1px 0px rgba(0, 0, 0, 0.2), inset 0px 1px 0px 0px rgba(255, 255, 255, 0.2);
-  -moz-box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.2), inset 0px -1px 0px rgba(0, 0, 0, 0.2), inset 0px 1px 0px 0px rgba(255, 255, 255, 0.2);
-  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.2), inset 0px -1px 0px rgba(0, 0, 0, 0.2), inset 0px 1px 0px 0px rgba(255, 255, 255, 0.2);
-  background-color: #267cc2;
-  background-image: -webkit-gradient(linear, left bottom, left top, from(#42a5e1), to(#267cc2));
-  background-image: -webkit-linear-gradient(#42a5e1, #267cc2);
-  background-image: -moz-linear-gradient(#42a5e1, #267cc2);
-  background-image: -ms-linear-gradient(#42a5e1, #267cc2);
-  background-image: -o-linear-gradient(#42a5e1, #267cc2);
-  background-image: linear-gradient(#42a5e1, #267cc2);
-  -moz-transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow, line-height;
-  -webkit-transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow, line-height;
-  transition-property: -moz-box-shadow, -webkit-box-shadow, box-shadow, line-height;
-  -moz-transition-duration: .2s, .2s, .2s, .2s;
-  -webkit-transition-duration: .2s, .2s, .2s, .2s;
-  transition-duration: .2s, .2s, .2s, .2s;
-}
-.button:hover,
-button:hover {
-  -webkit-box-shadow: 0px 4px 1px rgba(0, 0, 0, 0.2), inset 0px -3px 0px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0px 4px 1px rgba(0, 0, 0, 0.2), inset 0px -3px 0px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px 4px 1px rgba(0, 0, 0, 0.2), inset 0px -3px 0px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-}
-.button:active,
-button:active {
-  -webkit-box-shadow: inset 0px 2px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 12px 24px 6px rgba(0, 0, 0, 0.2), inset 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: inset 0px 2px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 12px 24px 6px rgba(0, 0, 0, 0.2), inset 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
-  box-shadow: inset 0px 2px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 12px 24px 6px rgba(0, 0, 0, 0.2), inset 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
-  -moz-transition-duration: .1s, .1s, .1s, .1s;
-  -webkit-transition-duration: .1s, .1s, .1s, .1s;
-  transition-duration: .1s, .1s, .1s, .1s;
-}
-.button[disabled],
-button[disabled] {
-  color: #919497;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  pointer-events: none;
-  background-color: #cccccc;
-  background-color: #cccccc;
-  background-image: -webkit-gradient(linear, left bottom, left top, from(#dddddd), to(#cccccc));
-  background-image: -webkit-linear-gradient(#dddddd, #cccccc);
-  background-image: -moz-linear-gradient(#dddddd, #cccccc);
-  background-image: -ms-linear-gradient(#dddddd, #cccccc);
-  background-image: -o-linear-gradient(#dddddd, #cccccc);
-  background-image: linear-gradient(#dddddd, #cccccc);
+.button, button {
+    border: 0;
+    color: @white;
+    display: inline-block;
+    font: 600 16px/31px @open-stack;
+    height: 32px;
+    background-color: #267cc2;
+    padding: 0 24px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px rgba(0,0,0,0.25);
+    white-space: nowrap;
+    .border-radius(2px);
+    .box-shadow(0px 2px 1px fadeOut(#000,80%),
+                inset 0px -1px 0px fadeOut(#000, 80%),
+                inset 0px 1px 0px 0px fadeOut(#fff, 80%));
+    .gradient-two-color(#42a5e1, #267cc2);
+    .transition-property(~'-moz-box-shadow, -webkit-box-shadow, box-shadow, line-height');
+    .transition-duration(~'.2s, .2s, .2s, .2s');
+
+    &.delete, &.cancel {
+        .gradient-two-color(#e45d56, #de4332);
+    }
+
+    &:hover {
+        .box-shadow(0px 4px 1px fadeOut(#000,80%),
+                    inset 0px -3px 0px fadeOut(#000, 80%));
+        text-decoration: none;
+    }
+
+    &:active {
+        .box-shadow(inset 0px 2px 0px 0px fadeOut(#000,80%),
+                    inset 0px 12px 24px 6px fadeOut(#000,80%),
+                    inset 0px 0px 2px 2px fadeOut(#000,80%));
+        .transition-duration(~'.1s, .1s, .1s, .1s');
+    }
+
+    &[disabled], &.disabled {
+        color: #919497;
+        text-shadow: 0 1px 0 rgba(255,255,255,.5);
+        pointer-events: none;
+        background-color: @light-gray;
+        .gradient-two-color(#ddd, @light-gray);
+    }
+
 }
 
 
@@ -236,17 +222,15 @@ button[disabled] {
   display: none;
   background: #666;
   margin: 0 auto;
-
-  transform: translateY(0,200px,0);
-  transition: .3s transform ease-out;
-  -moz-transform: translateY(0,200px,0);
-  -moz-transition: .3s -moz-transform ease-out;
-  -webkit-transform: translate3d(0,200px,0);
+  .transform(~'translateY(200px)');
   -webkit-transition: .3s -webkit-transform ease-out;
+  -moz-transition:    .3s -moz-transform ease-out;
+  -ms-transition:     .3s -ms-transform ease-out;
+  -o-transition:      .3s -o-transform ease-out;
+  transition:         .3s transform ease-out;
 }
 .pad.show {
-  -moz-transform: translateY(0,0,0);
-  -webkit-transform: translate3d(0,0,0);
+  .transform(~'translateY(0)');
 }
 .pad a {
   width: 33.3333333333334%;

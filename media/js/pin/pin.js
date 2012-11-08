@@ -20,6 +20,7 @@
 })();
 
 (function() {
+    var transProp = css.prefixed('transform');
     var pin = $('#id_pin');
     pin.val('');
     reels = $('.digit .reel');
@@ -31,11 +32,11 @@
                 if (!reel.hasClass('set')) {
                     var spin = -(~~(Math.random() * 9) + 1) * 28 + Math.random()*4-2;
                     reel.addClass('set');
-                    reel.css({'transform': 'translateY(' + spin + 'px)'});
+                    reel.css(transProp, 'translateY(' + spin + 'px)');
                 }
             } else {
                 reel.removeClass('set');
-                reel.css({'transform': 'translateY(0)'});
+                reel.css(transProp, 'translateY(0)');
             }
         }
     }

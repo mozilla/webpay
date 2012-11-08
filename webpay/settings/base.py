@@ -34,6 +34,7 @@ MINIFY_BUNDLES = {
             'js/lib/jquery-1.8.js',
             'js/lib/underscore.js',
             'js/lib/format.js',
+            'js/css3.js',
             'js/pay/pay.js',
             'js/pin/pin.js',
             'js/pin/pad.js',
