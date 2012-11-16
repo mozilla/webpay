@@ -101,7 +101,7 @@ You start with the source::
     git clone git://github.com/mozilla-b2g/gaia.git gaia
     cd gaia
 
-Then you put ``custom-prefs.js`` in that directory.
+Then you create ``build/custom-prefs.js`` in that directory.
 Add this to it::
 
     pref("dom.payment.provider.1.name", "firefoxmarketdev");
@@ -136,18 +136,13 @@ is configured for.
 Hack on webpay using the latest B2G desktop
 ===========================================
 
-If you're reading this after Dec 2012 then it's probably wayyyyy
-out of date. This is a temporary setup until all patches land.
+Download a `nightly B2G desktop`_.
+Clone or update gaia from master::
 
-Download Kumar's B2G build for Mac OSX with identity patches:
-http://people.mozilla.com/~kmcmillan/B2G-identity-macosx.tar.gz
-
-Next, clone this gaia branch for more identity patches::
-
-    git clone -b trusty-ui-stack git://github.com/jedp/gaia.git
+    git clone git://github.com/mozilla-b2g/gaia.git
     cd gaia
 
-Inside that custom gaia clone, add a file named ``custom-prefs.js`` and add
+Inside your gaia clone, add a file at ``build/custom-prefs.js`` and add
 this::
 
     pref("dom.payment.provider.1.name", "firefoxmarketdev");
@@ -164,14 +159,22 @@ Now make a profile to use::
 
 Next, start up the custom B2G desktop app up with that profile::
 
-    cd ~/Downloads/B2G-identity-macosx
-    ./bin/b2g -jsconsole -profile ~/src/gaia/profile/
+    /path/to/bin/b2g -jsconsole -profile ~/src/gaia/profile/
 
-You may need to adjust the gaia path to wherever you cloned that repo.
+You are now ready to install the Marketplace app on B2G to test
+with. You can load this in the B2G browser for convenience:
+http://people.mozilla.com/~kmcmillan/mktdev.html
+Click the Install Marketplace altdev button since that is currently
+configured to work.
 
-B2G desktop should be running. Next you need to install the
-your local marketplace app because you need tweak some settings.
-Add this to your local settings to set it up::
+Launch the shiny Marketplace app and make a purchase.
+Search for a paid app (e.g. CHIRP Radio) and try to make a purchase.
+If everything worked
+you should be connecting to the dev version of webpay at
+https://marketplace-dev.allizom.org/mozpay/
+
+If you want to install your localhost Marketplace app instead of altdev
+then you'll need to tweak some settings::
 
     APP_PURCHASE_SECRET = 'dev secret'
     SITE_URL = 'http://localhost:8001'
@@ -180,24 +183,10 @@ Start up your local server exactly like this::
 
     ./manage.py --settings=settings_local_mkt  runserver 0.0.0.0:8001
 
-Now you need to install it as an app on B2G.
-You can do that by typing this URL
-into your browser on B2G:
-http://people.mozilla.com/~kmcmillan/installmkt.html
-or
-http://bit.ly/Rh4u1T
-
-Launch the shiny Marketplace app and make a purchase.
 You might need to submit an app locally to make sure it is
 paid. You can also edit one of your apps to make it paid.
 Make sure your waffle switch ``disable-payments`` is not
 active. That is, switch it off.
-
-On B2G search for your paid app and try to make a purchase.
-If everything worked
-you should be connecting to the dev version of webpay at
-https://marketplace-dev.allizom.org/mozpay/
-
 
 .. _WebPaymentProvider: https://wiki.mozilla.org/WebAPI/WebPaymentProvider
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
@@ -206,3 +195,4 @@ https://marketplace-dev.allizom.org/mozpay/
 .. _virtualenvwrapper: http://pypi.python.org/pypi/virtualenvwrapper
 .. _less: http://lesscss.org/
 .. _npm: https://npmjs.org/
+.. _`nightly B2G desktop`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/
