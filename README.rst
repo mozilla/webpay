@@ -159,7 +159,7 @@ Now make a profile to use::
 
 Next, start up the custom B2G desktop app up with that profile::
 
-    /path/to/bin/b2g -jsconsole -profile ~/src/gaia/profile/
+    /Applications/B2G.app/Contents/MacOS/b2g-bin -jsconsole -profile ~/src/gaia/profile/
 
 You are now ready to install the Marketplace app on B2G to test
 with. You can load this in the B2G browser for convenience:
