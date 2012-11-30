@@ -10,12 +10,16 @@ from django.conf import settings
 import fudge
 from fudge.inspector import arg
 import jwt
+from lib.solitude import api
 import mock
-from nose.tools import eq_
+from nose.tools import eq_, raises
 from requests.exceptions import RequestException, Timeout
+import test_utils
 
 from webpay.pay.models import (Issuer, Notice, Transaction,
-                               TRANS_STATE_COMPLETED, TRANS_REFUND)
+                               TRANS_PAY, TRANS_REFUND,
+                               TRANS_STATE_COMPLETED, TRANS_STATE_FAILED,
+                               TRANS_STATE_PENDING, TRANS_STATE_READY)
 from webpay.pay import tasks
 from webpay.pay.samples import JWTtester
 
@@ -252,3 +256,92 @@ class TestNotifyApp(JWTtester, test.TestCase):
                                  .has_attr(text='<not a valid response>')
                                  .provides('raise_for_status'))
         self.notify()
+
+
+class TestStartPay(test_utils.TestCase):
+
+    def setUp(self):
+        self.trans = Transaction.create(
+            typ=TRANS_PAY,
+            state=TRANS_STATE_PENDING,
+            issuer_key='someapp.org',
+            amount=Decimal('0.99'),
+            currency='BRL',
+            name='Virtual Sword',
+            product_id='generated-product-uuid',
+            description='A sword to use in Awesome Castle Game',
+            json_request='{}',
+        )
+
+    def get_trans(self):
+        return Transaction.objects.get(pk=self.trans.pk)
+
+    def start(self):
+        tasks.start_pay(self.trans.pk)
+
+    def update(self, **kw):
+        Transaction.objects.filter(pk=self.trans.pk).update(**kw)
+        self.trans = Transaction.objects.get(pk=self.trans.pk)
+
+    @raises(tasks.TransactionOutOfSync)
+    def test_already_started(self):
+        self.update(state=TRANS_STATE_READY)
+        self.start()
+
+    @raises(tasks.TransactionOutOfSync)
+    def test_already_failed(self):
+        self.update(state=TRANS_STATE_FAILED)
+        self.start()
+
+    @raises(api.SellerNotConfigured)
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_no_seller(self, slumber):
+        slumber.generic.seller.get.return_value = {'meta': {'total_count': 0}}
+        self.start()
+        eq_(self.get_trans().state, TRANS_STATE_FAILED)
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_existing_product(self, slumber):
+        slumber.generic.seller.get.return_value = {
+            'meta': {'total_count': 1},
+            'objects': [{
+                'resource_pk': 29,
+                'uuid': self.trans.issuer_key,  # e.g. the app-for-sale domain
+                'resource_uri': '/generic/seller/29/'
+            }]
+        }
+        slumber.bango.product.get.return_value = {
+            'meta': {'total_count': 1},
+            'objects': [{
+                'resource_pk': 15,
+                'created': '2012-12-06T17:36:29',
+                'modified': '2012-12-06T17:36:29',
+                'bango_id': u'1113330000000311563',
+                'seller_product': u'/generic/product/20/',
+                'id': '15',
+                'resource_uri':
+                '/bango/product/15/'
+            }]
+        }
+        billing = mock.Mock()
+        slumber.bango.return_value = billing
+        billing.post.return_value = {
+            'resource_pk': '3333',
+            'billingConfigurationId': 287940,
+            'responseMessage': 'Success',
+            'responseCode': 'OK',
+            'resource_uri': '/bango/create-billing/3333/'
+        }
+        self.update(product_id='1234', issuer_key='marketplace')
+        self.start()
+        trans = self.get_trans()
+        eq_(trans.state, TRANS_STATE_READY)
+        eq_(trans.bango_config_id, 287940)
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    @raises(RuntimeError)
+    def test_exception_fails_transaction(self, slumber):
+        slumber.generic.seller.get.side_effect = RuntimeError
+        self.start()
+        trans = self.get_trans()
+        eq_(trans.state, TRANS_STATE_FAILED)

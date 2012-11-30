@@ -42,6 +42,17 @@ class Base(JWTtester, test.TestCase):
 @mock.patch.object(settings, 'DEBUG', True)
 class TestVerify(Base):
 
+    def setUp(self):
+        super(TestVerify, self).setUp()
+        patch = mock.patch('webpay.pay.views.tasks.start_pay')
+        self.start_pay = patch.start()
+        self.patches = [patch]
+
+    def tearDown(self):
+        super(TestVerify, self).tearDown()
+        for p in self.patches:
+            p.stop()
+
     def payload(self, **kw):
         kw.setdefault('iss', settings.KEY)
         return super(TestVerify, self).payload(**kw)
@@ -87,6 +98,7 @@ class TestVerify(Base):
         eq_(trans.state, TRANS_STATE_PENDING)
         eq_(trans.issuer, None)
         eq_(trans.issuer_key, settings.KEY)
+        self.start_pay.delay.assert_called_with(trans.pk)
 
     def test_missing_price(self):
         payjwt = self.payload()
