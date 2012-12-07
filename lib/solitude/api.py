@@ -96,9 +96,9 @@ class SolitudeAPI(object):
         :rtype: boolean
         """
 
-        res = self.safe_run(self.slumber.buyer.check_pin.post, {'uuid': uuid,
-                                                                'pin': pin})
-        return res['valid']
+        res = self.safe_run(self.slumber.generic.verify_pin.post,
+                            {'uuid': uuid, 'pin': pin})
+        return res.get('valid', False)
 
 
 if not client:
