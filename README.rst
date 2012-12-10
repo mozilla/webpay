@@ -32,15 +32,17 @@ Create a database to work in::
 
     mysql -u root -e 'create database webpay'
 
-Install lessc and cleancss with `npm`_ for node.js.
-This is probably as easy as::
+Install compressor scripts with `npm`_ for node.js.
+You'll probably want to install them globally
+in your common node modules, like this::
 
-    npm install less clean-css
+    npm install -g less clean-css uglify-js
 
 Make sure you see a valid path when you type::
 
     which lessc
     which cleancss
+    which uglifyjs
 
 Make yourself a local settings file::
 
