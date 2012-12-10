@@ -94,6 +94,11 @@ ENGAGE_ROBOTS = False
 # Always generate a CSRF token for anonymous users.
 ANON_ALWAYS = True
 
+# Custom name for csrf cookie.
+# This must be a non-default value so it doesn't collide with zamboni on the
+# same subdomain.
+CSRF_COOKIE_NAME = 'webpay_csrftoken'
+
 # Tells the extract script what files to look for L10n in and what function
 # handles the extraction. The Tower library expects this.
 DOMAIN_METHODS['messages'] = [
