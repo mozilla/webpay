@@ -129,6 +129,11 @@ MIDDLEWARE_CLASSES = (
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
+# Custom name of session cookie.
+# This must be a non-default so it doesn't collide with zamboni on the same
+# subdomain.
+SESSION_COOKIE_NAME = 'webpay_sessionid'
+
 # This is the key and secret for purchases, our special marketplace key and
 # secret for selling apps.
 KEY = 'marketplace'  # would typically be a URL
