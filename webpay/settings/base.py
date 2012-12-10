@@ -99,6 +99,10 @@ ANON_ALWAYS = True
 # same subdomain.
 CSRF_COOKIE_NAME = 'webpay_csrftoken'
 
+# Custom anon CSRF cookie name.
+# This is to avoid collisions with zamboni when on the same subdomain.
+ANON_COOKIE = 'webpay_anoncsrf'
+
 # Tells the extract script what files to look for L10n in and what function
 # handles the extraction. The Tower library expects this.
 DOMAIN_METHODS['messages'] = [
