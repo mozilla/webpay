@@ -49,7 +49,7 @@ class SolitudeAPI(object):
             for key, value in res.iteritems():
                 res[key] = [ERROR_STRINGS[v] for v in value]
             return {'errors': res}
-        return self.parse_res(res)
+        return res
 
     def create_buyer(self, uuid, pin=None):
         """Creates a buyer with an optional PIN in solitude.
