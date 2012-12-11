@@ -112,3 +112,7 @@ ENGAGE_ROBOTS = True
 # API.)
 
 SOLITUDE_URL = 'http://localhost:9000'
+
+# If you want to test the pay flow without making a real Bango
+# payment, set this to True.
+#FAKE_PAYMENTS = True

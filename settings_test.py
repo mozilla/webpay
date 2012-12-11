@@ -9,3 +9,7 @@ SOLITUDE_URL = None
 # A bug in jingo, it will only send the signal to allow test cases to properly
 # inspect the result if this is set.
 TEMPLATE_DEBUG = True
+
+# We want to act as if we are hitting Solitude APIs even though it will
+# be intercepted by mock objects.
+FAKE_PAYMENTS = False

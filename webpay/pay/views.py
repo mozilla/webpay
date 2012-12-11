@@ -17,7 +17,7 @@ from webpay.pin.forms import VerifyPinForm
 from . import tasks
 from .forms import VerifyForm
 from .models import (Issuer, Transaction, TRANS_STATE_PENDING,
-                     TRANS_STATE_COMPLETED, TRANS_STATE_READY)
+                     TRANS_STATE_COMPLETED)
 
 log = commonware.log.getLogger('w.pay')
 
@@ -73,7 +73,8 @@ def lobby(request):
     # Before we verify the user's PIN let's save some
     # time and get the transaction configured via Bango in the
     # background.
-    tasks.start_pay.delay(request.session['trans_id'])
+    if not settings.FAKE_PAYMENTS:
+        tasks.start_pay.delay(request.session['trans_id'])
 
     return render(request, 'pay/lobby.html', {'pin_form': pin_form})
 
@@ -113,7 +114,7 @@ def wait_to_start(request):
     """
     # TODO(Kumar) Create view to poll transaction state and redirect
     # to bango URL based on billing config ID. Bug 820192.
-    raise NotImplementedError('view does not exist')
+    return http.HttpResponse('view not yet implemented')
     #return render(request, 'pay/wait_to_start.html')
 
 
