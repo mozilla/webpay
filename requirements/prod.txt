@@ -24,10 +24,10 @@ ordereddict==1.1
 django-picklefield==0.2.1
 python-dateutil==2.1
 python-memcached==1.48
-requests==0.14.0
+requests==0.14.2
 schematic==0.2
 six==1.2.0
-slumber==0.5
+slumber==0.5.1
 statsd==1.0.0
 translate-toolkit==1.9.0
 

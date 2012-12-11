@@ -22,6 +22,8 @@ class Command(BaseCommand):
                     default='0.99'),
         make_option('--cur', help='JWT price currency. Default: %default',
                     default='USD'),
+        make_option('--id', help='Unique ID for product. Default: %default',
+                    default='1234'),
     )
 
     def handle(self, *args, **options):
@@ -40,6 +42,7 @@ class Command(BaseCommand):
                     # Temporary until bug 805123 lands.
                     'country': 'xx'
                 }],
+                'id': options['id'],  # Corresponds to seller's catalog
                 'defaultPrice': options['cur'],
                 'name': 'My bands latest album',
                 'description': '320kbps MP3 download, DRM free!',

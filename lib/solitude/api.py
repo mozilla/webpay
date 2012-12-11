@@ -1,4 +1,5 @@
 import json
+import logging
 
 from django.conf import settings
 
@@ -8,7 +9,12 @@ from slumber.exceptions import HttpClientError
 from .errors import ERROR_STRINGS
 
 
+log = logging.getLogger('w.solitude')
 client = None
+
+
+class SellerNotConfigured(Exception):
+    """The seller has not yet been configued for the payment."""
 
 
 class SolitudeAPI(object):
@@ -49,7 +55,7 @@ class SolitudeAPI(object):
             for key, value in res.iteritems():
                 res[key] = [ERROR_STRINGS[v] for v in value]
             return {'errors': res}
-        return self.parse_res(res)
+        return res
 
     def create_buyer(self, uuid, pin=None):
         """Creates a buyer with an optional PIN in solitude.
@@ -100,9 +106,52 @@ class SolitudeAPI(object):
                             {'uuid': uuid, 'pin': pin})
         return res.get('valid', False)
 
+    def configure_product_for_billing(self, webpay_trans_id,
+                                      seller_uuid,
+                                      product_id, product_name,
+                                      currency, amount):
+        """
+        Get the billing configuration ID for a Bango transaction.
+        """
+        res = self.slumber.generic.seller.get(uuid=seller_uuid)
+        if res['meta']['total_count'] == 0:
+            raise SellerNotConfigured('Seller with uuid %s does not exist'
+                                      % seller_uuid)
+        seller_id = res['objects'][0]['resource_pk']
+        log.info('transaction %s: seller: %s' % (webpay_trans_id,
+                                                 seller_id))
 
-if not client:
-    if getattr(settings, 'SOLITUDE_URL', False):
-        client = SolitudeAPI(settings.SOLITUDE_URL)
-    else:
-        client = SolitudeAPI('http://example.com')
+        res = self.slumber.bango.product.get(
+            seller_product__seller=seller_id,
+            seller_product__external_id=product_id
+        )
+        if res['meta']['total_count'] == 0:
+            # TODO(Kumar) create products on the fly. bug 820164
+            raise NotImplementedError(
+                'this product does not exist and must be created')
+
+            # Create the product on the fly.
+            # This case exists for in-app purchases where the
+            # seller is selling a new item for the first time.
+
+        else:
+            bango_product_uri = res['objects'][0]['resource_uri']
+            log.info('transaction %s: bango product: %s'
+                     % (webpay_trans_id, bango_product_uri))
+
+        res = self.slumber.bango('create-billing').post({
+            'pageTitle': product_name,
+            'price_currency': currency,
+            'price_amount': amount,
+            'seller_product_bango': bango_product_uri
+        })
+        bill_id = res['billingConfigurationId']
+        log.info('transaction %s: billing config ID: %s'
+                 % (webpay_trans_id, bill_id))
+        return bill_id
+
+
+if getattr(settings, 'SOLITUDE_URL', False):
+    client = SolitudeAPI(settings.SOLITUDE_URL)
+else:
+    client = SolitudeAPI('http://example.com')
