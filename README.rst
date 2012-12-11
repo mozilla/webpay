@@ -113,11 +113,19 @@ You start with the source::
 Then you create ``build/custom-prefs.js`` in that directory.
 Add this to it::
 
+    pref("dom.payment.skipHTTPSCheck", true);
     pref("dom.payment.provider.1.name", "firefoxmarketdev");
     pref("dom.payment.provider.1.description", "marketplace-dev.allizom.org");
+    pref("dom.payment.provider.1.uri", "http://localhost:8000/mozpay/?req=");
     pref("dom.payment.provider.1.type", "mozilla/payments/pay/v1");
-    pref("dom.payment.provider.1.uri", "https://marketplace-dev.allizom.org/mozpay/?req=");
     pref("dom.payment.provider.1.requestMethod", "GET");
+
+This will access your local webpay server as the payment provider. You may need
+to bind it to an IP address if you are working with an actual phone.
+If you want to work with the Marketplace dev server, change the URI to
+something like this::
+
+    pref("dom.payment.provider.1.uri", "https://marketplace-dev.allizom.org/mozpay/?req=");
 
 Now, when you ``make`` or ``make profile`` it will create a ``profile/user.js``
 file with those extra prefs::
