@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <p>Confirm your PIN:</p>
+  <p>
+    <form id="pin" action="{{ url('pin.confirm') }}" method="post">
+      {{ csrf() }}
+      {{ form.non_field_errors() }}
+      {{ form.pin }}
+      <footer>
+          <a class="button" href="{{ url('pin.change') }}">Forgot PIN</a>
+          <button type="submit">Continue</button></footer>
+    </form>
+  </p>
+
+{% endblock %}

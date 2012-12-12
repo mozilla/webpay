@@ -1,9 +1,8 @@
 from django import http
-from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse
 from django.shortcuts import render
 
 import commonware.log
-from session_csrf import anonymous_csrf_exempt
 
 from lib.solitude.api import client
 from webpay.auth.decorators import user_verified
@@ -25,10 +24,19 @@ def create(request):
             else:
                 res = client.create_buyer(form.uuid, form.cleaned_data['pin'])
             if form.handle_client_errors(res):
-                # TODO(Wraithan): Replace with proper redirect
-                return render(request, 'pin/create_success.html',
-                              {'form': form})
+                return http.HttpResponseRedirect(reverse('pin.confirm'))
     return render(request, 'pin/create.html', {'form': form})
+
+
+@user_verified
+def confirm(request):
+    form = forms.ConfirmPinForm()
+    if request.method == 'POST':
+        form = forms.ConfirmPinForm(uuid=get_user(request), data=request.POST)
+        if form.is_valid():
+            return render(request, 'pin/confirm_success.html',
+                          {'form': form})
+    return render(request, 'pin/confirm.html', {'form': form})
 
 
 @user_verified

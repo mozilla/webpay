@@ -60,6 +60,26 @@ class VerifyPinFormTest(BasePinFormTestCase):
         assert 'has at most 4' in str(form.errors['pin'])
 
 
+class ConfirmPinFormTest(BasePinFormTestCase):
+
+    @patch.object(client, 'confirm_pin', lambda x, y: True)
+    def test_correct_pin(self):
+        form = forms.ConfirmPinForm(uuid=self.uuid, data=self.data)
+        assert form.is_valid()
+
+    @patch.object(client, 'confirm_pin', lambda x, y: False)
+    def test_incorrect_pin(self):
+        form = forms.ConfirmPinForm(uuid=self.uuid, data=self.data)
+        assert not form.is_valid()
+        assert 'Incorrect PIN' in str(form.errors)
+
+    def test_too_long_pin(self):
+        self.data.update({'pin': 'way too long pin'})
+        form = forms.ConfirmPinForm(uuid=self.uuid, data=self.data)
+        assert not form.is_valid()
+        assert 'has at most 4' in str(form.errors['pin'])
+
+
 class ChangePinFormTest(BasePinFormTestCase):
 
     def setUp(self):

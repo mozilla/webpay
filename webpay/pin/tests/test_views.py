@@ -31,7 +31,7 @@ class CreatePinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert create_buyer.called
         assert not change_pin.called
-        assert 'Success' in res.content
+        self.assertRedirects(res, reverse('pin.confirm'))
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
@@ -40,7 +40,7 @@ class CreatePinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not create_buyer.called
         assert change_pin.called
-        assert 'Success' in res.content
+        self.assertRedirects(res, reverse('pin.confirm'))
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
@@ -50,7 +50,7 @@ class CreatePinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not create_buyer.called
         assert not change_pin.called
-        assert not 'Success' in res.content
+        self.assertTemplateUsed(res, 'pin/create.html')
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': 'some:uuid'})
@@ -93,13 +93,37 @@ class VerifyPinViewTest(PinViewTestCase):
     @patch.object(client, 'verify_pin', lambda x, y: False)
     def test_bad_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        assert not 'Success' in res.content
+        self.assertTemplateUsed(res, 'pin/verify.html')
 
     @patch.object(client, 'verify_pin')
     def test_uuid_used(self, verify_pin):
         verify_pin.return_value = True
         self.client.post(self.url, data={'pin': '1234'})
         eq_(verify_pin.call_args[0][0], 'a:b')
+
+
+class ConfirmPinViewTest(PinViewTestCase):
+    url_name = 'pin.confirm'
+
+    def test_unauth(self):
+        self.unverify()
+        eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
+
+    @patch.object(client, 'confirm_pin', lambda x, y: True)
+    def test_good_pin(self):
+        res = self.client.post(self.url, data={'pin': '1234'})
+        self.assertTemplateUsed(res, 'pin/confirm_success.html')
+
+    @patch.object(client, 'confirm_pin', lambda x, y: False)
+    def test_bad_pin(self):
+        res = self.client.post(self.url, data={'pin': '1234'})
+        self.assertTemplateUsed(res, 'pin/confirm.html')
+
+    @patch.object(client, 'confirm_pin')
+    def test_uuid_used(self, confirm_pin):
+        confirm_pin.return_value = True
+        self.client.post(self.url, data={'pin': '1234'})
+        eq_(confirm_pin.call_args[0][0], 'a:b')
 
 
 class ChangePinViewTest(PinViewTestCase):
@@ -116,7 +140,7 @@ class ChangePinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'old_pin': '1234',
                                                'pin': '4321'})
         assert change_pin.called
-        assert 'Success' in res.content
+        self.assertTemplateUsed(res, 'pin/change_success.html')
 
     @patch.object(client, 'change_pin',
                   lambda x, y: {'errors':
@@ -129,7 +153,7 @@ class ChangePinViewTest(PinViewTestCase):
         form = res.context[0].get('form')
         eq_(form.errors.get('pin'),
             [ERROR_STRINGS['PIN may only consists of numbers']])
-        assert not 'Success' in res.content
+        self.assertTemplateUsed(res, 'pin/change.html')
 
     @patch.object(client, 'change_pin',
                   lambda x, y: {'errors':
@@ -143,7 +167,7 @@ class ChangePinViewTest(PinViewTestCase):
         form = res.context[0].get('form')
         eq_(form.errors.get('pin'),
             [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
-        assert not 'Success' in res.content
+        self.assertTemplateUsed(res, 'pin/change.html')
 
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
     @patch.object(client, 'verify_pin', lambda x, y: False)
@@ -151,4 +175,4 @@ class ChangePinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'old_pin': '0000',
                                                'pin': '4321'})
         assert not change_pin.called
-        assert not 'Success' in res.content
+        self.assertTemplateUsed(res, 'pin/change.html')
