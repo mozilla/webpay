@@ -58,6 +58,12 @@ def lobby(request):
         iss = Issuer.objects.get(issuer_key=form.key)
     except Issuer.DoesNotExist:
         iss = None  # marketplace
+
+    # TODO(Kumar) fix this for reals. See bug 820198.
+    desc = pay_req['request']['description']
+    if len(desc) > 255:
+        desc = desc[0:255]
+
     trans = Transaction.create(
        state=TRANS_STATE_PENDING,
        issuer=iss,
@@ -66,7 +72,7 @@ def lobby(request):
        amount=Decimal(pay_req['request']['price'][0]['amount']),
        currency=pay_req['request']['price'][0]['currency'],
        name=pay_req['request']['name'],
-       description=pay_req['request']['description'],
+       description=desc,
        json_request=json.dumps(pay_req))
     request.session['trans_id'] = trans.pk
 
