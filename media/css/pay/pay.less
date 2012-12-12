@@ -99,64 +99,16 @@ form footer button[type=submit] {
     float: right;
 }
 /* PIN Entry Box */
-.digit {
-    position: relative;
-    float: left;
-    width: 40px;
-    height: 40px;
-    background: #666;
-    border: 1px solid black;
-    overflow: hidden;
-    margin: 0 8px;
-}
-.digit:after {
-    content: '';
-    position: absolute;
-    display: block;
-    top: 0;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    background: -webkit-gradient(linear, left bottom, left top,
-                                        from(rgba(0,0,0,.2)),
-                                        color-stop(40%, rgba(0,0,0,0)),
-                                        color-stop(60%, rgba(0,0,0,0)),
-                                        to(rgba(0,0,0,.2)));
-    background: -moz-linear-gradient(top, rgba(0,0,0,.2),
-                                          rgba(0,0,0,0) 40%,
-                                          rgba(0,0,0,0) 60%,
-                                          rgba(0,0,0,.2));
-}
-.reel {
-    background: #fff;
-    padding: 20px 0;
-    position: relative;
-    top: -20px;
-    margin: 6px 2px;
-    width: 34px;
-    -webkit-transition: .3s -webkit-transform ease-out;
-    -moz-transition:    .3s -moz-transform ease-out;
-    -ms-transition:     .3s -ms-transform ease-out;
-    -o-transition:      .3s -o-transform ease-out;
-    transition:         .3s transform ease-out;
 
-}
-.reel b {
-    background: #fff;
-    display: block;
-    width: 34px;
-    height: 28px;
-    text-align: center;
-    line-height: 38px;
-    font-size: 40px;
-    color: #000;
-    font-weight: normal;
-    font-family: monospace;
-}
-.pin {
-    margin: auto;
-    width: 224px;
-    overflow: hidden;
+.pinbox {
+    input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
 }
 
 /* Buttons */

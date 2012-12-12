@@ -37,7 +37,6 @@ MINIFY_BUNDLES = {
             'js/css3.js',
             'js/pay/pay.js',
             'js/pin/pin.js',
-            'js/pin/pad.js',
         ),
     }
 }

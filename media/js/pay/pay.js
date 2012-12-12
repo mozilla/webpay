@@ -21,7 +21,7 @@ $(function() {
             // A user has logged in! Here you need to:
             // 1. Send the assertion to your backend for verification and to create a session.
             // 2. Update your UI.
-            console.log('onlogin', assertion);
+            console.log('onlogin');
             $('.message').hide();
             $('#login-wait').fadeIn();
             $.post(verifyUrl, {assertion: assertion})
