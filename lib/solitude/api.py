@@ -142,7 +142,7 @@ class SolitudeAPI(object):
         res = self.slumber.bango('create-billing').post({
             'pageTitle': product_name,
             'price_currency': currency,
-            'price_amount': amount,
+            'price_amount': str(amount),
             'seller_product_bango': bango_product_uri
         })
         bill_id = res['billingConfigurationId']
