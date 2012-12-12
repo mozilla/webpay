@@ -91,26 +91,21 @@ something like this::
 Setting Up Your B2G Device
 ==========================
 
-There is no easy way to point your B2G device at your local
-webpay instance because it forces the server to run with https.
-Unless you have an https proxy to your local server it won't work.
-Here is how to at least set your device up to point to the dev
-server.
+Here is how to set up a device (or B2G desktop)
+to point to a dev server of webpay.
+The easiest thing is to use
+the `nightly desktop B2G build`_.
 
-You need to edit your user.js file to add some preferences.
-This is found in your Firefox profile so there are a few ways
-to do it.
-
-The best way is to clone
-Gaia and build a custom profile. Refer to the `Gaia Hacking`_
+Start by cloning
+Gaia and building a custom profile. Refer to the `Gaia Hacking`_
 page for all the details.
 
-You start with the source::
+::
 
     git clone git://github.com/mozilla-b2g/gaia.git gaia
     cd gaia
 
-Then you create ``build/custom-prefs.js`` in that directory.
+Create ``build/custom-prefs.js`` in that directory.
 Add this to it::
 
     pref("dom.payment.skipHTTPSCheck", true);
@@ -119,9 +114,12 @@ Add this to it::
     pref("dom.payment.provider.1.uri", "http://localhost:8000/mozpay/?req=");
     pref("dom.payment.provider.1.type", "mozilla/payments/pay/v1");
     pref("dom.payment.provider.1.requestMethod", "GET");
+    pref("dom.identity.enabled", true);
+    pref("toolkit.identity.debug", true);
 
 This will access your local webpay server as the payment provider. You may need
-to bind it to an IP address if you are working with an actual phone.
+to bind it to an IP address (or set up port forwarding)
+if you are working with an actual phone.
 If you want to work with the Marketplace dev server, change the URI to
 something like this::
 
@@ -130,7 +128,7 @@ something like this::
 Now, when you ``make`` or ``make profile`` it will create a ``profile/user.js``
 file with those extra prefs::
 
-    DEBUG=1 make
+    make
 
 If you are using the `nightly desktop B2G build`_ then
 just start it with your custom profile. Here is an example of
@@ -138,8 +136,17 @@ launching with a custom profile on Mac OS X::
 
     /Applications/B2G.app/Contents/MacOS/b2g-bin -jsconsole -profile ~/dev/gaia/profile/
 
+
+**IMPORTANT**: Use *b2g-bin* not *b2g* on Mac OS X.
+
 Starting a custom built B2G app is pretty similar. Just specify the
 path to the binary you built.
+
+That's it! You should be ready to purchase apps from a properly configured
+Marketplace app on your B2G.
+
+Configuring Marketplace
+=======================
 
 To sign app purchasing JWTs that will work in ``navigator.mozPay([yourJWT])`` you can
 generate them like this::
@@ -150,57 +157,20 @@ To get the correct value for ``some secret`` you'll have to ask someone in
 #marketplace on irc.freenode.net. This value should match what the dev server
 is configured for.
 
-Hack on webpay using the latest B2G desktop
-===========================================
-
-Download a `nightly B2G desktop`_.
-Clone or update gaia from master::
-
-    git clone git://github.com/mozilla-b2g/gaia.git
-    cd gaia
-
-Inside your gaia clone, add a file at ``build/custom-prefs.js`` and add
-this::
-
-    pref("dom.payment.provider.1.name", "firefoxmarketdev");
-    pref("dom.payment.provider.1.description", "marketplace-dev.allizom.org");
-    pref("dom.payment.provider.1.type", "mozilla/payments/pay/v1");
-    pref("dom.payment.provider.1.uri", "https://marketplace-dev.allizom.org/mozpay/?req=");
-    pref("dom.payment.provider.1.requestMethod", "GET");
-    pref("dom.identity.enabled", true);
-    pref("toolkit.identity.debug", true);
-
-Now make a profile to use::
-
-    make profile
-
-Next, start up the custom B2G desktop app up with that profile::
-
-    /Applications/B2G.app/Contents/MacOS/b2g-bin -jsconsole -profile ~/src/gaia/profile/
-
-You are now ready to install the Marketplace app on B2G to test
-with. You can load this in the B2G browser for convenience:
-http://people.mozilla.com/~kmcmillan/mktdev.html
-Click the Install Marketplace altdev button since that is currently
-configured to work.
-
-Launch the shiny Marketplace app and make a purchase.
-Search for a paid app (e.g. CHIRP Radio) and try to make a purchase.
-If everything worked
-you should be connecting to the dev version of webpay at
-https://marketplace-dev.allizom.org/mozpay/
-
 If you want to install your localhost Marketplace app instead of altdev
 then you'll need to tweak some settings::
 
     APP_PURCHASE_SECRET = 'dev secret'
     SITE_URL = 'http://localhost:8001'
 
+These settings will tell Marketplace to sign JWTs for purchase in a similar
+manner to the genjwt command (above).
+
 Start up your local server exactly like this::
 
     ./manage.py --settings=settings_local_mkt  runserver 0.0.0.0:8001
 
-You might need to submit an app locally to make sure it is
+You'll need to submit an app locally to make sure it is
 paid. You can also edit one of your apps to make it paid.
 Make sure your waffle switch ``disable-payments`` is not
 active. That is, switch it off.
