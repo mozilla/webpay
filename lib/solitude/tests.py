@@ -1,11 +1,13 @@
 from django.conf import settings
 from django.test import TestCase
 
+import mock
 from nose.exc import SkipTest
 from nose.tools import eq_
 
 from lib.solitude.api import client
 from lib.solitude.errors import ERROR_STRINGS
+
 
 class SolitudeAPITest(TestCase):
 
@@ -79,3 +81,24 @@ class SolitudeAPITest(TestCase):
 
     def test_verify_alpha_pin(self):
         assert not client.verify_pin(self.uuid, 'lame')
+
+
+class CreateBangoTest(TestCase):
+    uuid = 'some:pin'
+
+    def test_create_no_bango(self):
+        with self.assertRaises(ValueError):
+            client.create_product('ext:id', None, None, None,
+                                  {'bango': None, 'resource_pk': 'foo'})
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_create_bango(self, slumber):
+        # Temporary mocking. Remove when this is mocked properly.
+        slumber.bango.generic.post.return_value = {'product': 'some:uri'}
+        slumber.bango.product.post.return_value = {'resource_uri': 'some:uri'}
+        assert client.create_product('ext:id', 'product:name', 'CAD', 1,
+                {'bango': {'seller': 's', 'resource_uri': 'r'},
+                'resource_pk': 'foo'})
+        assert slumber.generic.product.post.called
+        assert slumber.bango.rating.post.called
+        assert slumber.bango.premium.post.called
