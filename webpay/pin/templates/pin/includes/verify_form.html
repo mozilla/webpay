@@ -4,7 +4,9 @@
     {{ csrf() }}
     {{ form.errors }}
     {{ form.non_field_errors() }}
-    {{ form.pin }}
+    <div class="pinbox">
+      {{ form.pin }}
+    </div>
     <footer>
         <a class="button" href="{{ url('pin.change') }}">Forgot PIN</a>
         <button type="submit">Continue</button></footer>

@@ -12,6 +12,10 @@ class BasePinForm(forms.Form):
     def __init__(self, uuid=None, *args, **kwargs):
         self.uuid = uuid
         super(BasePinForm, self).__init__(*args, **kwargs)
+        self.fields['pin'].widget.attrs.update({
+            'autocomplete': 'off',
+            'type': 'number',
+        })
 
     def append_to_errors(self, field, error):
         if field in self._errors:

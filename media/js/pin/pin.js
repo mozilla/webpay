@@ -4,7 +4,7 @@
     var entry = $('<div class="pin">');
     entry.html(Array(5).join('<div class="digit"></div>'));
 
-    form.before(entry);
+    form.find('.pinbox').prepend(entry);
 
     var digits = entry.find('.digit');
     for (var n=0;n<digits.length;n++) {
