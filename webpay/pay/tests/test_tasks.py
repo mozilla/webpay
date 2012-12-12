@@ -283,6 +283,18 @@ class TestStartPay(test_utils.TestCase):
         Transaction.objects.filter(pk=self.trans.pk).update(**kw)
         self.trans = Transaction.objects.get(pk=self.trans.pk)
 
+    def set_billing_id(self, slumber, num):
+        # Set up a call to /bango/billing-config
+        billing = mock.Mock()
+        slumber.bango.return_value = billing
+        billing.post.return_value = {
+            'resource_pk': '3333',
+            'billingConfigurationId': num,
+            'responseMessage': 'Success',
+            'responseCode': 'OK',
+            'resource_uri': '/bango/create-billing/3333/'
+        }
+
     @raises(tasks.TransactionOutOfSync)
     def test_already_started(self):
         self.update(state=TRANS_STATE_READY)
@@ -323,20 +335,11 @@ class TestStartPay(test_utils.TestCase):
                 '/bango/product/15/'
             }]
         }
-        billing = mock.Mock()
-        slumber.bango.return_value = billing
-        billing.post.return_value = {
-            'resource_pk': '3333',
-            'billingConfigurationId': 287940,
-            'responseMessage': 'Success',
-            'responseCode': 'OK',
-            'resource_uri': '/bango/create-billing/3333/'
-        }
-        self.update(product_id='1234', issuer_key='marketplace')
+        self.set_billing_id(slumber, 123)
         self.start()
         trans = self.get_trans()
         eq_(trans.state, TRANS_STATE_READY)
-        eq_(trans.bango_config_id, 287940)
+        eq_(trans.bango_config_id, 123)
 
     @mock.patch('lib.solitude.api.client.slumber')
     @raises(RuntimeError)
@@ -345,3 +348,30 @@ class TestStartPay(test_utils.TestCase):
         self.start()
         trans = self.get_trans()
         eq_(trans.state, TRANS_STATE_FAILED)
+
+    @mock.patch.object(settings, 'KEY', 'marketplace-domain')
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_marketplace_seller_switch(self, slumber):
+        self.set_billing_id(slumber, 123)
+
+        # Simulate how the Marketplace would add
+        # a custom seller_uuid to the product data in the JWT.
+        app_seller_uuid = 'some-seller-uuid'
+        data = 'seller_uuid=%s' % app_seller_uuid
+        req = json.dumps({'request': {'productData': data}})
+        self.update(issuer_key='marketplace-domain',
+                    json_request=req)
+
+        self.start()
+        # Check that the seller_uuid was switched to that of the app seller.
+        slumber.generic.seller.get.assert_called_with(
+            uuid=app_seller_uuid)
+
+    @raises(ValueError)
+    @mock.patch.object(settings, 'KEY', 'marketplace-domain')
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_marketplace_missing_seller_uuid(self, slumber):
+        req = json.dumps({'request': {'productData': 'foo=bar'}})
+        self.update(issuer_key='marketplace-domain',
+                    json_request=req)
+        self.start()

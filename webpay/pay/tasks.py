@@ -41,11 +41,28 @@ def start_pay(trans_id, **kw):
     if trans.state != TRANS_STATE_PENDING:
         raise TransactionOutOfSync(
             'Cannot start transaction ID %s because its state '
-            'is %s' %  (trans.pk, trans.state))
+            'is %s' % (trans.pk, trans.state))
     try:
+        seller_uuid = trans.effective_issuer_key()
+        if seller_uuid == settings.KEY:
+            # The issuer of the JWT is Firefox Marketplace.
+            # This is a special case where we need to find the
+            # actual Solitude/Bango seller_uuid to associate the
+            # product to the right account.
+            data = json.loads(trans.json_request)
+            prod_data = data['request'].get('productData', '')
+            try:
+                seller_uuid = urlparse.parse_qs(prod_data)['seller_uuid'][0]
+            except KeyError:
+                raise ValueError('Marketplace %r did not put a seller_uuid '
+                                 'in productData: %r' % (settings.KEY,
+                                                         prod_data))
+            log.info('Using real seller_uuid %r for Marketplace %r '
+                     'app payment' % (seller_uuid, settings.KEY))
+
         bill_id = client.configure_product_for_billing(
             trans.pk,
-            trans.effective_issuer_key(),
+            seller_uuid,
             trans.product_id,
             trans.name,  # app/product name
             trans.currency,
