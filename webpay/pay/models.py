@@ -11,7 +11,10 @@ TRANS_REFUND = 2
 
 TRANS_STATE_PENDING = 1
 TRANS_STATE_FAILED = 2
+# The transaction has been processed and completed by the provider.
 TRANS_STATE_COMPLETED = 3
+# The transaction is ready to for payment fulfillment from the provider.
+TRANS_STATE_READY = 4
 
 ISSUER_ACTIVE = 1
 ISSUER_INACTIVE = 2
@@ -129,14 +132,18 @@ class Transaction(models.Model):
         db_index=True,
         choices=[(TRANS_STATE_PENDING, _('Pending')),
                  (TRANS_STATE_FAILED, _('Failed')),
+                 (TRANS_STATE_READY, _('Ready')),
                  (TRANS_STATE_COMPLETED, _('Completed'))],
         default=TRANS_STATE_PENDING)
+    # Bango billing configuration ID obtained via Solitude.
+    bango_config_id = models.IntegerField(blank=True, null=True)
     issuer_key = models.CharField(max_length=255,
                                   db_index=True,
                                   help_text='Issuer of the payment JWT')
     issuer = models.ForeignKey(Issuer, blank=True, null=True)
     amount = models.DecimalField(max_digits=9, decimal_places=2, null=True)
     currency = models.CharField(max_length=3)
+    product_id = models.CharField(max_length=255)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=255, blank=True)
     json_request = models.TextField(
@@ -148,6 +155,12 @@ class Transaction(models.Model):
     def create(cls, **kw):
         kw.setdefault('uuid', uuid.uuid4().hex)
         return cls.objects.create(**kw)
+
+    def effective_issuer_key(self):
+        if self.issuer:
+            return self.issuer.issuer_key
+        else:
+            return self.issuer_key
 
     class Meta:
         db_table = 'transactions'

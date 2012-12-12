@@ -61,7 +61,7 @@ class CreatePinViewTest(PinViewTestCase):
     def test_buyer_does_exist_with_short_pin(self, create_buyer):
         res = self.client.post(self.url, data={'pin': '123'})
         assert not create_buyer.called
-        form = res.context.get('form')
+        form = res.context[0].get('form')
         eq_(form.errors.get('pin'),
             [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
 
@@ -73,7 +73,7 @@ class CreatePinViewTest(PinViewTestCase):
     def test_buyer_does_exist_with_alpha_pin(self, create_buyer):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not create_buyer.called
-        form = res.context.get('form')
+        form = res.context[0].get('form')
         eq_(form.errors.get('pin'),
             [ERROR_STRINGS['PIN may only consists of numbers']])
 
@@ -126,7 +126,7 @@ class ChangePinViewTest(PinViewTestCase):
     def test_alpha_pin(self):
         res = self.client.post(self.url, data={'old_pin': '1234',
                                                'pin': '4321'})
-        form = res.context.get('form')
+        form = res.context[0].get('form')
         eq_(form.errors.get('pin'),
             [ERROR_STRINGS['PIN may only consists of numbers']])
         assert not 'Success' in res.content
@@ -140,7 +140,7 @@ class ChangePinViewTest(PinViewTestCase):
     def test_short_pin(self):
         res = self.client.post(self.url, data={'old_pin': '1234',
                                                'pin': '432'})
-        form = res.context.get('form')
+        form = res.context[0].get('form')
         eq_(form.errors.get('pin'),
             [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
         assert not 'Success' in res.content

@@ -4,6 +4,7 @@
   <p>Change your PIN:</p>
   <p>
     <form action="{{ url('pin.change') }}" method="post">
+      {{ form.non_field_errors() }}
       {{ form.as_p()}}
       <input type="submit" value="Create">
     </form>

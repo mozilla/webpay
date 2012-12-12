@@ -93,6 +93,15 @@ ENGAGE_ROBOTS = False
 # Always generate a CSRF token for anonymous users.
 ANON_ALWAYS = True
 
+# Custom name for csrf cookie.
+# This must be a non-default value so it doesn't collide with zamboni on the
+# same subdomain.
+CSRF_COOKIE_NAME = 'webpay_csrftoken'
+
+# Custom anon CSRF cookie name.
+# This is to avoid collisions with zamboni when on the same subdomain.
+ANON_COOKIE = 'webpay_anoncsrf'
+
 # Tells the extract script what files to look for L10n in and what function
 # handles the extraction. The Tower library expects this.
 DOMAIN_METHODS['messages'] = [
@@ -127,6 +136,11 @@ MIDDLEWARE_CLASSES = (
 )
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+# Custom name of session cookie.
+# This must be a non-default so it doesn't collide with zamboni on the same
+# subdomain.
+SESSION_COOKIE_NAME = 'webpay_sessionid'
 
 # This is the key and secret for purchases, our special marketplace key and
 # secret for selling apps.

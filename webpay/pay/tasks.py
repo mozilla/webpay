@@ -1,21 +1,66 @@
 import calendar
 import json
 import logging
+import sys
 import time
 import urlparse
 
 from django.conf import settings
+from django.db import transaction
 
 from celeryutils import task
 import jwt
+from lib.solitude.api import client
 from multidb.pinning import use_master
 
-from .models import Notice, Transaction, TRANS_PAY, TRANS_REFUND
+from .models import (Notice, Transaction, TRANS_PAY, TRANS_REFUND,
+                     TRANS_STATE_FAILED, TRANS_STATE_PENDING,
+                     TRANS_STATE_READY)
 from .utils import send_pay_notice
 
 log = logging.getLogger('w.pay.tasks')
 notify_kw = dict(default_retry_delay=15,  # seconds
                  max_tries=5)
+
+
+class TransactionOutOfSync(Exception):
+    """The transaction's state is unexpected."""
+
+
+@task
+@use_master
+@transaction.commit_on_success
+def start_pay(trans_id, **kw):
+    """
+    Work with Solitude to begin a Bango payment.
+
+    This puts the transaction in a state where it's
+    ready to be fulfilled by Bango.
+    """
+    trans = Transaction.objects.get(pk=trans_id)
+    if trans.state != TRANS_STATE_PENDING:
+        raise TransactionOutOfSync(
+            'Cannot start transaction ID %s because its state '
+            'is %s' %  (trans.pk, trans.state))
+    try:
+        bill_id = client.configure_product_for_billing(
+            trans.pk,
+            trans.effective_issuer_key(),
+            trans.product_id,
+            trans.name,  # app/product name
+            trans.currency,
+            trans.amount,
+        )
+        trans.bango_config_id = bill_id
+        trans.state = TRANS_STATE_READY
+        trans.save()
+    except Exception, exc:
+        log.exception('while configuring transaction %s for payment'
+                      % trans.pk)
+        etype, val, tb = sys.exc_info()
+        trans.state = TRANS_STATE_FAILED
+        trans.save()
+        raise exc, None, tb
 
 
 @task(**notify_kw)

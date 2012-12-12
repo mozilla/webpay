@@ -31,6 +31,7 @@ class JWTtester(unittest.TestCase):
                 'amount': '0.99',
                 'currency': 'USD',
             }],
+            'id': 'some-generated-unique-id',
             'name': 'My bands latest album',
             'description': '320kbps MP3 download, DRM free!',
             'productdata': 'my_product_id=1234'
