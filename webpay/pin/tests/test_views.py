@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 
-from mock import patch
+from mock import ANY, patch
 from nose.tools import eq_
 
 from lib.solitude.api import client
@@ -26,11 +26,14 @@ class CreatePinViewTest(PinViewTestCase):
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
+    @patch('webpay.pin.views.set_user_has_pin', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {})
-    def test_buyer_does_not_exist(self, change_pin, create_buyer):
+    def test_buyer_does_not_exist(self, set_user_has_pin, change_pin,
+                                  create_buyer):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert create_buyer.called
         assert not change_pin.called
+        set_user_has_pin.assert_called_with(ANY, True)
         assert res['Location'].endswith(reverse('pin.confirm'))
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
@@ -61,7 +64,7 @@ class CreatePinViewTest(PinViewTestCase):
     def test_buyer_does_exist_with_short_pin(self, create_buyer):
         res = self.client.post(self.url, data={'pin': '123'})
         assert not create_buyer.called
-        form = res.context[0].get('form')
+        form = res.context['form']
         eq_(form.errors.get('pin'),
             [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
 
@@ -73,7 +76,7 @@ class CreatePinViewTest(PinViewTestCase):
     def test_buyer_does_exist_with_alpha_pin(self, create_buyer):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not create_buyer.called
-        form = res.context[0].get('form')
+        form = res.context['form']
         eq_(form.errors.get('pin'),
             [ERROR_STRINGS['PIN may only consists of numbers']])
 
@@ -150,7 +153,7 @@ class ChangePinViewTest(PinViewTestCase):
     def test_alpha_pin(self):
         res = self.client.post(self.url, data={'old_pin': '1234',
                                                'pin': '4321'})
-        form = res.context[0].get('form')
+        form = res.context['form']
         eq_(form.errors.get('pin'),
             [ERROR_STRINGS['PIN may only consists of numbers']])
         self.assertTemplateUsed(res, 'pin/change.html')
@@ -164,7 +167,7 @@ class ChangePinViewTest(PinViewTestCase):
     def test_short_pin(self):
         res = self.client.post(self.url, data={'old_pin': '1234',
                                                'pin': '432'})
-        form = res.context[0].get('form')
+        form = res.context['form']
         eq_(form.errors.get('pin'),
             [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
         self.assertTemplateUsed(res, 'pin/change.html')

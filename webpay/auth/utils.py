@@ -2,6 +2,8 @@ import hashlib
 
 from django.conf import settings
 
+from lib.solitude.api import client
+
 
 def get_uuid(email):
     """
@@ -26,5 +28,12 @@ def get_user(request):
         raise KeyError('Attempt to access user without it being set, '
                        'did you use the user_verified decorator?')
 
+
 def set_user(request, email):
-    request.session['uuid'] = get_uuid(email)
+    uuid = get_uuid(email)
+    request.session['uuid'] = uuid
+    set_user_has_pin(request, client.buyer_has_pin(uuid))
+
+
+def set_user_has_pin(request, has_pin):
+    request.session['uuid_has_pin'] = has_pin

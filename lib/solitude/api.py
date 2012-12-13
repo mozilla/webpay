@@ -57,6 +57,18 @@ class SolitudeAPI(object):
             return {'errors': res}
         return res
 
+    def buyer_has_pin(self, uuid):
+        """Returns True if the existing buyer has a PIN.
+
+        :param uuid: String to identify the buyer by.
+        :rtype: boolean
+        """
+        res = self.safe_run(self.slumber.generic.buyer.get, **{'uuid': uuid})
+        if res['meta']['total_count'] == 0:
+            return False
+        else:
+            return res['objects'][0]['pin']
+
     def create_buyer(self, uuid, pin=None):
         """Creates a buyer with an optional PIN in solitude.
 
