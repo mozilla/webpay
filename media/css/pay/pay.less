@@ -36,18 +36,6 @@ body {
     background: url("https://marketplace-dev-cdn.allizom.org/media/img/mkt/grain.png?d99a08c") rgb(239, 241, 243);
 }
 
-header {
-    background-image: url('https://marketplace-dev-cdn.allizom.org/media/img/mkt/logos/mp_icon_wordmark_200x30.png'),
-                      linear-gradient(#566773, #3e4e59);
-    background-repeat: no-repeat, repeat-x;
-    background-position: center center, top left;
-    color: #fff;
-    font: normal 28px 'Open Sans';
-    text-align: center;
-    height: 50px;
-    line-height: 50px;
-}
-
 .hidden {
     display: none;
 
@@ -123,6 +111,17 @@ form footer button[type=submit] {
         background: transparent;
         border: 0;
         padding-top: 32px;
+
+        &::-moz-placeholder {
+          text-shadow: 0 1px #fff;
+          color: #888;
+          font-family: monospace;
+        }
+        &:-moz-placeholder {
+          text-shadow: 0 1px #fff;
+          color: #888;
+          font-family: monospace;
+        }
     }
 }
 

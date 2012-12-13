@@ -15,6 +15,7 @@ $(function() {
 
     $('[name="pin"]').each(function() {
         this.type = 'number';
+        this.setAttribute('placeholder', '****');
     });
 
     if ($('body').data('beginflow')) {
