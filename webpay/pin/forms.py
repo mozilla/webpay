@@ -66,6 +66,16 @@ class VerifyPinForm(BasePinForm):
         raise forms.ValidationError(_('Incorrect PIN.'))
 
 
+class ConfirmPinForm(BasePinForm):
+
+    def clean_pin(self, *args, **kwargs):
+        pin = self.cleaned_data['pin']
+        if self.handle_client_errors(client.confirm_pin(self.uuid, pin)):
+            return pin
+
+        raise forms.ValidationError(_('Incorrect PIN.'))
+
+
 class ChangePinForm(BasePinForm):
     old_pin = forms.CharField(max_length=4, required=True)
 

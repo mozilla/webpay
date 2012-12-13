@@ -7,6 +7,7 @@ from nose.tools import eq_
 from lib.solitude.api import client
 from lib.solitude.errors import ERROR_STRINGS
 
+
 class SolitudeAPITest(TestCase):
 
     def setUp(self):
@@ -22,8 +23,10 @@ class SolitudeAPITest(TestCase):
 
     def test_change_pin(self):
         buyer_id = client.get_buyer(self.uuid)['id']
-        eq_(client.change_pin(buyer_id, '4321'), {})
-        assert client.verify_pin(self.uuid, '4321')
+        new_pin = self.pin[::-1]
+        eq_(client.change_pin(buyer_id, new_pin), {})
+        assert client.confirm_pin(self.uuid, new_pin)
+        assert client.verify_pin(self.uuid, new_pin)
         eq_(client.change_pin(buyer_id, self.pin), {})
 
     def test_get_buyer(self):
@@ -74,8 +77,26 @@ class SolitudeAPITest(TestCase):
         eq_(buyer['errors'].get('uuid'),
             [ERROR_STRINGS['Buyer with this Uuid already exists.']])
 
-    def test_verify_good_pin(self):
-        assert client.verify_pin(self.uuid, self.pin)
+    def test_confirm_pin_with_good_pin(self):
+        uuid = 'confirm_pin_good_pin'
+        client.create_buyer(uuid, self.pin)
+        assert client.confirm_pin(uuid, self.pin)
+
+    def test_confirm_pin_with_bad_pin(self):
+        uuid = 'confirm_pin_bad_pin'
+        client.create_buyer(uuid, self.pin)
+        assert not client.confirm_pin(uuid, self.pin[::-1])
+
+    def test_verify_with_confirm_and_good_pin(self):
+        uuid = 'verify_pin_confirm_pin_good_pin'
+        client.create_buyer(uuid, self.pin)
+        assert client.confirm_pin(uuid, self.pin)
+        assert client.verify_pin(uuid, self.pin)
+
+    def test_verify_without_confirm_and_good_pin(self):
+        uuid = 'verify_pin_good_pin'
+        client.create_buyer(uuid, self.pin)
+        assert not client.verify_pin(uuid, self.pin)
 
     def test_verify_alpha_pin(self):
         assert not client.verify_pin(self.uuid, 'lame')

@@ -94,6 +94,18 @@ class SolitudeAPI(object):
         res = self.safe_run(self.slumber.generic.buyer.get, uuid=uuid)
         return self._buyer_from_response(res)
 
+    def confirm_pin(self, uuid, pin):
+        """Confirms the buyer's pin, marking it at confirmed in solitude
+
+        :param uuid: String to identify the buyer by.
+        :param pin: PIN to confirm
+        :rtype: boolean
+        """
+
+        res = self.safe_run(self.slumber.generic.confirm_pin.post,
+                            {'uuid': uuid, 'pin': pin})
+        return res.get('confirmed', False)
+
     def verify_pin(self, uuid, pin):
         """Checks the buyer's PIN against what is stored in solitude.
 
@@ -142,7 +154,7 @@ class SolitudeAPI(object):
         res = self.slumber.bango('create-billing').post({
             'pageTitle': product_name,
             'price_currency': currency,
-            'price_amount': amount,
+            'price_amount': str(amount),
             'seller_product_bango': bango_product_uri
         })
         bill_id = res['billingConfigurationId']

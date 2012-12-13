@@ -24,6 +24,7 @@ class Command(BaseCommand):
                     default='USD'),
         make_option('--id', help='Unique ID for product. Default: %default',
                     default='1234'),
+        make_option('--data', help='productData string to include in request'),
     )
 
     def handle(self, *args, **options):
@@ -46,7 +47,7 @@ class Command(BaseCommand):
                 'defaultPrice': options['cur'],
                 'name': 'My bands latest album',
                 'description': '320kbps MP3 download, DRM free!',
-                'productdata': 'my_product_id=1234'
+                'productData': options['data'] or ''
             }
         }
         print jwt.encode(req, options['secret'] or settings.SECRET)
