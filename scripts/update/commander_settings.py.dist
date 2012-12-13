@@ -10,6 +10,8 @@ UPDATE_REF = "origin/master"
 UPDATE_VENDOR_REF = "origin/master"
 
 WEB_HOSTGROUP="addons-dev"
+CELERY_HOSTGROUP = ''
+CELERY_SERVICE = ''
 
 SSH_KEY="/root/keys/addons-updater"
 
