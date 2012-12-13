@@ -88,7 +88,7 @@ class VerifyPinViewTest(PinViewTestCase):
     @patch.object(client, 'verify_pin', lambda x, y: True)
     def test_good_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        self.assertRedirects(res, get_payment_url())
+        assert res['Location'].endswith(get_payment_url())
 
     @patch.object(client, 'verify_pin', lambda x, y: False)
     def test_bad_pin(self):
