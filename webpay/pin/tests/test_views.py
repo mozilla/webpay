@@ -31,7 +31,7 @@ class CreatePinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert create_buyer.called
         assert not change_pin.called
-        self.assertRedirects(res, reverse('pin.confirm'))
+        assert res['Location'].endswith(reverse('pin.confirm'))
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
@@ -40,7 +40,7 @@ class CreatePinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not create_buyer.called
         assert change_pin.called
-        self.assertRedirects(res, reverse('pin.confirm'))
+        assert res['Location'].endswith(reverse('pin.confirm'))
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
@@ -112,7 +112,7 @@ class ConfirmPinViewTest(PinViewTestCase):
     @patch.object(client, 'confirm_pin', lambda x, y: True)
     def test_good_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        self.assertRedirects(res, get_payment_url())
+        assert res['Location'].endswith(get_payment_url())
 
     @patch.object(client, 'confirm_pin', lambda x, y: False)
     def test_bad_pin(self):
