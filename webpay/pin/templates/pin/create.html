@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <p>Create your PIN:</p>
+  <h2>Create your PIN:</h2>
   <p>
     <form id="pin" action="{{ url('pin.create') }}" method="post">
       {{ csrf() }}
       {{ form.non_field_errors() }}
-      {{ form.pin }}
+      <div class="pinbox">
+        {{ form.pin }}
+      </div>
       <footer>
-          <a class="button" href="{{ url('pin.change') }}">Forgot PIN</a>
-          <button type="submit">Continue</button></footer>
+        <a class="button" href="{{ url('pin.change') }}">Forgot PIN</a>
+        <button type="submit">Continue</button>
+      </footer>
     </form>
   </p>
 

@@ -57,6 +57,7 @@ header {
     position: absolute;
     text-align: center;
     width: 100%;
+    left: 0;
     top: 45%;
 }
 
@@ -82,6 +83,12 @@ section.pay {
     max-height: 480px;
     max-width: 600px;
     position: relative;
+    word-wrap: break-word;
+}
+
+pre {
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 form footer {
@@ -101,13 +108,20 @@ form footer button[type=submit] {
 /* PIN Entry Box */
 
 .pinbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 64px;
     input {
-        position: absolute;
-        top: 0;
-        left: 0;
+        display: block;
         width: 100%;
         height: 100%;
-        opacity: 0;
+        text-align: center;
+        font-size: 3em;
+        background: transparent;
+        border: 0;
     }
 }
 

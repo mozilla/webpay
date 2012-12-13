@@ -7,11 +7,15 @@ var hasTouch = ('ontouchstart' in window) ||
                document instanceof DocumentTouch;
 
 window.onerror = function(m,f,l) {
-    document.getElementsByTagName('header')[0].innerHTML = f.split('/').pop() + ':' + l + ' ' + m;
+    document.getElementsByTagName('h2')[0].innerHTML = f.split('/').pop() + ':' + l + ' ' + m;
 };
 
 $(function() {
     "use strict";
+
+    // $('[name="pin"]').each(function() {
+    //     console.log(this);
+    // });
 
     if ($('body').data('beginflow')) {
         var verifyUrl = $('body').data('verify-url');
@@ -29,7 +33,9 @@ $(function() {
                 console.log('login success');
                 $('.message').hide();
                 $('#enter-pin').fadeIn();
-                $('#pin').trigger('accept-pin');
+                console.log($('#pin [name="pin"]')[0]);
+                $('#pin [name="pin"]')[0].focus();
+                console.log('foo');
             })
             .error(function() {
                 console.log('login error');
