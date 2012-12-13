@@ -13,9 +13,9 @@ window.onerror = function(m,f,l) {
 $(function() {
     "use strict";
 
-    // $('[name="pin"]').each(function() {
-    //     console.log(this);
-    // });
+    $('[name="pin"]').each(function() {
+        this.type = 'number';
+    });
 
     if ($('body').data('beginflow')) {
         var verifyUrl = $('body').data('verify-url');
