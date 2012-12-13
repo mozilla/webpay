@@ -41,6 +41,15 @@ def update_code(ctx, ref='origin/master'):
         ctx.local("git submodule foreach 'git submodule sync --quiet'")
         ctx.local("git submodule foreach 'git submodule update --init --recursive'")
 
+
+@task
+@hostgroups(settings.CELERY_HOSTGROUP, remote_kwargs={'ssh_key': settings.SSH_KEY})
+def update_celery(ctx):
+    ctx.remote(settings.REMOTE_UPDATE_SCRIPT)
+    if getattr(settings, 'CELERY_SERVICE', False):
+        ctx.remote("/sbin/service %s restart" % settings.CELERY_SERVICE)
+
+
 @task
 def compress_assets(ctx, arg=''):
     with ctx.lcd(settings.SRC_DIR):
@@ -77,6 +86,7 @@ def deploy_app(ctx):
 def deploy(ctx):
     checkin_changes()
     deploy_app()
+    update_celery()
 
 @task
 def pre_update(ctx, ref=settings.UPDATE_REF):
