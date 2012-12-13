@@ -36,6 +36,7 @@ MINIFY_BUNDLES = {
             'js/lib/format.js',
             'js/css3.js',
             'js/pay/pay.js',
+            'js/pay/wait.js',
             'js/pin/pin.js',
         ),
     }
@@ -190,3 +191,7 @@ FAKE_PAYMENTS = True
 # Living on the bleeding B2G edge!
 BROWSERID_VERIFICATION_URL = 'https://notoriousb2g.personatest.org/verify'
 BROWSERID_JS_URL = 'https://notoriousb2g.personatest.org/include.js'
+
+# This is the URL for the bango payment screen.
+# It will receive one string substitution: the billing configuration ID.
+BANGO_PAY_URL = 'http://mozilla.test.bango.org/mozpayments/?bcid=%s'

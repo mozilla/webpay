@@ -11,7 +11,8 @@ from nose.tools import eq_
 
 from webpay.pay.forms import VerifyForm
 from webpay.pay.models import (Issuer, ISSUER_ACTIVE, ISSUER_INACTIVE,
-                               Transaction, TRANS_STATE_PENDING)
+                               Transaction, TRANS_STATE_PENDING,
+                               TRANS_STATE_READY)
 from webpay.pay.samples import JWTtester
 
 sample = os.path.join(os.path.dirname(__file__), 'sample.key')
@@ -131,8 +132,8 @@ class TestVerify(Base):
             eq_(res.status_code, 400)
             # Output should show exception message.
             self.assertContains(res,
-                'InvalidJWT: Signature verification failed',
-                status_code=400)
+                                'InvalidJWT: Signature verification failed',
+                                status_code=400)
 
     def test_not_debug(self):
         with self.settings(VERBOSE_LOGGING=False):
@@ -202,3 +203,66 @@ class TestForm(Base):
         assert form.is_valid()
         eq_(form.key, settings.KEY)
         eq_(form.secret, settings.SECRET)
+
+
+class TestWaitToStart(Base):
+
+    def setUp(self):
+        super(TestWaitToStart, self).setUp()
+        self.wait = reverse('pay.wait_to_start')
+        self.start = reverse('pay.trans_start_url')
+        self.trans = Transaction.create(
+            state=TRANS_STATE_PENDING,
+            issuer_key='some app',
+            amount='0.99',
+            currency='BRL',
+            name='Virtual Eagle',
+            description='you know, just, an eagle',
+            json_request='{}')
+
+        # Set up a session for this client because the session code in
+        # Django's docs isn't working.
+        engine = __import__(settings.SESSION_ENGINE, {}, {}, [''])
+        self.session = engine.SessionStore()
+        self.session.create()
+        session_key = self.session.session_key
+
+        # Log in.
+        self.session['uuid'] = 'verified-user'
+        # Start a payment.
+        self.session['trans_id'] = self.trans.pk
+        self.session.save()
+
+        self.client = test.Client()
+        self.client.cookies[settings.SESSION_COOKIE_NAME] = session_key
+
+    def update(self, **kw):
+        Transaction.objects.filter(pk=self.trans.pk).update(**kw)
+        self.trans = Transaction.objects.get(pk=self.trans.pk)
+
+    @mock.patch.object(settings, 'BANGO_PAY_URL', 'http://bango/pay?bcid=%s')
+    def test_redirect_when_ready(self):
+        self.update(state=TRANS_STATE_READY, bango_config_id=123)
+        res = self.client.get(self.wait)
+        eq_(res['Location'], settings.BANGO_PAY_URL % 123)
+
+    @mock.patch.object(settings, 'BANGO_PAY_URL', 'http://bango/pay?bcid=%s')
+    def test_start_ready(self):
+        self.update(state=TRANS_STATE_READY, bango_config_id=123)
+        res = self.client.get(self.start)
+        eq_(res.status_code, 200, res.content)
+        data = json.loads(res.content)
+        eq_(data['url'], settings.BANGO_PAY_URL % 123)
+        eq_(data['state'], self.trans.state)
+
+    def test_start_not_ready(self):
+        res = self.client.get(self.start)
+        eq_(res.status_code, 200, res.content)
+        data = json.loads(res.content)
+        eq_(data['url'], None)
+        eq_(data['state'], self.trans.state)
+
+    def test_wait(self):
+        res = self.client.get(self.wait)
+        eq_(res.status_code, 200)
+        self.assertContains(res, 'Waiting')
