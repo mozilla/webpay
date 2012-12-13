@@ -34,8 +34,7 @@ def confirm(request):
     if request.method == 'POST':
         form = forms.ConfirmPinForm(uuid=get_user(request), data=request.POST)
         if form.is_valid():
-            return render(request, 'pin/confirm_success.html',
-                          {'form': form})
+            return http.HttpResponseRedirect(get_payment_url())
     return render(request, 'pin/confirm.html', {'form': form})
 
 
