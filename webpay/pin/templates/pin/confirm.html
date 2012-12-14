@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <p>Confirm your PIN:</p>
+  <h2>Confirm your PIN:</h2>
   <p>
     <form id="pin" action="{{ url('pin.confirm') }}" method="post">
       {{ csrf() }}
