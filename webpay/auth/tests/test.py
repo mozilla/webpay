@@ -1,3 +1,5 @@
+import json
+
 from django import test
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -89,14 +91,16 @@ class TestBuyerHasPin(SessionTestCase):
     def do_auth(self):
         res = self.client.post(reverse('auth.verify'), {'assertion': 'good'})
         eq_(res.status_code, 200, res)
+        return json.loads(res.content)
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_no_user(self, slumber):
         slumber.generic.buyer.get.return_value = {
             'meta': {'total_count': 0}
         }
-        self.do_auth()
+        data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), False)
+        eq_(data['has_pin'], False)
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_no_pin(self, slumber):
@@ -113,5 +117,7 @@ class TestBuyerHasPin(SessionTestCase):
             'meta': {'total_count': 1},
             'objects': [{'pin': True}]
         }
-        self.do_auth()
+        data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), True)
+        eq_(data['has_pin'], True)
+        eq_(data['pin_create'], reverse('pin.create'))
