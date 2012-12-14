@@ -2,6 +2,13 @@
 
 {% block content %}
   <div class="message">
-    Pretend this is a Bango payment screen for configuration ID {{ bill_config_id }}
+    <p>
+      Pretend this is a Bango payment screen for configuration ID {{ bill_config_id }}
+    </p>
+    <p>
+      <form action="{{ url('pay.complete') }}" method="post">
+        <input type="submit" value="Complete the payment">
+      </form>
+    </p>
   </div>
 {% endblock %}

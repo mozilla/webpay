@@ -181,6 +181,11 @@ SOLITUDE_URL = None
 # for the Bango flow when True.
 FAKE_PAYMENTS = True
 
+# Instead of relying on Bango's postback and signature verification
+# just pretend everything is ok and send post notifications to the app.
+# This is temporary and should go away in bug 795143
+FAKE_PAY_COMPLETE = FAKE_PAYMENTS
+
 # Control which Persona server you use for logins.
 # This is useful for switching to a development Persona server.
 

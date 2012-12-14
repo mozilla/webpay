@@ -13,3 +13,4 @@ TEMPLATE_DEBUG = True
 # We want to act as if we are hitting Solitude APIs even though it will
 # be intercepted by mock objects.
 FAKE_PAYMENTS = False
+FAKE_PAY_COMPLETE = FAKE_PAYMENTS
