@@ -157,7 +157,7 @@ class SolitudeAPI(object):
             log.info('transaction %s: bango product: %s'
                      % (webpay_trans_id, bango_product_uri))
 
-        res = self.slumber.bango('create-billing').post({
+        res = self.slumber.bango.billing.post({
             'pageTitle': product_name,
             'price_currency': currency,
             'price_amount': str(amount),
