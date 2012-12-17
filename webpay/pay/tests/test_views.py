@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 
 import mock
+from nose import SkipTest
 from nose.tools import eq_
 
 from webpay.pay.forms import VerifyForm
@@ -74,7 +75,9 @@ class TestVerify(Base):
     def test_get(self):
         eq_(self.client.get(self.url).status_code, 400)
 
-    def test_inapp(self):
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
+    def test_inapp(self, get_secret):
+        get_secret.return_value = self.secret
         payload = self.request(iss=self.key, app_secret=self.secret)
         eq_(self.get(payload).status_code, 200)
 
@@ -164,13 +167,19 @@ class TestForm(Base):
     def test_unicode(self):
         self.failed(VerifyForm({'req': u'Հ'}))
 
-    def test_non_existant(self):
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
+    def test_non_existant(self, get_secret):
+        get_secret.side_effect = ValueError
         payload = self.request(iss=self.key + '.nope', app_secret=self.secret)
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             form = VerifyForm({'req': payload})
             assert not form.is_valid()
 
     def test_not_public(self):
+        # Should this be moved down to solitude? There currently isn't
+        # an active status in solitude.
+        raise SkipTest
+
         self.iss.status = ISSUER_INACTIVE
         self.iss.save()
         payload = self.request(iss=self.key, app_secret=self.secret)
@@ -178,7 +187,9 @@ class TestForm(Base):
             form = VerifyForm({'req': payload})
             assert not form.is_valid()
 
-    def test_valid_inapp(self):
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
+    def test_valid_inapp(self, get_secret):
+        get_secret.return_value = self.secret
         payload = self.request(iss=self.key, app_secret=self.secret)
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             form = VerifyForm({'req': payload})

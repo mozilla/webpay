@@ -4,7 +4,7 @@ from django.conf import settings
 import jwt
 from tower import ugettext as _
 
-from models import Issuer, ISSUER_ACTIVE
+from lib.solitude.api import client
 
 
 class VerifyForm(forms.Form):
@@ -35,15 +35,14 @@ class VerifyForm(forms.Form):
             # This is an app purchase because it matches the settings.
             self.key, self.secret = app_id, settings.SECRET
         else:
-            # In app config, go look it up.
             try:
-                issuer = Issuer.objects.get(issuer_key=app_id,
-                                            status=ISSUER_ACTIVE)
-            except Issuer.DoesNotExist:
+                # Assuming that the app_id is also going to be the seller.uuid.
+                secret = client.get_secret(app_id)
+            except ValueError:
                 raise forms.ValidationError(
                     # L10n: the first argument is a key to identify an issuer.
                     _('No one has been registered for JWT issuer {0}.')
                     .format(repr(app_id)))
-            self.key, self.secret = app_id, issuer.get_private_key()
+            self.key, self.secret = app_id, secret
 
         return data
