@@ -15,12 +15,19 @@ Install system requirements with `homebrew`_ (Mac OS X)::
     brew tap homebrew/versions
     brew install python26 mysql swig nodejs
 
-Clone the source::
+To develop locally you also need an instance of the
+`Solitude`_ payment API running. If you run it with mock services
+(such as ``BANGO_MOCK=True``) then things will still work.
+You can configure webpay with ``SOLITUDE_URL`` pointing at your
+localhost.
+
+Let's install webpay! Clone the source::
 
     git clone git://github.com/mozilla/webpay.git
 
-Install all dependencies. You probably want to do this within a `virtualenv`_.
-If you use `virtualenvwrapper`_ (recommended) set yourself up with::
+Install all Python dependencies. You probably want to do this
+within a `virtualenv`_. If you use `virtualenvwrapper`_ (recommended)
+set yourself up with::
 
     mkvirtualenv --python=python2.6 webpay
 
@@ -184,3 +191,4 @@ active. That is, switch it off.
 .. _less: http://lesscss.org/
 .. _npm: https://npmjs.org/
 .. _`nightly B2G desktop`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/
+.. _`Solitude`: https://solitude.readthedocs.org/en/latest/index.html
