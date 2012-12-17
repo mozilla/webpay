@@ -1,3 +1,5 @@
+import json
+
 from django import test
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -6,6 +8,10 @@ from django.utils.importlib import import_module
 
 import mock
 from nose.tools import eq_
+
+from webpay.auth.utils import client
+from webpay.auth import views as auth_views
+
 
 good_assertion = {u'status': u'okay',
                   u'audience': u'http://some.site',
@@ -48,6 +54,7 @@ class SessionTestCase(test.TestCase):
         del self.client.cookies[settings.SESSION_COOKIE_NAME]
 
 
+@mock.patch.object(client, 'buyer_has_pin', lambda *args: False)
 @mock.patch.object(settings, 'DOMAIN', 'web.pay')
 class TestAuth(SessionTestCase):
 
@@ -76,3 +83,41 @@ class TestAuth(SessionTestCase):
         verify_assertion.return_value = False
         eq_(self.client.post(self.url, {'assertion': 'bad'}).status_code, 400)
         eq_(self.client.session.get('uuid'), None)
+
+
+@mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
+class TestBuyerHasPin(SessionTestCase):
+
+    def do_auth(self):
+        res = self.client.post(reverse('auth.verify'), {'assertion': 'good'})
+        eq_(res.status_code, 200, res)
+        return json.loads(res.content)
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_no_user(self, slumber):
+        slumber.generic.buyer.get.return_value = {
+            'meta': {'total_count': 0}
+        }
+        data = self.do_auth()
+        eq_(self.client.session.get('uuid_has_pin'), False)
+        eq_(data['has_pin'], False)
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_user_no_pin(self, slumber):
+        slumber.generic.buyer.get.return_value = {
+            'meta': {'total_count': 1},
+            'objects': [{'pin': False}]
+        }
+        self.do_auth()
+        eq_(self.client.session.get('uuid_has_pin'), False)
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_user_with_pin(self, slumber):
+        slumber.generic.buyer.get.return_value = {
+            'meta': {'total_count': 1},
+            'objects': [{'pin': True}]
+        }
+        data = self.do_auth()
+        eq_(self.client.session.get('uuid_has_pin'), True)
+        eq_(data['has_pin'], True)
+        eq_(data['pin_create'], reverse('pin.create'))

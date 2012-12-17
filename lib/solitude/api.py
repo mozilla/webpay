@@ -57,6 +57,18 @@ class SolitudeAPI(object):
             return {'errors': res}
         return res
 
+    def buyer_has_pin(self, uuid):
+        """Returns True if the existing buyer has a PIN.
+
+        :param uuid: String to identify the buyer by.
+        :rtype: boolean
+        """
+        res = self.safe_run(self.slumber.generic.buyer.get, **{'uuid': uuid})
+        if res['meta']['total_count'] == 0:
+            return False
+        else:
+            return res['objects'][0]['pin']
+
     def create_buyer(self, uuid, pin=None):
         """Creates a buyer with an optional PIN in solitude.
 
@@ -138,20 +150,14 @@ class SolitudeAPI(object):
             seller_product__external_id=product_id
         )
         if res['meta']['total_count'] == 0:
-            # TODO(Kumar) create products on the fly. bug 820164
-            raise NotImplementedError(
-                'this product does not exist and must be created')
-
-            # Create the product on the fly.
-            # This case exists for in-app purchases where the
-            # seller is selling a new item for the first time.
-
+            bango_product_uri = self.create_product(product_id,
+                    product_name, currency, amount, res['objects'][0])
         else:
             bango_product_uri = res['objects'][0]['resource_uri']
             log.info('transaction %s: bango product: %s'
                      % (webpay_trans_id, bango_product_uri))
 
-        res = self.slumber.bango('create-billing').post({
+        res = self.slumber.bango.billing.post({
             'pageTitle': product_name,
             'price_currency': currency,
             'price_amount': str(amount),
@@ -161,6 +167,39 @@ class SolitudeAPI(object):
         log.info('transaction %s: billing config ID: %s'
                  % (webpay_trans_id, bill_id))
         return bill_id
+
+    def create_product(self, external_id, product_name, currency, amount, seller):
+        """
+        Creates a product and a Bango ID on the fly in solitude.
+        """
+        if not seller['bango']:
+            raise ValueError('No bango account set up for %s' %
+                             seller['resource_pk'])
+
+        product = self.slumber.generic.product.post({
+            'external_id': external_id,
+            'seller': seller['bango']['seller']
+        })
+        bango = self.slumber.bango.product.post({
+            'seller_bango': seller['bango']['resource_uri'],
+            'seller_product': product['resource_uri'],
+            'name': product_name,
+            'categoryId': 1,
+            'secret': 'n'  # This is likely going to be removed.
+        })
+        self.slumber.bango.premium.post({
+            'price': amount,
+            'currencyIso': currency,
+            'seller_product_bango': bango['resource_uri']
+        })
+
+        self.slumber.bango.rating.post({
+            'rating': 'UNIVERSAL',
+            'ratingScheme': 'GLOBAL',
+            'seller_product_bango': bango['resource_uri']
+        })
+        return bango['resource_uri']
+
 
 
 if getattr(settings, 'SOLITUDE_URL', False):

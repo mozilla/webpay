@@ -13,11 +13,12 @@ from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
 from webpay.auth.decorators import user_verified
+from webpay.base.decorators import json_view
 from webpay.pin.forms import VerifyPinForm
 from . import tasks
 from .forms import VerifyForm
-from .models import (Issuer, Transaction, TRANS_STATE_PENDING,
-                     TRANS_STATE_COMPLETED)
+from .models import (Issuer, Transaction, TRANS_STATE_COMPLETED,
+                     TRANS_STATE_PENDING, TRANS_STATE_READY)
 
 log = commonware.log.getLogger('w.pay')
 
@@ -91,8 +92,9 @@ def complete(request):
     if 'trans_id' not in request.session:
         return http.HttpResponseBadRequest()
     # Simulate app purchase!
-    # TODO(Kumar): fixme
-    if settings.FAKE_PAYMENTS:
+    # TODO(Kumar): fixme. See bug 795143
+    if settings.FAKE_PAY_COMPLETE:
+        log.warning('Completing fake transaction without checking signature')
         trans = Transaction.objects.get(pk=request.session['trans_id'])
         trans.state = TRANS_STATE_COMPLETED
         trans.save()
@@ -110,6 +112,13 @@ def fakepay(request):
 
 @user_verified
 @require_GET
+def fake_bango_url(request):
+    return render(request, 'pay/fake-bango-url.html',
+                  {'bill_config_id': request.GET['bcid']})
+
+
+@user_verified
+@require_GET
 def wait_to_start(request):
     """
     Wait until the transaction is in a ready state.
@@ -118,24 +127,23 @@ def wait_to_start(request):
     When ready, redirect to the Bango payment URL using
     the generated billing configuration ID.
     """
-    # TODO(Kumar) Create view to poll transaction state and redirect
-    # to bango URL based on billing config ID. Bug 820192.
-    return http.HttpResponse('view not yet implemented')
-    #return render(request, 'pay/wait_to_start.html')
+    trans = Transaction.objects.get(pk=request.session['trans_id'])
+    if trans.state == TRANS_STATE_READY:
+        # The transaction is ready; no need to wait for it.
+        return http.HttpResponseRedirect(
+            settings.BANGO_PAY_URL % trans.bango_config_id)
+    return render(request, 'pay/wait-to-start.html')
 
 
 @user_verified
+@json_view
 @require_GET
-def trans_start_url(request, trans_id):
+def trans_start_url(request):
     """
     JSON handler to get the Bango payment URL to start a transaction.
     """
-    # TODO(Kumar) Poll transaction for URL. Bug 820192.
-    # TODO(Kumar) 403 if the transaction was not started by the logged in user.
-    raise NotImplementedError('view does not exist')
-    #trans = Transaction.objects.get(pk=trans_id)
-    #data = {'url': None, 'state': trans.state}
-    #if trans.state == TRANS_STATE_READY:
-    #    data['url'] = ('http://mozilla.test.bango.org/mozpayments/?bcid=%s'
-    #                   % trans.bango_config_id)
-    #return data
+    trans = Transaction.objects.get(pk=request.session['trans_id'])
+    data = {'url': None, 'state': trans.state}
+    if trans.state == TRANS_STATE_READY:
+        data['url'] = settings.BANGO_PAY_URL % trans.bango_config_id
+    return data

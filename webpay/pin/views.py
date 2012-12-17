@@ -6,7 +6,7 @@ import commonware.log
 
 from lib.solitude.api import client
 from webpay.auth.decorators import user_verified
-from webpay.auth.utils import get_user
+from webpay.auth.utils import get_user, set_user_has_pin
 from webpay.pay import get_payment_url
 from . import forms
 
@@ -24,6 +24,7 @@ def create(request):
             else:
                 res = client.create_buyer(form.uuid, form.cleaned_data['pin'])
             if form.handle_client_errors(res):
+                set_user_has_pin(request, True)
                 return http.HttpResponseRedirect(reverse('pin.confirm'))
     return render(request, 'pin/create.html', {'form': form})
 

@@ -284,15 +284,12 @@ class TestStartPay(test_utils.TestCase):
         self.trans = Transaction.objects.get(pk=self.trans.pk)
 
     def set_billing_id(self, slumber, num):
-        # Set up a call to /bango/billing-config
-        billing = mock.Mock()
-        slumber.bango.return_value = billing
-        billing.post.return_value = {
+        slumber.bango.billing.post.return_value = {
             'resource_pk': '3333',
             'billingConfigurationId': num,
             'responseMessage': 'Success',
             'responseCode': 'OK',
-            'resource_uri': '/bango/create-billing/3333/'
+            'resource_uri': '/bango/billing/3333/'
         }
 
     @raises(tasks.TransactionOutOfSync)

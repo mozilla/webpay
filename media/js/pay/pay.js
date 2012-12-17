@@ -32,11 +32,14 @@ $(function() {
             $.post(verifyUrl, {assertion: assertion})
             .success(function(data, textStatus, jqXHR) {
                 console.log('login success');
-                $('.message').hide();
-                $('#enter-pin').fadeIn();
-                console.log($('#pin [name="pin"]')[0]);
-                $('#pin [name="pin"]')[0].focus();
-                console.log('foo');
+                if (!data.has_pin) {
+                    window.location = data.pin_create;
+                } else {
+                    $('.message').hide();
+                    $('#enter-pin').fadeIn();
+                    console.log($('#pin [name="pin"]')[0]);
+                    $('#pin [name="pin"]')[0].focus();
+                }
             })
             .error(function() {
                 console.log('login error');
