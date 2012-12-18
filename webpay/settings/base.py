@@ -200,3 +200,6 @@ BROWSERID_JS_URL = 'https://notoriousb2g.personatest.org/include.js'
 # This is the URL for the bango payment screen.
 # It will receive one string substitution: the billing configuration ID.
 BANGO_PAY_URL = 'http://mozilla.test.bango.org/mozpayments/?bcid=%s'
+
+# This is the URL to the marketplace.
+MARKETPLACE_URL = None

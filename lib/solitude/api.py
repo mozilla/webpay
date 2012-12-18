@@ -1,11 +1,9 @@
-import json
 import logging
 
 from django.conf import settings
 
-from slumber import API
-from slumber.exceptions import HttpClientError
 
+from ..utils import SlumberWrapper
 from .errors import ERROR_STRINGS
 
 
@@ -17,14 +15,12 @@ class SellerNotConfigured(Exception):
     """The seller has not yet been configued for the payment."""
 
 
-class SolitudeAPI(object):
+class SolitudeAPI(SlumberWrapper):
     """A solitude API client.
 
     :param url: URL of the solitude endpoint.
     """
-
-    def __init__(self, url):
-        self.slumber = API(url)
+    errors = ERROR_STRINGS
 
     def _buyer_from_response(self, res):
         buyer = {}
@@ -39,23 +35,6 @@ class SolitudeAPI(object):
             buyer['pin'] = res['pin']
             buyer['uuid'] = res['uuid']
         return buyer
-
-    def parse_res(self, res):
-        if res == '':
-            return {}
-        if isinstance(res, (str, unicode)):
-            return json.loads(res)
-        return res
-
-    def safe_run(self, command, *args, **kwargs):
-        try:
-            res = command(*args, **kwargs)
-        except HttpClientError as e:
-            res = self.parse_res(e.response.content)
-            for key, value in res.iteritems():
-                res[key] = [ERROR_STRINGS[v] for v in value]
-            return {'errors': res}
-        return res
 
     def buyer_has_pin(self, uuid):
         """Returns True if the existing buyer has a PIN.
@@ -180,7 +159,8 @@ class SolitudeAPI(object):
                  % (webpay_trans_id, bill_id))
         return bill_id
 
-    def create_product(self, external_id, product_name, currency, amount, seller):
+    def create_product(self, external_id, product_name, currency, amount,
+                       seller):
         """
         Creates a product and a Bango ID on the fly in solitude.
         """
@@ -211,7 +191,6 @@ class SolitudeAPI(object):
             'seller_product_bango': bango['resource_uri']
         })
         return bango['resource_uri']
-
 
 
 if getattr(settings, 'SOLITUDE_URL', False):
