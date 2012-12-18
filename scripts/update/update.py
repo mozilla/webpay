@@ -43,14 +43,6 @@ def update_code(ctx, ref='origin/master'):
 
 
 @task
-@hostgroups(settings.CELERY_HOSTGROUP, remote_kwargs={'ssh_key': settings.SSH_KEY})
-def update_celery(ctx):
-    ctx.remote(settings.REMOTE_UPDATE_SCRIPT)
-    if getattr(settings, 'CELERY_SERVICE', False):
-        ctx.remote("/sbin/service %s restart" % settings.CELERY_SERVICE)
-
-
-@task
 def compress_assets(ctx, arg=''):
     with ctx.lcd(settings.SRC_DIR):
         ctx.local("%s manage.py compress_assets %s" % (settings.PYTHON, arg))
@@ -81,6 +73,13 @@ def deploy_app(ctx):
             ctx.remote("/sbin/service %s graceful" % gservice)
     else:
         ctx.remote("/bin/touch %s/wsgi/playdoh.wsgi" % settings.REMOTE_APP)
+
+
+@hostgroups(settings.CELERY_HOSTGROUP, remote_kwargs={'ssh_key': settings.SSH_KEY})
+def update_celery(ctx):
+    ctx.remote(settings.REMOTE_UPDATE_SCRIPT)
+    if getattr(settings, 'CELERY_SERVICE', False):
+        ctx.remote("/sbin/service %s restart" % settings.CELERY_SERVICE)
 
 @task
 def deploy(ctx):
