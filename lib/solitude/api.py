@@ -92,7 +92,8 @@ class SolitudeAPI(SlumberWrapper):
         :rtype: dictionary
         """
         res = self.parse_res(self.safe_run(self.slumber.generic.product.get,
-                                           uuid=uuid))
+                                           seller__active=True,
+                                           seller__uuid=uuid))
         if len(res['objects']) != 1:
             raise ValueError('Not exactly one result found.')
         return res['objects'][0]['secret']

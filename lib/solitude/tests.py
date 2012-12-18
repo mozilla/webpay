@@ -3,7 +3,7 @@ from django.test import TestCase
 
 import mock
 from nose.exc import SkipTest
-from nose.tools import eq_
+from nose.tools import eq_, ok_
 
 from lib.solitude.api import client
 from lib.solitude.errors import ERROR_STRINGS
@@ -141,3 +141,4 @@ class SecretTest(TestCase):
         slumber.generic.product.get.return_value = {'objects':
                                                     [{'secret': 'k'}]}
         eq_(client.get_secret('x'), 'k')
+        ok_(slumber.generic.product.get.call_args[1]['seller__active'])
