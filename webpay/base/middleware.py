@@ -1,3 +1,5 @@
+import json
+import pprint
 import sys
 import traceback
 
@@ -16,6 +18,12 @@ class LogExceptionsMiddleware:
     would not otherwise show the Django debug page.
     """
     def process_exception(self, request, exception):
+        if hasattr(exception, 'content'):
+            try:
+                # Solitude JSON error.
+                pprint.pprint(json.loads(exception.content))
+            except Exception, exc:
+                print 'Could not load exception as JSON: %s' % exc
         traceback.print_exception(*sys.exc_info())
 
 
