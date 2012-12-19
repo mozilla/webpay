@@ -6,6 +6,7 @@ import time
 import urlparse
 
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import transaction
 
 from celeryutils import task
@@ -13,6 +14,7 @@ import jwt
 from lib.solitude.api import client
 from multidb.pinning import use_master
 
+from webpay.base.helpers import absolutify
 from .models import (Notice, Transaction, TRANS_PAY, TRANS_REFUND,
                      TRANS_STATE_FAILED, TRANS_STATE_PENDING,
                      TRANS_STATE_READY)
@@ -67,6 +69,8 @@ def start_pay(trans_id, **kw):
             trans.name,  # app/product name
             trans.currency,
             trans.amount,
+            absolutify(reverse('bango.success')),
+            absolutify(reverse('bango.error')),
         )
         trans.bango_config_id = bill_id
         trans.state = TRANS_STATE_READY
