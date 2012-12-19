@@ -5,8 +5,5 @@
     Charge this payment to your bill (not really)
   </div>
   <p>
-    <form action="{{ url('pay.complete') }}" method="post">
-      <input type="submit" value="Complete the payment">
-    </form>
+    <a href="{{ url('bango.success') }}">Complete the payment</a>
   </p>
-{% endblock %}

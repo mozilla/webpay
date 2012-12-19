@@ -11,6 +11,7 @@ ROOT_URLCONF = '%s.urls' % PROJECT_MODULE
 
 INSTALLED_APPS = list(INSTALLED_APPS) + [
     'webpay.base',  # Needed for global templates, etc.
+    'webpay.bango',
     'webpay.pay',
     'webpay.pin',
     'webpay.services',

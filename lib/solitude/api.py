@@ -133,7 +133,9 @@ class SolitudeAPI(object):
     def configure_product_for_billing(self, webpay_trans_id,
                                       seller_uuid,
                                       product_id, product_name,
-                                      currency, amount):
+                                      currency, amount,
+                                      redirect_url_onsuccess,
+                                      redirect_url_onerror):
         """
         Get the billing configuration ID for a Bango transaction.
         """
@@ -161,7 +163,9 @@ class SolitudeAPI(object):
             'pageTitle': product_name,
             'price_currency': currency,
             'price_amount': str(amount),
-            'seller_product_bango': bango_product_uri
+            'seller_product_bango': bango_product_uri,
+            'redirect_url_onsuccess': redirect_url_onsuccess,
+            'redirect_url_onerror': redirect_url_onerror,
         })
         bill_id = res['billingConfigurationId']
         log.info('transaction %s: billing config ID: %s'

@@ -4,7 +4,7 @@ import json
 from django import http
 from django.conf import settings
 from django.shortcuts import render
-from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.http import require_GET
 
 import commonware.log
 from moz_inapp_pay.exc import InvalidJWT, RequestExpired
@@ -17,8 +17,8 @@ from webpay.base.decorators import json_view
 from webpay.pin.forms import VerifyPinForm
 from . import tasks
 from .forms import VerifyForm
-from .models import (Issuer, Transaction, TRANS_STATE_COMPLETED,
-                     TRANS_STATE_PENDING, TRANS_STATE_READY)
+from .models import (Issuer, Transaction, TRANS_STATE_PENDING,
+                     TRANS_STATE_READY)
 
 log = commonware.log.getLogger('w.pay')
 
@@ -84,22 +84,6 @@ def lobby(request):
         tasks.start_pay.delay(request.session['trans_id'])
 
     return render(request, 'pay/lobby.html', {'pin_form': pin_form})
-
-
-@anonymous_csrf_exempt
-@require_POST
-def complete(request):
-    if 'trans_id' not in request.session:
-        return http.HttpResponseBadRequest()
-    # Simulate app purchase!
-    # TODO(Kumar): fixme. See bug 795143
-    if settings.FAKE_PAY_COMPLETE:
-        log.warning('Completing fake transaction without checking signature')
-        trans = Transaction.objects.get(pk=request.session['trans_id'])
-        trans.state = TRANS_STATE_COMPLETED
-        trans.save()
-        tasks.payment_notify.delay(trans.pk)
-    return render(request, 'pay/complete.html')
 
 
 @anonymous_csrf_exempt
