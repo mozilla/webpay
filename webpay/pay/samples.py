@@ -27,10 +27,7 @@ class JWTtester(unittest.TestCase):
             exp = iat + 3600  # Expires in 1 hour.
 
         req = {
-            'price': [{
-                'amount': '0.99',
-                'currency': 'USD',
-            }],
+            'pricePoint': 1,
             'id': 'some-generated-unique-id',
             'name': 'My bands latest album',
             'description': '320kbps MP3 download, DRM free!',

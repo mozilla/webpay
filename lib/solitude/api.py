@@ -125,9 +125,9 @@ class SolitudeAPI(SlumberWrapper):
     def configure_product_for_billing(self, webpay_trans_id,
                                       seller_uuid,
                                       product_id, product_name,
-                                      currency, amount,
                                       redirect_url_onsuccess,
-                                      redirect_url_onerror):
+                                      redirect_url_onerror,
+                                      prices):
         """
         Get the billing configuration ID for a Bango transaction.
         """
@@ -145,7 +145,9 @@ class SolitudeAPI(SlumberWrapper):
         )
         if res['meta']['total_count'] == 0:
             bango_product_uri = self.create_product(product_id,
-                    product_name, currency, amount, res['objects'][0])
+                    # TODO: look at why we need currency and price for the
+                    # premium call. This might be a Bango issue.
+                    product_name, 1, 'EUR', res['objects'][0])
         else:
             bango_product_uri = res['objects'][0]['resource_uri']
             log.info('transaction %s: bango product: %s'
@@ -153,8 +155,7 @@ class SolitudeAPI(SlumberWrapper):
 
         res = self.slumber.bango.billing.post({
             'pageTitle': product_name,
-            'price_currency': currency,
-            'price_amount': str(amount),
+            'prices': prices,
             'seller_product_bango': bango_product_uri,
             'redirect_url_onsuccess': redirect_url_onsuccess,
             'redirect_url_onerror': redirect_url_onerror,

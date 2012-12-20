@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 
 import mock
 from nose import SkipTest
-from nose.tools import eq_
+from nose.tools import eq_, ok_
 
 from webpay.pay.forms import VerifyForm
 from webpay.pay.models import (Issuer, ISSUER_ACTIVE, ISSUER_INACTIVE,
@@ -76,16 +76,21 @@ class TestVerify(Base):
         eq_(self.client.get(self.url).status_code, 400)
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
-    def test_inapp(self, get_secret):
+    @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
+    def test_inapp(self, get_price, get_secret):
         get_secret.return_value = self.secret
         payload = self.request(iss=self.key, app_secret=self.secret)
         eq_(self.get(payload).status_code, 200)
 
-    def test_inapp_wrong_secret(self):
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
+    def test_inapp_wrong_secret(self, get_secret):
+        get_secret.return_value = self.secret
         payload = self.request(iss=self.key, app_secret=self.secret + '.nope')
         eq_(self.get(payload).status_code, 400)
 
-    def test_inapp_wrong_key(self):
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
+    def test_inapp_wrong_key(self, get_secret):
+        get_secret.side_effect = ValueError
         payload = self.request(iss=self.key + '.nope', app_secret=self.secret)
         eq_(self.get(payload).status_code, 400)
 
@@ -95,24 +100,25 @@ class TestVerify(Base):
     def test_unicode_payload(self):
         eq_(self.get(u'Հ').status_code, 400)
 
-    def test_purchase(self):
+    @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
+    def test_purchase(self, get_price):
         payload = self.request()
         eq_(self.get(payload).status_code, 200)
         trans = Transaction.objects.get()
         eq_(trans.state, TRANS_STATE_PENDING)
         eq_(trans.issuer, None)
         eq_(trans.issuer_key, settings.KEY)
-        self.start_pay.delay.assert_called_with(trans.pk)
+        ok_(self.start_pay.delay.call_args[0][0], trans.pk)
 
-    def test_missing_price(self):
+    def test_missing_tier(self):
         payjwt = self.payload()
-        del payjwt['request']['price']
+        del payjwt['request']['pricePoint']
         payload = self.request(payload=payjwt)
         eq_(self.get(payload).status_code, 400)
 
-    def test_empty_price(self):
+    def test_empty_tier(self):
         payjwt = self.payload()
-        payjwt['request']['price'] = []
+        payjwt['request']['pricePoint'] = ''
         payload = self.request(payload=payjwt)
         eq_(self.get(payload).status_code, 400)
 

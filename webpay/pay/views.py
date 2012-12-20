@@ -1,4 +1,3 @@
-from decimal import Decimal
 import json
 
 from django import http
@@ -15,6 +14,9 @@ from tower import ugettext as _
 from webpay.auth.decorators import user_verified
 from webpay.base.decorators import json_view
 from webpay.pin.forms import VerifyPinForm
+
+from lib.marketplace.api import client, HttpClientError, TierNotFound
+
 from . import tasks
 from .forms import VerifyForm
 from .models import (Issuer, Transaction, TRANS_STATE_PENDING,
@@ -47,12 +49,18 @@ def lobby(request):
             settings.DOMAIN,  # JWT audience.
             form.secret,
             required_keys=('request.id',
-                           'request.price',  # An array of
-                                             # price/currency
+                           'request.pricePoint',  # A price tier we'll lookup.
                            'request.name',
                            'request.description'))
     except (TypeError, InvalidJWT, RequestExpired), exc:
         log.exception('calling verify_jwt')
+        return _error(request, exception=exc)
+
+    # Assert pricePoint is valid.
+    try:
+        client.get_price(pay_req['request']['pricePoint'])
+    except (TierNotFound, HttpClientError), exc:
+        log.exception('calling verifying tier')
         return _error(request, exception=exc)
 
     try:
@@ -70,18 +78,21 @@ def lobby(request):
        issuer=iss,
        issuer_key=form.key,
        product_id=pay_req['request']['id'],
-       amount=Decimal(pay_req['request']['price'][0]['amount']),
-       currency=pay_req['request']['price'][0]['currency'],
+       amount=1,  # Set this temporarily until we remove transactions.
+       currency='USD',  # This too.
        name=pay_req['request']['name'],
        description=desc,
        json_request=json.dumps(pay_req))
+
     request.session['trans_id'] = trans.pk
+    request.session['pay_request'] = pay_req
 
     # Before we verify the user's PIN let's save some
     # time and get the transaction configured via Bango in the
     # background.
     if not settings.FAKE_PAYMENTS:
-        tasks.start_pay.delay(request.session['trans_id'])
+        tasks.start_pay.delay(request.session['trans_id'],
+                              request.session['pay_request'])
 
     return render(request, 'pay/lobby.html', {'pin_form': pin_form})
 

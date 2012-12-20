@@ -11,6 +11,7 @@ from django.db import transaction
 
 from celeryutils import task
 import jwt
+from lib.marketplace.api import client as mkt_client
 from lib.solitude.api import client
 from multidb.pinning import use_master
 
@@ -32,7 +33,7 @@ class TransactionOutOfSync(Exception):
 @task
 @use_master
 @transaction.commit_on_success
-def start_pay(trans_id, **kw):
+def start_pay(trans_id, pay_request, **kw):
     """
     Work with Solitude to begin a Bango payment.
 
@@ -62,15 +63,15 @@ def start_pay(trans_id, **kw):
             log.info('Using real seller_uuid %r for Marketplace %r '
                      'app payment' % (seller_uuid, settings.KEY))
 
+        prices = mkt_client.get_price(pay_request['request']['pricePoint'])
         bill_id = client.configure_product_for_billing(
             trans.pk,
             seller_uuid,
             trans.product_id,
             trans.name,  # app/product name
-            trans.currency,
-            trans.amount,
             absolutify(reverse('bango.success')),
             absolutify(reverse('bango.error')),
+            prices['prices']
         )
         trans.bango_config_id = bill_id
         trans.state = TRANS_STATE_READY

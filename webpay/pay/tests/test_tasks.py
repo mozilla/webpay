@@ -10,6 +10,7 @@ from django.conf import settings
 import fudge
 from fudge.inspector import arg
 import jwt
+from lib.marketplace.api import TierNotFound
 from lib.solitude import api
 import mock
 from nose.tools import eq_, raises
@@ -50,8 +51,8 @@ class TestNotifyApp(JWTtester, test.TestCase):
             state=TRANS_STATE_COMPLETED,
             issuer=self.iss,
             issuer_key=self.iss.issuer_key,
-            amount=Decimal(app_payment['request']['price'][0]['amount']),
-            currency=app_payment['request']['price'][0]['currency'],
+            amount=1,  # Temporary until we get rid of transactions.
+            currency='USD',  # This too.
             name=app_payment['request']['name'],
             description=app_payment['request']['description'],
             json_request=json.dumps(app_payment))
@@ -233,10 +234,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
             eq_(data['iss'], settings.NOTIFY_ISSUER)
             eq_(data['aud'], self.iss.issuer_key)
             eq_(data['typ'], 'mozilla/payments/pay/postback/v1')
-            eq_(data['request']['price'][0]['amount'],
-                app_payment['request']['price'][0]['amount'])
-            eq_(data['request']['price'][0]['currency'],
-                app_payment['request']['price'][0]['currency'])
+            eq_(data['request']['pricePoint'], 1)
             eq_(data['request']['name'], app_payment['request']['name'])
             eq_(data['request']['description'],
                 app_payment['request']['description'])
@@ -272,12 +270,14 @@ class TestStartPay(test_utils.TestCase):
             description='A sword to use in Awesome Castle Game',
             json_request='{}',
         )
+        self.payload = {'request': {'pricePoint': 1}}
+        self.prices = {'prices': {'amount': 1, 'currency': 'EUR'}}
 
     def get_trans(self):
         return Transaction.objects.get(pk=self.trans.pk)
 
     def start(self):
-        tasks.start_pay(self.trans.pk)
+        tasks.start_pay(self.trans.pk, self.payload)
 
     def update(self, **kw):
         Transaction.objects.filter(pk=self.trans.pk).update(**kw)
@@ -304,14 +304,18 @@ class TestStartPay(test_utils.TestCase):
 
     @raises(api.SellerNotConfigured)
     @mock.patch('lib.solitude.api.client.slumber')
-    def test_no_seller(self, slumber):
-        slumber.generic.seller.get.return_value = {'meta': {'total_count': 0}}
+    @mock.patch('lib.marketplace.api.client.slumber')
+    def test_no_seller(self,  marketplace, solitude):
+        marketplace.webpay.prices.return_value = self.prices
+        solitude.generic.seller.get.return_value = {'meta': {'total_count': 0}}
         self.start()
         eq_(self.get_trans().state, TRANS_STATE_FAILED)
 
     @mock.patch('lib.solitude.api.client.slumber')
-    def test_existing_product(self, slumber):
-        slumber.generic.seller.get.return_value = {
+    @mock.patch('lib.marketplace.api.client.slumber')
+    def test_existing_product(self, marketplace, solitude):
+        marketplace.webpay.prices.return_value = self.prices
+        solitude.generic.seller.get.return_value = {
             'meta': {'total_count': 1},
             'objects': [{
                 'resource_pk': 29,
@@ -319,7 +323,7 @@ class TestStartPay(test_utils.TestCase):
                 'resource_uri': '/generic/seller/29/'
             }]
         }
-        slumber.bango.product.get.return_value = {
+        solitude.bango.product.get.return_value = {
             'meta': {'total_count': 1},
             'objects': [{
                 'resource_pk': 15,
@@ -332,15 +336,34 @@ class TestStartPay(test_utils.TestCase):
                 '/bango/product/15/'
             }]
         }
-        self.set_billing_id(slumber, 123)
+        self.set_billing_id(solitude, 123)
         self.start()
         trans = self.get_trans()
         eq_(trans.state, TRANS_STATE_READY)
         eq_(trans.bango_config_id, 123)
 
     @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.slumber')
+    def test_price_used(self, marketplace, solitude):
+        prices = mock.Mock()
+        prices.get.return_value = self.prices
+        marketplace.api.webpay.prices.return_value = prices
+        self.set_billing_id(solitude, 123)
+        self.start()
+        eq_(solitude.bango.billing.post.call_args[0][0]['prices'],
+            self.prices['prices'])
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.slumber')
+    def test_price_fails(self, marketplace, solitude):
+        marketplace.api.webpay.prices.side_effect = TierNotFound
+        with self.assertRaises(TierNotFound):
+            self.start()
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.slumber')
     @raises(RuntimeError)
-    def test_exception_fails_transaction(self, slumber):
+    def test_exception_fails_transaction(self, marketplace, slumber):
         slumber.generic.seller.get.side_effect = RuntimeError
         self.start()
         trans = self.get_trans()
@@ -348,8 +371,10 @@ class TestStartPay(test_utils.TestCase):
 
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
     @mock.patch('lib.solitude.api.client.slumber')
-    def test_marketplace_seller_switch(self, slumber):
-        self.set_billing_id(slumber, 123)
+    @mock.patch('lib.marketplace.api.client.slumber')
+    def test_marketplace_seller_switch(self, marketplace, solitude):
+        marketplace.webpay.prices.return_value = self.prices
+        self.set_billing_id(solitude, 123)
 
         # Simulate how the Marketplace would add
         # a custom seller_uuid to the product data in the JWT.
@@ -361,7 +386,7 @@ class TestStartPay(test_utils.TestCase):
 
         self.start()
         # Check that the seller_uuid was switched to that of the app seller.
-        slumber.generic.seller.get.assert_called_with(
+        solitude.generic.seller.get.assert_called_with(
             uuid=app_seller_uuid)
 
     @raises(ValueError)
