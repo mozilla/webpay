@@ -37,12 +37,7 @@ class Command(BaseCommand):
             'typ': options['typ'],
             'exp': exp,
             'request': {
-                'price': [{
-                    'amount': options['amount'],
-                    'currency': options['cur'],
-                    # Temporary until bug 805123 lands.
-                    'country': 'xx'
-                }],
+                'pricePoint': 1,
                 'id': options['id'],  # Corresponds to seller's catalog
                 'defaultPrice': options['cur'],
                 'name': 'My bands latest album',
