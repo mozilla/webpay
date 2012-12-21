@@ -28,13 +28,11 @@ class SolitudeAPI(SlumberWrapper):
         if res.get('errors'):
             return res
         elif res.get('objects'):
-            buyer['id'] = res['objects'][0]['resource_pk']
-            buyer['pin'] = res['objects'][0]['pin']
-            buyer['uuid'] = res['objects'][0]['uuid']
+            buyer = res['objects'][0]
+            buyer['id'] = res['objects'][0].get('resource_pk')
         elif res.get('resource_pk'):
-            buyer['id'] = res['resource_pk']
-            buyer['pin'] = res['pin']
-            buyer['uuid'] = res['uuid']
+            buyer = res
+            buyer['id'] = res.get('resource_pk')
         return buyer
 
     def buyer_has_pin(self, uuid):
@@ -61,16 +59,49 @@ class SolitudeAPI(SlumberWrapper):
                                                               'pin': pin})
         return self._buyer_from_response(res)
 
-    def change_pin(self, buyer_id, pin):
-        """Changes a buyer's PIN in solitude.
+    def set_needs_pin_reset(self, uuid, value=True):
+        """Set flag for user to go through reset flow or not on next log in.
+
+        :param uuid: String to identify the buyer by.
+        :param value: Boolean for whether they should go into the reset flow or
+                      not, defaults to True
+        :rtype: dictionary
+        """
+        buyer = self.get_buyer(uuid)
+        res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
+                            {'needs_pin_reset': value})
+        if 'errors' in res:
+            return res
+        return {}
+
+    def change_pin(self, uuid, pin):
+        """Changes the pin of a buyer, for use with buyers who exist without
+        pins.
 
         :param buyer_id integer: ID of the buyer you'd like to change the PIN
                                  for.
-        :param pin: PIN to replace the buyer's pin with.
+        :param pin: PIN the user would like to change to.
         :rtype: dictionary
         """
-        res = self.safe_run(self.slumber.generic.buyer(id=buyer_id).patch,
+        buyer = self.get_buyer(uuid)
+        res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
                             {'pin': pin})
+        # Empty string is a good thing from tastypie for a PATCH.
+        if 'errors' in res:
+            return res
+        return {}
+
+    def set_new_pin(self, uuid, new_pin):
+        """Sets the new_pin for use with a buyer that is resetting their pin.
+
+        :param buyer_id integer: ID of the buyer you'd like to change the PIN
+                                 for.
+        :param pin: PIN the user would like to change to.
+        :rtype: dictionary
+        """
+        buyer = self.get_buyer(uuid)
+        res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
+                            {'new_pin': new_pin})
         # Empty string is a good thing from tastypie for a PATCH.
         if 'errors' in res:
             return res
@@ -108,6 +139,18 @@ class SolitudeAPI(SlumberWrapper):
         """
 
         res = self.safe_run(self.slumber.generic.confirm_pin.post,
+                            {'uuid': uuid, 'pin': pin})
+        return res.get('confirmed', False)
+
+    def reset_confirm_pin(self, uuid, pin):
+        """Confirms the buyer's pin, marking it at confirmed in solitude
+
+        :param uuid: String to identify the buyer by.
+        :param pin: PIN to confirm
+        :rtype: boolean
+        """
+
+        res = self.safe_run(self.slumber.generic.reset_confirm_pin.post,
                             {'uuid': uuid, 'pin': pin})
         return res.get('confirmed', False)
 

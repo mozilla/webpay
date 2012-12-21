@@ -32,8 +32,14 @@ def get_user(request):
 def set_user(request, email):
     uuid = get_uuid(email)
     request.session['uuid'] = uuid
-    set_user_has_pin(request, client.buyer_has_pin(uuid))
+    buyer = client.get_buyer(uuid)
+    set_user_has_pin(request, buyer.get('pin', False))
+    set_user_reset_pin(request, buyer.get('needs_pin_reset', False))
 
 
 def set_user_has_pin(request, has_pin):
     request.session['uuid_has_pin'] = has_pin
+
+
+def set_user_reset_pin(request, reset_pin):
+    request.session['uuid_reset_pin'] = reset_pin

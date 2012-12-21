@@ -1,18 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Create your PIN:</h2>
+  <h2>Your new PIN:</h2>
   <p>
-    <form id="pin" action="{{ url('pin.create') }}" method="post">
+    <form id="pin" action="{{ url('pin.reset_new_pin') }}" method="post">
       {{ csrf() }}
       {{ form.non_field_errors() }}
       <div class="pinbox">
         {{ form.pin }}
       </div>
       <footer>
-        {# TODO: This is supposed to be a cancel button
-        that takes you out of the webpay process #}
-        <a class="button" href="#">Cancel</a>
+        <a class="button" href="{{ url('pin.reset_cancel') }}">Cancel</a>
         <button type="submit">Continue</button>
       </footer>
     </form>

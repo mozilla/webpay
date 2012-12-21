@@ -10,7 +10,9 @@
         {{ form.pin }}
       </div>
       <footer>
-        <a class="button" href="{{ url('pin.change') }}">Forgot PIN</a>
+        {# TODO: This is supposed to be a cancel button
+        that takes you out of the webpay process #}
+        <a class="button" href="#">Cancel</a>
         <button type="submit">Continue</button>
       </footer>
     </form>

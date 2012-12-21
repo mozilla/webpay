@@ -30,3 +30,8 @@ def verify(request):
 
     request.session.clear()
     return http.HttpResponseBadRequest()
+
+
+def logout(request):
+    # do logout stuff
+    return

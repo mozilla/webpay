@@ -25,14 +25,6 @@ class SolitudeAPITest(TestCase):
             raise SkipTest
         client.create_buyer('dat:uuid', '1234')
 
-    def test_change_pin(self):
-        buyer_id = client.get_buyer(self.uuid)['id']
-        new_pin = self.pin[::-1]
-        eq_(client.change_pin(buyer_id, new_pin), {})
-        assert client.confirm_pin(self.uuid, new_pin)
-        assert client.verify_pin(self.uuid, new_pin)
-        eq_(client.change_pin(buyer_id, self.pin), {})
-
     def test_get_buyer(self):
         buyer = client.get_buyer(self.uuid)
         eq_(buyer.get('uuid'), self.uuid)
@@ -104,6 +96,50 @@ class SolitudeAPITest(TestCase):
 
     def test_verify_alpha_pin(self):
         assert not client.verify_pin(self.uuid, 'lame')
+
+    def test_reset_pin_flag_set(self):
+        # set
+        res = client.set_needs_pin_reset(self.uuid)
+        eq_(res, {})
+        buyer = client.get_buyer(self.uuid)
+        assert buyer['needs_pin_reset']
+
+        # unset
+        res = client.set_needs_pin_reset(self.uuid, False)
+        eq_(res, {})
+        buyer = client.get_buyer(self.uuid)
+        assert not buyer['needs_pin_reset']
+
+    def test_set_new_pin_for_reset(self):
+        uuid = 'set_new_pin_for_reset'
+        client.create_buyer(uuid, self.pin)
+        eq_(client.set_new_pin(uuid, '1122'), {})
+
+    def test_set_new_pin_for_reset_with_alpha_pin(self):
+        uuid = 'set_new_pin_for_reset_with_alpha_pin'
+        client.create_buyer(uuid, self.pin)
+        res = client.set_new_pin(uuid, 'meow')
+        assert res.get('errors')
+        eq_(res['errors'].get('new_pin'),
+            [ERROR_STRINGS['PIN may only consists of numbers']])
+
+    def test_reset_confirm_pin_with_good_pin(self):
+        uuid = 'reset_confirm_pin_good_pin'
+        new_pin = '1122'
+        client.create_buyer(uuid, self.pin)
+        client.set_new_pin(uuid, new_pin)
+        assert client.reset_confirm_pin(uuid, new_pin)
+        assert client.verify_pin(uuid, new_pin)
+
+    def test_reset_confirm_pin_with_bad_pin(self):
+        uuid = 'reset_confirm_pin_bad_pin'
+        new_pin = '1122'
+        client.create_buyer(uuid, self.pin)
+        client.set_new_pin(uuid, new_pin)
+        assert client.reset_confirm_pin(uuid, new_pin)
+        assert client.verify_pin(uuid, new_pin)
+        assert not client.reset_confirm_pin(uuid, self.pin)
+        assert client.verify_pin(uuid, new_pin)
 
 
 class CreateBangoTest(TestCase):

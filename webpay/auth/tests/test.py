@@ -54,7 +54,8 @@ class SessionTestCase(test.TestCase):
         del self.client.cookies[settings.SESSION_COOKIE_NAME]
 
 
-@mock.patch.object(client, 'buyer_has_pin', lambda *args: False)
+@mock.patch.object(client, 'get_buyer', lambda *args: {'pin': False,
+                                                     'needs_pin_reset': False})
 @mock.patch.object(settings, 'DOMAIN', 'web.pay')
 class TestAuth(SessionTestCase):
 
@@ -106,7 +107,8 @@ class TestBuyerHasPin(SessionTestCase):
     def test_user_no_pin(self, slumber):
         slumber.generic.buyer.get.return_value = {
             'meta': {'total_count': 1},
-            'objects': [{'pin': False}]
+            'objects': [{'pin': False,
+                         'needs_pin_reset': False}]
         }
         self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), False)
@@ -115,9 +117,47 @@ class TestBuyerHasPin(SessionTestCase):
     def test_user_with_pin(self, slumber):
         slumber.generic.buyer.get.return_value = {
             'meta': {'total_count': 1},
-            'objects': [{'pin': True}]
+            'objects': [{'pin': True,
+                         'needs_pin_reset': False}]
         }
         data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), True)
         eq_(data['has_pin'], True)
         eq_(data['pin_create'], reverse('pin.create'))
+
+
+@mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
+class TestBuyerHasResetFlag(SessionTestCase):
+
+    def do_auth(self):
+        res = self.client.post(reverse('auth.verify'), {'assertion': 'good'})
+        eq_(res.status_code, 200, res)
+        return json.loads(res.content)
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_no_user(self, slumber):
+        slumber.generic.buyer.get.return_value = {
+            'meta': {'total_count': 0}
+        }
+        data = self.do_auth()
+        eq_(self.client.session.get('uuid_reset_pin'), False)
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_user_no_reset_pin_flag(self, slumber):
+        slumber.generic.buyer.get.return_value = {
+            'meta': {'total_count': 1},
+            'objects': [{'pin': True,
+                         'needs_pin_reset': False}]
+        }
+        self.do_auth()
+        eq_(self.client.session.get('uuid_reset_pin'), False)
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_user_with_reset_pin_flag(self, slumber):
+        slumber.generic.buyer.get.return_value = {
+            'meta': {'total_count': 1},
+            'objects': [{'pin': True,
+                         'needs_pin_reset': True}]
+        }
+        data = self.do_auth()
+        eq_(self.client.session.get('uuid_reset_pin'), True)

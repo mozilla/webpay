@@ -50,14 +50,40 @@ def verify(request):
 
 
 @user_verified
-def change(request):
-    form = forms.ChangePinForm()
+def reset_start(request):
+    # TODO(Wraithan): Create dialog to make sure you meant to reset your pin
+    client.set_needs_pin_reset(get_user(request))
+    return http.HttpResponseRedirect(reverse('auth.logout'))
+
+
+@user_verified
+def reset_new_pin(request):
+    form = forms.CreatePinForm()
     if request.method == 'POST':
-        form = forms.ChangePinForm(uuid=get_user(request), data=request.POST)
+        form = forms.CreatePinForm(uuid=get_user(request), data=request.POST)
         if form.is_valid():
-            res = client.change_pin(form.buyer, form.cleaned_data['pin'])
+            res = client.set_new_pin(form.buyer, form.cleaned_data['pin'])
             if form.handle_client_errors(res):
-                # TODO(Wraithan): Replace with proper redirect
-                return render(request, 'pin/change_success.html',
-                              {'form': form})
-    return render(request, 'pin/change.html', {'form': form})
+                set_user_has_pin(request, True)
+                return http.HttpResponseRedirect(reverse('pin.reset_confirm'))
+    return render(request, 'pin/reset_create.html', {'form': form})
+
+
+@user_verified
+def reset_confirm(request):
+    form = forms.ConfirmPinForm()
+    if request.method == 'POST':
+        form = forms.ResetConfirmPinForm(uuid=get_user(request),
+                                         data=request.POST)
+        if form.is_valid():
+            # Copy pin into place is handled in solitude, webpay
+            # merely asked solitude to verify the new pin which
+            # happens in validation of the form.
+            return http.HttpResponseRedirect(get_payment_url())
+    return render(request, 'pin/reset_confirm.html', {'form': form})
+
+
+@user_verified
+def reset_cancel(request):
+    client.set_needs_pin_reset(get_user(request), False)
+    return http.HttpResponseRedirect(reverse('pin.verify'))
