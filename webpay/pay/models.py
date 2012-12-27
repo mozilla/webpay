@@ -6,16 +6,6 @@ from django.db import models
 
 from tower import ugettext_lazy as _
 
-TRANS_PAY = 1
-TRANS_REFUND = 2
-
-TRANS_STATE_PENDING = 1
-TRANS_STATE_FAILED = 2
-# The transaction has been processed and completed by the provider.
-TRANS_STATE_COMPLETED = 3
-# The transaction is ready to for payment fulfillment from the provider.
-TRANS_STATE_READY = 4
-
 ISSUER_ACTIVE = 1
 ISSUER_INACTIVE = 2
 ISSUER_REVOKED = 3
@@ -120,58 +110,12 @@ def _get_key(timestamp=None):
         return timestamp, fp.read()
 
 
-class Transaction(models.Model):
-    """A payment transaction initiated by an issuer."""
-    uuid = models.CharField(max_length=128,
-                            help_text='Unique transaction UUID',
-                            primary_key=True)
-    typ = models.IntegerField(choices=[(TRANS_PAY, _('Payment')),
-                                       (TRANS_REFUND, _('Refund'))],
-                              default=TRANS_PAY)
-    state = models.IntegerField(
-        db_index=True,
-        choices=[(TRANS_STATE_PENDING, _('Pending')),
-                 (TRANS_STATE_FAILED, _('Failed')),
-                 (TRANS_STATE_READY, _('Ready')),
-                 (TRANS_STATE_COMPLETED, _('Completed'))],
-        default=TRANS_STATE_PENDING)
-    # Bango billing configuration ID obtained via Solitude.
-    bango_config_id = models.IntegerField(blank=True, null=True)
-    issuer_key = models.CharField(max_length=255,
-                                  db_index=True,
-                                  help_text='Issuer of the payment JWT')
-    issuer = models.ForeignKey(Issuer, blank=True, null=True)
-    amount = models.DecimalField(max_digits=9, decimal_places=2, null=True)
-    currency = models.CharField(max_length=3)
-    product_id = models.CharField(max_length=255)
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=255, blank=True)
-    json_request = models.TextField(
-        help_text='Original JSON object for the payment')
-    notify_url = models.CharField(max_length=255, null=True, blank=True)
-    last_error = models.CharField(max_length=255, null=True, blank=True)
-
-    @classmethod
-    def create(cls, **kw):
-        kw.setdefault('uuid', uuid.uuid4().hex)
-        return cls.objects.create(**kw)
-
-    def effective_issuer_key(self):
-        if self.issuer:
-            return self.issuer.issuer_key
-        else:
-            return self.issuer_key
-
-    class Meta:
-        db_table = 'transactions'
-
-
 class Notice(models.Model):
     """Notifications sent to issuers about transactions."""
-    transaction = models.ForeignKey(Transaction)
     url = models.CharField(max_length=255)
     success = models.BooleanField()  # App responded OK to notification.
     last_error = models.CharField(max_length=255, null=True, blank=True)
+    transaction_uuid = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'notices'

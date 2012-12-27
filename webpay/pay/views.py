@@ -1,4 +1,5 @@
 import json
+import uuid
 
 from django import http
 from django.conf import settings
@@ -15,12 +16,14 @@ from webpay.auth.decorators import user_verified
 from webpay.base.decorators import json_view
 from webpay.pin.forms import VerifyPinForm
 
-from lib.marketplace.api import client, HttpClientError, TierNotFound
+from lib.marketplace.api import (client as marketplace, HttpClientError,
+                                 TierNotFound)
+from lib.solitude import constants
+from lib.solitude.api import client as solitude
 
 from . import tasks
 from .forms import VerifyForm
-from .models import (Issuer, Transaction, TRANS_STATE_PENDING,
-                     TRANS_STATE_READY)
+from .models import Issuer
 
 log = commonware.log.getLogger('w.pay')
 
@@ -58,7 +61,7 @@ def lobby(request):
 
     # Assert pricePoint is valid.
     try:
-        client.get_price(pay_req['request']['pricePoint'])
+        marketplace.get_price(pay_req['request']['pricePoint'])
     except (TierNotFound, HttpClientError), exc:
         log.exception('calling verifying tier')
         return _error(request, exception=exc)
@@ -66,33 +69,24 @@ def lobby(request):
     try:
         iss = Issuer.objects.get(issuer_key=form.key)
     except Issuer.DoesNotExist:
-        iss = None  # marketplace
+        iss = None # marketplace
 
     # TODO(Kumar) fix this for reals. See bug 820198.
     desc = pay_req['request']['description']
     if len(desc) > 255:
         desc = desc[0:255]
 
-    trans = Transaction.create(
-       state=TRANS_STATE_PENDING,
-       issuer=iss,
-       issuer_key=form.key,
-       product_id=pay_req['request']['id'],
-       amount=1,  # Set this temporarily until we remove transactions.
-       currency='USD',  # This too.
-       name=pay_req['request']['name'],
-       description=desc,
-       json_request=json.dumps(pay_req))
-
-    request.session['trans_id'] = trans.pk
-    request.session['pay_request'] = pay_req
-
     # Before we verify the user's PIN let's save some
     # time and get the transaction configured via Bango in the
     # background.
+    request.session['trans_id'] = 'webpay:%s' % uuid.uuid4()
+    request.session['notes'] = {'pay_request': pay_req,
+                                'issuer': iss.pk if iss else None,
+                                'issuer_key': form.key}
+
     if not settings.FAKE_PAYMENTS:
         tasks.start_pay.delay(request.session['trans_id'],
-                              request.session['pay_request'])
+                              request.session['notes'])
 
     return render(request, 'pay/lobby.html', {'pin_form': pin_form})
 
@@ -122,11 +116,14 @@ def wait_to_start(request):
     When ready, redirect to the Bango payment URL using
     the generated billing configuration ID.
     """
-    trans = Transaction.objects.get(pk=request.session['trans_id'])
-    if trans.state == TRANS_STATE_READY:
+    try:
+        trans = solitude.get_transaction(request.session['trans_id'])
+    except ValueError:
+        trans = {'state': None}
+    if trans['state'] == constants.STATUS_PENDING:
         # The transaction is ready; no need to wait for it.
         return http.HttpResponseRedirect(
-            settings.BANGO_PAY_URL % trans.bango_config_id)
+            settings.BANGO_PAY_URL % trans['uid_pay'])
     return render(request, 'pay/wait-to-start.html')
 
 
@@ -137,8 +134,11 @@ def trans_start_url(request):
     """
     JSON handler to get the Bango payment URL to start a transaction.
     """
-    trans = Transaction.objects.get(pk=request.session['trans_id'])
-    data = {'url': None, 'state': trans.state}
-    if trans.state == TRANS_STATE_READY:
-        data['url'] = settings.BANGO_PAY_URL % trans.bango_config_id
+    try:
+        trans = solitude.get_transaction(request.session['trans_id'])
+    except ValueError:
+        trans = {'state': None}
+    data = {'url': None, 'state': trans['state']}
+    if trans['state'] == constants.STATUS_PENDING:
+        data['url'] = settings.BANGO_PAY_URL % trans['uid_pay']
     return data

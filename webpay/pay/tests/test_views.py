@@ -8,12 +8,12 @@ from django.core.urlresolvers import reverse
 
 import mock
 from nose import SkipTest
-from nose.tools import eq_, ok_
+from nose.tools import eq_
+
+from lib.solitude import constants
 
 from webpay.pay.forms import VerifyForm
-from webpay.pay.models import (Issuer, ISSUER_ACTIVE, ISSUER_INACTIVE,
-                               Transaction, TRANS_STATE_PENDING,
-                               TRANS_STATE_READY)
+from webpay.pay.models import Issuer, ISSUER_ACTIVE, ISSUER_INACTIVE
 from webpay.pay.samples import JWTtester
 
 sample = os.path.join(os.path.dirname(__file__), 'sample.key')
@@ -99,16 +99,6 @@ class TestVerify(Base):
 
     def test_unicode_payload(self):
         eq_(self.get(u'Հ').status_code, 400)
-
-    @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
-    def test_purchase(self, get_price):
-        payload = self.request()
-        eq_(self.get(payload).status_code, 200)
-        trans = Transaction.objects.get()
-        eq_(trans.state, TRANS_STATE_PENDING)
-        eq_(trans.issuer, None)
-        eq_(trans.issuer_key, settings.KEY)
-        ok_(self.start_pay.delay.call_args[0][0], trans.pk)
 
     def test_missing_tier(self):
         payjwt = self.payload()
@@ -222,20 +212,13 @@ class TestForm(Base):
         eq_(form.secret, settings.SECRET)
 
 
+@mock.patch('lib.solitude.api.client.get_transaction')
 class TestWaitToStart(Base):
 
     def setUp(self):
         super(TestWaitToStart, self).setUp()
         self.wait = reverse('pay.wait_to_start')
         self.start = reverse('pay.trans_start_url')
-        self.trans = Transaction.create(
-            state=TRANS_STATE_PENDING,
-            issuer_key='some app',
-            amount='0.99',
-            currency='BRL',
-            name='Virtual Eagle',
-            description='you know, just, an eagle',
-            json_request='{}')
 
         # Set up a session for this client because the session code in
         # Django's docs isn't working.
@@ -247,39 +230,53 @@ class TestWaitToStart(Base):
         # Log in.
         self.session['uuid'] = 'verified-user'
         # Start a payment.
-        self.session['trans_id'] = self.trans.pk
+        self.session['trans_id'] = 'some:trans'
         self.session.save()
 
         self.client = test.Client()
         self.client.cookies[settings.SESSION_COOKIE_NAME] = session_key
 
-    def update(self, **kw):
-        Transaction.objects.filter(pk=self.trans.pk).update(**kw)
-        self.trans = Transaction.objects.get(pk=self.trans.pk)
-
     @mock.patch.object(settings, 'BANGO_PAY_URL', 'http://bango/pay?bcid=%s')
-    def test_redirect_when_ready(self):
-        self.update(state=TRANS_STATE_READY, bango_config_id=123)
+    def test_redirect_when_ready(self, get_transaction):
+        get_transaction.return_value = {
+            'state': constants.STATUS_PENDING,
+            'uid_pay': 123,
+        }
         res = self.client.get(self.wait)
         eq_(res['Location'], settings.BANGO_PAY_URL % 123)
 
     @mock.patch.object(settings, 'BANGO_PAY_URL', 'http://bango/pay?bcid=%s')
-    def test_start_ready(self):
-        self.update(state=TRANS_STATE_READY, bango_config_id=123)
+    def test_start_ready(self, get_transaction):
+        get_transaction.return_value = {
+            'state': constants.STATUS_PENDING,
+            'uid_pay': 123,
+        }
         res = self.client.get(self.start)
         eq_(res.status_code, 200, res.content)
         data = json.loads(res.content)
         eq_(data['url'], settings.BANGO_PAY_URL % 123)
-        eq_(data['state'], self.trans.state)
+        eq_(data['state'], constants.STATUS_PENDING)
 
-    def test_start_not_ready(self):
+    def test_start_not_there(self, get_transaction):
+        get_transaction.side_effect = ValueError
         res = self.client.get(self.start)
         eq_(res.status_code, 200, res.content)
         data = json.loads(res.content)
         eq_(data['url'], None)
-        eq_(data['state'], self.trans.state)
+        eq_(data['state'], None)
 
-    def test_wait(self):
+    def test_start_not_ready(self, get_transaction):
+        get_transaction.return_value = {
+            'state': constants.STATUS_RECEIVED,
+            'uid_pay': 123,
+        }
+        res = self.client.get(self.start)
+        eq_(res.status_code, 200, res.content)
+        data = json.loads(res.content)
+        eq_(data['url'], None)
+        eq_(data['state'], constants.STATUS_RECEIVED)
+
+    def test_wait(self, get_transaction):
         res = self.client.get(self.wait)
         eq_(res.status_code, 200)
         self.assertContains(res, 'Waiting')

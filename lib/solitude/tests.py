@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.test import TestCase
 
@@ -7,6 +9,7 @@ from nose.tools import eq_, ok_
 
 from lib.solitude.api import client
 from lib.solitude.errors import ERROR_STRINGS
+from webpay.pay.models import Issuer
 
 
 class SolitudeAPITest(TestCase):
@@ -142,3 +145,32 @@ class SecretTest(TestCase):
                                                     [{'secret': 'k'}]}
         eq_(client.get_secret('x'), 'k')
         ok_(slumber.generic.product.get.call_args[1]['seller__active'])
+
+
+@mock.patch('lib.solitude.api.client.slumber')
+class TransactionTest(TestCase):
+
+    def test_no_transaction(self, slumber):
+        slumber.generic.transaction.get.return_value = {'objects': []}
+        with self.assertRaises(ValueError):
+            client.get_transaction('x')
+
+    def test_multiple_transactions(self, slumber):
+        slumber.generic.transaction.get.return_value = {'objects': [1, 2]}
+        with self.assertRaises(ValueError):
+            client.get_transaction('x')
+
+    def test_notes_transactions(self, slumber):
+        slumber.generic.transaction.get.return_value = {'objects': [
+            {'notes': json.dumps({'foo': 'bar'})}
+        ]}
+        trans = client.get_transaction('x')
+        eq_(trans['notes'], {'foo': 'bar'})
+
+    def test_notes_issuer_transactions(self, slumber):
+        iss = Issuer.objects.create()
+        slumber.generic.transaction.get.return_value = {'objects': [
+            {'notes': json.dumps({'issuer': iss.pk})}
+        ]}
+        trans = client.get_transaction('x')
+        eq_(trans['notes']['issuer'], iss)

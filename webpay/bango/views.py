@@ -1,11 +1,13 @@
 from django import http
 from django.conf import settings
 from django.shortcuts import render
-from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.http import require_GET
 
 import commonware.log
 
-from webpay.pay.models import TRANS_STATE_COMPLETED
+from lib.solitude.api import client
+from lib.solitude.constants import STATUS_COMPLETED
+from webpay.pay import tasks
 
 log = commonware.log.getLogger('w.bango')
 
@@ -19,10 +21,9 @@ def success(request):
     if settings.FAKE_PAY_COMPLETE:
         simulated = True
         log.warning('Completing fake transaction without checking signature')
-        trans = Transaction.objects.get(pk=request.session['trans_id'])
-        trans.state = TRANS_STATE_COMPLETED
-        trans.save()
-        tasks.payment_notify.delay(trans.pk)
+        client.generic.transaction.patch(uuid=['trans_id'],
+                                         status=STATUS_COMPLETED)
+        tasks.payment_notify.delay(request.session['trans_id'])
     else:
         simulated = False
     return render(request, 'bango/success.html', {'simulated': simulated})

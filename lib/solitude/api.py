@@ -1,10 +1,11 @@
+import json
 import logging
 
 from django.conf import settings
 
-
 from ..utils import SlumberWrapper
 from .errors import ERROR_STRINGS
+from webpay.pay.models import Issuer
 
 
 log = logging.getLogger('w.solitude')
@@ -166,7 +167,8 @@ class SolitudeAPI(SlumberWrapper):
         bill_id = res['billingConfigurationId']
         log.info('transaction %s: billing config ID: %s'
                  % (webpay_trans_id, bill_id))
-        return bill_id
+
+        return bill_id, seller_id
 
     def create_product(self, external_id, product_name, currency, amount,
                        seller):
@@ -200,6 +202,19 @@ class SolitudeAPI(SlumberWrapper):
             'seller_product_bango': bango['resource_uri']
         })
         return bango['resource_uri']
+
+    def get_transaction(self, uuid):
+        transaction = self.slumber.generic.transaction.get(uuid=uuid)
+        # TODO: fix with curling.
+        if len(transaction['objects']) != 1:
+            raise ValueError('No transaction found for %s.' % uuid)
+        # Notes will contain some JSON, including the original pay request.
+        transaction['notes'] = json.loads(transaction['objects'][0]['notes'])
+        issuer = transaction['notes'].get('issuer')
+        if issuer:
+            # If there's an issuer there, get it.
+            transaction['notes']['issuer'] = Issuer.objects.get(pk=issuer)
+        return transaction
 
 
 if getattr(settings, 'SOLITUDE_URL', False):
