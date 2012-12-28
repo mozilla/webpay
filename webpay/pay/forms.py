@@ -1,10 +1,13 @@
 from django import forms
 from django.conf import settings
 
+import commonware.log
 import jwt
 from tower import ugettext as _
 
 from lib.solitude.api import client
+
+log = commonware.log.getLogger('w.pay')
 
 
 class VerifyForm(forms.Form):
@@ -20,6 +23,7 @@ class VerifyForm(forms.Form):
             # L10n: first argument is a detailed error message.
             err = _('Error decoding JWT: {0}').format(exc)
             raise forms.ValidationError(err)
+        log.debug('Received JWT: %r' % payload)
         if not isinstance(payload, dict):
             # It seems that some JWT libs are encoding strings of JSON
             # objects, not actual objects. For now we treat this as an
