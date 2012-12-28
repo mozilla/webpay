@@ -180,7 +180,7 @@ SOLITUDE_URL = None
 
 # Instead of doing a real Bango pay flow, redirect to a fake placeholder
 # for the Bango flow when True.
-FAKE_PAYMENTS = True
+FAKE_PAYMENTS = False
 
 # Instead of relying on Bango's postback and signature verification
 # just pretend everything is ok and send post notifications to the app.
