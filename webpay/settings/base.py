@@ -119,7 +119,7 @@ HAS_SYSLOG = True  # syslog is used if HAS_SYSLOG and NOT DEBUG.
 # See settings/local.py for SYSLOG_TAG, etc
 LOGGING = dict(loggers=dict(playdoh={'level': logging.DEBUG},
                             django_browserid={'level': logging.DEBUG},
-                            w={'level': logging.INFO}),
+                            w={'level': logging.DEBUG}),
                handlers={'unicode': {'class':
                                      'webpay.unicode_log.UnicodeHandler'}})
 
