@@ -30,4 +30,5 @@ def success(request):
 
 @require_GET
 def error(request):
+    log.info('Bango error: %s' % request.GET)
     return render(request, 'bango/error.html', {})
