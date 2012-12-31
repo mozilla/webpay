@@ -132,6 +132,12 @@ something like this::
 
     pref("dom.payment.provider.1.uri", "https://marketplace-dev.allizom.org/mozpay/?req=");
 
+If you're on desktop B2G you also need to **set your User Agent** unless
+`bug 821000 <https://bugzilla.mozilla.org/show_bug.cgi?id=821000>`_
+gets fixed. Add this::
+
+    pref("general.useragent.override", "Mozilla/5.0 (Mobile; rv:18.0) Gecko/18.0 Firefox/18.0");
+
 Now, when you ``make`` or ``make profile`` it will create a ``profile/user.js``
 file with those extra prefs::
 
