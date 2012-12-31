@@ -1,13 +1,36 @@
 import json
-import pprint
 import sys
 import traceback
 
+import commonware.log
 from django.conf import settings
 from django.utils.cache import patch_vary_headers
 from django.utils.translation.trans_real import parse_accept_lang_header
 
 import tower
+
+log = commonware.log.getLogger('w.middleware')
+
+
+class LogJSONerror:
+    """
+    If the exception has JSON content, log the JSON message.
+    This is intended to catch and log Solitude error messages
+    such as form errors for 400 errors.
+    """
+    def process_exception(self, request, exception):
+        etype = type(exception)
+        if hasattr(etype, '__name__'):
+            etype = etype.__name__
+        if hasattr(exception, 'content'):
+            try:
+                log.error('%s: %s: JSON: %s'
+                          % (etype, exception,
+                             json.loads(exception.content)))
+            except ValueError:
+                log.error('%s: %s: %s... (not JSON content)'
+                          % (etype, exception,
+                             str(exception.content)[0:50]))
 
 
 class LogExceptionsMiddleware:
@@ -18,12 +41,6 @@ class LogExceptionsMiddleware:
     would not otherwise show the Django debug page.
     """
     def process_exception(self, request, exception):
-        if hasattr(exception, 'content'):
-            try:
-                # Solitude JSON error.
-                pprint.pprint(json.loads(exception.content))
-            except Exception, exc:
-                print 'Could not load exception as JSON: %s' % exc
         traceback.print_exception(*sys.exc_info())
 
 

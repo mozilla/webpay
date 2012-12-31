@@ -139,6 +139,7 @@ MIDDLEWARE_CLASSES = (
     'commonware.middleware.FrameOptionsHeader',
     'mobility.middleware.DetectMobileMiddleware',
     'mobility.middleware.XMobileMiddleware',
+    'webpay.base.middleware.LogJSONerror',
 )
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'

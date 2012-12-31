@@ -1,3 +1,5 @@
+import json
+
 from django import http
 from django.conf import settings
 from django.test import TestCase
@@ -6,7 +8,7 @@ from django.test.client import RequestFactory
 import fudge
 from nose.tools import eq_
 
-from webpay.base.middleware import LocaleMiddleware
+from webpay.base.middleware import LocaleMiddleware, LogJSONerror
 
 
 class TestLocaleMiddleware(TestCase):
@@ -68,3 +70,22 @@ class TestLocaleMiddleware(TestCase):
 
     def test_no_input(self):
         eq_(self.process()[0], settings.LANGUAGE_CODE)
+
+
+class ExcWithContent(Exception):
+
+    def __init__(self, msg, content):
+        Exception.__init__(self, msg)
+        self.content = content
+
+
+class TestLogJSONerror(TestCase):
+
+    def test_json(self):
+        err = LogJSONerror()
+        exc = ExcWithContent('msg', json.dumps({'foo': 'bar'}))
+        err.process_exception(None, exc)
+
+    def test_not_json(self):
+        err = LogJSONerror()
+        err.process_exception(None, ExcWithContent('msg', '}]not valid JSON'))
