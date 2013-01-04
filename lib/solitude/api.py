@@ -157,9 +157,7 @@ class SolitudeAPI(SlumberWrapper):
         res = self.slumber.bango.billing.post({
             'pageTitle': product_name,
             'prices': prices,
-            # Replace this with a real Solitude transaction UUID when
-            # bug 820198 lands.
-            'transaction_uuid': '<not implemented>',
+            'transaction_uuid': webpay_trans_id,
             'seller_product_bango': bango_product_uri,
             'redirect_url_onsuccess': redirect_url_onsuccess,
             'redirect_url_onerror': redirect_url_onerror,
