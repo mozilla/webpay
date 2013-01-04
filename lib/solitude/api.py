@@ -136,7 +136,8 @@ class SolitudeAPI(SlumberWrapper):
         if res['meta']['total_count'] == 0:
             raise SellerNotConfigured('Seller with uuid %s does not exist'
                                       % seller_uuid)
-        seller_id = res['objects'][0]['resource_pk']
+        seller = res['objects'][0]
+        seller_id = seller['resource_pk']
         log.info('transaction %s: seller: %s' % (transaction_uuid,
                                                  seller_id))
 
@@ -148,7 +149,7 @@ class SolitudeAPI(SlumberWrapper):
             bango_product_uri = self.create_product(product_id,
                     # TODO: look at why we need currency and price for the
                     # premium call. This might be a Bango issue.
-                    product_name, 1, 'EUR', res['objects'][0])
+                    product_name, 1, 'EUR', seller)
         else:
             bango_product_uri = res['objects'][0]['resource_uri']
             log.info('transaction %s: bango product: %s'
