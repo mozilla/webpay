@@ -119,8 +119,8 @@ def wait_to_start(request):
     try:
         trans = solitude.get_transaction(request.session['trans_id'])
     except ValueError:
-        trans = {'state': None}
-    if trans['state'] == constants.STATUS_PENDING:
+        trans = {'status': None}
+    if trans['status'] == constants.STATUS_PENDING:
         # The transaction is ready; no need to wait for it.
         return http.HttpResponseRedirect(
             settings.BANGO_PAY_URL % trans['uid_pay'])
@@ -137,8 +137,8 @@ def trans_start_url(request):
     try:
         trans = solitude.get_transaction(request.session['trans_id'])
     except ValueError:
-        trans = {'state': None}
-    data = {'url': None, 'state': trans['state']}
-    if trans['state'] == constants.STATUS_PENDING:
+        trans = {'status': None}
+    data = {'url': None, 'status': trans['status']}
+    if trans['status'] == constants.STATUS_PENDING:
         data['url'] = settings.BANGO_PAY_URL % trans['uid_pay']
     return data

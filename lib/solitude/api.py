@@ -206,12 +206,15 @@ class SolitudeAPI(SlumberWrapper):
         # TODO: fix with curling.
         if len(transaction['objects']) != 1:
             raise ValueError('No transaction found for %s.' % uuid)
-        # Notes will contain some JSON, including the original pay request.
-        transaction['notes'] = json.loads(transaction['objects'][0]['notes'])
-        issuer = transaction['notes'].get('issuer')
-        if issuer:
-            # If there's an issuer there, get it.
-            transaction['notes']['issuer'] = Issuer.objects.get(pk=issuer)
+        transaction = transaction['objects'][0]
+        # Notes may contain some JSON, including the original pay request.
+        notes = transaction['notes']
+        if notes:
+            transaction['notes'] = json.loads(notes)
+            issuer = transaction['notes'].get('issuer')
+            if issuer:
+                # If there's an issuer there, get it.
+                transaction['notes']['issuer'] = Issuer.objects.get(pk=issuer)
         return transaction
 
 

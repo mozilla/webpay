@@ -21,9 +21,11 @@ def success(request):
     if settings.FAKE_PAY_COMPLETE:
         simulated = True
         log.warning('Completing fake transaction without checking signature')
-        client.generic.transaction.patch(uuid=['trans_id'],
-                                         status=STATUS_COMPLETED)
-        tasks.payment_notify.delay(request.session['trans_id'])
+        trans_id = request.session['trans_id']
+        client.slumber.generic.transaction(trans_id).patch({
+                'status': STATUS_COMPLETED
+        })
+        tasks.payment_notify.delay(trans_id)
     else:
         simulated = False
     return render(request, 'bango/success.html', {'simulated': simulated})

@@ -79,13 +79,10 @@ def start_pay(transaction_uuid, notes, **kw):
             absolutify(reverse('bango.error')),
             prices['prices']
         )
-        # Now create a transaction.
-        client.slumber.transaction.post({
+        client.slumber.generic.transaction(transaction_uuid).patch({
             'notes': json.dumps(notes),
-            'seller_product': seller_product,
             'uid_pay': bill_id,
-            'uuid': transaction_uuid,
-            'state': constants.STATUS_PENDING
+            'status': constants.STATUS_PENDING
         })
     except Exception, exc:
         log.exception('while configuring for payment')
