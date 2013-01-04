@@ -123,7 +123,7 @@ class SolitudeAPI(SlumberWrapper):
                             {'uuid': uuid, 'pin': pin})
         return res.get('valid', False)
 
-    def configure_product_for_billing(self, webpay_trans_id,
+    def configure_product_for_billing(self, transaction_uuid,
                                       seller_uuid,
                                       product_id, product_name,
                                       redirect_url_onsuccess,
@@ -137,7 +137,7 @@ class SolitudeAPI(SlumberWrapper):
             raise SellerNotConfigured('Seller with uuid %s does not exist'
                                       % seller_uuid)
         seller_id = res['objects'][0]['resource_pk']
-        log.info('transaction %s: seller: %s' % (webpay_trans_id,
+        log.info('transaction %s: seller: %s' % (transaction_uuid,
                                                  seller_id))
 
         res = self.slumber.bango.product.get(
@@ -152,19 +152,19 @@ class SolitudeAPI(SlumberWrapper):
         else:
             bango_product_uri = res['objects'][0]['resource_uri']
             log.info('transaction %s: bango product: %s'
-                     % (webpay_trans_id, bango_product_uri))
+                     % (transaction_uuid, bango_product_uri))
 
         res = self.slumber.bango.billing.post({
             'pageTitle': product_name,
             'prices': prices,
-            'transaction_uuid': webpay_trans_id,
+            'transaction_uuid': transaction_uuid,
             'seller_product_bango': bango_product_uri,
             'redirect_url_onsuccess': redirect_url_onsuccess,
             'redirect_url_onerror': redirect_url_onerror,
         })
         bill_id = res['billingConfigurationId']
         log.info('transaction %s: billing config ID: %s'
-                 % (webpay_trans_id, bill_id))
+                 % (transaction_uuid, bill_id))
 
         return bill_id, seller_id
 
