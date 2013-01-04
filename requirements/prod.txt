@@ -5,6 +5,7 @@ anyjson==0.3.3
 billiard==2.7.3.17
 cef==0.3
 celery==2.5.1
+curling==0.1.3
 django-celery==2.2.4
 django-mobility==0.1
 django-multidb-router==0.5
