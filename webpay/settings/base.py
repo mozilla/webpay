@@ -190,7 +190,8 @@ FAKE_PAYMENTS = False
 # Instead of relying on Bango's postback and signature verification
 # just pretend everything is ok and send post notifications to the app.
 # This is temporary and should go away in bug 795143
-FAKE_PAY_COMPLETE = FAKE_PAYMENTS
+#FAKE_PAY_COMPLETE = FAKE_PAYMENTS
+FAKE_PAY_COMPLETE = True
 
 # Control which Persona server you use for logins.
 # This is useful for switching to a development Persona server.
