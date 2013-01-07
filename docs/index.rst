@@ -17,6 +17,7 @@ Contents
    :maxdepth: 1
 
    solitude_api
+   localization_testing
 
 Indices and tables
 ------------------
