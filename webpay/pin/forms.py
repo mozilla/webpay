@@ -52,7 +52,9 @@ class CreatePinForm(BasePinForm):
         if buyer and self.handle_client_errors(buyer):
             self.buyer = buyer
             if buyer.get('pin'):
-                raise forms.ValidationError(_('Buyer already has a PIN.'))
+                raise forms.ValidationError(
+                    _('You have already created a PIN.')
+                )
         return pin
 
 

@@ -19,5 +19,4 @@ build
 .noseids
 tmp/*
 *~
-*.mo
 locale/xx

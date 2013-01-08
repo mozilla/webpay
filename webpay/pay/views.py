@@ -29,7 +29,7 @@ log = commonware.log.getLogger('w.pay')
 
 
 def _error(request, msg='', exception=None):
-    external = _('Error processing that request.')
+    external = _('There was an error processing that request.')
     if settings.VERBOSE_LOGGING:
         if exception:
             msg = u'%s: %s' % (exception.__class__.__name__, exception)

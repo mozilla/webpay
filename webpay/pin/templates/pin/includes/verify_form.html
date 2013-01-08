@@ -8,6 +8,7 @@
       {{ form.pin }}
     </div>
     <footer>
+        {# L10n: This is the same as the standard forgot password that most sites have. #}
         <a class="button" href="{{ url('pin.reset_start') }}">{{ _('Forgot PIN') }}</a>
         <button type="submit">{{ _('Continue') }}</button>
     </footer>
