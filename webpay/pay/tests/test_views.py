@@ -140,7 +140,7 @@ class TestVerify(Base):
             res = self.get(payload)
             eq_(res.status_code, 400)
             # Output should show a generic error message without details.
-            self.assertContains(res, 'Error processing', status_code=400)
+            self.assertContains(res, 'There was an error', status_code=400)
 
 
 @mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')

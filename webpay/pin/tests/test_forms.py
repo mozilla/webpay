@@ -31,7 +31,7 @@ class CreatePinFormTest(BasePinFormTestCase):
         form = forms.CreatePinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
         assert hasattr(form, 'buyer')
-        assert 'Buyer already has a PIN' in str(form.errors)
+        assert 'You have already created a PIN.' in str(form.errors)
 
     def test_too_long_pin(self):
         self.data.update({'pin': 'way too long pin'})
