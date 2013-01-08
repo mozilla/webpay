@@ -5,8 +5,8 @@
 {%- endblock %}
 
 {% block content %}
-  <p>Your payment is complete. This window will now close!</p>
+  <p>{{ _('Your payment is complete. This window will now close!') }}</p>
   {% if simulated %}
-    <p>This was only a simulated payment.</p>
+    <p>{{ _('This was only a simulated payment.') }}</p>
   {% endif %}
 {% endblock %}

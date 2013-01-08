@@ -1,4 +1,4 @@
-<h2>Enter payment PIN</h2>
+<h2>{{ _('Enter payment PIN:') }}</h2>
 <p>
   <form id="pin" action="{{ url('pin.verify') }}" method="post">
     {{ csrf() }}
@@ -8,10 +8,8 @@
       {{ form.pin }}
     </div>
     <footer>
-        <a class="button" href="{{ url('pin.reset_start') }}">Forgot PIN</a>
-        <button type="submit">Continue</button></footer>
+        <a class="button" href="{{ url('pin.reset_start') }}">{{ _('Forgot PIN') }}</a>
+        <button type="submit">{{ _('Continue') }}</button>
+    </footer>
   </form>
 </p>
-{# TODO(Kumar) once PINs are saved per user then
-   we can automatically detect if the user needs
-   to create a PIN for the first time. #}

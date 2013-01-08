@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Confirm your new PIN:</h2>
+  <h2>{{ _('Confirm your new PIN:') }}</h2>
   <p>
     <form id="pin" action="{{ url('pin.reset_confirm') }}" method="post">
       {{ csrf() }}
@@ -10,8 +10,8 @@
         {{ form.pin }}
       </div>
       <footer>
-        <a class="button" href="{{ url('pin.reset_cancel') }}">Cancel</a>
-        <button type="submit">Continue</button>
+        <a class="button" href="{{ url('pin.reset_cancel') }}">{{ _('Cancel') }}</a>
+        <button type="submit">{{ _('Continue') }}</button>
       </footer>
     </form>
   </p>

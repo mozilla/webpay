@@ -7,14 +7,14 @@
 
 {% block content %}
   <div id="begin" class="message">
-    Beginning payment&hellip;
+    {{ _('Beginning payment&hellip;') }}
   </div>
   <div id="login" class="message hidden">
-    <p>Sign in to continue with the payment:</p>
-    <a id="signin" class="button" href="#">Sign in</a>
+    <p>{{ _('Sign in to continue with the payment:') }}</p>
+    <a id="signin" class="button" href="#">{{ _('Sign in') }}</a>
   </div>
   <div id="login-wait" class="message hidden">
-    logging you in to continue payment&hellip;
+    {{ _('logging you in to continue payment&hellip;') }}
   </div>
   <div id="enter-pin" class="hidden">
     {% with form=pin_form %}

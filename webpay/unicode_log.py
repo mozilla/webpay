@@ -37,4 +37,3 @@ class UnicodeHandler(logging.handlers.SysLogHandler):
             raise
         except:
             self.handleError(record)
-
