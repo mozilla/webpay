@@ -95,13 +95,10 @@ something like this::
 
     http://localhost:8000/mozpay/?req=eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJhdWQiOiAibG9jYWxob3N0IiwgImlzcyI6ICJtYXJrZXRwbGFjZSIsICJyZXF1ZXN0IjogeyJwcmljZSI6IFt7ImN1cnJlbmN5IjogIlVTRCIsICJhbW91bnQiOiAiMC45OSJ9XSwgIm5hbWUiOiAiTXkgYmFuZHMgbGF0ZXN0IGFsYnVtIiwgInByb2R1Y3RkYXRhIjogIm15X3Byb2R1Y3RfaWQ9MTIzNCIsICJkZXNjcmlwdGlvbiI6ICIzMjBrYnBzIE1QMyBkb3dubG9hZCwgRFJNIGZyZWUhIn0sICJleHAiOiAxMzUwOTQ3MjE3LCAiaWF0IjogMTM1MDk0MzYxNywgInR5cCI6ICJtb3ppbGxhL3BheW1lbnRzL3BheS92MSJ9.ZW-Y9-UroJk7-ZpDjebUU-uYOx4h7TfztO7JBi2d5z4
 
-Setting Up Your B2G Device
+Setting Up Desktop B2G
 ==========================
 
-Here is how to set up a device (or B2G desktop)
-to point to a dev server of webpay.
-The easiest thing is to use
-the `nightly desktop B2G build`_.
+Get the `nightly desktop B2G build`_.
 
 Start by cloning
 Gaia and building a custom profile. Refer to the `Gaia Hacking`_
@@ -156,7 +153,28 @@ Starting a custom built B2G app is pretty similar. Just specify the
 path to the binary you built.
 
 That's it! You should be ready to purchase apps from a properly configured
-Marketplace app on your B2G.
+Marketplace app on your desktop B2G.
+
+Setting Up A B2G Device
+=======================
+
+Similar to the desktop B2G instructions you'll need to flash
+B2G on your phone. If you have a Unagi device, you can log in
+with your Mozilla LDAP credentials and obtain a build from
+https://pvtbuilds.mozilla.org/pub/mozilla.org/b2g/nightly/mozilla-b2g18-unagi/latest/
+At this time, the builds are not available to the public.
+
+Next, follow the desktop B2G instructions for cloning the gaia
+repo and building a profile. You need to put the custom payment
+settings on to your phone. Do this::
+
+    cd gaia
+    adb shell "stop b2g"
+    adb push profile/user.js /data/local/
+    adb reboot
+
+When B2G reboots you should be configured to make payments against
+the configured dev servers.
 
 Configuring Marketplace
 =======================
