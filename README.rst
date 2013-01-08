@@ -208,7 +208,7 @@ active. That is, switch it off.
 
 .. _WebPaymentProvider: https://wiki.mozilla.org/WebAPI/WebPaymentProvider
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
-.. _`nightly desktop B2G build`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/
+.. _`nightly desktop B2G build`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/en-US/
 .. _`Gaia Hacking`: https://wiki.mozilla.org/Gaia/Hacking
 .. _homebrew: http://mxcl.github.com/homebrew/
 .. _virtualenvwrapper: http://pypi.python.org/pypi/virtualenvwrapper
