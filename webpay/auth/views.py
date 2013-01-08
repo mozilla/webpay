@@ -33,5 +33,5 @@ def verify(request):
 
 
 def logout(request):
-    # do logout stuff
+    # TODO(Wraithan): implement logout view
     return
