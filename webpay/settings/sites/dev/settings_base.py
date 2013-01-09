@@ -59,7 +59,7 @@ PASSWORD_HASHERS = get_password_hashers(base.BASE_PASSWORD_HASHERS, HMAC_KEYS)
 SECRET_KEY = private.SECRET_KEY
 
 # Should robots.txt allow web crawlers?  Set this to True for production
-ENGAGE_ROBOTS = True
+ENGAGE_ROBOTS = False
 
 # Uncomment these to activate and customize Celery:
 # CELERY_ALWAYS_EAGER = False  # required to activate celeryd

@@ -44,7 +44,7 @@ PASSWORD_HASHERS = get_password_hashers(base.BASE_PASSWORD_HASHERS, HMAC_KEYS)
 
 SECRET_KEY = private.SECRET_KEY
 
-ENGAGE_ROBOTS = True
+ENGAGE_ROBOTS = False
 
 ## Celery
 BROKER_URL = private.BROKER_URL
