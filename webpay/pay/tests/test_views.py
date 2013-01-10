@@ -2,7 +2,6 @@
 import json
 import os
 
-from django import test
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
@@ -12,6 +11,7 @@ from nose.tools import eq_
 
 from lib.solitude import constants
 
+from webpay.base.tests import BasicSessionCase
 from webpay.pay.forms import VerifyForm
 from webpay.pay.models import Issuer, ISSUER_ACTIVE, ISSUER_INACTIVE
 from webpay.pay.samples import JWTtester
@@ -19,7 +19,7 @@ from webpay.pay.samples import JWTtester
 sample = os.path.join(os.path.dirname(__file__), 'sample.key')
 
 
-class Base(JWTtester, test.TestCase):
+class Base(BasicSessionCase, JWTtester):
 
     def setUp(self):
         super(Base, self).setUp()
@@ -220,21 +220,11 @@ class TestWaitToStart(Base):
         self.wait = reverse('pay.wait_to_start')
         self.start = reverse('pay.trans_start_url')
 
-        # Set up a session for this client because the session code in
-        # Django's docs isn't working.
-        engine = __import__(settings.SESSION_ENGINE, {}, {}, [''])
-        self.session = engine.SessionStore()
-        self.session.create()
-        session_key = self.session.session_key
-
         # Log in.
         self.session['uuid'] = 'verified-user'
         # Start a payment.
         self.session['trans_id'] = 'some:trans'
         self.session.save()
-
-        self.client = test.Client()
-        self.client.cookies[settings.SESSION_COOKIE_NAME] = session_key
 
     @mock.patch.object(settings, 'BANGO_PAY_URL', 'http://bango/pay?bcid=%s')
     def test_redirect_when_ready(self, get_transaction):
