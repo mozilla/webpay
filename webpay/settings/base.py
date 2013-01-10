@@ -69,7 +69,7 @@ JINGO_EXCLUDE_APPS = [
 
 # BrowserID configuration
 AUTHENTICATION_BACKENDS = [
-    'django_browserid.auth.BrowserIDBackend',
+    #'django_browserid.auth.BrowserIDBackend',
     #'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -83,7 +83,7 @@ BROWSERID_CREATE_USER = False
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'jingo_minify.helpers.build_ids',
-    'django_browserid.context_processors.browserid_form',
+    'django_browserid.context_processors.browserid',
     'webpay.base.context_processors.static_url',
 ]
 
@@ -200,8 +200,9 @@ FAKE_PAY_COMPLETE = FAKE_PAYMENTS
 #BROWSERID_JS_URL = 'https://login.persona.org/include.js'
 
 # Living on the bleeding B2G edge!
-BROWSERID_VERIFICATION_URL = 'https://notoriousb2g.personatest.org/verify'
-BROWSERID_JS_URL = 'https://notoriousb2g.personatest.org/include.js'
+BROWSERID_DOMAIN = 'notoriousb2g.personatest.org'
+BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
+BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN
 
 # This is the URL for the bango payment screen.
 # It will receive one string substitution: the billing configuration ID.

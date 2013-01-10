@@ -9,14 +9,14 @@ from django.utils.importlib import import_module
 import mock
 from nose.tools import eq_
 
-from webpay.auth.utils import client
+from webpay.auth.utils import client, get_user
 from webpay.auth import views as auth_views
 
 
 good_assertion = {u'status': u'okay',
                   u'audience': u'http://some.site',
                   u'expires': 1351707833170,
-                  u'email': u'a@a.com',
+                  u'unverified-email': u'a+unverified@a.com',
                   u'issuer': u'login.persona.org'}
 
 
@@ -54,8 +54,8 @@ class SessionTestCase(test.TestCase):
         del self.client.cookies[settings.SESSION_COOKIE_NAME]
 
 
-@mock.patch.object(client, 'get_buyer', lambda *args: {'pin': False,
-                                                     'needs_pin_reset': False})
+@mock.patch.object(client, 'get_buyer',
+                   lambda *args: {'pin': False, 'needs_pin_reset': False})
 @mock.patch.object(settings, 'DOMAIN', 'web.pay')
 class TestAuth(SessionTestCase):
 
@@ -63,9 +63,23 @@ class TestAuth(SessionTestCase):
         self.url = reverse('auth.verify')
 
     @mock.patch('webpay.auth.views.verify_assertion')
-    def test_good(self, verify_assertion):
+    @mock.patch('webpay.auth.views.set_user')
+    def test_good_verified(self, set_user_mock, verify_assertion):
+        assertion = dict(good_assertion)
+        del assertion['unverified-email']
+        assertion['email'] = 'a@a.com'
+        verify_assertion.return_value = assertion
+        res = self.client.post(self.url, {'assertion': 'good'})
+        eq_(res.status_code, 200)
+        set_user_mock.assert_called_with(mock.ANY, 'a@a.com')
+
+    @mock.patch('webpay.auth.views.verify_assertion')
+    @mock.patch('webpay.auth.views.set_user')
+    def test_good_unverified(self, set_user_mock, verify_assertion):
         verify_assertion.return_value = good_assertion
-        eq_(self.client.post(self.url, {'assertion': 'good'}).status_code, 200)
+        res = self.client.post(self.url, {'assertion': 'good'})
+        eq_(res.status_code, 200)
+        set_user_mock.assert_called_with(mock.ANY, 'a+unverified@a.com')
 
     @mock.patch('webpay.auth.views.verify_assertion')
     def test_session(self, verify_assertion):
@@ -139,7 +153,7 @@ class TestBuyerHasResetFlag(SessionTestCase):
         slumber.generic.buyer.get.return_value = {
             'meta': {'total_count': 0}
         }
-        data = self.do_auth()
+        self.do_auth()
         eq_(self.client.session.get('uuid_reset_pin'), False)
 
     @mock.patch('lib.solitude.api.client.slumber')
@@ -159,5 +173,5 @@ class TestBuyerHasResetFlag(SessionTestCase):
             'objects': [{'pin': True,
                          'needs_pin_reset': True}]
         }
-        data = self.do_auth()
+        self.do_auth()
         eq_(self.client.session.get('uuid_reset_pin'), True)
