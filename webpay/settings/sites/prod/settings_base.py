@@ -3,6 +3,8 @@ import logging.handlers
 import dj_database_url
 import private_base as private
 
+from .. import splitstrip
+
 
 DATABASES = {}
 DATABASES['default'] = dj_database_url.parse(private.DATABASES_DEFAULT_URL)
