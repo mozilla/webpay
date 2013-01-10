@@ -1,4 +1,5 @@
 from django import http
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_POST
 
@@ -19,14 +20,23 @@ log = commonware.log.getLogger('w.auth')
 def verify(request):
     form = BrowserIDForm(data=request.POST)
     if form.is_valid():
-        log.info('verifying assertion')
-        result = verify_assertion(form.cleaned_data['assertion'],
-                                  get_audience(request))
+        url = settings.BROWSERID_VERIFICATION_URL
+        audience = get_audience(request)
+        extra_params = {'issuer': settings.BROWSERID_DOMAIN,
+                        'allowUnverified': 'true'}
+
+        log.info('verifying Persona assertion. url: %s, audience: %s, '
+                 'extra_params: %s' % (url, audience, extra_params))
+        result = verify_assertion(form.cleaned_data['assertion'], audience,
+                                  extra_params)
         if result:
-            log.info('assertion ok: %s' % result)
-            set_user(request, result['email'])
-            return {'has_pin': request.session['uuid_has_pin'],
+            log.info('Persona assertion ok: %s' % result)
+            email = result.get('unverified-email', result.get('email'))
+            set_user(request, email)
+            return {'has_pin': request.session.get('uuid_has_pin'),
                     'pin_create': reverse('pin.create')}
+
+        log.error('Persona assertion failed.')
 
     request.session.clear()
     return http.HttpResponseBadRequest()
