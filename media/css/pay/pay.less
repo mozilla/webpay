@@ -125,15 +125,17 @@ form footer button[type=submit] {
         }
     }
     .display {
-        padding: 8px;
+        padding: 8px 13px;
         position: absolute;
         top: -10%;
         left: 0;
         right: 0;
         bottom: 0;
-        width: 170px;
+        width: 180px;
         height: 50px;
-        border: 1px solid black;
+        .border-radius(2px);
+        .box-shadow(0 1px 1px #000);
+        .gradient-two-color(#566773, #3e4e59);
         margin: auto;
 
         span {
@@ -143,6 +145,10 @@ form footer button[type=submit] {
             width: 32px;
             height: 32px;
             border: 1px solid black;
+            border-color: black #888 white;
+            background: #fff;
+            .box-shadow(inset 0 1px 1px #000);
+            position: relative;
 
             &:first-child {
                 margin-left: 0;
@@ -150,9 +156,20 @@ form footer button[type=submit] {
 
             &.filled:after {
                 content: '*';
+                font-size: 28px;
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                text-align: center;
+                line-height: 40px;
             }
             &.current {
-                .box-shadow(0 0 3px blue);
+                .box-shadow(0 0 8px 2px fade(#88f, 80%),
+                            0 0 2px blue,
+                            inset 0 1px 1px #000);
             }
         }
     }
