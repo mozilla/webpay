@@ -35,6 +35,7 @@
     }
 
     $(window).on('focus', '.pinbox input', function(e) {
+        this.value = '';
         watchInput(this);
     }).on('blur', '.pinbox input', function(e) {
         stopWatching();

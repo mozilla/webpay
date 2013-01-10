@@ -1,9 +1,11 @@
-<h2>{{ _('Enter payment PIN:') }}</h2>
+{% if form.pin.errors %}
+  <h2 class="error">{{ form.pin.errors[0] }}</h2>
+{% else %}
+  <h2>{{ _('Enter payment PIN:') }}</h2>
+{% endif %}
 <p>
   <form id="pin" action="{{ url('pin.verify') }}" method="post">
     {{ csrf() }}
-    {{ form.errors }}
-    {{ form.non_field_errors() }}
     <div class="pinbox">
       {{ form.pin }}
     </div>
