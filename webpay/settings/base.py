@@ -16,6 +16,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'webpay.pin',
     'webpay.services',
     'tower',
+    'raven.contrib.django',
 ]
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
@@ -125,7 +126,10 @@ LOGGING = dict(loggers=dict(playdoh={'level': logging.DEBUG},
                             # This gives us webpay logging.
                             w={'level': logging.DEBUG}),
                handlers={'unicode': {'class':
-                                     'webpay.unicode_log.UnicodeHandler'}})
+                                     'webpay.unicode_log.UnicodeHandler'},
+                         'sentry': {'level': 'ERROR',
+                                    'class':
+                                    'raven.contrib.django.handlers.SentryHandler'}})
 
 
 MIDDLEWARE_CLASSES = (

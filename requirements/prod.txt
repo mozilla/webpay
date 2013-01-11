@@ -27,6 +27,7 @@ ordereddict==1.1
 django-picklefield==0.2.1
 python-dateutil==2.1
 python-memcached==1.48
+raven==2.0.10
 requests==0.14.2
 schematic==0.2
 six==1.2.0
