@@ -42,22 +42,34 @@ class CreatePinFormTest(BasePinFormTestCase):
 
 class VerifyPinFormTest(BasePinFormTestCase):
 
-    @patch.object(client, 'verify_pin', lambda x, y: True)
+    @patch.object(client, 'verify_pin', lambda x, y: {'locked': False,
+                                                      'valid': True})
     def test_correct_pin(self):
         form = forms.VerifyPinForm(uuid=self.uuid, data=self.data)
         assert form.is_valid()
+        assert not form.pin_is_locked
 
-    @patch.object(client, 'verify_pin', lambda x, y: False)
+    @patch.object(client, 'verify_pin', lambda x, y: {'locked': False,
+                                                      'valid': False})
     def test_incorrect_pin(self):
         form = forms.VerifyPinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
-        assert 'Incorrect PIN' in str(form.errors)
+        assert 'PIN does not match.' in str(form.errors['pin'])
+        assert not form.pin_is_locked
 
     def test_too_long_pin(self):
         self.data.update({'pin': 'way too long pin'})
         form = forms.VerifyPinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
         assert 'has at most 4' in str(form.errors['pin'])
+
+    @patch.object(client, 'verify_pin', lambda x, y: {'locked': True,
+                                                      'valid': False})
+    def test_locked_pin(self):
+        form = forms.VerifyPinForm(uuid=self.uuid, data=self.data)
+        assert not form.is_valid()
+        assert 'incorrectly too many times' in str(form.errors['pin'])
+        assert form.pin_is_locked
 
 
 class ConfirmPinFormTest(BasePinFormTestCase):
@@ -71,7 +83,7 @@ class ConfirmPinFormTest(BasePinFormTestCase):
     def test_incorrect_pin(self):
         form = forms.ConfirmPinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
-        assert 'Incorrect PIN' in str(form.errors)
+        assert 'PIN does not match.' in str(form.errors)
 
     def test_too_long_pin(self):
         self.data.update({'pin': 'way too long pin'})
@@ -91,7 +103,7 @@ class ResetConfirmPinFormTest(BasePinFormTestCase):
     def test_incorrect_pin(self):
         form = forms.ResetConfirmPinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
-        assert 'Incorrect PIN' in str(form.errors)
+        assert 'PIN does not match.' in str(form.errors)
 
     def test_too_long_pin(self):
         self.data.update({'pin': 'way too long pin'})

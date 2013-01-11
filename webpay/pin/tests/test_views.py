@@ -88,19 +88,27 @@ class VerifyPinViewTest(PinViewTestCase):
         self.unverify()
         eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
 
-    @patch.object(client, 'verify_pin', lambda x, y: True)
+    @patch.object(client, 'verify_pin', lambda x, y: {'locked': False,
+                                                      'valid': True})
     def test_good_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert res['Location'].endswith(get_payment_url())
 
-    @patch.object(client, 'verify_pin', lambda x, y: False)
+    @patch.object(client, 'verify_pin', lambda x, y: {'locked': False,
+                                                      'valid': False})
     def test_bad_pin(self):
+        res = self.client.post(self.url, data={'pin': '1234'})
+        self.assertTemplateUsed(res, 'pin/verify.html')
+
+    @patch.object(client, 'verify_pin', lambda x, y: {'locked': True,
+                                                      'valid': False})
+    def test_locked_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
         self.assertTemplateUsed(res, 'pin/verify.html')
 
     @patch.object(client, 'verify_pin')
     def test_uuid_used(self, verify_pin):
-        verify_pin.return_value = True
+        verify_pin.return_value = {'locked': False, 'valid': True}
         self.client.post(self.url, data={'pin': '1234'})
         eq_(verify_pin.call_args[0][0], 'a:b')
 

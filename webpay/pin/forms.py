@@ -62,10 +62,18 @@ class VerifyPinForm(BasePinForm):
 
     def clean_pin(self, *args, **kwargs):
         pin = self.cleaned_data['pin']
-        if self.handle_client_errors(client.verify_pin(self.uuid, pin)):
-            return pin
+        res = client.verify_pin(self.uuid, pin)
+        self.pin_is_locked = False
+        if self.handle_client_errors(res):
+            if res.get('locked'):
+                self.pin_is_locked = True
+                raise forms.ValidationError(_('Your PIN was entered '
+                                              'incorrectly too many times. '
+                                              'Sign in to continue.'))
+            elif res.get('valid'):
+                return pin
 
-        raise forms.ValidationError(_('Incorrect PIN.'))
+        raise forms.ValidationError(_('PIN does not match.'))
 
 
 class ConfirmPinForm(BasePinForm):
@@ -75,7 +83,7 @@ class ConfirmPinForm(BasePinForm):
         if self.handle_client_errors(client.confirm_pin(self.uuid, pin)):
             return pin
 
-        raise forms.ValidationError(_('Incorrect PIN.'))
+        raise forms.ValidationError(_('PIN does not match.'))
 
 
 class ResetConfirmPinForm(BasePinForm):
@@ -85,4 +93,4 @@ class ResetConfirmPinForm(BasePinForm):
         if self.handle_client_errors(client.reset_confirm_pin(self.uuid, pin)):
             return pin
 
-        raise forms.ValidationError(_('Incorrect PIN.'))
+        raise forms.ValidationError(_('PIN does not match.'))

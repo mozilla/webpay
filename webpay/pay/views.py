@@ -1,4 +1,3 @@
-import json
 import uuid
 
 from django import http
@@ -38,13 +37,10 @@ def _error(request, msg='', exception=None):
     return render(request, 'pay/error.html', {'error': external}, status=400)
 
 
-@anonymous_csrf_exempt
-@require_GET
-def lobby(request):
+def process_pay_req(request):
     form = VerifyForm(request.GET)
     if not form.is_valid():
         return _error(request, msg=form.errors.as_text())
-    pin_form = VerifyPinForm()
 
     try:
         pay_req = verify_jwt(
@@ -69,24 +65,37 @@ def lobby(request):
     try:
         iss = Issuer.objects.get(issuer_key=form.key)
     except Issuer.DoesNotExist:
-        iss = None # marketplace
+        iss = None  # marketplace
 
-    # TODO(Kumar) fix this for reals. See bug 820198.
-    desc = pay_req['request']['description']
-    if len(desc) > 255:
-        desc = desc[0:255]
+    request.session['notes'] = {'pay_request': pay_req,
+                                'issuer': iss.pk if iss else None,
+                                'issuer_key': form.key}
+    request.session['trans_id'] = 'webpay:%s' % uuid.uuid4()
 
     # Before we verify the user's PIN let's save some
     # time and get the transaction configured via Bango in the
     # background.
-    request.session['trans_id'] = 'webpay:%s' % uuid.uuid4()
-    request.session['notes'] = {'pay_request': pay_req,
-                                'issuer': iss.pk if iss else None,
-                                'issuer_key': form.key}
-
     if not settings.FAKE_PAYMENTS:
         tasks.start_pay.delay(request.session['trans_id'],
                               request.session['notes'])
+
+
+@anonymous_csrf_exempt
+@require_GET
+def lobby(request):
+    if request.GET.get('req'):
+        # If it returns a response there was likely
+        # an error and we should return it.
+        res = process_pay_req(request)
+        if isinstance(res, http.HttpResponse):
+            return res
+    elif not 'notes' in request.session:
+        return _error(request, msg='req is required')
+
+    pin_form = VerifyPinForm()
+
+    # TODO(Wraithan): We should catch if a user is trying to restart an expired
+    #                 or completed transaction. (bug 829750)
 
     return render(request, 'pay/lobby.html', {'pin_form': pin_form})
 

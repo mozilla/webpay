@@ -10,9 +10,14 @@
       {{ form.pin }}
     </div>
     <footer>
+        {% if form.pin_is_locked %}
+        <a class="button" href="#">{{ _('Cancel') }}</a>
+        <a class="button" href="{{ url('pay.lobby') }}">{{ _('Sign in') }}</a>
+        {% else %}
         {# L10n: This is the same as the standard forgot password that most sites have. #}
-        <a class="button" href="{{ url('pin.reset_start') }}">{{ _('Forgot PIN') }}</a>
+        <a class="button" href="{{ url('pin.reset_start') }}">{{ _('Forgot PIN?') }}</a>
         <button type="submit">{{ _('Continue') }}</button>
+        {% endif %}
     </footer>
   </form>
 </p>

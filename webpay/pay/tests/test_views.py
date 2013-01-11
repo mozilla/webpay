@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 import json
 import os
 
@@ -74,6 +74,14 @@ class TestVerify(Base):
 
     def test_get(self):
         eq_(self.client.get(self.url).status_code, 400)
+
+    def test_get_no_req(self):
+        # Setting this is the minimum needed to simulate that you've already
+        # started a transaction.
+        self.session['notes'] = {}
+        self.session.save()
+        eq_(self.client.get(self.url).status_code, 200)
+
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
     @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')

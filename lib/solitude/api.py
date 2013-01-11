@@ -159,12 +159,12 @@ class SolitudeAPI(SlumberWrapper):
 
         :param uuid: String to identify the buyer by.
         :param pin: PIN to check
-        :rtype: boolean
+        :rtype: dictionary
         """
 
         res = self.safe_run(self.slumber.generic.verify_pin.post,
                             {'uuid': uuid, 'pin': pin})
-        return res.get('valid', False)
+        return res
 
     def configure_product_for_billing(self, transaction_uuid,
                                       seller_uuid,
@@ -217,6 +217,11 @@ class SolitudeAPI(SlumberWrapper):
         """
         Creates a product and a Bango ID on the fly in solitude.
         """
+        log.info(('creating product with  name: %s, external_id: %s , '
+                  'currency: %s , amount: %s , seller: %s') % (product_name,
+                                                               external_id,
+                                                               currency,
+                                                               amount, seller))
         if not seller['bango']:
             raise ValueError('No bango account set up for %s' %
                              seller['resource_pk'])
