@@ -194,12 +194,7 @@ FAKE_PAYMENTS = False
 # Control which Persona server you use for logins.
 # This is useful for switching to a development Persona server.
 
-# Production:
-#BROWSERID_VERIFICATION_URL = 'https://verifier.login.persona.org/verify'
-#BROWSERID_JS_URL = 'https://login.persona.org/include.js'
-
-# Living on the bleeding B2G edge!
-BROWSERID_DOMAIN = 'notoriousb2g.personatest.org'
+BROWSERID_DOMAIN = 'native-persona.org'
 BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
 BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN
 
