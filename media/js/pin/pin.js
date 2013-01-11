@@ -18,7 +18,32 @@
                 updateDisplay(newLen);
                 len = newLen;
             }
+
+            if (len === PINLENGTH && validate(currentInput)) {
+                currentInput.closest('form').submit();
+            }
         }, 100);
+
+    }
+
+    function warn(msg) {
+        $('h2').text(msg);
+    }
+
+    function validate(input) {
+        var value = input.val();
+        if (!value || value.length < 4) {
+            warn(gettext('PIN must be 4 digits'));
+            return false;
+        }
+
+        var re = new RegExp('^[0-9]{4}$');
+        if (!re.test(value)) {
+            warn(gettext('PIN can only contain digits.'));
+            return false;
+        }
+
+        return true;
     }
 
     function stopWatching() {
