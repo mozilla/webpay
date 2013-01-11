@@ -3,6 +3,8 @@ import logging.handlers
 import dj_database_url
 import private_base as private
 
+from webpay.settings import base
+
 from .. import splitstrip
 
 
@@ -22,7 +24,7 @@ CACHE_PREFIX = private.CACHE_PREFIX
 
 CACHES = {
     'default': {
-        'BACKEND': 'caching.backends.memcached.CacheClass',
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': splitstrip(private.CACHES_DEFAULT_LOCATION),
         'TIMEOUT': 500,
         'KEY_PREFIX': CACHE_PREFIX,
