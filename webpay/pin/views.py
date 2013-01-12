@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django import http
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
@@ -9,6 +11,7 @@ from webpay.auth.decorators import user_verified
 from webpay.auth.utils import get_user, set_user_has_pin
 from webpay.pay import get_payment_url
 from . import forms
+from . import utils
 
 log = commonware.log.getLogger('w.pin')
 
@@ -42,10 +45,18 @@ def confirm(request):
 @user_verified
 def verify(request):
     form = forms.VerifyPinForm()
+    # pin_recently_entered is on the form because the template expect it as it
+    # is rendered from pay.lobby as well as here.
+    form.pin_recently_entered = utils.pin_recently_entered(request)
+    if form.pin_recently_entered:
+        return http.HttpResponseRedirect(get_payment_url())
+
     if request.method == 'POST':
         form = forms.VerifyPinForm(uuid=get_user(request), data=request.POST)
         if form.is_valid():
+            request.session['last_pin_success'] = datetime.now()
             return http.HttpResponseRedirect(get_payment_url())
+        form.pin_recently_entered = False
     return render(request, 'pin/verify.html', {'form': form})
 
 

@@ -221,3 +221,7 @@ BANGO_PAY_URL = 'http://mozilla.test.bango.org/mozpayments/?bcid=%s'
 
 # This is the URL to the marketplace.
 MARKETPLACE_URL = None
+
+# This is the time that a user has to buy more stuff before having to enter
+# their PIN in again in seconds.
+PIN_UNLOCK_LENGTH = 300

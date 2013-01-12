@@ -14,6 +14,7 @@ from tower import ugettext as _
 from webpay.auth.decorators import user_verified
 from webpay.base.decorators import json_view
 from webpay.pin.forms import VerifyPinForm
+from webpay.pin.utils import pin_recently_entered
 
 from lib.marketplace.api import (client as marketplace, HttpClientError,
                                  TierNotFound)
@@ -93,7 +94,7 @@ def lobby(request):
         return _error(request, msg='req is required')
 
     pin_form = VerifyPinForm()
-
+    pin_form.pin_recently_entered = pin_recently_entered(request)
     # TODO(Wraithan): We should catch if a user is trying to restart an expired
     #                 or completed transaction. (bug 829750)
 

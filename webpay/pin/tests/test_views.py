@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+
+from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from mock import ANY, patch
@@ -13,6 +16,7 @@ class PinViewTestCase(SessionTestCase):
     url_name = ''
 
     def setUp(self):
+        super(PinViewTestCase, self).setUp()
         self.url = reverse(self.url_name)
         self.verify('a:b')
 
@@ -111,6 +115,22 @@ class VerifyPinViewTest(PinViewTestCase):
         verify_pin.return_value = {'locked': False, 'valid': True}
         self.client.post(self.url, data={'pin': '1234'})
         eq_(verify_pin.call_args[0][0], 'a:b')
+
+    def test_pin_recently_entered(self):
+        self.request.session['last_pin_success'] = datetime.now()
+        self.request.session.save()
+        # If they get the bypass prompt then there
+        # will be no data posted to the view.
+        res = self.client.post(self.url)
+        eq_(res.status_code, 302)
+        assert res.get('Location', '').endswith(get_payment_url())
+
+    def test_pin_not_recently_entered(self):
+        self.request.session['last_pin_success'] = (datetime.now() -
+            timedelta(seconds=settings.PIN_UNLOCK_LENGTH + 60))
+        self.request.session.save()
+        res = self.client.post(self.url)
+        self.assertTemplateUsed(res, 'pin/verify.html')
 
 
 class ConfirmPinViewTest(PinViewTestCase):

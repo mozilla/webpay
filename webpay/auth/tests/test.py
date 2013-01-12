@@ -9,7 +9,7 @@ from django.utils.importlib import import_module
 import mock
 from nose.tools import eq_
 
-from webpay.auth.utils import client, get_user
+from webpay.auth.utils import client
 from webpay.auth import views as auth_views
 
 
@@ -48,6 +48,7 @@ class SessionTestCase(test.TestCase):
                 'expires': None,
         }
         self.client.cookies[session_cookie].update(cookie_data)
+        self.request = request
 
     def unverify(self):
         # Remove the browserid verification.
