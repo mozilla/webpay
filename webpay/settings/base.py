@@ -118,18 +118,33 @@ DOMAIN_METHODS['messages'] = [
 
 HAS_SYSLOG = True  # syslog is used if HAS_SYSLOG and NOT DEBUG.
 # See settings/local.py for SYSLOG_TAG, etc
-LOGGING = dict(loggers=dict(playdoh={'level': logging.DEBUG},
-                            django_browserid={'level': logging.DEBUG},
-                            # This gives us "zamboni" logging such as the
-                            # celeryutils logger.
-                            z={'level': logging.ERROR},
-                            # This gives us webpay logging.
-                            w={'level': logging.DEBUG}),
-               handlers={'unicode': {'class':
-                                     'webpay.unicode_log.UnicodeHandler'},
-                         'sentry': {'level': 'ERROR',
-                                    'class':
-                                    'raven.contrib.django.handlers.SentryHandler'}})
+LOGGING = {
+    'loggers': {
+        'django_browserid': {
+            'level': logging.DEBUG,
+            'handlers': ['console', 'syslog'],
+        },
+        # This gives us "zamboni" logging such as the celeryutils logger.
+        'z': {
+            'level': logging.ERROR,
+            'handlers': ['console', 'syslog'],
+        },
+        # This gives us webpay logging.
+        'w': {
+            'level': logging.INFO,
+            'handlers': ['console', 'syslog'],
+        },
+    },
+    'handlers': {
+        'syslog': {
+            'class': 'webpay.unicode_log.UnicodeHandler',
+        },
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.handlers.SentryHandler',
+        },
+    },
+}
 
 
 MIDDLEWARE_CLASSES = (
