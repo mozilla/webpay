@@ -22,13 +22,14 @@ def verify(request):
     if form.is_valid():
         url = settings.BROWSERID_VERIFICATION_URL
         audience = get_audience(request)
-        extra_params = {'issuer': settings.BROWSERID_DOMAIN,
+        extra_params = {'forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
                         'allowUnverified': 'true'}
+        assertion = form.cleaned_data['assertion']
 
         log.info('verifying Persona assertion. url: %s, audience: %s, '
-                 'extra_params: %s' % (url, audience, extra_params))
-        result = verify_assertion(form.cleaned_data['assertion'], audience,
-                                  extra_params)
+                 'extra_params: %s, assertion: %s' % (url, audience,
+                                                      extra_params, assertion))
+        result = verify_assertion(assertion, audience, extra_params)
         if result:
             log.info('Persona assertion ok: %s' % result)
             email = result.get('unverified-email', result.get('email'))

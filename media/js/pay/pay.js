@@ -69,6 +69,8 @@ $(function() {
         $('.message').hide();
         $('#login-wait').fadeIn();
         navigator.id.request({
+            allowUnverified: true,
+            forceIssuer: body.data('unverified-issuer'),
             privacyPolicy: bodyData.privacyPolicy,
             termsOfService: bodyData.termsOfService
         });

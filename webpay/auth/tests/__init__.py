@@ -8,7 +8,7 @@ good_assertion = {u'status': u'okay',
                   u'audience': u'http://some.site',
                   u'expires': 1351707833170,
                   u'unverified-email': u'a+unverified@a.com',
-                  u'issuer': u'login.persona.org'}
+                  u'forceIssuer': u'native-persona.org'}
 
 
 class SessionTestCase(test.TestCase):
