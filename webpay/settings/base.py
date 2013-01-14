@@ -122,22 +122,24 @@ LOGGING = {
     'loggers': {
         'django_browserid': {
             'level': logging.DEBUG,
-            'handlers': ['console', 'unicodesyslog'],
+            'handlers': ['unicodesyslog'],
         },
         # This gives us "zamboni" logging such as the celeryutils logger.
         'z': {
             'level': logging.ERROR,
-            'handlers': ['console', 'unicodesyslog'],
+            'handlers': ['unicodesyslog', 'sentry'],
         },
         # This gives us webpay logging.
         'w': {
             'level': logging.DEBUG,
-            'handlers': ['console', 'unicodesyslog'],
+            'handlers': ['unicodesyslog', 'sentry'],
         },
     },
     'handlers': {
         'unicodesyslog': {
             'class': 'webpay.unicode_log.UnicodeHandler',
+            'facility': logging.handlers.SysLogHandler.LOG_LOCAL7,
+            'formatter': 'prod',
         },
         'sentry': {
             'level': 'ERROR',
