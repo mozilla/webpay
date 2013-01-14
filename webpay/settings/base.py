@@ -1,3 +1,5 @@
+import logging.handlers
+
 from funfactory.settings_base import *
 
 # Name of the top-level module where you put all your apps.
