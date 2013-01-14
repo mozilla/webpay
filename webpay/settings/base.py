@@ -131,7 +131,7 @@ LOGGING = {
         },
         # This gives us webpay logging.
         'w': {
-            'level': logging.INFO,
+            'level': logging.DEBUG,
             'handlers': ['console', 'unicodesyslog'],
         },
     },
