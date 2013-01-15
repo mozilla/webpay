@@ -20,7 +20,8 @@ class TestBangoReturn(BasicSessionCase):
         self.session['trans_id'] = self.trans_uuid
         self.session.save()
 
-    def success(self, overrides=None, expected_status=200):
+    def call(self, overrides=None, expected_status=200,
+             url='bango.success'):
         qs = {'MozSignature': 'xyz',
               'MerchantTransactionId': self.trans_uuid,
               'BillingConfigurationId': '123',
@@ -28,20 +29,32 @@ class TestBangoReturn(BasicSessionCase):
               'BangoTransactionId': '456'}
         if overrides:
             qs.update(overrides)
-        res = self.client.get(reverse('bango.success'), qs)
+        res = self.client.get(reverse(url), qs)
         eq_(res.status_code, expected_status)
         return res
 
     def test_good_return(self, payment_notify, slumber):
-        self.success()
+        self.call()
         payment_notify.delay.assert_called_with(self.trans_uuid)
 
     def test_invalid_return(self, payment_notify, slumber):
-        slumber.bango.payment_notice.post.side_effect = HttpClientError
-        self.success(expected_status=400)
+        slumber.bango.notification.post.side_effect = HttpClientError
+        self.call(expected_status=400)
         assert not payment_notify.delay.called
 
     def test_transaction_not_in_session(self, payment_notify, slumber):
-        self.success(overrides={'MerchantTransactionId': 'invalid-trans'},
-                     expected_status=400)
+        self.call(overrides={'MerchantTransactionId': 'invalid-trans'},
+                  expected_status=400)
         assert not payment_notify.delay.called
+
+    def test_error(self, payment_notify, slumber):
+        self.call(overrides={'ResponseCode': 'NOT OK'}, url='bango.error')
+        assert slumber.bango.notification.post.called
+
+    def test_not_error(self, payment_notify, slumber):
+        self.call(overrides={'ResponseCode': 'OK'}, url='bango.error',
+                  expected_status=400)
+
+    def test_not_ok(self, payment_notify, slumber):
+        self.call(overrides={'ResponseCode': 'NOT_OK'}, url='bango.success',
+                  expected_status=400)
