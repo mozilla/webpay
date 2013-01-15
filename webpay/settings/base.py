@@ -136,6 +136,11 @@ LOGGING = {
             'level': logging.DEBUG,
             'handlers': ['console', 'unicodesyslog', 'sentry'],
         },
+        # This sends exceptions to Sentry.
+        'django.request': {
+            'level': 'INFO',
+            'handlers': ['console', 'unicodesyslog', 'sentry'],
+        },
     },
     'handlers': {
         'unicodesyslog': {
