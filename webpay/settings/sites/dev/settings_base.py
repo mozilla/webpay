@@ -94,7 +94,7 @@ NOTIFY_ISSUER = DOMAIN
 VERBOSE_LOGGING = True
 INAPP_REQUIRE_HTTPS = False
 
-KEY = private.KEY
+KEY = 'marketplace-dev.allizom.org'
 SECRET = private.SECRET
 
 SOLITUDE_URL = 'https://payments-dev.allizom.org'
