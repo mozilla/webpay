@@ -13,3 +13,8 @@ TEMPLATE_DEBUG = True
 # We want to act as if we are hitting Solitude APIs even though it will
 # be intercepted by mock objects.
 FAKE_PAYMENTS = False
+
+
+# This is the domain that the tests use, setting this removes a warning that
+# persona throws.
+SITE_URL = 'http://testserver'
