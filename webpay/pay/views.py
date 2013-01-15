@@ -95,8 +95,6 @@ def lobby(request):
 
     pin_form = VerifyPinForm()
     pin_form.pin_recently_entered = pin_recently_entered(request)
-    # TODO(Wraithan): We should catch if a user is trying to restart an expired
-    #                 or completed transaction. (bug 829750)
 
     return render(request, 'pay/lobby.html', {'pin_form': pin_form})
 
@@ -151,4 +149,7 @@ def trans_start_url(request):
     data = {'url': None, 'status': trans['status']}
     if trans['status'] == constants.STATUS_PENDING:
         data['url'] = settings.BANGO_PAY_URL % trans['uid_pay']
+    # TODO(Wraithan): We should catch if a user is trying to restart an expired
+    #                 or completed transaction. (bug 829750).
+    #                 This will timeout in the client until then.
     return data
