@@ -64,7 +64,7 @@ class TestBuyerHasResetFlag(SessionTestCase):
             'meta': {'total_count': 0}
         }
         self.do_auth()
-        eq_(self.client.session.get('uuid_reset_pin'), False)
+        eq_(self.client.session.get('uuid_needs_pin_reset'), False)
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_no_reset_pin_flag(self, slumber):
@@ -74,7 +74,7 @@ class TestBuyerHasResetFlag(SessionTestCase):
                          'needs_pin_reset': False}]
         }
         self.do_auth()
-        eq_(self.client.session.get('uuid_reset_pin'), False)
+        eq_(self.client.session.get('uuid_needs_pin_reset'), False)
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_with_reset_pin_flag(self, slumber):
@@ -84,4 +84,4 @@ class TestBuyerHasResetFlag(SessionTestCase):
                          'needs_pin_reset': True}]
         }
         self.do_auth()
-        eq_(self.client.session.get('uuid_reset_pin'), True)
+        eq_(self.client.session.get('uuid_needs_pin_reset'), True)

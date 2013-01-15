@@ -8,7 +8,7 @@ import commonware.log
 
 from lib.solitude.api import client
 from tower import ugettext as _
-from webpay.auth.decorators import user_verified
+from webpay.auth.decorators import enforce_sequence
 from webpay.auth.utils import get_user, set_user_has_pin
 from webpay.pay import get_payment_url
 from . import forms
@@ -17,7 +17,7 @@ from . import utils
 log = commonware.log.getLogger('w.pin')
 
 
-@user_verified
+@enforce_sequence
 def create(request):
     form = forms.CreatePinForm()
     if request.method == 'POST':
@@ -35,7 +35,7 @@ def create(request):
                   'action': reverse('pin.create') })
 
 
-@user_verified
+@enforce_sequence
 def confirm(request):
     form = forms.ConfirmPinForm()
     if request.method == 'POST':
@@ -47,7 +47,7 @@ def confirm(request):
                   'action': reverse('pin.confirm') })
 
 
-@user_verified
+@enforce_sequence
 def verify(request):
     form = forms.VerifyPinForm()
     # pin_recently_entered is on the form because the template expect it as it
@@ -67,14 +67,14 @@ def verify(request):
                   'action': reverse('pin.verify') })
 
 
-@user_verified
+@enforce_sequence
 def reset_start(request):
     # TODO(Wraithan): Create dialog to make sure you meant to reset your pin
     client.set_needs_pin_reset(get_user(request))
     return http.HttpResponseRedirect(reverse('auth.logout'))
 
 
-@user_verified
+@enforce_sequence
 def reset_new_pin(request):
     form = forms.CreatePinForm()
     if request.method == 'POST':
@@ -89,7 +89,7 @@ def reset_new_pin(request):
                   'action': reverse('pin.reset_new_pin') })
 
 
-@user_verified
+@enforce_sequence
 def reset_confirm(request):
     form = forms.ConfirmPinForm()
     if request.method == 'POST':
@@ -105,7 +105,7 @@ def reset_confirm(request):
                   'action': reverse('pin.reset_confirm') })
 
 
-@user_verified
+@enforce_sequence
 def reset_cancel(request):
     client.set_needs_pin_reset(get_user(request), False)
     return http.HttpResponseRedirect(reverse('pin.verify'))
