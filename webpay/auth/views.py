@@ -43,5 +43,5 @@ def verify(request):
 
 
 def logout(request):
-    # TODO(Wraithan): implement logout view
+    # TODO(Wraithan): https://bugzil.la/827928 Implement the logout view.
     return
