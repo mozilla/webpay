@@ -13,13 +13,15 @@ window.onerror = function(m,f,l) {
 $(function() {
     "use strict";
 
+    var bodyData = $('body').data();
+
     $('[name="pin"]').each(function() {
         this.type = 'number';
         this.setAttribute('placeholder', '****');
     });
 
-    if ($('body').data('beginflow')) {
-        var verifyUrl = $('body').data('verify-url');
+    if (bodyData.beginflow) {
+        var verifyUrl = bodyData.verifyUrl;
 
         navigator.id.watch({
           onlogin: function(assertion) {
@@ -57,7 +59,7 @@ $(function() {
 
     }
 
-    if ($('body').data('docomplete')) {
+    if (bodyData.docomplete) {
         callPaySuccess();
     }
 
@@ -66,7 +68,10 @@ $(function() {
         ev.preventDefault();
         $('.message').hide();
         $('#login-wait').fadeIn();
-        navigator.id.request();
+        navigator.id.request({
+            privacyPolicy: bodyData.privacyPolicy,
+            termsOfService: bodyData.termsOfService
+        });
     });
 
     function callPaySuccess() {
