@@ -69,10 +69,10 @@ SESSION_COOKIE_SECURE = True
 DOMAIN = 'marketplace.allizom.org'
 ISSUER = DOMAIN
 NOTIFY_ISSUER = DOMAIN
-VERBOSE_LOGGING = True
-INAPP_REQUIRE_HTTPS = False
+VERBOSE_LOGGING = False
+INAPP_REQUIRE_HTTPS = True
 
-KEY = private.KEY
+KEY = DOMAIN
 SECRET = private.SECRET
 
 SOLITUDE_URL = 'https://payments.allizom.org'

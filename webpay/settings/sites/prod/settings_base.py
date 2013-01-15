@@ -64,15 +64,13 @@ SYSLOG_TAG = private.SYSLOG_TAG
 # HTTPS to disable HTTPS-only cookies.
 SESSION_COOKIE_SECURE = True
 
-#VERBOSE_LOGGING=True
-
 DOMAIN = 'marketplace.firefox.com'
 ISSUER = DOMAIN
 NOTIFY_ISSUER = DOMAIN
-VERBOSE_LOGGING = True
-INAPP_REQUIRE_HTTPS = False
+VERBOSE_LOGGING = False
+INAPP_REQUIRE_HTTPS = True
 
-KEY = private.KEY
+KEY = DOMAIN
 SECRET = private.SECRET
 
 SOLITUDE_URL = 'https://payments.firefox.com'
