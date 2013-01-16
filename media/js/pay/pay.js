@@ -39,7 +39,6 @@ $(function() {
                 } else {
                     $('.message').hide();
                     $('#enter-pin').fadeIn();
-                    console.log($('#pin [name="pin"]')[0]);
                     $('#pin [name="pin"]')[0].focus();
                 }
             })
@@ -57,6 +56,8 @@ $(function() {
           }
         });
 
+    } else {
+        $('#enter-pin').fadeIn();
     }
 
     if (bodyData.docomplete) {

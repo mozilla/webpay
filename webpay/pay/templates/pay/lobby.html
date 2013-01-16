@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "pin/pin_form.html" %}
 
 {% block body_attrs -%}
   data-beginflow="true"
@@ -8,7 +8,7 @@
   data-verify-url="{{ url('auth.verify') }}"
 {%- endblock %}
 
-{% block content %}
+{% block extra_content %}
   <div id="begin" class="message">
     {{ _('Beginning payment&hellip;') }}
   </div>
@@ -18,10 +18,5 @@
   </div>
   <div id="login-wait" class="message hidden">
     {{ _('logging you in to continue payment&hellip;') }}
-  </div>
-  <div id="enter-pin" class="hidden">
-    {% with form=pin_form %}
-      {% include "pin/includes/verify_form.html" %}
-    {% endwith %}
   </div>
 {% endblock %}

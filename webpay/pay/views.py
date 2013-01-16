@@ -96,7 +96,8 @@ def lobby(request):
     pin_form = VerifyPinForm()
     pin_form.pin_recently_entered = pin_recently_entered(request)
 
-    return render(request, 'pay/lobby.html', {'pin_form': pin_form})
+    return render(request, 'pay/lobby.html', {'form': pin_form,
+                  'title': _('Enter your PIN:')})
 
 
 @anonymous_csrf_exempt

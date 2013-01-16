@@ -18,12 +18,7 @@
                 updateDisplay(newLen);
                 len = newLen;
             }
-
-            if (len === PINLENGTH && validate(currentInput)) {
-                currentInput.closest('form').submit();
-            }
         }, 100);
-
     }
 
     function warn(msg) {

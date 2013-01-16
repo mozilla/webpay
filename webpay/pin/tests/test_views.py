@@ -57,7 +57,7 @@ class CreatePinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not create_buyer.called
         assert not change_pin.called
-        self.assertTemplateUsed(res, 'pin/create.html')
+        eq_(res.status_code, 200)
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': 'some:uuid'})
@@ -102,13 +102,13 @@ class VerifyPinViewTest(PinViewTestCase):
                                                       'valid': False})
     def test_bad_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        self.assertTemplateUsed(res, 'pin/verify.html')
+        eq_(res.status_code, 200)
 
     @patch.object(client, 'verify_pin', lambda x, y: {'locked': True,
                                                       'valid': False})
     def test_locked_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        self.assertTemplateUsed(res, 'pin/verify.html')
+        eq_(res.status_code, 200)
 
     @patch.object(client, 'verify_pin')
     def test_uuid_used(self, verify_pin):
@@ -130,7 +130,7 @@ class VerifyPinViewTest(PinViewTestCase):
             timedelta(seconds=settings.PIN_UNLOCK_LENGTH + 60))
         self.request.session.save()
         res = self.client.post(self.url)
-        self.assertTemplateUsed(res, 'pin/verify.html')
+        eq_(res.status_code, 200)
 
 
 class ConfirmPinViewTest(PinViewTestCase):
@@ -148,7 +148,7 @@ class ConfirmPinViewTest(PinViewTestCase):
     @patch.object(client, 'confirm_pin', lambda x, y: False)
     def test_bad_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        self.assertTemplateUsed(res, 'pin/confirm.html')
+        eq_(res.status_code, 200)
 
     @patch.object(client, 'confirm_pin')
     def test_uuid_used(self, confirm_pin):
@@ -223,7 +223,7 @@ class ResetConfirmPinViewTest(PinViewTestCase):
     @patch.object(client, 'reset_confirm_pin', lambda x, y: False)
     def test_bad_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        self.assertTemplateUsed(res, 'pin/reset_confirm.html')
+        eq_(res.status_code, 200)
 
     @patch.object(client, 'reset_confirm_pin')
     def test_uuid_used(self, confirm_pin):

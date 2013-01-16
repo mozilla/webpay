@@ -7,6 +7,7 @@ from django.shortcuts import render
 import commonware.log
 
 from lib.solitude.api import client
+from tower import ugettext as _
 from webpay.auth.decorators import user_verified
 from webpay.auth.utils import get_user, set_user_has_pin
 from webpay.pay import get_payment_url
@@ -29,7 +30,9 @@ def create(request):
             if form.handle_client_errors(res):
                 set_user_has_pin(request, True)
                 return http.HttpResponseRedirect(reverse('pin.confirm'))
-    return render(request, 'pin/create.html', {'form': form})
+    return render(request, 'pin/pin_form.html', {'form': form,
+                  'title': _('Create your PIN:'),
+                  'action': reverse('pin.create') })
 
 
 @user_verified
@@ -39,7 +42,9 @@ def confirm(request):
         form = forms.ConfirmPinForm(uuid=get_user(request), data=request.POST)
         if form.is_valid():
             return http.HttpResponseRedirect(get_payment_url())
-    return render(request, 'pin/confirm.html', {'form': form})
+    return render(request, 'pin/pin_form.html', { 'form': form,
+                  'title': _('Confirm your PIN:'),
+                  'action': reverse('pin.confirm') })
 
 
 @user_verified
@@ -57,7 +62,9 @@ def verify(request):
             request.session['last_pin_success'] = datetime.now()
             return http.HttpResponseRedirect(get_payment_url())
         form.pin_recently_entered = False
-    return render(request, 'pin/verify.html', {'form': form})
+    return render(request, 'pin/pin_form.html', {'form': form,
+                  'title': _('Enter your PIN:'),
+                  'action': reverse('pin.verify') })
 
 
 @user_verified
@@ -77,7 +84,9 @@ def reset_new_pin(request):
             if form.handle_client_errors(res):
                 set_user_has_pin(request, True)
                 return http.HttpResponseRedirect(reverse('pin.reset_confirm'))
-    return render(request, 'pin/reset_create.html', {'form': form})
+    return render(request, 'pin/pin_form.html', {'form': form,
+                  'title': _('Enter your new PIN:'),
+                  'action': reverse('pin.reset_new_pin') })
 
 
 @user_verified
@@ -91,7 +100,9 @@ def reset_confirm(request):
             # merely asked solitude to verify the new pin which
             # happens in validation of the form.
             return http.HttpResponseRedirect(get_payment_url())
-    return render(request, 'pin/reset_confirm.html', {'form': form})
+    return render(request, 'pin/pin_form.html', {'form': form,
+                  'title': _('Confirm your new PIN:'),
+                  'action': reverse('pin.reset_confirm') })
 
 
 @user_verified
