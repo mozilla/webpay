@@ -4,4 +4,3 @@
 -r prod.txt
 -r compiled.txt
 nosenicedots==0.3
-ipython==0.13.1
