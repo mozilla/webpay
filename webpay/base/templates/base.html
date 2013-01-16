@@ -22,7 +22,7 @@
       </div>
     {% block site_js %}
       <script src="{{ settings.BROWSERID_JS_URL }}"></script>
-      <script src="{{ url('jsi18n')|urlparams(lang=LANG) }}"></script>
+      <script src="{{ url('jsi18n') }}"></script>
       {{ js('pay') }}
     {% endblock %}
   </body>
