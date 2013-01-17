@@ -23,7 +23,7 @@ from lib.solitude.api import client as solitude
 
 from . import tasks
 from .forms import VerifyForm
-from .models import Issuer
+from .utils import verify_urls
 
 log = commonware.log.getLogger('w.pay')
 
@@ -51,10 +51,21 @@ def process_pay_req(request):
             required_keys=('request.id',
                            'request.pricePoint',  # A price tier we'll lookup.
                            'request.name',
-                           'request.description'))
+                           'request.description',
+                           'request.postbackURL',
+                           'request.chargebackURL'))
     except (TypeError, InvalidJWT, RequestExpired), exc:
         log.exception('calling verify_jwt')
         return _error(request, exception=exc)
+
+    # Verify that the URLs in it are valid.
+    try:
+        verify_urls(pay_req['request']['postbackURL'],
+                    pay_req['request']['chargebackURL'])
+    except ValueError, exc:
+        log.exception('invalid URLs')
+        return _error(request, exception=exc)
+
 
     # Assert pricePoint is valid.
     try:
@@ -63,13 +74,7 @@ def process_pay_req(request):
         log.exception('calling verifying tier')
         return _error(request, exception=exc)
 
-    try:
-        iss = Issuer.objects.get(issuer_key=form.key)
-    except Issuer.DoesNotExist:
-        iss = None  # marketplace
-
     request.session['notes'] = {'pay_request': pay_req,
-                                'issuer': iss.pk if iss else None,
                                 'issuer_key': form.key}
     request.session['trans_id'] = 'webpay:%s' % uuid.uuid4()
 

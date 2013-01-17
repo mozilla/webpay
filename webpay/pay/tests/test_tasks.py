@@ -18,10 +18,10 @@ import test_utils
 from lib.marketplace.api import TierNotFound
 from lib.solitude import api
 from lib.solitude import constants
+from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from webpay.pay import tasks
-from webpay.pay.models import Issuer, Notice
+from webpay.pay.models import Notice
 from webpay.pay.samples import JWTtester
-from webpay.pay.tasks import get_effective_issuer_key
 
 from .test_views import sample
 
@@ -33,30 +33,14 @@ class TestNotifyApp(JWTtester, test.TestCase):
 
     def setUp(self):
         super(TestNotifyApp, self).setUp()
-        self.domain = 'somenonexistantappdomain.com'
-        self.inapp_key = '1234'
-        self.inapp_secret = 'politics is just lies, smoke, and mirrors'
-        self.postback = '/postback'
-        self.chargeback = '/chargeback'
-        self.iss = Issuer.objects.create(domain=self.domain,
-                                         issuer_key=self.inapp_key,
-                                         postback_url=self.postback,
-                                         chargeback_url=self.chargeback)
-        with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
-            self.iss.set_private_key(self.inapp_secret)
-
         self.trans_uuid = 'some:uuid'
-
-    def iss_update(self, **kw):
-        Issuer.objects.filter(pk=self.iss.pk).update(**kw)
 
     @mock.patch('lib.solitude.api.client.get_transaction')
     def do_chargeback(self, reason, get_transaction):
         get_transaction.return_value = {
                 'status': constants.STATUS_COMPLETED,
                 'notes': {'pay_request': self.payload(),
-                          'issuer_key': self.iss.issuer_key,
-                          'issuer': Issuer.objects.get(pk=self.iss.pk)},
+                          'issuer_key': 'k'},
                 'type': constants.TYPE_REFUND,
                 'uuid': self.trans_uuid
         }
@@ -68,8 +52,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
         get_transaction.return_value = {
                 'status': constants.STATUS_COMPLETED,
                 'notes': {'pay_request': self.payload(),
-                          'issuer_key': self.iss.issuer_key,
-                          'issuer': Issuer.objects.get(pk=self.iss.pk)},
+                          'issuer_key': 'k'},
                 'type': constants.TYPE_PAYMENT,
                 'uuid': self.trans_uuid
         }
@@ -77,15 +60,17 @@ class TestNotifyApp(JWTtester, test.TestCase):
             tasks.payment_notify('some:uuid')
 
     @fudge.patch('webpay.pay.utils.requests')
-    def test_notify_pay(self, fake_req):
-        url = self.url(self.postback)
-        payload = self.payload(typ='mozilla/payments/pay/postback/v1')
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_notify_pay(self, fake_req, slumber):
+        self.set_secret_mock(slumber, 'f')
+        payload = self.payload(typ=TYP_POSTBACK)
+        url = payload['request']['postbackURL']
 
         def req_ok(req):
             dd = jwt.decode(req, verify=False)
             eq_(dd['request'], payload['request'])
             eq_(dd['typ'], payload['typ'])
-            jwt.decode(req, self.iss.get_private_key(), verify=True)
+            jwt.decode(req, 'f', verify=True)
             return True
 
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
@@ -100,9 +85,11 @@ class TestNotifyApp(JWTtester, test.TestCase):
         eq_(notice.url, url)
 
     @fudge.patch('webpay.pay.utils.requests')
-    def test_notify_refund_chargeback(self, fake_req):
-        url = self.url(self.chargeback)
-        payload = self.payload(typ='mozilla/payments/pay/chargeback/v1')
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_notify_refund_chargeback(self, fake_req, slumber):
+        self.set_secret_mock(slumber, 'f')
+        payload = self.payload(typ=TYP_CHARGEBACK)
+        url = payload['request']['chargebackURL']
 
         def req_ok(req):
             dd = jwt.decode(req, verify=False)
@@ -110,7 +97,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
             eq_(dd['typ'], payload['typ'])
             eq_(dd['response']['transactionID'], self.trans_uuid)
             eq_(dd['response']['reason'], 'refund')
-            jwt.decode(req, self.iss.get_private_key(), verify=True)
+            jwt.decode(req, 'f', verify=True)
             return True
 
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
@@ -125,15 +112,16 @@ class TestNotifyApp(JWTtester, test.TestCase):
         eq_(notice.url, url)
 
     @fudge.patch('webpay.pay.utils.requests')
-    def test_notify_reversal_chargeback(self, fake_req):
-        url = self.url(self.chargeback)
-
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_notify_reversal_chargeback(self, fake_req, slumber):
+        self.set_secret_mock(slumber, 'f')
         def req_ok(req):
             dd = jwt.decode(req, verify=False)
             eq_(dd['response']['reason'], 'reversal')
             return True
 
-        (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
+        (fake_req.expects('post').with_args('http://foo.url/charge',
+                                            arg.passes_test(req_ok),
                                             timeout=5)
                                  .returns_fake()
                                  .has_attr(text=self.trans_uuid)
@@ -144,44 +132,10 @@ class TestNotifyApp(JWTtester, test.TestCase):
         eq_(notice.last_error, '')
         eq_(notice.success, True)
 
-    @mock.patch.object(settings, 'INAPP_REQUIRE_HTTPS', True)
     @fudge.patch('webpay.pay.utils.requests')
-    def test_force_https(self, fake_req):
-        self.iss_update(is_https=False)
-        url = self.url(self.postback, protocol='https')
-        (fake_req.expects('post').with_args(url, arg.any(), timeout=arg.any())
-                                 .returns_fake()
-                                 .is_a_stub())
-        self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.last_error, '')
-
-    @mock.patch.object(settings, 'INAPP_REQUIRE_HTTPS', False)
-    @fudge.patch('webpay.pay.utils.requests')
-    def test_configurable_https(self, fake_req):
-        self.iss_update(is_https=True)
-        url = self.url(self.postback, protocol='https')
-        (fake_req.expects('post').with_args(url, arg.any(), timeout=arg.any())
-                                 .returns_fake()
-                                 .is_a_stub())
-        self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.last_error, '')
-
-    @mock.patch.object(settings, 'INAPP_REQUIRE_HTTPS', False)
-    @fudge.patch('webpay.pay.utils.requests')
-    def test_configurable_http(self, fake_req):
-        self.iss_update(is_https=False)
-        url = self.url(self.postback, protocol='http')
-        (fake_req.expects('post').with_args(url, arg.any(), timeout=arg.any())
-                                 .returns_fake()
-                                 .is_a_stub())
-        self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.last_error, '')
-
-    @fudge.patch('webpay.pay.utils.requests')
-    def test_notify_timeout(self, fake_req):
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_notify_timeout(self, fake_req, slumber):
+        self.set_secret_mock(slumber, 'f')
         fake_req.expects('post').raises(Timeout())
         self.notify()
         notice = Notice.objects.get()
@@ -189,16 +143,20 @@ class TestNotifyApp(JWTtester, test.TestCase):
         er = notice.last_error
         assert er.startswith('Timeout:'), 'Unexpected: %s' % er
 
+    @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.payment_notify.retry')
     @mock.patch('webpay.pay.utils.requests.post')
-    def test_retry_http_error(self, post, retry):
+    def test_retry_http_error(self, post, retry, slumber):
+        self.set_secret_mock(slumber, 'f')
         post.side_effect = RequestException('500 error')
         self.notify()
         assert post.called, 'notification not sent'
         assert retry.called, 'task was not retried after error'
 
     @fudge.patch('webpay.pay.utils.requests')
-    def test_any_error(self, fake_req):
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_any_error(self, fake_req, slumber):
+        self.set_secret_mock(slumber, 'f')
         fake_req.expects('post').raises(RequestException('some http error'))
         self.notify()
         notice = Notice.objects.get()
@@ -207,7 +165,9 @@ class TestNotifyApp(JWTtester, test.TestCase):
         assert er.startswith('RequestException:'), 'Unexpected: %s' % er
 
     @fudge.patch('webpay.pay.utils.requests')
-    def test_bad_status(self, fake_req):
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_bad_status(self, fake_req, slumber):
+        self.set_secret_mock(slumber, 'f')
         (fake_req.expects('post').returns_fake()
                                  .has_attr(text='')
                                  .expects('raise_for_status')
@@ -220,7 +180,9 @@ class TestNotifyApp(JWTtester, test.TestCase):
         assert er.startswith('HTTPError:'), 'Unexpected: %s' % er
 
     @fudge.patch('webpay.pay.utils.requests')
-    def test_invalid_app_response(self, fake_req):
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_invalid_app_response(self, fake_req, slumber):
+        self.set_secret_mock(slumber, 'f')
         (fake_req.expects('post').returns_fake()
                                  .provides('raise_for_status')
                                  .has_attr(text='<not a valid response>'))
@@ -228,24 +190,30 @@ class TestNotifyApp(JWTtester, test.TestCase):
         notice = Notice.objects.get()
         eq_(notice.success, False)
 
-    @fudge.patch('webpay.pay.utils.requests')
-    def test_signed_app_response(self, fake_req):
-        app_payment = self.payload()
+    def set_secret_mock(self, slumber, s):
+        slumber.generic.product.get_object_or_404.return_value = {'secret': s}
 
+    @fudge.patch('webpay.pay.utils.requests')
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_signed_app_response(self, fake_req, slumber):
+        app_payment = self.payload()
+        self.set_secret_mock(slumber, 'f')
+        slumber.generic.product.get_object_or_404.return_value = {'secret': 'f'}
         # Ensure that the JWT sent to the app for payment notification
         # includes the same payment data that the app originally sent.
         def is_valid(payload):
-            data = jwt.decode(payload, self.iss.get_private_key(),
+            data = jwt.decode(payload, 'f', #self.iss.get_private_key(),
                               verify=True)
             eq_(data['iss'], settings.NOTIFY_ISSUER)
-            eq_(data['aud'], self.iss.issuer_key)
-            eq_(data['typ'], 'mozilla/payments/pay/postback/v1')
+            eq_(data['typ'], TYP_POSTBACK)
             eq_(data['request']['pricePoint'], 1)
             eq_(data['request']['name'], app_payment['request']['name'])
             eq_(data['request']['description'],
                 app_payment['request']['description'])
             eq_(data['request']['productdata'],
                 app_payment['request']['productdata'])
+            eq_(data['request']['postbackURL'], 'http://foo.url/post')
+            eq_(data['request']['chargebackURL'], 'http://foo.url/charge')
             eq_(data['response']['transactionID'], 'some:uuid')
             assert data['iat'] <= calendar.timegm(time.gmtime()) + 60, (
                                 'Expected iat to be about now')
@@ -267,8 +235,7 @@ class TestStartPay(test_utils.TestCase):
     def setUp(self):
         self.issue = 'some-seller-uuid'
         self.transaction_uuid = 'webpay:some-id'
-        self.notes = {'issuer': None,
-                      'issuer_key': self.issue,
+        self.notes = {'issuer_key': self.issue,
                       'pay_request': {
                             'iss': 'some-seller-key',
                             'request': {'pricePoint': 1,
@@ -370,7 +337,7 @@ class TestStartPay(test_utils.TestCase):
         # a custom seller_uuid to the product data in the JWT.
         app_seller_uuid = 'some-seller-uuid'
         data = 'seller_uuid=%s' % app_seller_uuid
-        self.notes['pay_request']['iss'] = 'marketplace-domain'
+        self.notes['issuer_key'] = 'marketplace-domain'
         self.notes['pay_request']['request']['productData'] = data
         self.start()
 
@@ -385,10 +352,3 @@ class TestStartPay(test_utils.TestCase):
         self.notes['issuer_key'] = settings.KEY
         self.notes['pay_request']['request']['productData'] = 'foo-bar'
         self.start()
-
-    def test_get_effective_issuer(self):
-        iss = Issuer()
-        eq_(get_effective_issuer_key(iss, 'foo'), 'foo')
-        iss.issuer_key = 'bar'
-        eq_(get_effective_issuer_key(iss, 'foo'), 'bar')
-        eq_(get_effective_issuer_key(None, 'foo'), 'foo')

@@ -78,3 +78,5 @@ SECRET = private.SECRET
 SOLITUDE_URL = 'https://payments.allizom.org'
 
 SENTRY_DSN = private.SENTRY_DSN
+
+ALLOWED_CALLBACK_SCHEMES = ['https']

@@ -233,3 +233,9 @@ MARKETPLACE_URL = None
 # This is the time that a user has to buy more stuff before having to enter
 # their PIN in again in seconds.
 PIN_UNLOCK_LENGTH = 300
+
+# The schemes that are allowed in callbacks.
+ALLOWED_CALLBACK_SCHEMES = ['http', 'https']
+
+# When we are ready to having curling format lists for us, flip this to True.
+CURLING_FORMAT_LISTS = False

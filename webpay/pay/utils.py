@@ -1,4 +1,7 @@
+from django.conf import settings
+
 from urllib2 import HTTPError
+from urlparse import urlparse
 import logging
 
 import requests
@@ -64,3 +67,13 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
         last_error = ''
 
     return success, last_error
+
+
+def verify_urls(*urls):
+    for url in urls:
+        parsed = urlparse(url)
+        if not parsed.scheme or not parsed.netloc:
+            raise ValueError('Invalid URL: %s' % url)
+        if parsed.scheme not in settings.ALLOWED_CALLBACK_SCHEMES:
+            raise ValueError('Schema must be one of: %s not %s' %
+                             (settings.ALLOWED_CALLBACK_SCHEMES, url))

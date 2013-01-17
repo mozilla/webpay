@@ -38,7 +38,9 @@ class TestBangoReturn(BasicSessionCase):
         payment_notify.delay.assert_called_with(self.trans_uuid)
 
     def test_invalid_return(self, payment_notify, slumber):
-        slumber.bango.notification.post.side_effect = HttpClientError
+        err = HttpClientError
+        err.content = ''
+        slumber.bango.notification.post.side_effect = err
         self.call(expected_status=400)
         assert not payment_notify.delay.called
 

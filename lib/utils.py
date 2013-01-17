@@ -1,7 +1,6 @@
 import json
 
-#from curling.lib import API
-from slumber import API
+from curling.lib import API
 from slumber.exceptions import HttpClientError
 
 
