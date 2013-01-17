@@ -22,7 +22,7 @@ from lib.marketplace.api import (client as marketplace, HttpClientError,
 from lib.solitude import constants
 from lib.solitude.api import client as solitude
 
-from . import tasks
+from . import get_payment_url, tasks
 from .forms import VerifyForm
 from .utils import verify_urls
 
@@ -67,7 +67,6 @@ def process_pay_req(request):
         log.exception('invalid URLs')
         return _error(request, exception=exc)
 
-
     # Assert pricePoint is valid.
     try:
         marketplace.get_price(pay_req['request']['pricePoint'])
@@ -101,6 +100,9 @@ def lobby(request):
 
     pin_form = VerifyPinForm()
     pin_form.pin_recently_entered = pin_recently_entered(request)
+
+    if pin_form.pin_recently_entered:
+        return http.HttpResponseRedirect(get_payment_url())
 
     return render(request, 'pay/lobby.html', {
         'action': reverse('pin.verify'),

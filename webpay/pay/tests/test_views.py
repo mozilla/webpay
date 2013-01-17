@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 import json
 import os
 
@@ -12,6 +13,7 @@ from nose.tools import eq_
 from lib.solitude import constants
 
 from webpay.base.tests import BasicSessionCase
+from webpay.pay import get_payment_url
 from webpay.pay.forms import VerifyForm
 from webpay.pay.models import Issuer, ISSUER_ACTIVE, ISSUER_INACTIVE
 from webpay.pay.samples import JWTtester
@@ -82,13 +84,23 @@ class TestVerify(Base):
         self.session.save()
         eq_(self.client.get(self.url).status_code, 200)
 
-
     @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
     @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
     def test_inapp(self, get_price, get_secret):
         get_secret.return_value = self.secret
         payload = self.request(iss=self.key, app_secret=self.secret)
         eq_(self.get(payload).status_code, 200)
+
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
+    @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
+    def test_recently_entered_pin_redirect(self, get_price, get_secret):
+        get_secret.return_value = self.secret
+        self.session['last_pin_success'] = datetime.now()
+        self.session.save()
+        payload = self.request(iss=self.key, app_secret=self.secret)
+        res = self.get(payload)
+        eq_(res.status_code, 302)
+        assert res['Location'].endswith(get_payment_url())
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
     def test_inapp_wrong_secret(self, get_secret):
