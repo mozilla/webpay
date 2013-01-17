@@ -132,6 +132,55 @@ class TestVerify(Base):
         payload = self.request(payload=payjwt)
         eq_(self.get(payload).status_code, 400)
 
+    def test_missing_url(self):
+        for url in ['postbackURL', 'chargebackURL']:
+            payjwt = self.payload()
+            del payjwt['request'][url]
+            payload = self.request(payload=payjwt)
+            eq_(self.get(payload).status_code, 400)
+
+    def test_bad_url(self):
+        payjwt = self.payload()
+        payjwt['request']['postbackURL'] = 'fooey!'
+        payload = self.request(payload=payjwt)
+        eq_(self.get(payload).status_code, 400)
+
+    def test_debug(self):
+        with self.settings(VERBOSE_LOGGING=True):
+            payload = self.request(app_secret=self.secret + '.nope')
+            res = self.get(payload)
+            eq_(res.status_code, 400)
+            # Output should show exception message.
+            self.assertContains(res,
+                                'InvalidJWT: Signature verification failed',
+                                status_code=400)
+
+    def test_not_debug(self):
+        with self.settings(VERBOSE_LOGGING=False):
+            payload = self.request(app_secret=self.secret + '.nope')
+            res = self.get(payload)
+            eq_(res.status_code, 400)
+            # Output should show a generic error message without details.
+            self.assertContains(res, 'There was an error', status_code=400)
+
+
+@mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')
+@mock.patch.object(settings, 'SECRET', 'marketplace.secret')
+class TestForm(Base):
+
+    def failed(self, form):
+        assert not form.is_valid()
+        assert 'req' in form.errors
+
+    def test_required(self):
+        self.failed(VerifyForm({}))
+
+    def test_empty(self):
+        self.failed(VerifyForm({'req': ''}))
+
+    def test_broken(self):
+        self.failed(VerifyForm({'req': 'foo'}))
+
     def test_debug(self):
         with self.settings(VERBOSE_LOGGING=True):
             payload = self.request(app_secret=self.secret + '.nope')
