@@ -2,6 +2,7 @@ import uuid
 
 from django import http
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
@@ -101,8 +102,11 @@ def lobby(request):
     pin_form = VerifyPinForm()
     pin_form.pin_recently_entered = pin_recently_entered(request)
 
-    return render(request, 'pay/lobby.html', {'form': pin_form,
-                  'title': _('Enter your PIN:')})
+    return render(request, 'pay/lobby.html', {
+        'action': reverse('pin.verify'),
+        'form': pin_form,
+        'title': _('Enter your PIN:')
+    })
 
 
 @anonymous_csrf_exempt
