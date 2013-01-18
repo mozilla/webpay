@@ -42,7 +42,9 @@ class VerifyForm(forms.Form):
             try:
                 # Assuming that the app_id is also going to be the seller.uuid.
                 secret = client.get_secret(app_id)
-            except ValueError:
+            except ValueError, err:
+                log.info('client.get_secret(%r) raised %s: %s' %
+                         (app_id, err.__class__.__name__, err))
                 raise forms.ValidationError(
                     # L10n: the first argument is a key to identify an issuer.
                     _('No one has been registered for JWT issuer {0}.')
