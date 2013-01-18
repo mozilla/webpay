@@ -16,16 +16,19 @@ def _record(request):
     Records the request into solitude. If something went wrong it will
     return False.
     """
-    if 'trans_id' not in request.session:
-        log.info('Bango success called without an active '
-                 'transaction in the session')
-        return False
-
     qs = request.GET
+    session_uuid = request.session.get('trans_id')
     trans_uuid = qs.get('MerchantTransactionId')
-    if trans_uuid != request.session['trans_id']:
+
+
+
+    if session_uuid and trans_uuid != session_uuid:
         log.info('Bango query string transaction %r is not in the '
                  'active session' % trans_uuid)
+        return False
+    elif not trans_uuid:
+        log.info('No uuid in the session or query string: %s' %
+                 request.session.session_key)
         return False
 
     try:
@@ -74,4 +77,7 @@ def error(request):
     if not _record(request):
         return http.HttpResponseBadRequest()
 
-    return render(request, 'bango/error.html', {})
+    if request.GET.get('ResponseCode') == 'CANCEL':
+        return render(request, 'bango/cancel.html')
+
+    return render(request, 'bango/error.html')

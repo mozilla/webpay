@@ -45,13 +45,29 @@ class TestBangoReturn(BasicSessionCase):
         assert not payment_notify.delay.called
 
     def test_transaction_not_in_session(self, payment_notify, slumber):
+        del self.session['trans_id']
+        self.session.save()
+
+        self.call(overrides={'MerchantTransactionId': 'invalid-trans'},
+                  expected_status=200)
+        assert slumber.bango.notification.post.called
+
+    def test_transaction_in_session_differs(self, payment_notify, slumber):
         self.call(overrides={'MerchantTransactionId': 'invalid-trans'},
                   expected_status=400)
-        assert not payment_notify.delay.called
+        assert not slumber.bango.notification.post.called
 
     def test_error(self, payment_notify, slumber):
-        self.call(overrides={'ResponseCode': 'NOT OK'}, url='bango.error')
+        res = self.call(overrides={'ResponseCode': 'NOT OK'},
+                        url='bango.error')
         assert slumber.bango.notification.post.called
+        self.assertTemplateUsed(res, 'bango/error.html')
+
+    def test_cancel(self, payment_notify, slumber):
+        res = self.call(overrides={'ResponseCode': 'CANCEL'},
+                        url='bango.error',
+                        expected_status=200)
+        self.assertTemplateUsed(res, 'bango/cancel.html')
 
     def test_not_error(self, payment_notify, slumber):
         self.call(overrides={'ResponseCode': 'OK'}, url='bango.error',

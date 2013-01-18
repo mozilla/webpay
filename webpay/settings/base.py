@@ -41,6 +41,7 @@ MINIFY_BUNDLES = {
             'js/css3.js',
             'js/pay/pay.js',
             'js/pay/wait.js',
+            'js/pay/cancel.js',
             'js/pin/pin.js',
         ),
     }

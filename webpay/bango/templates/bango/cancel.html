@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block body_attrs -%}
+  data-cancelflow=true
+{% endblock %}
+
+{% block content %}
+  <p>{{ _('Payment cancelled.') }}</p>
+{% endblock %}
