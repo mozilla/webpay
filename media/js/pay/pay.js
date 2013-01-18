@@ -71,7 +71,7 @@ $(function() {
         $('#login-wait').fadeIn();
         navigator.id.request({
             allowUnverified: true,
-            forceIssuer: bodyData['unverified-issuer'],
+            forceIssuer: bodyData.unverifiedIssuer,
             privacyPolicy: bodyData.privacyPolicy,
             termsOfService: bodyData.termsOfService
         });
