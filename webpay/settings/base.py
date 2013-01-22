@@ -203,10 +203,6 @@ INAPP_KEY_PATHS = {}
 # Set this to True to get nice long verbose messages.
 VERBOSE_LOGGING = False
 
-# When False, the developer can toggle HTTPS on/off.
-# This is useful for development and testing.
-INAPP_REQUIRE_HTTPS = True
-
 # This is the URL lib.solitude.api uses to connect to the pay server. If this
 # is none the solitude api tests don't run as we currently don't have a mock
 # server for it.

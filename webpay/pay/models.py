@@ -82,10 +82,7 @@ class Issuer(models.Model):
 
     def app_protocol(self):
         """Protocol to use when posting to this app domain."""
-        if settings.INAPP_REQUIRE_HTTPS:
-            return 'https'
-        else:
-            return 'https' if self.is_https else 'http'
+        raise NotImplementedError
 
     class Meta:
         db_table = 'issuers'

@@ -92,7 +92,6 @@ DOMAIN = 'marketplace-dev.allizom.org'
 ISSUER = DOMAIN
 NOTIFY_ISSUER = DOMAIN
 VERBOSE_LOGGING = True
-INAPP_REQUIRE_HTTPS = False
 
 KEY = DOMAIN
 SECRET = private.SECRET
