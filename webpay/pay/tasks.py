@@ -100,7 +100,9 @@ def start_pay(transaction_uuid, notes, **kw):
             absolutify(reverse('bango.error')),
             prices['prices']
         )
-        client.slumber.generic.transaction(transaction_uuid).patch({
+        trans_pk = client.slumber.generic.transaction.get_object(
+            uuid=transaction_uuid)['resource_pk']
+        client.slumber.generic.transaction(trans_pk).patch({
             'notes': json.dumps(notes),
             'uid_pay': bill_id,
             'status': constants.STATUS_PENDING
