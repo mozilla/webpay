@@ -216,6 +216,8 @@ FAKE_PAYMENTS = False
 # This is useful for switching to a development Persona server.
 
 BROWSERID_DOMAIN = 'native-persona.org'
+# This looks confusing because it is! b2g2pac is the only one currently
+# whitelisted.
 BROWSERID_UNVERIFIED_ISSUER = 'b2g2pac.personatest.org'
 BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
 BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN
