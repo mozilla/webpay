@@ -335,6 +335,21 @@ class TestWaitToStart(Base):
         eq_(data['url'], None)
         eq_(data['status'], constants.STATUS_RECEIVED)
 
+    def wait_ended_transaction(self, get_transaction, status):
+        with self.settings(VERBOSE_LOGGING=True):
+            get_transaction.return_value = {
+                'status': status,
+                'uid_pay': 123,
+            }
+            res = self.client.get(self.wait)
+            self.assertContains(res,
+                                'Transaction has already ended.',
+                                status_code=400)
+
+    def test_wait_ended_transaction(self, get_transaction):
+        for status in constants.STATUS_ENDED:
+            self.wait_ended_transaction(get_transaction, status)
+
     def test_wait(self, get_transaction):
         res = self.client.get(self.wait)
         eq_(res.status_code, 200)

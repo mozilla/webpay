@@ -139,6 +139,11 @@ def wait_to_start(request):
         trans = solitude.get_transaction(request.session['trans_id'])
     except ValueError:
         trans = {'status': None}
+
+    if trans['status'] in constants.STATUS_ENDED:
+        log.exception('Attempt to restart finished transaction.')
+        return _error(request, msg=_('Transaction has already ended.'))
+
     if trans['status'] == constants.STATUS_PENDING:
         # The transaction is ready; no need to wait for it.
         return http.HttpResponseRedirect(
@@ -160,7 +165,4 @@ def trans_start_url(request):
     data = {'url': None, 'status': trans['status']}
     if trans['status'] == constants.STATUS_PENDING:
         data['url'] = settings.BANGO_PAY_URL % trans['uid_pay']
-    # TODO(Wraithan): We should catch if a user is trying to restart an expired
-    #                 or completed transaction. (bug 829750).
-    #                 This will timeout in the client until then.
     return data
