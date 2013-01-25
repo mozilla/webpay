@@ -12,13 +12,9 @@
     <p>
       <form id="pin" action="{{ action }}" method="post">
         {{ csrf() }}
-        {% if form.pin_recently_entered %}
-          {{ _('PIN recently entered.') }}
-        {% else %}
         <div class="pinbox">
           {{ form.pin }}
         </div>
-        {% endif %}
         <footer>
             {% if form.pin_is_locked %}
               {# TODO: This is supposed to be a cancel button

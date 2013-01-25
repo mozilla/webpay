@@ -50,10 +50,7 @@ def confirm(request):
 @enforce_sequence
 def verify(request):
     form = forms.VerifyPinForm()
-    # pin_recently_entered is on the form because the template expect it as it
-    # is rendered from pay.lobby as well as here.
-    form.pin_recently_entered = utils.pin_recently_entered(request)
-    if form.pin_recently_entered:
+    if utils.pin_recently_entered(request):
         return http.HttpResponseRedirect(get_payment_url())
 
     if request.method == 'POST':
@@ -61,7 +58,6 @@ def verify(request):
         if form.is_valid():
             request.session['last_pin_success'] = datetime.now()
             return http.HttpResponseRedirect(get_payment_url())
-        form.pin_recently_entered = False
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Enter your PIN:'),
                   'action': reverse('pin.verify') })

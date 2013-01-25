@@ -99,9 +99,8 @@ def lobby(request):
         return _error(request, msg='req is required')
 
     pin_form = VerifyPinForm()
-    pin_form.pin_recently_entered = pin_recently_entered(request)
 
-    if pin_form.pin_recently_entered:
+    if pin_recently_entered(request):
         return http.HttpResponseRedirect(get_payment_url())
 
     return render(request, 'pay/lobby.html', {
