@@ -36,7 +36,7 @@ def get_secret(issuer_key):
         return settings.SECRET
     else:
         return (client.slumber.generic.product
-                      .get_object_or_404(external_id=issuer_key))['secret']
+                      .get_object_or_404(public_id=issuer_key))['secret']
 
 
 def get_seller_uuid(issuer_key, product_data):
@@ -62,7 +62,7 @@ def get_seller_uuid(issuer_key, product_data):
         #
         # TODO: we can speed this up by having product return the full data.
         product = (client.slumber.generic.product
-                         .get_object_or_404(external_id=issuer_key))
+                         .get_object_or_404(public_id=issuer_key))
         return (client.slumber.generic.seller(product['seller'].split('/')[-2])
                       .get_object_or_404())['uuid']
 

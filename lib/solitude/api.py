@@ -118,18 +118,14 @@ class SolitudeAPI(SlumberWrapper):
         res = self.safe_run(self.slumber.generic.buyer.get, uuid=uuid)
         return self._buyer_from_response(res)
 
-    def get_secret(self, uuid):
-        """Retrieves a seller secret by their uuid.
+    def get_secret(self, public_id):
+        """Retrieves a seller secret by their public_id.
 
-        :param uuid: Sellers uuid.
+        :param public_id: Sellers public_id.
         :rtype: dictionary
         """
-        res = self.parse_res(self.safe_run(self.slumber.generic.product.get,
-                                           seller__active=True,
-                                           seller__uuid=uuid))
-        if len(res['objects']) != 1:
-            raise ValueError('Not exactly one result found.')
-        return res['objects'][0]['secret']
+        return self.slumber.generic.product.get_object(
+            data={'seller__active': True, 'public_id': public_id})
 
     def confirm_pin(self, uuid, pin):
         """Confirms the buyer's pin, marking it at confirmed in solitude
