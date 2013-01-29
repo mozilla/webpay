@@ -69,7 +69,8 @@ class SolitudeAPI(SlumberWrapper):
         """
         buyer = self.get_buyer(uuid)
         res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
-                            {'needs_pin_reset': value})
+                            {'needs_pin_reset': value,
+                             'new_pin': None})
         if 'errors' in res:
             return res
         return {}

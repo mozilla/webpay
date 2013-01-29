@@ -99,16 +99,20 @@ class SolitudeAPITest(TestCase):
 
     def test_reset_pin_flag_set(self):
         # set
+        client.set_new_pin(self.uuid, '1234')
         res = client.set_needs_pin_reset(self.uuid)
         eq_(res, {})
         buyer = client.get_buyer(self.uuid)
         assert buyer['needs_pin_reset']
+        assert not buyer['new_pin']
 
         # unset
+        client.set_new_pin(self.uuid, '1234')
         res = client.set_needs_pin_reset(self.uuid, False)
         eq_(res, {})
         buyer = client.get_buyer(self.uuid)
         assert not buyer['needs_pin_reset']
+        assert not buyer['new_pin']
 
     def test_set_new_pin_for_reset(self):
         uuid = 'set_new_pin_for_reset'
