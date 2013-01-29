@@ -1,0 +1,22 @@
+{% extends "pin/pin_form.html" %}
+{% set hide_pin=True %}
+
+{% block body_attrs -%}
+  data-flow="reset-pin"
+  data-verify-url="{{ url('auth.reverify') }}"
+  data-cancel-url="{{ url('pin.reset_cancel') }}"
+{%- endblock %}
+
+{% block extra_content %}
+<form id="confirm-pin-reset">
+  <h2>{{ _('Are you sure you want to reset your PIN?') }}</h2>
+  <footer>
+    <a class="button" href="{{ url('pin.reset_cancel') }}">
+      {{ _('Cancel') }}
+    </a>
+    <a id="do-reset" class="button" href="javascript:false">
+      {{ _('Continue') }}
+    </a>
+  </footer>
+</form>
+{% endblock %}

@@ -15,7 +15,12 @@
     {% endblock %}
 
   </head>
-  <body {% block body_attrs %}{% endblock %}>
+  <body
+    {% block body_attrs %}{% endblock %}
+    data-privacy-policy="https://marketplace.firefox.com/privacy-policy"
+    data-terms-of-service="https://marketplace.firefox.com/terms-of-use"
+    data-unverified-issuer="{{ settings.BROWSERID_UNVERIFIED_ISSUER }}"
+    >
     <section class="pay">
       <div id="content">
         {% block content %}{% endblock %}

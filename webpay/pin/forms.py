@@ -86,6 +86,16 @@ class ConfirmPinForm(BasePinForm):
         raise forms.ValidationError(_('PIN does not match.'))
 
 
+class ResetPinForm(BasePinForm):
+
+    def clean_pin(self, *args, **kwargs):
+        pin = self.cleaned_data['pin']
+        buyer = client.get_buyer(self.uuid)
+        if buyer and self.handle_client_errors(buyer):
+            self.buyer = buyer
+        return pin
+
+
 class ResetConfirmPinForm(BasePinForm):
 
     def clean_pin(self, *args, **kwargs):

@@ -20,7 +20,14 @@ $(function() {
         this.setAttribute('placeholder', '****');
     });
 
-    if (bodyData.beginflow) {
+    var onLogout = function() {
+        // This is the default onLogout but might be replaced by other handlers.
+        $('.message').hide();
+        $('#begin').fadeOut();
+        $('#login').fadeIn();
+    }
+
+    if (bodyData.flow === 'lobby') {
         var verifyUrl = bodyData.verifyUrl;
 
         navigator.id.watch({
@@ -47,17 +54,16 @@ $(function() {
             });
           },
           onlogout: function() {
-            // A user has logged out! Here you need to:
-            // Tear down the user's session by redirecting the user or making a call to your backend.
-            console.log('logged out');
-            $('.message').hide();
-            $('#begin').fadeOut();
-            $('#login').fadeIn();
+              console.log('logged out');
+              onLogout();
           }
         });
 
     } else {
-        $('#enter-pin').fadeIn();
+        var $entry = $('#enter-pin');
+        if (!$entry.hasClass('hidden')) {
+            $entry.fadeIn();
+        }
     }
 
     if (bodyData.docomplete) {
@@ -88,4 +94,16 @@ $(function() {
             paymentSuccess();
         }
     }
+
+    $('#forgot-pin').click(function(evt) {
+        var anchor = $(this);
+        evt.preventDefault();
+        // Define a new logout handler.
+        onLogout = function() {
+            // Wait until Persona has logged us out, then redirect to the
+            // original destination.
+            window.location.href = anchor.attr('href');
+        };
+        navigator.id.logout();
+    });
 });

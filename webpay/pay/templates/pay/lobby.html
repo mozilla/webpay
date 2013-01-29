@@ -1,10 +1,7 @@
 {% extends "pin/pin_form.html" %}
 
 {% block body_attrs -%}
-  data-beginflow="true"
-  data-privacy-policy="https://marketplace.firefox.com/privacy-policy"
-  data-terms-of-service="https://marketplace.firefox.com/terms-of-use"
-  data-unverified-issuer="{{ settings.BROWSERID_UNVERIFIED_ISSUER }}"
+  data-flow="lobby"
   data-verify-url="{{ url('auth.verify') }}"
 {%- endblock %}
 
