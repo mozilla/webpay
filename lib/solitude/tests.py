@@ -5,7 +5,7 @@ from django.test import TestCase
 
 import mock
 from nose.exc import SkipTest
-from nose.tools import eq_, ok_
+from nose.tools import eq_
 
 from lib.solitude.api import client
 from lib.solitude.errors import ERROR_STRINGS
@@ -161,8 +161,10 @@ class CreateBangoTest(TestCase):
         slumber.bango.product.post.return_value = {'resource_uri': 'some:uri'}
         assert client.create_product('ext:id', 'product:name', 'CAD', 1,
                 {'bango': {'seller': 's', 'resource_uri': 'r'},
-                'resource_pk': 'foo'})
+                 'resource_pk': 'foo'})
         assert slumber.generic.product.post.called
+        kw = slumber.generic.product.post.call_args[0][0]
+        eq_(kw['external_id'], 'ext:id')
         assert slumber.bango.rating.post.called
         assert slumber.bango.premium.post.called
 

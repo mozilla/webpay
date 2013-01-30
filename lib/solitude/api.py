@@ -1,5 +1,6 @@
 import json
 import logging
+import uuid
 
 from django.conf import settings
 
@@ -225,7 +226,8 @@ class SolitudeAPI(SlumberWrapper):
 
         product = self.slumber.generic.product.post({
             'external_id': external_id,
-            'seller': seller['bango']['seller']
+            'seller': seller['bango']['seller'],
+            'public_id': str(uuid.uuid4())
         })
         bango = self.slumber.bango.product.post({
             'seller_bango': seller['bango']['resource_uri'],
