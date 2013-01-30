@@ -12,14 +12,14 @@
     <p>
       <form id="pin" action="{{ action }}" method="post">
         {{ csrf() }}
+        {% if not form.pin_is_locked %}
         <div class="pinbox">
           {{ form.pin }}
         </div>
+        {% endif %}
         <footer>
             {% if form.pin_is_locked %}
-              {# TODO: This is supposed to be a cancel button
-                 that takes you out of the webpay process #}
-              <a class="button" href="{{ url('pin.reset_cancel') }}">
+              <a class="button cancel-button" href="#">
                 {{ _('Cancel') }}
               </a>
               <a class="button" href="{{ url('pay.lobby') }}">

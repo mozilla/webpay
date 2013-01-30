@@ -17,4 +17,6 @@ $(function() {
     if ($('body').data('cancelflow') === true) {
         callPayFailure();
     }
+
+    $('.cancel-button').on('click', callPayFailure);
 });
