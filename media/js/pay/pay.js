@@ -103,6 +103,10 @@ $(function() {
             // Wait until Persona has logged us out, then redirect to the
             // original destination.
             window.location.href = anchor.attr('href');
+
+            // It seems necessary to nullify the logout handler because
+            // otherwise it is held in memory and called on the next page.
+            onLogout = function() {};
         };
         navigator.id.logout();
     });
