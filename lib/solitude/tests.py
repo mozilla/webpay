@@ -168,26 +168,6 @@ class CreateBangoTest(TestCase):
 
 
 @mock.patch('lib.solitude.api.client.slumber')
-class SecretTest(TestCase):
-
-    def test_no_secret(self, slumber):
-        slumber.generic.product.get.return_value = {'objects': []}
-        with self.assertRaises(ValueError):
-            client.get_secret('x')
-
-    def test_too_many_secrets(self, slumber):
-        slumber.generic.product.get.return_value = {'objects': [1, 2]}
-        with self.assertRaises(ValueError):
-            client.get_secret('x')
-
-    def test_some_secret(self, slumber):
-        slumber.generic.product.get.return_value = {'objects':
-                                                    [{'secret': 'k'}]}
-        eq_(client.get_secret('x'), 'k')
-        ok_(slumber.generic.product.get.call_args[1]['seller__active'])
-
-
-@mock.patch('lib.solitude.api.client.slumber')
 class TransactionTest(TestCase):
 
     def test_no_transaction(self, slumber):
