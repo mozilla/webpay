@@ -6,10 +6,6 @@ var hasTouch = ('ontouchstart' in window) ||
                window.DocumentTouch &&
                document instanceof DocumentTouch;
 
-window.onerror = function(m,f,l) {
-    document.getElementsByTagName('h2')[0].innerHTML = f.split('/').pop() + ':' + l + ' ' + m;
-};
-
 $(function() {
     "use strict";
 
