@@ -233,16 +233,18 @@ class SolitudeAPI(SlumberWrapper):
             'secret': 'n'  # This is likely going to be removed.
         })
         self.slumber.bango.premium.post({
+            'bango': bango['bango_id'],
+            'seller_product_bango': bango['resource_uri'],
             # TODO(Kumar): why do we still need this?
             # The array of all possible prices/currencies is
             # set in the configure billing call.
             # Marketplace also sets dummy prices here.
             'price': '0.99',
             'currencyIso': 'USD',
-            'seller_product_bango': bango['resource_uri']
         })
 
         self.slumber.bango.rating.post({
+            'bango': bango['bango_id'],
             'rating': 'UNIVERSAL',
             'ratingScheme': 'GLOBAL',
             'seller_product_bango': bango['resource_uri']
