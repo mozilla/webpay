@@ -151,7 +151,7 @@ class CreateBangoTest(TestCase):
 
     def test_create_no_bango(self):
         with self.assertRaises(ValueError):
-            client.create_product('ext:id', None, None, None,
+            client.create_product('ext:id', None,
                                   {'bango': None, 'resource_pk': 'foo'})
 
     @mock.patch('lib.solitude.api.client.slumber')
@@ -159,7 +159,7 @@ class CreateBangoTest(TestCase):
         # Temporary mocking. Remove when this is mocked properly.
         slumber.bango.generic.post.return_value = {'product': 'some:uri'}
         slumber.bango.product.post.return_value = {'resource_uri': 'some:uri'}
-        assert client.create_product('ext:id', 'product:name', 'CAD', 1,
+        assert client.create_product('ext:id', 'product:name',
                 {'bango': {'seller': 's', 'resource_uri': 'r',
                            'package_id': '1234'},
                  'resource_pk': 'foo'})

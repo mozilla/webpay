@@ -188,9 +188,7 @@ class SolitudeAPI(SlumberWrapper):
         )
         if res['meta']['total_count'] == 0:
             bango_product_uri = self.create_product(product_id,
-                    # TODO: look at why we need currency and price for the
-                    # premium call. This might be a Bango issue.
-                    product_name, 1, 'EUR', seller)
+                    product_name, seller)
         else:
             bango_product_uri = res['objects'][0]['resource_uri']
             log.info('transaction %s: bango product: %s'
@@ -210,16 +208,12 @@ class SolitudeAPI(SlumberWrapper):
 
         return bill_id, seller_id
 
-    def create_product(self, external_id, product_name, currency, amount,
-                       seller):
+    def create_product(self, external_id, product_name, seller):
         """
         Creates a product and a Bango ID on the fly in solitude.
         """
         log.info(('creating product with  name: %s, external_id: %s , '
-                  'currency: %s , amount: %s , seller: %s') % (product_name,
-                                                               external_id,
-                                                               currency,
-                                                               amount, seller))
+                  'seller: %s') % (product_name, external_id, seller))
         if not seller['bango']:
             raise ValueError('No bango account set up for %s' %
                              seller['resource_pk'])
@@ -238,8 +232,12 @@ class SolitudeAPI(SlumberWrapper):
             'secret': 'n'  # This is likely going to be removed.
         })
         self.slumber.bango.premium.post({
-            'price': amount,
-            'currencyIso': currency,
+            # TODO(Kumar): why do we still need this?
+            # The array of all possible prices/currencies is
+            # set in the configure billing call.
+            # Marketplace also sets dummy prices here.
+            'price': '0.99',
+            'currencyIso': 'USD',
             'seller_product_bango': bango['resource_uri']
         })
 
