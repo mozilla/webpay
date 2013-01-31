@@ -2,9 +2,9 @@
 {% set hide_pin=True %}
 
 {% block body_attrs -%}
-  data-flow="reset-pin"
   data-verify-url="{{ url('auth.reverify') }}"
   data-cancel-url="{{ url('pin.reset_cancel') }}"
+  data-force-auth-result="show-pin"
 {%- endblock %}
 
 {% block extra_content %}
@@ -14,7 +14,7 @@
     <a class="button" href="{{ url('pin.reset_cancel') }}">
       {{ _('Cancel') }}
     </a>
-    <a id="do-reset" class="button" href="javascript:false">
+    <a id="do-reset" class="button force-auth-button" href="javascript:false">
       {{ _('Continue') }}
     </a>
   </footer>

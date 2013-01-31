@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+{% block body_attrs -%}
+  data-verify-url="{{ url('auth.reverify') }}"
+  data-cancel-url="{{ url('pin.reset_cancel') }}"
+  data-reset-url="{{ url('pin.reset_start') }}"
+  data-force-auth-result="redirect"
+{%- endblock %}
+
 {% block content %}
   {% block extra_content %}{% endblock %}
 
@@ -22,7 +29,7 @@
               <a class="button cancel-button" href="#">
                 {{ _('Cancel') }}
               </a>
-              <a class="button" href="{{ url('pay.lobby') }}">
+              <a class="button force-auth-button" href="#">
                 {{ _('Sign in') }}
               </a>
             {% else %}
