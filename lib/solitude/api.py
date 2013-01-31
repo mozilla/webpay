@@ -126,7 +126,7 @@ class SolitudeAPI(SlumberWrapper):
         :rtype: dictionary
         """
         return self.slumber.generic.product.get_object(
-            data={'seller__active': True, 'public_id': public_id})
+            seller__active=True, public_id=public_id)
 
     def confirm_pin(self, uuid, pin):
         """Confirms the buyer's pin, marking it at confirmed in solitude
