@@ -203,8 +203,9 @@ class SolitudeAPI(SlumberWrapper):
             'redirect_url_onerror': redirect_url_onerror,
         })
         bill_id = res['billingConfigurationId']
-        log.info('transaction %s: billing config ID: %s'
-                 % (transaction_uuid, bill_id))
+        log.info('transaction %s: billing config ID: %s; '
+                 'prices: %s'
+                 % (transaction_uuid, bill_id, prices))
 
         return bill_id, seller_id
 
