@@ -234,6 +234,7 @@ class SolitudeAPI(SlumberWrapper):
             'seller_product': product['resource_uri'],
             'name': product_name,
             'categoryId': 1,
+            'packageId': seller['bango']['package_id'],
             'secret': 'n'  # This is likely going to be removed.
         })
         self.slumber.bango.premium.post({

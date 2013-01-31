@@ -160,7 +160,8 @@ class CreateBangoTest(TestCase):
         slumber.bango.generic.post.return_value = {'product': 'some:uri'}
         slumber.bango.product.post.return_value = {'resource_uri': 'some:uri'}
         assert client.create_product('ext:id', 'product:name', 'CAD', 1,
-                {'bango': {'seller': 's', 'resource_uri': 'r'},
+                {'bango': {'seller': 's', 'resource_uri': 'r',
+                           'package_id': '1234'},
                  'resource_pk': 'foo'})
         assert slumber.generic.product.post.called
         kw = slumber.generic.product.post.call_args[0][0]
