@@ -3,7 +3,7 @@
 {% block content %}
   {% block extra_content %}{% endblock %}
 
-  <div id="enter-pin">
+  <div {% if hide_pin %}class="hidden"{% endif %} id="enter-pin">
     {% if form.pin.errors %}
       <h2 class="error">{{ form.pin.errors[0] }}</h2>
     {% else %}
@@ -12,14 +12,14 @@
     <p>
       <form id="pin" action="{{ action }}" method="post">
         {{ csrf() }}
+        {% if not form.pin_is_locked %}
         <div class="pinbox">
           {{ form.pin }}
         </div>
+        {% endif %}
         <footer>
             {% if form.pin_is_locked %}
-              {# TODO: This is supposed to be a cancel button
-                 that takes you out of the webpay process #}
-              <a class="button" href="{{ url('pin.reset_cancel') }}">
+              <a class="button cancel-button" href="#">
                 {{ _('Cancel') }}
               </a>
               <a class="button" href="{{ url('pay.lobby') }}">
@@ -28,7 +28,7 @@
             {% else %}
               {# L10n: This is the same as the standard forgot
                  password that most sites have. #}
-              <a class="button" href="{{ url('pin.reset_start') }}">
+              <a id="forgot-pin" class="button" href="{{ url('pin.reset_start') }}">
                 {{ _('Forgot PIN?') }}
               </a>
               <button type="submit">{{ _('Continue') }}</button>

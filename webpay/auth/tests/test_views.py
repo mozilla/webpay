@@ -16,6 +16,7 @@ class TestAuth(SessionTestCase):
 
     def setUp(self):
         self.url = reverse('auth.verify')
+        self.reverify_url = reverse('auth.reverify')
 
     @mock.patch('webpay.auth.views.verify_assertion')
     @mock.patch('webpay.auth.views.set_user')
@@ -53,3 +54,11 @@ class TestAuth(SessionTestCase):
         verify_assertion.return_value = False
         eq_(self.client.post(self.url, {'assertion': 'bad'}).status_code, 400)
         eq_(self.client.session.get('uuid'), None)
+
+    @mock.patch('webpay.auth.views.verify_assertion')
+    def test_reverify(self, verify_assertion):
+        verify_assertion.return_value = dict(good_assertion)
+        res = self.client.post(self.reverify_url, {'assertion': 'good'})
+        eq_(res.status_code, 200)
+        assert verify_assertion.call_args[0][2]['forceAuthentication'], (
+            verify_assertion.call_args)

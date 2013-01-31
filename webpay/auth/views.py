@@ -17,6 +17,38 @@ log = commonware.log.getLogger('w.auth')
 @anonymous_csrf_exempt
 @require_POST
 @json_view
+def reverify(request):
+    form = BrowserIDForm(data=request.POST)
+    if form.is_valid():
+        url = settings.BROWSERID_VERIFICATION_URL
+        audience = get_audience(request)
+        # TODO: when we want to require a forced-auth login across the
+        # entire site then how do we do it?
+        # See bug 836060.
+        extra_params = {'forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
+                        # TODO: how do we make sure this is a proper forced auth assertion?
+                        # This can also be addressed in bug 836060
+                        'forceAuthentication': 'true',
+                        'allowUnverified': 'true'}
+
+        log.info('Re-verifying Persona assertion. url: %s, audience: %s, '
+                 'extra_params: %s' % (url, audience, extra_params))
+        result = verify_assertion(form.cleaned_data['assertion'], audience,
+                                  extra_params)
+        log.info('Reverify got result: %s')
+        if result:
+            return {}
+
+        # Are we meant to do something here?
+        log.error('Persona assertion failed.')
+
+    request.session.clear()
+    return http.HttpResponseBadRequest()
+
+
+@anonymous_csrf_exempt
+@require_POST
+@json_view
 def verify(request):
     form = BrowserIDForm(data=request.POST)
     if form.is_valid():
@@ -41,8 +73,3 @@ def verify(request):
 
     request.session.clear()
     return http.HttpResponseBadRequest()
-
-
-def logout(request):
-    # TODO(Wraithan): https://bugzil.la/827928 Implement the logout view.
-    return

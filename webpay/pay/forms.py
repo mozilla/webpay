@@ -40,7 +40,7 @@ class VerifyForm(forms.Form):
             self.key, self.secret = app_id, settings.SECRET
         else:
             try:
-                # Assuming that the app_id is also going to be the seller.uuid.
+                # Assuming that the app_id is also going to be the public_id.
                 secret = client.get_secret(app_id)
             except ValueError, err:
                 log.info('client.get_secret(%r) raised %s: %s' %

@@ -12,6 +12,7 @@ PROJECT_MODULE = 'webpay'
 ROOT_URLCONF = '%s.urls' % PROJECT_MODULE
 
 INSTALLED_APPS = list(INSTALLED_APPS) + [
+    'webpay.auth',
     'webpay.base',  # Needed for global templates, etc.
     'webpay.bango',
     'webpay.pay',
@@ -43,6 +44,7 @@ MINIFY_BUNDLES = {
             'js/pay/wait.js',
             'js/pay/cancel.js',
             'js/pin/pin.js',
+            'js/pin/reset.js',
         ),
     }
 }

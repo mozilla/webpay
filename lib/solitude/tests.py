@@ -5,7 +5,7 @@ from django.test import TestCase
 
 import mock
 from nose.exc import SkipTest
-from nose.tools import eq_, ok_
+from nose.tools import eq_
 
 from lib.solitude.api import client
 from lib.solitude.errors import ERROR_STRINGS
@@ -99,16 +99,20 @@ class SolitudeAPITest(TestCase):
 
     def test_reset_pin_flag_set(self):
         # set
+        client.set_new_pin(self.uuid, '1234')
         res = client.set_needs_pin_reset(self.uuid)
         eq_(res, {})
         buyer = client.get_buyer(self.uuid)
         assert buyer['needs_pin_reset']
+        assert not buyer['new_pin']
 
         # unset
+        client.set_new_pin(self.uuid, '1234')
         res = client.set_needs_pin_reset(self.uuid, False)
         eq_(res, {})
         buyer = client.get_buyer(self.uuid)
         assert not buyer['needs_pin_reset']
+        assert not buyer['new_pin']
 
     def test_set_new_pin_for_reset(self):
         uuid = 'set_new_pin_for_reset'
@@ -157,30 +161,12 @@ class CreateBangoTest(TestCase):
         slumber.bango.product.post.return_value = {'resource_uri': 'some:uri'}
         assert client.create_product('ext:id', 'product:name', 'CAD', 1,
                 {'bango': {'seller': 's', 'resource_uri': 'r'},
-                'resource_pk': 'foo'})
+                 'resource_pk': 'foo'})
         assert slumber.generic.product.post.called
+        kw = slumber.generic.product.post.call_args[0][0]
+        eq_(kw['external_id'], 'ext:id')
         assert slumber.bango.rating.post.called
         assert slumber.bango.premium.post.called
-
-
-@mock.patch('lib.solitude.api.client.slumber')
-class SecretTest(TestCase):
-
-    def test_no_secret(self, slumber):
-        slumber.generic.product.get.return_value = {'objects': []}
-        with self.assertRaises(ValueError):
-            client.get_secret('x')
-
-    def test_too_many_secrets(self, slumber):
-        slumber.generic.product.get.return_value = {'objects': [1, 2]}
-        with self.assertRaises(ValueError):
-            client.get_secret('x')
-
-    def test_some_secret(self, slumber):
-        slumber.generic.product.get.return_value = {'objects':
-                                                    [{'secret': 'k'}]}
-        eq_(client.get_secret('x'), 'k')
-        ok_(slumber.generic.product.get.call_args[1]['seller__active'])
 
 
 @mock.patch('lib.solitude.api.client.slumber')
