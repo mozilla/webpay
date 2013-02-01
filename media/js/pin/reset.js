@@ -1,6 +1,7 @@
 $(function() {
     "use strict";
-    var bodyData = $('body').data();
+    var bodyData = $('body').data(),
+        on_success;
 
     function watchForceAuth(on_success) {
         navigator.id.watch({
@@ -35,17 +36,31 @@ $(function() {
     }
 
     $('.force-auth-button').on('click', function(evt) {
-        if (bodyData.forceAuthResult === 'show-pin') {
-            var on_success = function() {
+        evt.preventDefault();
+        if (window.localStorage.getItem('reset-step') === 'pin') {
+            /* You've already re-signed in. */
+            $('#confirm-pin-reset').hide();
+            $('#enter-pin').show();
+            window.localStorage.removeItem('reset-step');
+            return;
+        }
+        if (bodyData.forceAuthResult !== 'show-pin') {
+            on_success = function() {
+                /* We are going to bounce you to the reset-step after login,
+                 * but you've already entered your login, so we'll store that.
+                 */
+                window.localStorage.setItem('reset-step', 'pin');
                 window.location.href = bodyData.resetUrl;
             };
         } else {
-            var on_success = function() {
+            on_success = function() {
+                /* You are in the reset step and you've logged in,
+                 * let's show you a pin.
+                 */
                 $('#confirm-pin-reset').hide();
                 $('#enter-pin').show();
             };
         }
-        evt.preventDefault();
         watchForceAuth(on_success);
         startForceAuth();
     });
