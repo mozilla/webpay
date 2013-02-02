@@ -4,6 +4,7 @@ import logging
 import sys
 import time
 import urlparse
+import uuid
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -18,7 +19,8 @@ from multidb.pinning import use_master
 
 from webpay.base.helpers import absolutify
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
-from .models import Notice
+from .models import (Notice, NOT_SIMULATED, SIMULATED_POSTBACK,
+                     SIMULATED_CHARGEBACK)
 from .utils import send_pay_notice
 
 log = logging.getLogger('w.pay.tasks')
@@ -150,7 +152,40 @@ def chargeback_notify(transaction_uuid, **kw):
             extra_response={'reason': kw.get('reason', '')})
 
 
-def _notify(notifier_task, trans, extra_response=None):
+@task(**notify_kw)
+@use_master
+def simulate_notify(issuer_key, pay_request, trans_uuid=None, **kw):
+    """
+    Post JWT notice to an app about a simulated payment.
+
+    This isn't really much different from a regular notice except
+    that a fake transaction_uuid is created.
+    """
+    if not trans_uuid:
+        trans_uuid = 'simulate:%s' % uuid.uuid4()
+    trans = {'uuid': trans_uuid,
+             'notes': {'pay_request': pay_request,
+                       'issuer_key': issuer_key}}
+    extra_response = None
+    sim = pay_request['request']['simulate']
+    if sim.get('reason'):
+        extra_response = {'reason': sim['reason']}
+
+    if sim['result'] == 'postback':
+        trans['type'] = constants.TYPE_PAYMENT
+        sim_flag = SIMULATED_POSTBACK
+    elif sim['result'] == 'chargeback':
+        trans['type'] = constants.TYPE_REFUND
+        sim_flag = SIMULATED_CHARGEBACK
+    else:
+        raise NotImplementedError('Not sure how to simulate %s' % sim)
+
+    log.info('Sending simulate notice %s to %s' % (sim, issuer_key))
+    _notify(simulate_notify, trans, extra_response=extra_response,
+            simulated=sim_flag)
+
+
+def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED):
     """
     Post JWT notice to an app server about a payment.
     """
@@ -181,6 +216,7 @@ def _notify(notifier_task, trans, extra_response=None):
     Notice.objects.create(transaction_uuid=trans['uuid'],
                           success=success,
                           url=url,
+                          simulated=simulated,
                           last_error=last_error)
 
 

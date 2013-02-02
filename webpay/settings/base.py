@@ -246,3 +246,10 @@ POSTBACK_ATTEMPTS = 5
 
 # Amount of seconds between each payment postback attempt.
 POSTBACK_DELAY = 300
+
+# When True, developers can simulate payments by signing a JWT with a simulate
+# attribute in the request.
+ALLOW_SIMULATE = True
+
+# When passing a simulate request, the result must match one of these.
+ALLOWED_SIMULATIONS = ('postback', 'chargeback')

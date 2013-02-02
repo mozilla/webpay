@@ -188,6 +188,63 @@ class TestVerify(Base):
             # Output should show a generic error message without details.
             self.assertContains(res, 'There was an error', status_code=400)
 
+    def test_begin_simulation(self):
+        payjwt = self.payload()
+        payjwt['request']['simulate'] = {'result': 'postback'}
+        payload = self.request(payload=payjwt)
+        res = self.get(payload)
+        eq_(res.status_code, 200)
+        self.assertTemplateUsed(res, 'pay/simulate.html')
+        eq_(self.client.session['is_simulation'], True)
+
+    def test_unknown_simulation(self):
+        payjwt = self.payload()
+        payjwt['request']['simulate'] = {'result': '<script>alert()</script>'}
+        payload = self.request(payload=payjwt)
+        res = self.get(payload)
+        self.assertContains(res,
+                            'simulation result is not supported',
+                            status_code=400)
+
+    def test_empty_simulation(self):
+        payjwt = self.payload()
+        payjwt['request']['simulate'] = {}
+        payload = self.request(payload=payjwt)
+        eq_(self.get(payload).status_code, 200)
+        eq_(self.client.session['is_simulation'], False)
+
+    def test_bad_signature_does_not_store_simulation(self):
+        payjwt = self.payload()
+        payjwt['request']['simulate'] = {'result': 'postback'}
+        payload = self.request(payload=payjwt,
+                               app_secret=self.secret + '.nope')
+        eq_(self.get(payload).status_code, 400)
+        keys = self.client.session.keys()
+        assert 'is_simulation' not in keys, keys
+
+    def test_debug_when_simulating(self):
+        with self.settings(VERBOSE_LOGGING=False):
+            payjwt = self.payload()
+            payjwt['request']['simulate'] = {'result': 'postback'}
+            payload = self.request(payload=payjwt,
+                                   app_secret=self.secret + '.nope')
+            res = self.get(payload)
+            eq_(res.status_code, 400)
+            # Output should show exception message.
+            self.assertContains(res,
+                                'InvalidJWT: Signature verification failed',
+                                status_code=400)
+
+    def test_simulate_disabled_in_settings(self):
+        payjwt = self.payload()
+        payjwt['request']['simulate'] = {'result': 'postback'}
+        payload = self.request(payload=payjwt)
+        with self.settings(ALLOW_SIMULATE=False):
+            res = self.get(payload)
+        self.assertContains(res,
+                            'simulations are disabled',
+                            status_code=400)
+
 
 @mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')
 @mock.patch.object(settings, 'SECRET', 'marketplace.secret')
@@ -367,3 +424,53 @@ class TestWaitToStart(Base):
         res = self.client.get(self.wait)
         eq_(res.status_code, 200)
         self.assertContains(res, 'Waiting')
+
+
+class TestSimulate(BasicSessionCase, JWTtester):
+
+    def setUp(self):
+        super(TestSimulate, self).setUp()
+        self.url = reverse('pay.lobby')
+        self.simulate_url = reverse('pay.simulate')
+        self.session['is_simulation'] = True
+        self.session['notes'] = {}
+        self.issuer_key = 'some-app-id'
+        self.session['notes']['issuer_key'] = self.issuer_key
+        req = self.payload()
+        req['request']['simulate'] = {'result': 'postback'}
+        self.session['notes']['pay_request'] = req
+        self.session.save()
+        # Stub out non-simulate code in case it gets called.
+        self.patches = [
+            mock.patch('webpay.pay.views.tasks.start_pay'),
+            mock.patch('webpay.pay.views.marketplace')
+        ]
+        for p in self.patches:
+            p.start()
+
+    def tearDown(self):
+        for p in self.patches:
+            p.stop()
+
+    def test_not_simulating(self):
+        del self.session['is_simulation']
+        self.session.save()
+        eq_(self.client.post(self.simulate_url).status_code, 403)
+
+    def test_false_simulation(self):
+        self.session['is_simulation'] = False
+        self.session.save()
+        eq_(self.client.post(self.simulate_url).status_code, 403)
+
+    def test_simulate(self):
+        res = self.client.get(self.url)
+        eq_(res.status_code, 200)
+        eq_(res.context['simulate'],
+            self.session['notes']['pay_request']['request']['simulate'])
+
+    @mock.patch('webpay.pay.views.tasks.simulate_notify')
+    def test_simulate_postback(self, notify):
+        res = self.client.post(self.simulate_url)
+        notify.delay.assert_called_with(self.issuer_key,
+                                        self.session['notes']['pay_request'])
+        self.assertTemplateUsed(res, 'pay/simulate_done.html')

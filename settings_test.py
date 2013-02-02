@@ -17,3 +17,5 @@ FAKE_PAYMENTS = False
 # This is the domain that the tests use, setting this removes a warning that
 # persona throws.
 SITE_URL = 'http://testserver'
+
+ALLOW_SIMULATE = True
