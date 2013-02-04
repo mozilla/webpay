@@ -135,7 +135,7 @@ def payment_notify(transaction_uuid, **kw):
 
 @task(**notify_kw)
 @use_master
-def chargeback_notify(transaction_uuid, reason, **kw):
+def chargeback_notify(transaction_uuid, **kw):
     """
     Notify the app of a chargeback by posting a JWT.
 
@@ -146,7 +146,8 @@ def chargeback_notify(transaction_uuid, reason, **kw):
     reason: either 'reversal' or 'refund'
     """
     transaction = client.get_transaction(transaction_uuid)
-    _notify(chargeback_notify, transaction, extra_response={'reason': reason})
+    _notify(chargeback_notify, transaction,
+            extra_response={'reason': kw.get('reason', '')})
 
 
 def _notify(notifier_task, trans, extra_response=None):
@@ -175,7 +176,6 @@ def _notify(notifier_task, trans, extra_response=None):
                                algorithm='HS256')
     success, last_error = send_pay_notice(url, trans['type'], signed_notice,
                                           trans['uuid'], notifier_task)
-
     s = Notice._meta.get_field_by_name('last_error')[0].max_length
     last_error = last_error[:s]  # truncate to fit
     Notice.objects.create(transaction_uuid=trans['uuid'],

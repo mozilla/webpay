@@ -45,7 +45,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
                 'uuid': self.trans_uuid
         }
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
-            tasks.chargeback_notify(self.trans_uuid, reason)
+            tasks.chargeback_notify(self.trans_uuid, reason=reason)
 
     @mock.patch('lib.solitude.api.client.get_transaction')
     def notify(self, get_transaction):
@@ -132,16 +132,26 @@ class TestNotifyApp(JWTtester, test.TestCase):
         eq_(notice.last_error, '')
         eq_(notice.success, True)
 
-    @fudge.patch('webpay.pay.utils.requests')
+    @mock.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
-    def test_notify_timeout(self, fake_req, slumber):
-        self.set_secret_mock(slumber, 'f')
-        fake_req.expects('post').raises(Timeout())
+    @mock.patch('lib.marketplace.api.client.slumber')
+    def test_notify_marketplace(self, marketplace, solitude, requests):
+        self.set_secret_mock(solitude, 'f')
+        requests.post.side_effect = Timeout('Timeout')
+        self.notify()
+        assert marketplace.api.webpay.failure.called
+
+    @mock.patch('webpay.pay.utils.requests')
+    @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.slumber')
+    def test_notify_timeout(self, marketplace, solitude, requests):
+        self.set_secret_mock(solitude, 'f')
+        requests.post.side_effect = Timeout('Timeout')
         self.notify()
         notice = Notice.objects.get()
         eq_(notice.success, False)
         er = notice.last_error
-        assert er.startswith('Timeout:'), 'Unexpected: %s' % er
+        assert 'Timeout' in er, 'Unexpected: %s' % er
 
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.payment_notify.retry')
@@ -155,19 +165,21 @@ class TestNotifyApp(JWTtester, test.TestCase):
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
-    def test_any_error(self, fake_req, slumber):
-        self.set_secret_mock(slumber, 'f')
+    @mock.patch('lib.marketplace.api.client.slumber')
+    def test_any_error(self, fake_req, marketplace, solitude):
+        self.set_secret_mock(solitude, 'f')
         fake_req.expects('post').raises(RequestException('some http error'))
         self.notify()
         notice = Notice.objects.get()
         eq_(notice.success, False)
         er = notice.last_error
-        assert er.startswith('RequestException:'), 'Unexpected: %s' % er
+        assert 'some http error' in er, 'Unexpected: %s' % er
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
-    def test_bad_status(self, fake_req, slumber):
-        self.set_secret_mock(slumber, 'f')
+    @mock.patch('lib.marketplace.api.client.slumber')
+    def test_bad_status(self, fake_req, marketplace, solitude):
+        self.set_secret_mock(solitude, 'f')
         (fake_req.expects('post').returns_fake()
                                  .has_attr(text='')
                                  .expects('raise_for_status')
@@ -177,7 +189,7 @@ class TestNotifyApp(JWTtester, test.TestCase):
         notice = Notice.objects.get()
         eq_(notice.success, False)
         er = notice.last_error
-        assert er.startswith('HTTPError:'), 'Unexpected: %s' % er
+        assert 'HTTP Error' in er, 'Unexpected: %s' % er
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -189,6 +201,25 @@ class TestNotifyApp(JWTtester, test.TestCase):
         self.notify()
         notice = Notice.objects.get()
         eq_(notice.success, False)
+
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('webpay.pay.utils.requests')
+    @mock.patch('webpay.pay.tasks.payment_notify.retry')
+    def test_notify_retries(self, retry, requests, slumber):
+        self.set_secret_mock(slumber, 'f')
+        requests.post.side_effect = RequestException('some http error')
+        self.notify()
+        assert retry.called, 'task was not retried after error'
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('webpay.pay.utils.requests')
+    @mock.patch('webpay.pay.utils.notify_failure')
+    def test_failure_notifies(self, notify, requests, slumber):
+        self.set_secret_mock(slumber, 'f')
+        requests.post.side_effect = RequestException('some http error')
+        self.notify()
+        assert notify.called, 'notify called'
 
     def set_secret_mock(self, slumber, s):
         slumber.generic.product.get_object_or_404.return_value = {'secret': s}

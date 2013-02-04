@@ -1,13 +1,22 @@
-from django.conf import settings
-
+from datetime import datetime, timedelta
 from urllib2 import HTTPError
 from urlparse import urlparse
 import logging
 
+from django.conf import settings
+
+from celery.exceptions import RetryTaskError
+from django_statsd.clients import statsd
 import requests
 from requests.exceptions import RequestException
 
+from lib.marketplace.api import client
+
 log = logging.getLogger('w.pay.utils')
+
+
+def format_exception(exception):
+    return u'%s: %s' % (exception.__class__.__name__, exception)
 
 
 def send_pay_notice(url, notice_type, signed_notice, trans_id,
@@ -41,18 +50,32 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
     log.info('about to notify %s of notice type %s' % (url, notice_type))
     exception = None
     success = False
+
     try:
-        res = requests.post(url, signed_notice, timeout=5)
+        with statsd.timer('purchase.send_pay_notice'):
+            res = requests.post(url, signed_notice, timeout=5)
         res.raise_for_status()  # raise exception for non-200s
         res_content = res.text
     except (HTTPError, RequestException), exception:
         log.error('Notice for transaction %s raised exception in URL %s'
                   % (trans_id, url), exc_info=True)
         try:
-            notifier_task.retry(exc=exception)
-        except:
-            log.exception('while retrying trans %s notice; '
-                          'notification URL: %s' % (trans_id, url))
+            notifier_task.retry(args=[trans_id],
+                eta=(datetime.now() +
+                     timedelta(seconds=settings.POSTBACK_DELAY)),
+                max_retries=settings.POSTBACK_ATTEMPTS,
+                exc=exception)
+
+        # Retry actually raises an exception, so let that through.
+        except RetryTaskError:
+            statsd.incr('purchase.send_pay_notice.retry')
+            raise
+
+        # If it's the last retry it will re-throw the original exception.
+        except Exception, final_exception:
+            notify_failure(url, trans_id)
+            return False, format_exception(final_exception)
+
     else:
         if res_content == str(trans_id):
             success = True
@@ -61,12 +84,21 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
         else:
             log.error('URL %s did not respond with transaction %s '
                       'for notification' % (url, trans_id))
+
     if exception:
-        last_error = u'%s: %s' % (exception.__class__.__name__, exception)
+        last_error = format_exception(exception)
     else:
         last_error = ''
 
     return success, last_error
+
+
+def notify_failure(url, trans_id):
+    statsd.incr('purchase.send_pay_notice.failure')
+    client.slumber.api.webpay.failure(trans_id).patch({
+                'attempts': settings.POSTBACK_ATTEMPTS,
+                'url': url})
+    log.exception('Retries failed to %s: %s:' % (url, trans_id))
 
 
 def verify_urls(*urls):

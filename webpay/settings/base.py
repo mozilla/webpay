@@ -240,3 +240,9 @@ ALLOWED_CALLBACK_SCHEMES = ['http', 'https']
 
 # When we are ready to having curling format lists for us, flip this to True.
 CURLING_FORMAT_LISTS = False
+
+# Number of retries on a payment postback.
+POSTBACK_ATTEMPTS = 5
+
+# Amount of seconds between each payment postback attempt.
+POSTBACK_DELAY = 300
