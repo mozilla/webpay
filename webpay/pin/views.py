@@ -63,10 +63,10 @@ def verify(request):
                   'action': reverse('pin.verify') })
 
 
-# Fix in bug 836049
-#@enforce_sequence
+@enforce_sequence
 def reset_start(request):
     client.set_needs_pin_reset(get_user(request))
+    request.session['uuid_needs_pin_reset'] = True
     form = forms.CreatePinForm()
     return render(request, 'pin/reset_start.html',
                   {'title': _('Enter your new PIN:'),
@@ -74,8 +74,7 @@ def reset_start(request):
                    'form': form})
 
 
-# Fix in bug 836049
-#@enforce_sequence
+@enforce_sequence
 def reset_new_pin(request):
     form = forms.CreatePinForm()
     if request.method == 'POST':
@@ -83,7 +82,7 @@ def reset_new_pin(request):
         if form.is_valid():
             res = client.set_new_pin(form.uuid, form.cleaned_data['pin'])
             if form.handle_client_errors(res):
-                set_user_has_pin(request, True)
+                request.session['uuid_has_new_pin'] = True
                 return http.HttpResponseRedirect(reverse('pin.reset_confirm'))
 
     return render(request, 'pin/pin_form.html', {'form': form,
@@ -91,8 +90,7 @@ def reset_new_pin(request):
                   'action': reverse('pin.reset_new_pin') })
 
 
-# Fix in bug 836049
-#@enforce_sequence
+@enforce_sequence
 def reset_confirm(request):
     form = forms.ConfirmPinForm()
     if request.method == 'POST':
@@ -108,8 +106,8 @@ def reset_confirm(request):
                   'action': reverse('pin.reset_confirm') })
 
 
-# Fix in bug 836049
-#@enforce_sequence
+@enforce_sequence
 def reset_cancel(request):
     client.set_needs_pin_reset(get_user(request), False)
+    request.session['uuid_needs_pin_reset'] = False
     return http.HttpResponseRedirect(reverse('pin.verify'))
