@@ -249,6 +249,14 @@ class SolitudeAPI(SlumberWrapper):
             'ratingScheme': 'GLOBAL',
             'seller_product_bango': bango['resource_uri']
         })
+        # Bug 836865.
+        self.slumber.bango.rating.post({
+            'bango': bango['bango_id'],
+            'rating': 'GENERAL',
+            'ratingScheme': 'USA',
+            'seller_product_bango': bango['resource_uri']
+        })
+
         return bango['resource_uri']
 
     def get_transaction(self, uuid):
