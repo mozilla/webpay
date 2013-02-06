@@ -103,6 +103,13 @@ def lobby(request):
     if pin_recently_entered(request):
         return http.HttpResponseRedirect(get_payment_url())
 
+    # If the buyer closed the trusted UI during reset flow, we want to unset
+    # the reset pin flag. They can hit the forgot pin button if they still
+    # don't remember their pin.
+    if request.session.get('uuid_needs_pin_reset'):
+        solitude.set_needs_pin_reset(request.session['uuid'], False)
+        request.session['uuid_needs_pin_reset'] = False
+
     return render(request, 'pay/lobby.html', {
         'action': reverse('pin.verify'),
         'form': pin_form,

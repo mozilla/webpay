@@ -103,6 +103,19 @@ class TestVerify(Base):
         assert res['Location'].endswith(get_payment_url())
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
+    @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
+    @mock.patch('lib.solitude.api.SolitudeAPI.set_needs_pin_reset')
+    def test_reset_flag_true(self, set_needs_pin_reset, get_price, get_secret):
+        get_secret.return_value = self.secret
+        self.session['uuid_needs_pin_reset'] = True
+        self.session['uuid'] = 'some:uuid'
+        self.session.save()
+        payload = self.request(iss=self.key, app_secret=self.secret)
+        res = self.get(payload)
+        eq_(res.status_code, 200)
+        assert set_needs_pin_reset.called
+
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
     def test_inapp_wrong_secret(self, get_secret):
         get_secret.return_value = self.secret
         payload = self.request(iss=self.key, app_secret=self.secret + '.nope')
