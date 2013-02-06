@@ -25,12 +25,13 @@
         </div>
         {% endif %}
         <footer>
-            {% if form.pin_is_locked %}
+            {% if form.no_pin %}
               <a class="button cancel-button" href="#">
                 {{ _('Cancel') }}
               </a>
-              <a class="button force-auth-button" href="#">
-                {{ _('Sign in') }}
+            {% elif form.reset_flow %}
+              <a class="button" href="{{ url('pin.reset_cancel') }}">
+                {{ _('Cancel') }}
               </a>
             {% else %}
               {# L10n: This is the same as the standard forgot
@@ -38,6 +39,12 @@
               <a id="forgot-pin" class="button" href="{{ url('pin.reset_start') }}">
                 {{ _('Forgot PIN?') }}
               </a>
+            {% endif %}
+            {% if form.pin_is_locked %}
+              <a class="button force-auth-button" href="#">
+                {{ _('Sign in') }}
+              </a>
+            {% else %}
               <button type="submit">{{ _('Continue') }}</button>
             {% endif %}
         </footer>
