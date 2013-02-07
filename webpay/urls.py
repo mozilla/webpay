@@ -1,7 +1,5 @@
 from django.conf import settings
 from django.conf.urls.defaults import patterns, include, url
-from django.views.decorators.cache import cache_page
-from django.views.i18n import javascript_catalog
 
 from funfactory.monkeypatches import patch
 patch()
@@ -15,9 +13,10 @@ urlpatterns = patterns('',
     (r'^mozpay/bango/', include('webpay.bango.urls')),
     (r'^mozpay/services/', include('webpay.services.urls')),
     (r'^mozpay/', include('webpay.pay.urls')),
-    url('^mozpay/jsi18n.js$',
-        cache_page(60 * 60 * 24 * 365)(javascript_catalog),
-        {'domain': 'javascript', 'packages': ['webpay']}, name='jsi18n'),
+    # When jsi18n is ready, re-enable this.
+    #url('^mozpay/jsi18n.js$',
+    #    cache_page(60 * 60 * 24 * 365)(javascript_catalog),
+    #    {'domain': 'javascript', 'packages': ['webpay']}, name='jsi18n'),
     url(r'^mozpay/pin/', include('webpay.pin.urls')),
     # This is served by marketplace.
     # (r'^robots\.txt$',
