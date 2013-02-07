@@ -14,6 +14,7 @@ class VerifyForm(forms.Form):
     req = forms.CharField()
     key = settings.KEY
     secret = settings.SECRET
+    is_simulation = False
 
     def clean_req(self):
         data = self.cleaned_data['req']
@@ -29,10 +30,24 @@ class VerifyForm(forms.Form):
             # objects, not actual objects. For now we treat this as an
             # error. If it becomes a headache for developers we can make a
             # guess and check the string for a JSON object.
+            log.info('JWT was not a dict, it was %r' % type(payload))
             raise forms.ValidationError(
                 # L10n: first argument is a data type, such as <unicode>
                 _('The JWT did not decode to a JSON object. Its type was {0}.')
                 .format(type(payload)))
+
+        try:
+            sim = payload['request']['simulate']
+        except KeyError:
+            sim = False
+        self.is_simulation = bool(sim) and isinstance(sim, dict)
+        if self.is_simulation and not settings.ALLOW_SIMULATE:
+            raise forms.ValidationError(
+                _('Payment simulations are disabled at this time.'))
+        if (self.is_simulation and sim.get('result') not in
+            settings.ALLOWED_SIMULATIONS):
+            raise forms.ValidationError(
+                _('The requested simulation result is not supported.'))
 
         app_id = payload.get('iss', '')
         if app_id == settings.KEY:

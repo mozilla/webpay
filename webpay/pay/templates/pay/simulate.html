@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block body_attrs -%}
+{%- endblock %}
+
+{% block content %}
+  <h2>{{ _('Simulate Payment') }}</h2>
+  <p class="centered">{{ _('You will not be charged.') }}</p>
+  <p class="centered">
+    <b>{{ _('result') }}:</b>
+    {{ simulate['result'] }}
+  </p>
+  <p>
+    <form action="{{ url('pay.simulate') }}" method="post">
+      {{ csrf() }}
+      <footer>
+          <a class="button cancel-button" href="#">
+            {{ _('Cancel') }}
+          </a>
+          <button type="submit">{{ _('Continue') }}</button>
+      </footer>
+    </form>
+  </p>
+{% endblock %}

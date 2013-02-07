@@ -20,20 +20,26 @@ from lib.solitude import api
 from lib.solitude import constants
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from webpay.pay import tasks
-from webpay.pay.models import Notice
+from webpay.pay.models import Notice, SIMULATED_POSTBACK, SIMULATED_CHARGEBACK
 from webpay.pay.samples import JWTtester
 
 from .test_views import sample
 
 
-class TestNotifyApp(JWTtester, test.TestCase):
+class NotifyTest(JWTtester, test.TestCase):
+
+    def setUp(self):
+        super(NotifyTest, self).setUp()
+        self.trans_uuid = 'some:uuid'
+
+    def set_secret_mock(self, slumber, s):
+        slumber.generic.product.get_object_or_404.return_value = {'secret': s}
 
     def url(self, path, protocol='https'):
         return protocol + '://' + self.domain + path
 
-    def setUp(self):
-        super(TestNotifyApp, self).setUp()
-        self.trans_uuid = 'some:uuid'
+
+class TestNotifyApp(NotifyTest):
 
     @mock.patch('lib.solitude.api.client.get_transaction')
     def do_chargeback(self, reason, get_transaction):
@@ -202,7 +208,6 @@ class TestNotifyApp(JWTtester, test.TestCase):
         notice = Notice.objects.get()
         eq_(notice.success, False)
 
-
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.utils.requests')
     @mock.patch('webpay.pay.tasks.payment_notify.retry')
@@ -220,9 +225,6 @@ class TestNotifyApp(JWTtester, test.TestCase):
         requests.post.side_effect = RequestException('some http error')
         self.notify()
         assert notify.called, 'notify called'
-
-    def set_secret_mock(self, slumber, s):
-        slumber.generic.product.get_object_or_404.return_value = {'secret': s}
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -259,6 +261,90 @@ class TestNotifyApp(JWTtester, test.TestCase):
                                  .has_attr(text='<not a valid response>')
                                  .provides('raise_for_status'))
         self.notify()
+
+
+@mock.patch('lib.solitude.api.client.slumber')
+class TestSimulatedNotifications(NotifyTest):
+
+    def notify(self, payload):
+        tasks.simulate_notify('issuer-key', payload,
+                              trans_uuid=self.trans_uuid)
+
+    @fudge.patch('webpay.pay.utils.requests')
+    def test_postback(self, slumber, fake_req):
+        self.set_secret_mock(slumber, 'f')
+        payload = self.payload(typ=TYP_POSTBACK,
+                               extra_req={'simulate': {'result': 'postback'}})
+        url = payload['request']['postbackURL']
+
+        def req_ok(req):
+            dd = jwt.decode(req, verify=False)
+            eq_(dd['request'], payload['request'])
+            eq_(dd['typ'], payload['typ'])
+            jwt.decode(req, 'f', verify=True)
+            return True
+
+        (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
+                                            timeout=arg.any())
+                                 .returns_fake()
+                                 .has_attr(text=self.trans_uuid)
+                                 .expects('raise_for_status'))
+        self.notify(payload)
+        notice = Notice.objects.get()
+        assert notice.transaction_uuid, notice
+        eq_(notice.success, True)
+        eq_(notice.url, url)
+        eq_(notice.simulated, SIMULATED_POSTBACK)
+
+    @fudge.patch('webpay.pay.utils.requests')
+    def test_chargeback(self, slumber, fake_req):
+        self.set_secret_mock(slumber, 'f')
+        req = {'simulate': {'result': 'chargeback'}}
+        payload = self.payload(typ=TYP_CHARGEBACK,
+                               extra_req=req)
+        url = payload['request']['chargebackURL']
+
+        def req_ok(req):
+            dd = jwt.decode(req, verify=False)
+            eq_(dd['request'], payload['request'])
+            eq_(dd['typ'], payload['typ'])
+            jwt.decode(req, 'f', verify=True)
+            return True
+
+        (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
+                                            timeout=arg.any())
+                                 .returns_fake()
+                                 .has_attr(text=self.trans_uuid)
+                                 .expects('raise_for_status'))
+        self.notify(payload)
+        notice = Notice.objects.get()
+        assert notice.transaction_uuid, notice
+        eq_(notice.success, True)
+        eq_(notice.url, url)
+        eq_(notice.simulated, SIMULATED_CHARGEBACK)
+
+    @fudge.patch('webpay.pay.utils.requests')
+    def test_chargeback_reason(self, slumber, fake_req):
+        self.set_secret_mock(slumber, 'f')
+        reason = 'something'
+        req = {'simulate': {'result': 'chargeback',
+                            'reason': reason}}
+        payload = self.payload(typ=TYP_CHARGEBACK,
+                               extra_req=req)
+        url = payload['request']['chargebackURL']
+
+        def req_ok(req):
+            dd = jwt.decode(req, verify=False)
+            eq_(dd['request'], payload['request'])
+            eq_(dd['response']['reason'], reason)
+            return True
+
+        (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
+                                            timeout=arg.any())
+                                 .returns_fake()
+                                 .has_attr(text=self.trans_uuid)
+                                 .expects('raise_for_status'))
+        self.notify(payload)
 
 
 class TestStartPay(test_utils.TestCase):

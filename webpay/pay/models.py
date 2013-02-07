@@ -1,5 +1,3 @@
-import uuid
-
 from django.conf import settings
 from django.db import connection
 from django.db import models
@@ -9,6 +7,10 @@ from tower import ugettext_lazy as _
 ISSUER_ACTIVE = 1
 ISSUER_INACTIVE = 2
 ISSUER_REVOKED = 3
+
+NOT_SIMULATED = 0
+SIMULATED_POSTBACK = 1
+SIMULATED_CHARGEBACK = 2
 
 
 class BlobField(models.Field):
@@ -113,6 +115,7 @@ class Notice(models.Model):
     success = models.BooleanField()  # App responded OK to notification.
     last_error = models.CharField(max_length=255, null=True, blank=True)
     transaction_uuid = models.CharField(max_length=255)
+    simulated = models.IntegerField(default=NOT_SIMULATED)
 
     class Meta:
         db_table = 'notices'

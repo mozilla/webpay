@@ -4,7 +4,7 @@ from django import http
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 
 import commonware.log
 from moz_inapp_pay.exc import InvalidJWT, RequestExpired
@@ -29,9 +29,10 @@ from .utils import verify_urls
 log = commonware.log.getLogger('w.pay')
 
 
-def _error(request, msg='', exception=None):
+def _error(request, msg='', exception=None,
+           is_simulation=False):
     external = _('There was an error processing that request.')
-    if settings.VERBOSE_LOGGING:
+    if settings.VERBOSE_LOGGING or is_simulation:
         if exception:
             msg = u'%s: %s' % (exception.__class__.__name__, exception)
         if msg:
@@ -42,7 +43,8 @@ def _error(request, msg='', exception=None):
 def process_pay_req(request):
     form = VerifyForm(request.GET)
     if not form.is_valid():
-        return _error(request, msg=form.errors.as_text())
+        return _error(request, msg=form.errors.as_text(),
+                      is_simulation=form.is_simulation)
 
     try:
         pay_req = verify_jwt(
@@ -57,7 +59,8 @@ def process_pay_req(request):
                            'request.chargebackURL'))
     except (TypeError, InvalidJWT, RequestExpired), exc:
         log.exception('calling verify_jwt')
-        return _error(request, exception=exc)
+        return _error(request, exception=exc,
+                      is_simulation=form.is_simulation)
 
     # Verify that the URLs in it are valid.
     try:
@@ -65,15 +68,19 @@ def process_pay_req(request):
                     pay_req['request']['chargebackURL'])
     except ValueError, exc:
         log.exception('invalid URLs')
-        return _error(request, exception=exc)
+        return _error(request, exception=exc,
+                      is_simulation=form.is_simulation)
 
     # Assert pricePoint is valid.
     try:
         marketplace.get_price(pay_req['request']['pricePoint'])
     except (TierNotFound, HttpClientError), exc:
         log.exception('calling verifying tier')
-        return _error(request, exception=exc)
+        return _error(request, exception=exc,
+                      is_simulation=form.is_simulation)
 
+    # All validation passed, save state to the session.
+    request.session['is_simulation'] = form.is_simulation
     request.session['notes'] = {'pay_request': pay_req,
                                 'issuer_key': form.key}
     request.session['trans_id'] = 'webpay:%s' % uuid.uuid4()
@@ -99,6 +106,7 @@ def lobby(request):
         return _error(request, msg='req is required')
 
     pin_form = VerifyPinForm()
+    sess = request.session
 
     if pin_recently_entered(request):
         return http.HttpResponseRedirect(get_payment_url())
@@ -106,15 +114,33 @@ def lobby(request):
     # If the buyer closed the trusted UI during reset flow, we want to unset
     # the reset pin flag. They can hit the forgot pin button if they still
     # don't remember their pin.
-    if request.session.get('uuid_needs_pin_reset'):
-        solitude.set_needs_pin_reset(request.session['uuid'], False)
-        request.session['uuid_needs_pin_reset'] = False
+    if sess.get('uuid_needs_pin_reset'):
+        solitude.set_needs_pin_reset(sess['uuid'], False)
+        sess['uuid_needs_pin_reset'] = False
+
+    if sess.get('is_simulation', False):
+        sim_req = sess['notes']['pay_request']['request']['simulate']
+        log.info('Starting simulate %s for %s'
+                 % (sim_req, sess['notes']['issuer_key']))
+        return render(request, 'pay/simulate.html', {
+            'simulate': sim_req
+        })
 
     return render(request, 'pay/lobby.html', {
         'action': reverse('pin.verify'),
         'form': pin_form,
         'title': _('Enter your PIN:')
     })
+
+
+@require_POST
+def simulate(request):
+    if not request.session.get('is_simulation', False):
+        log.info('Request to simulate without a valid session')
+        return http.HttpResponseForbidden()
+    tasks.simulate_notify.delay(request.session['notes']['issuer_key'],
+                                request.session['notes']['pay_request'])
+    return render(request, 'pay/simulate_done.html', {})
 
 
 @anonymous_csrf_exempt
