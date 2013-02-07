@@ -88,7 +88,7 @@ def process_pay_req(request):
     # Before we verify the user's PIN let's save some
     # time and get the transaction configured via Bango in the
     # background.
-    if not settings.FAKE_PAYMENTS:
+    if not settings.FAKE_PAYMENTS and not form.is_simulation:
         tasks.start_pay.delay(request.session['trans_id'],
                               request.session['notes'])
 
