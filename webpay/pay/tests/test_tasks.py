@@ -9,6 +9,7 @@ import fudge
 from fudge.inspector import arg
 import jwt
 import mock
+from mock import ANY
 from nose.exc import SkipTest
 from nose.tools import eq_, raises
 from requests.exceptions import RequestException, Timeout
@@ -345,6 +346,22 @@ class TestSimulatedNotifications(NotifyTest):
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
         self.notify(payload)
+
+    @mock.patch('webpay.pay.tasks.simulate_notify.retry')
+    @mock.patch('webpay.pay.utils.requests.post')
+    def test_retry_http_error(self, post, retry, slumber):
+        self.set_secret_mock(slumber, 'f')
+        post.side_effect = RequestException('500 error')
+
+        req = {'simulate': {'result': 'postback'}}
+        payload = self.payload(typ=TYP_POSTBACK,
+                               extra_req=req)
+        self.notify(payload)
+
+        assert post.called, 'notification not sent'
+        assert retry.called, 'task was not retried after error'
+        retry.assert_called_with(args=['issuer-key', payload],
+                                 max_retries=ANY, eta=ANY, exc=ANY)
 
 
 class TestStartPay(test_utils.TestCase):

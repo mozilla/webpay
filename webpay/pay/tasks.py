@@ -182,10 +182,11 @@ def simulate_notify(issuer_key, pay_request, trans_uuid=None, **kw):
 
     log.info('Sending simulate notice %s to %s' % (sim, issuer_key))
     _notify(simulate_notify, trans, extra_response=extra_response,
-            simulated=sim_flag)
+            simulated=sim_flag, task_args=[issuer_key, pay_request])
 
 
-def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED):
+def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED,
+            task_args=None):
     """
     Post JWT notice to an app server about a payment.
     """
@@ -193,6 +194,8 @@ def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED):
     typ, url = _prepare_notice(trans)
     response = {'transactionID': trans['uuid']}
     notes = trans['notes']
+    if not task_args:
+        task_args = [trans['uuid']]
 
     if extra_response:
         response.update(extra_response)
@@ -210,7 +213,8 @@ def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED):
     signed_notice = jwt.encode(notice, get_secret(notes['issuer_key']),
                                algorithm='HS256')
     success, last_error = send_pay_notice(url, trans['type'], signed_notice,
-                                          trans['uuid'], notifier_task)
+                                          trans['uuid'], notifier_task,
+                                          task_args)
     s = Notice._meta.get_field_by_name('last_error')[0].max_length
     last_error = last_error[:s]  # truncate to fit
     Notice.objects.create(transaction_uuid=trans['uuid'],

@@ -20,7 +20,7 @@ def format_exception(exception):
 
 
 def send_pay_notice(url, notice_type, signed_notice, trans_id,
-                    notifier_task):
+                    notifier_task, task_args):
     """
     Send app a notification about a payment or chargeback.
 
@@ -37,6 +37,8 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
         with this ID.
     **notifier_task**
         celery task object
+    **task_args**
+        A list of args to send to the task when retrying after failures.
 
     A tuple of (url, success, last_error) is returned.
 
@@ -60,7 +62,7 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
         log.error('Notice for transaction %s raised exception in URL %s'
                   % (trans_id, url), exc_info=True)
         try:
-            notifier_task.retry(args=[trans_id],
+            notifier_task.retry(args=task_args,
                 eta=(datetime.now() +
                      timedelta(seconds=settings.POSTBACK_DELAY)),
                 max_retries=settings.POSTBACK_ATTEMPTS,
