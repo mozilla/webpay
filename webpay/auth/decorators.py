@@ -6,7 +6,7 @@ from django import http
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 
-from utils import log_cef
+from webpay.base.utils import log_cef
 
 
 log = commonware.log.getLogger('w.auth')

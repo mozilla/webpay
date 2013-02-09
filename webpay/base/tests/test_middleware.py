@@ -6,9 +6,11 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 
 import fudge
+import mock
 from nose.tools import eq_
 
-from webpay.base.middleware import LocaleMiddleware, LogJSONerror
+from webpay.base.middleware import (CEFMiddleware, LocaleMiddleware,
+                                    LogJSONerror)
 
 
 class TestLocaleMiddleware(TestCase):
@@ -89,3 +91,16 @@ class TestLogJSONerror(TestCase):
     def test_not_json(self):
         err = LogJSONerror()
         err.process_exception(None, ExcWithContent('msg', '}]not valid JSON'))
+
+
+@mock.patch('webpay.base.middleware.log_cef')
+class TestCEFMiddleware(TestCase):
+
+    def test_request(self, log_cef):
+        self.client.get('/')
+        assert log_cef.called
+
+    def test_request(self, log_cef):
+        exc = ExcWithContent('msg', 'foo')
+        CEFMiddleware().process_exception(None, exc)
+        log_cef.assert_called_with('ExcWithContent', None, severity=8)

@@ -9,6 +9,8 @@ from django.utils.translation.trans_real import parse_accept_lang_header
 
 import tower
 
+from webpay.base.utils import log_cef
+
 log = commonware.log.getLogger('w.middleware')
 
 
@@ -117,3 +119,14 @@ class LocaleMiddleware(object):
         if self.locale_from_accept:
             patch_vary_headers(response, ['Accept-Language'])
         return response
+
+
+class CEFMiddleware(object):
+
+    def process_request(self, request):
+        # Log all requests to cef.
+        log_cef('webpay:request', request)
+
+    def process_exception(self, request, exception):
+        # We'll log the exceptions too with more severity.
+        log_cef(exception.__class__.__name__, request, severity=8)
