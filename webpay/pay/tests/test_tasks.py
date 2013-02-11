@@ -74,10 +74,10 @@ class TestNotifyApp(NotifyTest):
         url = payload['request']['postbackURL']
 
         def req_ok(req):
-            dd = jwt.decode(req, verify=False)
+            dd = jwt.decode(req['notice'], verify=False)
             eq_(dd['request'], payload['request'])
             eq_(dd['typ'], payload['typ'])
-            jwt.decode(req, 'f', verify=True)
+            jwt.decode(req['notice'], 'f', verify=True)
             return True
 
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
@@ -99,12 +99,12 @@ class TestNotifyApp(NotifyTest):
         url = payload['request']['chargebackURL']
 
         def req_ok(req):
-            dd = jwt.decode(req, verify=False)
+            dd = jwt.decode(req['notice'], verify=False)
             eq_(dd['request'], payload['request'])
             eq_(dd['typ'], payload['typ'])
             eq_(dd['response']['transactionID'], self.trans_uuid)
             eq_(dd['response']['reason'], 'refund')
-            jwt.decode(req, 'f', verify=True)
+            jwt.decode(req['notice'], 'f', verify=True)
             return True
 
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
@@ -123,7 +123,7 @@ class TestNotifyApp(NotifyTest):
     def test_notify_reversal_chargeback(self, fake_req, slumber):
         self.set_secret_mock(slumber, 'f')
         def req_ok(req):
-            dd = jwt.decode(req, verify=False)
+            dd = jwt.decode(req['notice'], verify=False)
             eq_(dd['response']['reason'], 'reversal')
             return True
 
@@ -236,7 +236,7 @@ class TestNotifyApp(NotifyTest):
         # Ensure that the JWT sent to the app for payment notification
         # includes the same payment data that the app originally sent.
         def is_valid(payload):
-            data = jwt.decode(payload, 'f', #self.iss.get_private_key(),
+            data = jwt.decode(payload['notice'], 'f',  # secret key
                               verify=True)
             eq_(data['iss'], settings.NOTIFY_ISSUER)
             eq_(data['typ'], TYP_POSTBACK)
@@ -279,10 +279,10 @@ class TestSimulatedNotifications(NotifyTest):
         url = payload['request']['postbackURL']
 
         def req_ok(req):
-            dd = jwt.decode(req, verify=False)
+            dd = jwt.decode(req['notice'], verify=False)
             eq_(dd['request'], payload['request'])
             eq_(dd['typ'], payload['typ'])
-            jwt.decode(req, 'f', verify=True)
+            jwt.decode(req['notice'], 'f', verify=True)
             return True
 
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
@@ -306,10 +306,10 @@ class TestSimulatedNotifications(NotifyTest):
         url = payload['request']['chargebackURL']
 
         def req_ok(req):
-            dd = jwt.decode(req, verify=False)
+            dd = jwt.decode(req['notice'], verify=False)
             eq_(dd['request'], payload['request'])
             eq_(dd['typ'], payload['typ'])
-            jwt.decode(req, 'f', verify=True)
+            jwt.decode(req['notice'], 'f', verify=True)
             return True
 
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
@@ -335,7 +335,7 @@ class TestSimulatedNotifications(NotifyTest):
         url = payload['request']['chargebackURL']
 
         def req_ok(req):
-            dd = jwt.decode(req, verify=False)
+            dd = jwt.decode(req['notice'], verify=False)
             eq_(dd['request'], payload['request'])
             eq_(dd['response']['reason'], reason)
             return True
