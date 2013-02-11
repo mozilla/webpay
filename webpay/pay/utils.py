@@ -55,7 +55,7 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
 
     try:
         with statsd.timer('purchase.send_pay_notice'):
-            res = requests.post(url, signed_notice, timeout=5)
+            res = requests.post(url, {'notice': signed_notice}, timeout=5)
         res.raise_for_status()  # raise exception for non-200s
         res_content = res.text
     except (HTTPError, RequestException), exception:
