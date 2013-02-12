@@ -81,17 +81,31 @@ check the value of ``SITE_URL`` in your local
 settings. It must match the
 URL bar of how you run your dev server exactly.
 
+Working on the UI
+=================
+
+The webpay server has a very minimal UI. It lets you log in and
+create/enter/reset a PIN but after that it redirects you to a
+payment processor. You can work on the login and PIN by setting this
+in your ``webpay/settings/local.py``::
+
+    TEST_PIN_UI = True
+
+Then load the front page::
+
+    http://localhost:8000/mozpay/
+
 Using JWTs for development
 ==========================
 
-Each payment begins with a JWT (Json Web Token).
-You can generate one for testing on the command line
-like this::
-
-    python manage.py genjwt
-
-Copy that into a URL and load it. It will look
-something like this::
+Each payment begins with a JWT (Json Web Token) so you'll need to
+start with a JWT if you want to see the complete payment flow.
+The best way to get a valid JWT is to make a real
+purchase using your local Marketplace or any app
+that has a valid in-app payment key.
+When you start a purchase from B2G check your B2G console. In stdout you
+should see a link that you can copy and paste into a browser to use better dev
+tools. Here is an example of what that looks like::
 
     http://localhost:8000/mozpay/?req=eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJhdWQiOiAibG9jYWxob3N0IiwgImlzcyI6ICJtYXJrZXRwbGFjZSIsICJyZXF1ZXN0IjogeyJwcmljZSI6IFt7ImN1cnJlbmN5IjogIlVTRCIsICJhbW91bnQiOiAiMC45OSJ9XSwgIm5hbWUiOiAiTXkgYmFuZHMgbGF0ZXN0IGFsYnVtIiwgInByb2R1Y3RkYXRhIjogIm15X3Byb2R1Y3RfaWQ9MTIzNCIsICJkZXNjcmlwdGlvbiI6ICIzMjBrYnBzIE1QMyBkb3dubG9hZCwgRFJNIGZyZWUhIn0sICJleHAiOiAxMzUwOTQ3MjE3LCAiaWF0IjogMTM1MDk0MzYxNywgInR5cCI6ICJtb3ppbGxhL3BheW1lbnRzL3BheS92MSJ9.ZW-Y9-UroJk7-ZpDjebUU-uYOx4h7TfztO7JBi2d5z4
 
