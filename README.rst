@@ -118,10 +118,13 @@ Start by cloning
 Gaia and building a custom profile. Refer to the `Gaia Hacking`_
 page for all the details.
 
-::
+**IMPORTANT**: Make sure you use the ``v1-train`` of gaia instead of master
 
-    git clone git://github.com/mozilla-b2g/gaia.git gaia
+Track the v1-train branch::
+
+    git clone git://github.com/mozilla-b2g/gaia.git
     cd gaia
+    git checkout --track -b v1-train origin/v1-train
 
 Create ``build/custom-prefs.js`` in that directory.
 Add this to it::
@@ -180,8 +183,10 @@ At this time, the builds are not available to the public.
 You could always build your own though :)
 
 Next, follow the desktop B2G instructions for cloning the gaia
-repo and building a profile. You need to put the custom payment
-settings on to your phone. Do this::
+repo and building a profile (make sure you are on the **v1-train** branch).
+You need to put the custom payment settings on to your phone.
+
+::
 
     cd gaia
     adb shell "stop b2g"
