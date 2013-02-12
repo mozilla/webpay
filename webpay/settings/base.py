@@ -253,3 +253,8 @@ ALLOW_SIMULATE = True
 
 # When passing a simulate request, the result must match one of these.
 ALLOWED_SIMULATIONS = ('postback', 'chargeback')
+
+# Special just for potch! When True, it lets you hit the main page without
+# a JWT. You can create/enter PINs but it won't let you get very far beyond
+# that.
+TEST_PIN_UI = False

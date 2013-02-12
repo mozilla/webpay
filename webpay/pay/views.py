@@ -102,7 +102,12 @@ def lobby(request):
         res = process_pay_req(request)
         if isinstance(res, http.HttpResponse):
             return res
+    elif settings.TEST_PIN_UI:
+        # This won't get you very far but it lets you create/enter PINs
+        # and stops a traceback after that.
+        request.session['trans_id'] = uuid.uuid4()
     elif not 'notes' in request.session:
+        # A JWT was not passed in and no JWT is in the session.
         return _error(request, msg='req is required')
 
     pin_form = VerifyPinForm()

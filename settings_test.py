@@ -19,3 +19,4 @@ FAKE_PAYMENTS = False
 SITE_URL = 'http://testserver'
 
 ALLOW_SIMULATE = True
+TEST_PIN_UI = False

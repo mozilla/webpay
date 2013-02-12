@@ -248,6 +248,12 @@ class TestVerify(Base):
                             'simulations are disabled',
                             status_code=400)
 
+    def test_pin_ui(self):
+        with self.settings(TEST_PIN_UI=True):
+            res = self.client.get(self.url)
+        eq_(res.status_code, 200)
+        self.assertTemplateUsed(res, 'pay/lobby.html')
+
 
 @mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')
 @mock.patch.object(settings, 'SECRET', 'marketplace.secret')
