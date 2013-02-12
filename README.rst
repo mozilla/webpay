@@ -214,23 +214,28 @@ Here's how to put the custom payment settings on to your phone.
 When B2G reboots you should be ready to make payments against
 the configured dev servers.
 
+Installing Marketplace
+======================
+
+Gaia ships with the production Marketplace app but that's no good if you want to
+test payments against a WebPay dev server. You can install a dev server on B2G
+by opening http://people.mozilla.com/~kmcmillan/mktdev.html in your B2G browser.
+Click Install Marketplace Dev. If you see pictures of cvan anywhere then you
+know you've installed the right one! You can set a search filter to show only
+paid apps. You can also search for Private Yacht which is fully set up and even
+checks receipts.
+
 Configuring Marketplace
 =======================
 
-To sign app purchasing JWTs that will work in ``navigator.mozPay([yourJWT])`` you can
-generate them like this::
-
-    python manage.py genjwt --secret 'some secret' --iss marketplace-dev.allizom.org --aud marketplace-dev.allizom.org
-
-To get the correct value for ``some secret`` you'll have to ask someone in
-#marketplace on irc.freenode.net. This value should match what the dev server
-is configured for.
-
-If you want to install your localhost Marketplace app instead of altdev
-then you'll need to tweak some settings::
+To develop with your local Marketplace you'll have to configure these settings::
 
     APP_PURCHASE_SECRET = 'dev secret'
     SITE_URL = 'http://localhost:8001'
+
+To get the correct value for ``some secret`` you'll have to ask someone in
+#marketplace on irc.mozilla.org. This value should match what the WebPay hosted dev server
+is configured for.
 
 These settings will tell Marketplace to sign JWTs for purchase in a similar
 manner to the genjwt command (above).
