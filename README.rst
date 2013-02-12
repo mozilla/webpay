@@ -107,14 +107,13 @@ tools. Here is an example of what that looks like::
 
     http://localhost:8000/mozpay/?req=eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJhdWQiOiAibG9jYWxob3N0IiwgImlzcyI6ICJtYXJrZXRwbGFjZSIsICJyZXF1ZXN0IjogeyJwcmljZSI6IFt7ImN1cnJlbmN5IjogIlVTRCIsICJhbW91bnQiOiAiMC45OSJ9XSwgIm5hbWUiOiAiTXkgYmFuZHMgbGF0ZXN0IGFsYnVtIiwgInByb2R1Y3RkYXRhIjogIm15X3Byb2R1Y3RfaWQ9MTIzNCIsICJkZXNjcmlwdGlvbiI6ICIzMjBrYnBzIE1QMyBkb3dubG9hZCwgRFJNIGZyZWUhIn0sICJleHAiOiAxMzUwOTQ3MjE3LCAiaWF0IjogMTM1MDk0MzYxNywgInR5cCI6ICJtb3ppbGxhL3BheW1lbnRzL3BheS92MSJ9.ZW-Y9-UroJk7-ZpDjebUU-uYOx4h7TfztO7JBi2d5z4
 
-Setting Up Desktop B2G
-==========================
+Build A Custom B2G Profile
+============================
 
-Get the `nightly desktop B2G build`_.
-
-Start by cloning
-Gaia and building a custom profile. Refer to the `Gaia Hacking`_
-page for all the details.
+In order to make payments on a B2G phone of Desktop B2G you have to build a
+custom profile from the Gaia source that points to a WebPay server.
+Refer to the `Gaia Hacking`_
+page for more details but this page has everything you need to know.
 
 **IMPORTANT**: Make sure you use the ``v1-train`` of gaia instead of master
 
@@ -136,29 +135,34 @@ Add this to it::
     pref("toolkit.identity.debug", true);
 
 You need to add the URI to the payment server you wish to use.
-If you wish to use your local development branch (this repository),
-enter something like this to match your host and port::
-
-    pref("dom.payment.provider.1.uri", "http://localhost:8000/mozpay/?req=");
-
 If you wish to work with the hosted WebPay dev server, change the URI to
 something like this::
 
     pref("dom.payment.provider.1.uri", "https://marketplace-dev.allizom.org/mozpay/?req=");
 
-If you're on desktop B2G you also need to **set your User Agent** unless
+If you wish to use your local development server (e.g. this repository),
+enter something like this to match your host and port::
+
+    pref("dom.payment.provider.1.uri", "http://localhost:8000/mozpay/?req=");
+
+If you're planning to use desktop B2G you also need to **set your User Agent** unless
 `bug 821000 <https://bugzilla.mozilla.org/show_bug.cgi?id=821000>`_
 gets fixed. Add this::
 
     pref("general.useragent.override", "Mozilla/5.0 (Mobile; rv:18.0) Gecko/18.0 Firefox/18.0");
 
 Now, when you ``make`` or ``make profile`` it will create a ``profile/user.js``
-file with those extra prefs::
+file with those extra prefs. Type this::
 
-    make
+    make clean profile
 
-If you are using the `nightly desktop B2G build`_ then
-just start it with your custom profile. Here is an example of
+You now have a custom B2G profile in your directory.
+
+Setting Up Desktop B2G
+==========================
+
+Get the `nightly desktop B2G build`_ and start it with the profile you just
+built. Here is an example of
 launching with a custom profile on Mac OS X::
 
     /Applications/B2G.app/Contents/MacOS/b2g-bin -jsconsole -profile ~/dev/gaia/profile/
@@ -175,29 +179,30 @@ Marketplace app on your desktop B2G.
 Setting Up A B2G Device
 =======================
 
+After you create a custom B2G profile as described above
+you'll need to flash B2G on your phone and push some profile settings to it.
+
 First make sure you have the `Android Developer Tools`_ installed.
 The ``adb`` executable should be available in your path.
 
-Similar to the desktop B2G instructions you'll need to flash
-B2G on your phone. If you have a Unagi device, you can log in
+If you have an Unagi device, you can log in
 with your Mozilla LDAP credentials and obtain a build from
 https://pvtbuilds.mozilla.org/pub/mozilla.org/b2g/nightly/mozilla-b2g18-unagi/latest/
 At this time, the builds are not available to the public.
 You could always build your own though.
 
-When you unzip the b2g-distro directory run this::
+When you unzip the b2g-distro directory plug your phone in via USB and run this::
 
     ./flash.sh
 
-That installs B2G and Gaia but you'll also
-need to change some settings on the phone. Before you can do so you
+That installs B2G and Gaia. Before you can add your custom settings you
 have to enable remote debugging over USB. Go to Settings > Device Information >
 More Information > Developer and turn on Remote debugging.
 
-Now fetch the gaia code just like in the desktop B2G instructions above
+Now fetch the gaia code just like in the B2G profile instructions above
 (make sure you are on the **v1-train** branch),
 add the ``custom-prefs.js`` file, and make a custom profile.
-Her's how to put the custom payment settings on to your phone.
+Here's how to put the custom payment settings on to your phone.
 
 ::
 
