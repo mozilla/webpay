@@ -91,9 +91,7 @@ in your ``webpay/settings/local.py``::
 
     TEST_PIN_UI = True
 
-Then load the front page::
-
-    http://localhost:8000/mozpay/
+Then load the front page: http://localhost:8000/mozpay/
 
 Using JWTs for development
 ==========================
