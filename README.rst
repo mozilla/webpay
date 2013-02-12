@@ -163,6 +163,7 @@ B2G on your phone. If you have a Unagi device, you can log in
 with your Mozilla LDAP credentials and obtain a build from
 https://pvtbuilds.mozilla.org/pub/mozilla.org/b2g/nightly/mozilla-b2g18-unagi/latest/
 At this time, the builds are not available to the public.
+You could always build your own though :)
 
 Next, follow the desktop B2G instructions for cloning the gaia
 repo and building a profile. You need to put the custom payment
@@ -208,7 +209,7 @@ active. That is, switch it off.
 
 .. _WebPaymentProvider: https://wiki.mozilla.org/WebAPI/WebPaymentProvider
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
-.. _`nightly desktop B2G build`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/en-US/
+.. _`nightly desktop B2G build`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-b2g18/
 .. _`Gaia Hacking`: https://wiki.mozilla.org/Gaia/Hacking
 .. _homebrew: http://mxcl.github.com/homebrew/
 .. _virtualenvwrapper: http://pypi.python.org/pypi/virtualenvwrapper
