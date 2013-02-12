@@ -132,16 +132,18 @@ Add this to it::
     pref("dom.payment.skipHTTPSCheck", true);
     pref("dom.payment.provider.1.name", "firefoxmarketdev");
     pref("dom.payment.provider.1.description", "marketplace-dev.allizom.org");
-    pref("dom.payment.provider.1.uri", "http://localhost:8000/mozpay/?req=");
     pref("dom.payment.provider.1.type", "mozilla/payments/pay/v1");
     pref("dom.payment.provider.1.requestMethod", "GET");
     pref("dom.identity.enabled", true);
     pref("toolkit.identity.debug", true);
 
-This will access your local webpay server as the payment provider. You may need
-to bind it to an IP address (or set up port forwarding)
-if you are working with an actual phone.
-If you want to work with the Marketplace dev server, change the URI to
+You need to add the URI to the payment server you wish to use.
+If you wish to use your local development branch (this repository),
+enter something like this to match your host and port::
+
+    pref("dom.payment.provider.1.uri", "http://localhost:8000/mozpay/?req=");
+
+If you wish to work with the hosted WebPay dev server, change the URI to
 something like this::
 
     pref("dom.payment.provider.1.uri", "https://marketplace-dev.allizom.org/mozpay/?req=");
@@ -175,16 +177,29 @@ Marketplace app on your desktop B2G.
 Setting Up A B2G Device
 =======================
 
+First make sure you have the `Android Developer Tools`_ installed.
+The ``adb`` executable should be available in your path.
+
 Similar to the desktop B2G instructions you'll need to flash
 B2G on your phone. If you have a Unagi device, you can log in
 with your Mozilla LDAP credentials and obtain a build from
 https://pvtbuilds.mozilla.org/pub/mozilla.org/b2g/nightly/mozilla-b2g18-unagi/latest/
 At this time, the builds are not available to the public.
-You could always build your own though :)
+You could always build your own though.
 
-Next, follow the desktop B2G instructions for cloning the gaia
-repo and building a profile (make sure you are on the **v1-train** branch).
-You need to put the custom payment settings on to your phone.
+When you unzip the b2g-distro directory run this::
+
+    ./flash.sh
+
+That installs B2G and Gaia but you'll also
+need to change some settings on the phone. Before you can do so you
+have to enable remote debugging over USB. Go to Settings > Device Information >
+More Information > Developer and turn on Remote debugging.
+
+Now fetch the gaia code just like in the desktop B2G instructions above
+(make sure you are on the **v1-train** branch),
+add the ``custom-prefs.js`` file, and make a custom profile.
+Her's how to put the custom payment settings on to your phone.
 
 ::
 
@@ -193,7 +208,7 @@ You need to put the custom payment settings on to your phone.
     adb push profile/user.js /data/local/
     adb reboot
 
-When B2G reboots you should be configured to make payments against
+When B2G reboots you should be ready to make payments against
 the configured dev servers.
 
 Configuring Marketplace
@@ -236,3 +251,4 @@ active. That is, switch it off.
 .. _npm: https://npmjs.org/
 .. _`nightly B2G desktop`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/
 .. _`Solitude`: https://solitude.readthedocs.org/en/latest/index.html
+.. _`Android Developer Tools`: http://developer.android.com/sdk/index.html
