@@ -5,6 +5,10 @@ Webpay is an implementation of the `WebPaymentProvider`_ spec.
 It hosts the payment flow inside navigator.mozPay() when
 making app purchases or in-app payments on Firefox OS.
 
+The following guide will help you get set up with a dev environment to begin
+hacking on webpay *or* help you set up your B2G device to simply test
+payments. For the latter, skip down to the **Build A Custom Profile** section.
+
 Install
 =======
 
