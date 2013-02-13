@@ -121,14 +121,19 @@ page for more details but this page has everything you need to know.
 
 **IMPORTANT**: Make sure you use the ``v1-train`` of gaia instead of master
 
-Track the v1-train branch::
+Install `git`_ and track the v1-train branch by typing these commands::
 
     git clone git://github.com/mozilla-b2g/gaia.git
     cd gaia
     git checkout --track -b v1-train origin/v1-train
 
+Get updates like this::
+
+    git checkout v1-train
+    git pull
+
 Create ``build/custom-prefs.js`` in that directory.
-Add this to it::
+With a text editor, add this to it::
 
     pref("dom.payment.skipHTTPSCheck", true);
     pref("dom.payment.provider.1.name", "firefoxmarketdev");
@@ -155,12 +160,13 @@ gets fixed. Add this::
 
     pref("general.useragent.override", "Mozilla/5.0 (Mobile; rv:18.0) Gecko/18.0 Firefox/18.0");
 
-Now, when you ``make`` or ``make profile`` it will create a ``profile/user.js``
-file with those extra prefs. Type this::
+Save the file.
+Now when you make a profile it will create a ``profile/user.js``
+file with those extra prefs. Type this in the ``gaia`` directory::
 
     make clean profile
 
-You now have a custom B2G profile in your directory.
+You now have a custom B2G profile in your ``gaia/profile`` directory.
 
 Setting Up Desktop B2G
 ==========================
@@ -171,6 +177,9 @@ launching with a custom profile on Mac OS X::
 
     /Applications/B2G.app/Contents/MacOS/b2g-bin -jsconsole -profile ~/dev/gaia/profile/
 
+Replace ``~/dev/gaia/profile`` with the actual path to where you cloned gaia and
+built the profile. If this path is wrong you will not get an error; things just
+won't work!
 
 **IMPORTANT**: Use *b2g-bin* not *b2g* on Mac OS X.
 
@@ -208,7 +217,7 @@ Now fetch the gaia code just like in the B2G profile instructions above
 add the ``custom-prefs.js`` file, and make a custom profile.
 Here's how to put the custom payment settings on to your phone.
 
-::
+Type these commands::
 
     cd gaia
     adb shell "stop b2g"
@@ -218,16 +227,22 @@ Here's how to put the custom payment settings on to your phone.
 When B2G reboots you should be ready to make payments against
 the configured dev servers.
 
-Installing Marketplace
-======================
+Installing Marketplace Dev
+==========================
 
-Gaia ships with the production Marketplace app but that's no good if you want to
-test payments against a WebPay dev server. You can install a dev server on B2G
-by opening http://people.mozilla.com/~kmcmillan/mktdev.html in your B2G browser.
-Click Install Marketplace Dev. If you see pictures of cvan anywhere then you
-know you've installed the right one! You can set a search filter to show only
-paid apps. You can also search for Private Yacht which is fully set up and even
-checks receipts.
+Gaia ships with the production Marketplace app but that's no good if you want
+to test payments against a WebPay dev server. You can install our hosted dev
+server on B2G
+by opening http://people.mozilla.com/~kmcmillan/mktdev.html in your B2G browser
+and installing Marketplace Dev with the button on that page. You can also
+use http://app-loader.appspot.com/ with the manifest file at
+https://marketplace-dev.allizom.org/manifest.webapp .
+
+Launch the Marketplace Dev app.
+If you see pictures of cvan everywhere then you know you've opened the right one.
+You can set a search filter to show only paid apps.
+As an example, search for Private Yacht which is fully set up for payments
+and even checks receipts.
 
 Configuring Marketplace
 =======================
@@ -264,3 +279,4 @@ active. That is, switch it off.
 .. _`nightly B2G desktop`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/
 .. _`Solitude`: https://solitude.readthedocs.org/en/latest/index.html
 .. _`Android Developer Tools`: http://developer.android.com/sdk/index.html
+.. _git: http://git-scm.com/
