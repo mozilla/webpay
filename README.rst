@@ -178,8 +178,8 @@ launching with a custom profile on Mac OS X::
     /Applications/B2G.app/Contents/MacOS/b2g-bin -jsconsole -profile ~/dev/gaia/profile/
 
 Replace ``~/dev/gaia/profile`` with the actual path to where you cloned gaia and
-built the profile. If this path is wrong you will not get an error; things just
-won't work!
+built the profile. If you **see a blank screen** in B2G it probably means the
+path to your profile is wrong.
 
 **IMPORTANT**: Use *b2g-bin* not *b2g* on Mac OS X.
 
