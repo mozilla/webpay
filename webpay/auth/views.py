@@ -26,7 +26,8 @@ def reverify(request):
         # entire site then how do we do it?
         # See bug 836060.
         extra_params = {'forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
-                        # TODO: how do we make sure this is a proper forced auth assertion?
+                        # TODO: how do we make sure this is a proper forced
+                        #       auth assertion?
                         # This can also be addressed in bug 836060
                         'forceAuthentication': 'true',
                         'allowUnverified': 'true'}
