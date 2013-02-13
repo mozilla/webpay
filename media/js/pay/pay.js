@@ -93,17 +93,39 @@ $(function() {
 
     $('#forgot-pin').click(function(evt) {
         var anchor = $(this);
+        var bangoReq;
         evt.preventDefault();
-        // Define a new logout handler.
-        onLogout = function() {
-            // Wait until Persona has logged us out, then redirect to the
-            // original destination.
-            window.location.href = anchor.attr('href');
+        // TODO: Update the UI to indicate that logouts are in progress.
 
-            // It seems necessary to nullify the logout handler because
-            // otherwise it is held in memory and called on the next page.
-            onLogout = function() {};
-        };
-        navigator.id.logout();
+        // Log out of Bango so that cookies are cleared.
+        // After that, log out of Persona so that the user has to
+        // re-authenticate before resetting a PIN.
+        console.log('Logging out of Bango');
+        bangoReq = $.ajax({url: bodyData.bangoLogoutUrl, dataType: 'script'})
+            .done(function(data, textStatus, jqXHR) {
+                console.log('Bango logout responded: ' + jqXHR.status);
+                if (jqXHR.status.toString()[0] !== '2') {  // 2xx status
+                    bangoReq.reject();
+                    return;
+                }
+
+                // Define a new logout handler.
+                onLogout = function() {
+                    // Wait until Persona has logged us out, then redirect to the
+                    // original destination.
+                    window.location.href = anchor.attr('href');
+
+                    // It seems necessary to nullify the logout handler because
+                    // otherwise it is held in memory and called on the next page.
+                    onLogout = function() {};
+                };
+                console.log('Logging out of Persona');
+                navigator.id.logout();
+
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log('Bango logout failed with status=' + jqXHR.status +
+                            '; resp=' + textStatus + '; error=' + errorThrown);
+            });
     });
 });
