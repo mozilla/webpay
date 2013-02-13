@@ -224,9 +224,14 @@ BROWSERID_UNVERIFIED_ISSUER = 'b2g2pac.personatest.org'
 BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
 BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN
 
+BANGO_BASE_URL = 'http://mozilla.test.bango.org'
+
 # This is the URL for the bango payment screen.
 # It will receive one string substitution: the billing configuration ID.
-BANGO_PAY_URL = 'http://mozilla.test.bango.org/mozpayments/?bcid=%s'
+BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'
+
+# This is used by the UI to clear all Bango cookies.
+BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
 
 # This is the URL to the marketplace.
 MARKETPLACE_URL = None
