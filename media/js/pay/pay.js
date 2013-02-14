@@ -1,15 +1,7 @@
-// You probably want to throw this all away.
-// This is just a proof to kick things off.
-//
-
-var hasTouch = ('ontouchstart' in window) ||
-               window.DocumentTouch &&
-               document instanceof DocumentTouch;
-
-$(function() {
+define('pay', ['cli'], function(cli) {
     "use strict";
 
-    var bodyData = $('body').data();
+    var bodyData = cli.bodyData;
 
     $('[name="pin"]').each(function() {
         this.type = 'number';

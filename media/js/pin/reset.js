@@ -1,6 +1,6 @@
-$(function() {
+define('pin/reset', ['cli'], function(cli) {
     "use strict";
-    var bodyData = $('body').data(),
+    var bodyData = cli.bodyData,
         on_success;
 
     function watchForceAuth(on_success) {

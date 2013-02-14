@@ -37,14 +37,23 @@ MINIFY_BUNDLES = {
     'js': {
         'pay': (
             'js/lib/jquery-1.8.js',
+            'js/lib/require.js',
             'js/lib/underscore.js',
             'js/lib/format.js',
-            'js/css3.js',
+
+            # These are module libraries used by others.
+            'js/cli.js',
+
+            # These are top-level modules. When you add more, you also have
+            # to add them to main.js
             'js/pay/pay.js',
             'js/pay/wait.js',
             'js/pay/cancel.js',
             'js/pin/pin.js',
             'js/pin/reset.js',
+
+            # This requires all top-level modules.
+            'js/main.js',
         ),
     }
 }

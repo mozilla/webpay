@@ -1,11 +1,11 @@
-$(function() {
+define('pay/wait', ['cli'], function(cli) {
     "use strict";
 
     var startUrl;
     var timeout;
 
-    if ($('body').data('waitflow')) {
-        startUrl = $('body').data('trans-start-url');
+    if (cli.bodyData.waitflow) {
+        startUrl = cli.bodyData.transStartUrl;
         poll();
     }
 

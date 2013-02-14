@@ -1,4 +1,4 @@
-(function() {
+define('pin', ['cli'], function(cli) {
     var interval = false;
     var PINLENGTH = 4;
 
@@ -68,4 +68,4 @@
         box.html(Array(PINLENGTH+1).join('<span></span>'));
         $el.prepend(box);
     });
-})();
+});
