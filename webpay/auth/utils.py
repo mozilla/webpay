@@ -37,6 +37,7 @@ def set_user(request, email):
     set_user_has_confirmed_pin(request, buyer.get('pin_confirmed', False))
     set_user_reset_pin(request, buyer.get('needs_pin_reset', False))
     set_user_has_new_pin(request, buyer.get('new_pin', False))
+    return uuid
 
 
 def set_user_has_pin(request, has_pin):

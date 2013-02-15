@@ -1,4 +1,4 @@
-define('pay', ['cli'], function(cli) {
+define('pay', ['cli', 'pay/bango'], function(cli, bango) {
     "use strict";
 
     var bodyData = cli.bodyData;
@@ -19,32 +19,31 @@ define('pay', ['cli'], function(cli) {
         var verifyUrl = bodyData.verifyUrl;
 
         navigator.id.watch({
-          onlogin: function(assertion) {
-            // A user has logged in! Here you need to:
-            // 1. Send the assertion to your backend for verification and to create a session.
-            // 2. Update your UI.
-            console.log('onlogin');
-            $('.message').hide();
-            $('#login-wait').fadeIn();
-            $.post(verifyUrl, {assertion: assertion})
-            .success(function(data, textStatus, jqXHR) {
-                console.log('login success');
-                if (!data.has_pin) {
-                    window.location = data.pin_create;
-                } else {
-                    $('.message').hide();
-                    $('#enter-pin').fadeIn();
-                    $('#pin [name="pin"]')[0].focus();
-                }
-            })
-            .error(function() {
-                console.log('login error');
-            });
-          },
-          onlogout: function() {
-              console.log('logged out');
-              onLogout();
-          }
+            onlogin: function(assertion) {
+                console.log('nav.id onlogin');
+                $('.message').hide();
+                $('#login-wait').fadeIn();
+                $.post(verifyUrl, {assertion: assertion})
+                    .success(function(data, textStatus, jqXHR) {
+                        console.log('login success');
+                        bango.prepareUser(data.user_hash).done(function() {
+                            if (!data.has_pin) {
+                                window.location = data.pin_create;
+                            } else {
+                                $('.message').hide();
+                                $('#enter-pin').fadeIn();
+                                $('#pin [name="pin"]')[0].focus();
+                            }
+                        });
+                    })
+                    .error(function() {
+                        console.log('login error');
+                    });
+            },
+            onlogout: function() {
+                console.log('nav.id onlogout');
+                onLogout();
+            }
         });
 
     } else {
@@ -85,39 +84,24 @@ define('pay', ['cli'], function(cli) {
 
     $('#forgot-pin').click(function(evt) {
         var anchor = $(this);
-        var bangoReq;
         evt.preventDefault();
         // TODO: Update the UI to indicate that logouts are in progress.
+        bango.logout().done(function() {
+            // Next, log out of Persona so that the user has to
+            // re-authenticate before resetting a PIN.
 
-        // Log out of Bango so that cookies are cleared.
-        // After that, log out of Persona so that the user has to
-        // re-authenticate before resetting a PIN.
-        console.log('Logging out of Bango');
-        bangoReq = $.ajax({url: bodyData.bangoLogoutUrl, dataType: 'script'})
-            .done(function(data, textStatus, jqXHR) {
-                console.log('Bango logout responded: ' + jqXHR.status);
-                if (jqXHR.status.toString()[0] !== '2') {  // 2xx status
-                    bangoReq.reject();
-                    return;
-                }
+            // Define a new logout handler.
+            onLogout = function() {
+                // Wait until Persona has logged us out, then redirect to the
+                // original destination.
+                window.location.href = anchor.attr('href');
 
-                // Define a new logout handler.
-                onLogout = function() {
-                    // Wait until Persona has logged us out, then redirect to the
-                    // original destination.
-                    window.location.href = anchor.attr('href');
-
-                    // It seems necessary to nullify the logout handler because
-                    // otherwise it is held in memory and called on the next page.
-                    onLogout = function() {};
-                };
-                console.log('Logging out of Persona');
-                navigator.id.logout();
-
-            })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                console.log('Bango logout failed with status=' + jqXHR.status +
-                            '; resp=' + textStatus + '; error=' + errorThrown);
-            });
+                // It seems necessary to nullify the logout handler because
+                // otherwise it is held in memory and called on the next page.
+                onLogout = function() {};
+            };
+            console.log('Logging out of Persona');
+            navigator.id.logout();
+        });
     });
 });

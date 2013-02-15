@@ -43,6 +43,7 @@ MINIFY_BUNDLES = {
 
             # These are module libraries used by others.
             'js/cli.js',
+            'js/pay/bango.js',
 
             # These are top-level modules. When you add more, you also have
             # to add them to main.js
