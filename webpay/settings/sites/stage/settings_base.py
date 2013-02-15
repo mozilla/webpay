@@ -64,14 +64,16 @@ SYSLOG_TAG = private.SYSLOG_TAG
 # HTTPS to disable HTTPS-only cookies.
 SESSION_COOKIE_SECURE = True
 
-#VERBOSE_LOGGING=True
+# This hides actual exception messages in the UI unless the developer is
+# simulating a purchase (and thus testing it).
+VERBOSE_LOGGING = False
 
 DOMAIN = 'marketplace.allizom.org'
 ISSUER = DOMAIN
 NOTIFY_ISSUER = DOMAIN
-VERBOSE_LOGGING = False
 
 KEY = DOMAIN
+# This must match private_mkt.APP_PURCHASE_SECRET in marketplace settings.
 SECRET = private.SECRET
 
 SOLITUDE_URL = 'https://payments.allizom.org'
