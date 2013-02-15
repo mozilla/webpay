@@ -1,10 +1,10 @@
-//if (hasTouch) {
-// Temporarily turning this on so it works on B2G desktop.
-if (true) {
+define('pad', ['cli'], function(cli) {
+    'use strict';
+
     var pad = $('.pad').eq(0);
     pad.show();
 
-    var touchstart = (hasTouch) ? 'touchstart': 'click';
+    var touchstart = (cli.hasTouch) ? 'touchstart': 'click';
     pad.on(touchstart, 'a', function(e) {
         var btn = $(this).data('val');
         if (btn === undefined) return;
@@ -29,4 +29,4 @@ if (true) {
                 break;
         }
     });
-}
+});

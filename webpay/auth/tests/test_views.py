@@ -1,10 +1,12 @@
+import json
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
 import mock
 from nose.tools import eq_
 
-from webpay.auth.utils import client
+from webpay.auth.utils import get_uuid, client
 
 from . import good_assertion, SessionTestCase
 
@@ -21,17 +23,21 @@ class TestAuth(SessionTestCase):
     @mock.patch('webpay.auth.views.verify_assertion')
     @mock.patch('webpay.auth.views.set_user')
     def test_good_verified(self, set_user_mock, verify_assertion):
+        set_user_mock.return_value = '<user_hash>'
         assertion = dict(good_assertion)
         del assertion['unverified-email']
         assertion['email'] = 'a@a.com'
         verify_assertion.return_value = assertion
         res = self.client.post(self.url, {'assertion': 'good'})
         eq_(res.status_code, 200)
+        data = json.loads(res.content)
+        eq_(data['user_hash'], '<user_hash>')
         set_user_mock.assert_called_with(mock.ANY, 'a@a.com')
 
     @mock.patch('webpay.auth.views.verify_assertion')
     @mock.patch('webpay.auth.views.set_user')
     def test_good_unverified(self, set_user_mock, verify_assertion):
+        set_user_mock.return_value = '<user_hash>'
         verify_assertion.return_value = good_assertion
         res = self.client.post(self.url, {'assertion': 'good'})
         eq_(res.status_code, 200)
@@ -60,5 +66,7 @@ class TestAuth(SessionTestCase):
         verify_assertion.return_value = dict(good_assertion)
         res = self.client.post(self.reverify_url, {'assertion': 'good'})
         eq_(res.status_code, 200)
+        data = json.loads(res.content)
+        eq_(data['user_hash'], get_uuid(good_assertion['unverified-email']))
         assert verify_assertion.call_args[0][2]['forceAuthentication'], (
             verify_assertion.call_args)

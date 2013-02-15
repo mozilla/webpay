@@ -9,7 +9,7 @@ from django_browserid.forms import BrowserIDForm
 from session_csrf import anonymous_csrf_exempt
 
 from webpay.base.decorators import json_view
-from utils import set_user
+from .utils import get_uuid, set_user
 
 log = commonware.log.getLogger('w.auth')
 
@@ -36,11 +36,19 @@ def reverify(request):
                  'extra_params: %s' % (url, audience, extra_params))
         result = verify_assertion(form.cleaned_data['assertion'], audience,
                                   extra_params)
+
         log.info('Reverify got result: %s')
         if result:
-            return {}
+            logged_user = request.session.get('uuid')
+            email = result.get('unverified-email', result.get('email'))
+            reverified_user = get_uuid(email)
+            if logged_user and logged_user != reverified_user:
+                # TODO: Should we try to support this?
+                raise ValueError('A user tried to reverify herself with a '
+                                 'new email: %s' % email)
 
-        # Are we meant to do something here?
+            return {'user_hash': reverified_user}
+
         log.error('Persona assertion failed.')
 
     request.session.clear()
@@ -66,9 +74,10 @@ def verify(request):
         if result:
             log.info('Persona assertion ok: %s' % result)
             email = result.get('unverified-email', result.get('email'))
-            set_user(request, email)
+            user_hash = set_user(request, email)
             return {'has_pin': request.session.get('uuid_has_pin'),
-                    'pin_create': reverse('pin.create')}
+                    'pin_create': reverse('pin.create'),
+                    'user_hash': user_hash}
 
         log.error('Persona assertion failed.')
 

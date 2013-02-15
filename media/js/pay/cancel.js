@@ -1,5 +1,6 @@
-$(function() {
+require(['cli'], function(cli) {
     "use strict";
+
     function callPayFailure() {
         // There is a delay before paymentFailed gets injected into scope it
         // seems.
@@ -14,7 +15,7 @@ $(function() {
         }
     }
 
-    if ($('body').data('cancelflow') === true) {
+    if (cli.bodyData.cancelflow === true) {
         callPayFailure();
     }
 
