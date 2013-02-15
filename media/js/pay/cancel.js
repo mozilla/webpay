@@ -1,4 +1,4 @@
-define('pay/cancel', ['cli'], function(cli) {
+require(['cli'], function(cli) {
     "use strict";
 
     function callPayFailure() {

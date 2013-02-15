@@ -1,4 +1,4 @@
-define('pin', ['cli'], function(cli) {
+require(['cli'], function(cli) {
     var interval = false;
     var PINLENGTH = 4;
 

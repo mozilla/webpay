@@ -1,4 +1,4 @@
-define('pay', ['cli', 'pay/bango'], function(cli, bango) {
+require(['cli', 'pay/bango'], function(cli, bango) {
     "use strict";
 
     var bodyData = cli.bodyData;

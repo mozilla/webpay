@@ -41,20 +41,16 @@ MINIFY_BUNDLES = {
             'js/lib/underscore.js',
             'js/lib/format.js',
 
-            # These are module libraries used by others.
+            # These are modules used by others.
             'js/cli.js',
             'js/pay/bango.js',
 
-            # These are top-level modules. When you add more, you also have
-            # to add them to main.js
+            # These are top-level modules.
             'js/pay/pay.js',
             'js/pay/wait.js',
             'js/pay/cancel.js',
             'js/pin/pin.js',
             'js/pin/reset.js',
-
-            # This requires all top-level modules.
-            'js/main.js',
         ),
     }
 }

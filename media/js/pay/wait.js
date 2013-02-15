@@ -1,4 +1,4 @@
-define('pay/wait', ['cli'], function(cli) {
+require(['cli'], function(cli) {
     "use strict";
 
     var startUrl;
