@@ -1,6 +1,6 @@
 amqplib==1.0.2
 Babel==0.9.6
-Django==1.4.3
+Django==1.4.4
 anyjson==0.3.3
 billiard==2.7.3.17
 cef==0.3
