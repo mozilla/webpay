@@ -60,7 +60,8 @@ LESS_BIN = 'lessc'
 # SITE_URL = 'http://localhost:8000'
 
 # Playdoh ships with Bcrypt+HMAC by default because it's the most secure.
-# To use bcrypt, fill in a secret HMAC key. It cannot be blank.
+# To use bcrypt, fill in a secret HMAC key. It cannot be blank. Date is
+# when you added the key, it's unused in the code.
 HMAC_KEYS = {
     #'2012-06-06': 'some secret',
 }
