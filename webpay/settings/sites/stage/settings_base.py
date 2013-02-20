@@ -7,7 +7,7 @@ from webpay.settings import base
 
 from .. import splitstrip
 
-DOMAIN = 'marketplace-dev.allizom.org'
+DOMAIN = 'marketplace.allizom.org'
 ALLOWED_HOSTS = [DOMAIN]
 
 DATABASES = {}
