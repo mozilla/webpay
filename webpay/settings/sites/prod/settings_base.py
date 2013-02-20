@@ -79,3 +79,8 @@ SOLITUDE_URL = 'https://payments.firefox.com'
 SENTRY_DSN = private.SENTRY_DSN
 
 ALLOWED_CALLBACK_SCHEMES = ['https']
+
+# Hook into the production web flow.
+BANGO_BASE_URL = 'https://mozilla.bango.net'
+BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'
+BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
