@@ -73,12 +73,12 @@ require(['cli', 'pay/bango'], function(cli, bango) {
     function callPaySuccess() {
         // There is a delay before paymentSuccess gets injected into scope it
         // seems.
-        if (typeof paymentSuccess === 'undefined') {
+        if (typeof window.paymentSuccess === 'undefined') {
             console.log('waiting for paymentSuccess to appear in scope');
             window.setTimeout(callPaySuccess, 500);
         } else {
             console.log('payment complete, closing window');
-            paymentSuccess();
+            window.paymentSuccess();
         }
     }
 
