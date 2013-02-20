@@ -82,7 +82,7 @@ SOLITUDE_URL = 'https://payments.allizom.org'
 
 SENTRY_DSN = private.SENTRY_DSN
 
-ALLOWED_CALLBACK_SCHEMES = ['https']
+ALLOWED_CALLBACK_SCHEMES = ['http', 'https']
 
 # Hook into the production web flow.
 BANGO_BASE_URL = 'https://mozilla.bango.net'
