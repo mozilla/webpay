@@ -28,13 +28,13 @@ require(['cli'], function(cli) {
     function validate(input) {
         var value = input.val();
         if (!value || value.length < 4) {
-            warn('PIN must be 4 digits');
+            warn(cli.bodyData.pinShortWarning);
             return false;
         }
 
         var re = new RegExp('^[0-9]{4}$');
         if (!re.test(value)) {
-            warn('PIN can only contain digits.');
+            warn(cli.bodyData.pinNonNumericWarning);
             return false;
         }
 
