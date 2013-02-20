@@ -7,6 +7,8 @@ from webpay.settings import base
 
 from .. import splitstrip
 
+DOMAIN = 'marketplace.allizom.org'
+ALLOWED_HOSTS = [DOMAIN]
 
 DATABASES = {}
 DATABASES['default'] = dj_database_url.parse(private.DATABASES_DEFAULT_URL)
@@ -47,7 +49,7 @@ DEV = True
 # By default, BrowserID expects your app to use http://127.0.0.1:8000
 # Uncomment the following line if you prefer to access your app via localhost
 # SITE_URL = 'http://localhost:8000'
-SITE_URL = 'https://marketplace-dev.allizom.org'
+SITE_URL = 'https://' + DOMAIN
 MARKETPLACE_URL = SITE_URL
 
 #LOGIN_URL = '/mozpay'

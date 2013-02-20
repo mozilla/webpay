@@ -7,6 +7,8 @@ from webpay.settings import base
 
 from .. import splitstrip
 
+DOMAIN = 'marketplace.firefox.com'
+ALLOWED_HOSTS = [DOMAIN]
 
 DATABASES = {}
 DATABASES['default'] = dj_database_url.parse(private.DATABASES_DEFAULT_URL)
@@ -38,7 +40,7 @@ DEBUG = TEMPLATE_DEBUG = False
 
 DEV = False
 
-SITE_URL = 'https://marketplace.firefox.com'
+SITE_URL = 'https://' + DOMAIN
 MARKETPLACE_URL = SITE_URL
 
 HMAC_KEYS = private.HMAC_KEYS
