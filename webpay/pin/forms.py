@@ -83,7 +83,7 @@ class ConfirmPinForm(BasePinForm):
         if self.handle_client_errors(client.confirm_pin(self.uuid, pin)):
             return pin
 
-        raise forms.ValidationError(_('Incorrect PIN.'))
+        raise forms.ValidationError(_("PIN doesn't match."))
 
 
 class ResetPinForm(BasePinForm):
@@ -103,4 +103,4 @@ class ResetConfirmPinForm(BasePinForm):
         if self.handle_client_errors(client.reset_confirm_pin(self.uuid, pin)):
             return pin
 
-        raise forms.ValidationError(_('Incorrect PIN.'))
+        raise forms.ValidationError(_("PIN doesn't match."))
