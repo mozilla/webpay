@@ -4,3 +4,4 @@
 -r prod.txt
 -r compiled.txt
 nosenicedots==0.3
+docutils==0.10
