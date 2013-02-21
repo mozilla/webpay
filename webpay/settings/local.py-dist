@@ -121,3 +121,8 @@ SOLITUDE_URL = 'http://localhost:9000'
 # Uncomment this to redirect to a fake Bango payments screen
 # when FAKE_PAYMENTS is False.
 #BANGO_PAY_URL = '/mozpay/fake-bango-url?bcid=%s'
+
+# Set up your local webpay for payments against a B2G device.
+#DOMAIN = 'localhost'  # JWT aud
+#KEY = DOMAIN  # JWT iss
+#SECRET = 'this must match APP_PURCHASE_SECRET in zamboni'
