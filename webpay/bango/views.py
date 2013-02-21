@@ -20,8 +20,6 @@ def _record(request):
     session_uuid = request.session.get('trans_id')
     trans_uuid = qs.get('MerchantTransactionId')
 
-
-
     if session_uuid and trans_uuid != session_uuid:
         log.info('Bango query string transaction %r is not in the '
                  'active session' % trans_uuid)
