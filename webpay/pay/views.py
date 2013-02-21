@@ -184,8 +184,7 @@ def wait_to_start(request):
 
     if trans['status'] == constants.STATUS_PENDING:
         # The transaction is ready; no need to wait for it.
-        return http.HttpResponseRedirect(
-            settings.BANGO_PAY_URL % trans['uid_pay'])
+        return http.HttpResponseRedirect(_bango_start_url(trans['uid_pay']))
     return render(request, 'pay/wait-to-start.html')
 
 
@@ -202,5 +201,11 @@ def trans_start_url(request):
         trans = {'status': None}
     data = {'url': None, 'status': trans['status']}
     if trans['status'] == constants.STATUS_PENDING:
-        data['url'] = settings.BANGO_PAY_URL % trans['uid_pay']
+        data['url'] = _bango_start_url(trans['uid_pay'])
     return data
+
+
+def _bango_start_url(bango_trans_id):
+    url = settings.BANGO_PAY_URL % bango_trans_id
+    log.info('Start Bango pay at: %s' % url)
+    return url
