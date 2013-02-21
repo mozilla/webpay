@@ -14,6 +14,7 @@ from tower import ugettext as _
 
 from webpay.auth.decorators import user_verified
 from webpay.base.decorators import json_view
+from webpay.base.utils import _error
 from webpay.pin.forms import VerifyPinForm
 from webpay.pin.utils import pin_recently_entered
 
@@ -27,17 +28,6 @@ from .forms import VerifyForm
 from .utils import verify_urls
 
 log = commonware.log.getLogger('w.pay')
-
-
-def _error(request, msg='', exception=None,
-           is_simulation=False):
-    external = _('There was an error processing that request.')
-    if settings.VERBOSE_LOGGING or is_simulation:
-        if exception:
-            msg = u'%s: %s' % (exception.__class__.__name__, exception)
-        if msg:
-            external = msg
-    return render(request, 'pay/error.html', {'error': external}, status=400)
 
 
 def process_pay_req(request):

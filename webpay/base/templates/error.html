@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ _('Error') }}</h1>
+  <p class="centered">{{ error }}</p>
+  <p class="centered">
+    <a class="button cancel-button" href="#">
+      {{ _('Cancel') }}
+    </a>
+  </p>
+{% endblock %}

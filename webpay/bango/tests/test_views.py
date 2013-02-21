@@ -59,9 +59,9 @@ class TestBangoReturn(BasicSessionCase):
 
     def test_error(self, payment_notify, slumber):
         res = self.call(overrides={'ResponseCode': 'NOT OK'},
-                        url='bango.error')
+                        url='bango.error', expected_status=400)
         assert slumber.bango.notification.post.called
-        self.assertTemplateUsed(res, 'bango/error.html')
+        self.assertTemplateUsed(res, 'error.html')
 
     def test_cancel(self, payment_notify, slumber):
         res = self.call(overrides={'ResponseCode': 'CANCEL'},

@@ -1,4 +1,3 @@
-from django import http
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
@@ -6,6 +5,7 @@ import commonware.log
 from slumber.exceptions import HttpClientError
 
 from lib.solitude.api import client
+from webpay.base.utils import _error
 from webpay.pay import tasks
 
 log = commonware.log.getLogger('w.bango')
@@ -53,10 +53,10 @@ def success(request):
     # We should only have OK's coming from Bango, presumably.
     if request.GET.get('ResponseCode') != 'OK':
         log.info('Invalid response code: %s' % request.GET.get('ResponseCode'))
-        return http.HttpResponseBadRequest()
+        return _error(request)
 
     if not _record(request):
-        return http.HttpResponseBadRequest()
+        return _error(request)
 
     # Signature verification was successful; fulfill the payment.
     tasks.payment_notify.delay(request.GET.get('MerchantTransactionId'))
@@ -70,12 +70,12 @@ def error(request):
     # We should NOT have OK's coming from Bango, presumably.
     if request.GET.get('ResponseCode') == 'OK':
         log.info('Invalid response code: %s' % request.GET.get('ResponseCode'))
-        return http.HttpResponseBadRequest()
+        return _error(request)
 
     if not _record(request):
-        return http.HttpResponseBadRequest()
+        return _error(request)
 
     if request.GET.get('ResponseCode') == 'CANCEL':
         return render(request, 'bango/cancel.html')
 
-    return render(request, 'bango/error.html')
+    return _error(request)

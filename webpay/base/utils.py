@@ -1,8 +1,10 @@
 import functools
 
 from django.conf import settings
+from django.shortcuts import render
 
 from cef import log_cef as _log_cef
+from tower import ugettext as _
 
 
 def log_cef(msg, request, **kw):
@@ -20,3 +22,14 @@ def log_cef(msg, request, **kw):
         },
     }
     _log_cef(msg, severity, request.META.copy(), **cef_kw)
+
+
+def _error(request, msg='', exception=None,
+           is_simulation=False):
+    external = _('There was an error processing that request.')
+    if settings.VERBOSE_LOGGING or is_simulation:
+        if exception:
+            msg = u'%s: %s' % (exception.__class__.__name__, exception)
+        if msg:
+            external = msg
+    return render(request, 'error.html', {'error': external}, status=400)
