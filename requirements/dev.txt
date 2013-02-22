@@ -4,6 +4,3 @@
 -r prod.txt
 -r compiled.txt
 nosenicedots==0.3
-docutils==0.10
-Pygments==1.6
-Sphinx==1.1.3
