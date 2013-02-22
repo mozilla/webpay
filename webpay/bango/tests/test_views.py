@@ -26,6 +26,8 @@ class TestBangoReturn(BasicSessionCase):
               'MerchantTransactionId': self.trans_uuid,
               'BillingConfigurationId': '123',
               'ResponseCode': 'OK',
+              'Price': '0.99',
+              'Currency': 'EUR',
               'BangoTransactionId': '456'}
         if overrides:
             qs.update(overrides)
