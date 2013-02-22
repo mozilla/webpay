@@ -37,6 +37,8 @@ def _record(request):
             'bango_response_code': qs.get('ResponseCode'),
             'bango_response_message': qs.get('ResponseMessage'),
             'bango_trans_id': qs.get('BangoTransactionId'),
+            'amount': qs.get('Price'),
+            'currency': qs.get('Currency'),
         })
     except HttpClientError, err:
         log.info('Bango payment notice for transaction uuid %r '
@@ -48,6 +50,21 @@ def _record(request):
 
 @require_GET
 def success(request):
+    """
+    Process a redirect request after the Bango payment has completed.
+    This URL endpoint is pre-arranged with Bango via the Billing Config API.
+
+    Example request:
+
+    ?ResponseCode=OK&ResponseMessage=Success&BangoUserId=1473894939
+    &MerchantTransactionId=webpay%3a14d6a53c-fc4c-4bd1-8dc0-9f24646064b8
+    &BangoTransactionId=1078692145
+    &TransactionMethods=USA_TMOBILE%2cT-Mobile+USA%2cTESTPAY%2cTest+Pay
+    &BillingConfigurationId=218240
+    &MozSignature=
+    c2cf7b937720c6e41f8b6401696cf7aef56975ebe54f8cee51eff4eb317841af
+    &Currency=USD&Network=USA_TMOBILE&Price=0.99&P=
+    """
     log.info('Bango success: %s' % request.GET)
 
     # We should only have OK's coming from Bango, presumably.
