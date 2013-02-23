@@ -33,7 +33,7 @@ def create(request):
     form.no_pin = True
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Create your PIN:'),
-                  'action': reverse('pin.create') })
+                  'action': reverse('pin.create')})
 
 
 @enforce_sequence
@@ -44,9 +44,9 @@ def confirm(request):
         if form.is_valid():
             return http.HttpResponseRedirect(get_payment_url())
     form.no_pin = True
-    return render(request, 'pin/pin_form.html', { 'form': form,
+    return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Confirm your PIN:'),
-                  'action': reverse('pin.confirm') })
+                  'action': reverse('pin.confirm')})
 
 
 @enforce_sequence
@@ -62,7 +62,7 @@ def verify(request):
             return http.HttpResponseRedirect(get_payment_url())
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Enter your PIN:'),
-                  'action': reverse('pin.verify') })
+                  'action': reverse('pin.verify')})
 
 
 @enforce_sequence
@@ -90,7 +90,7 @@ def reset_new_pin(request):
     form.reset_flow = True
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Enter your new PIN:'),
-                  'action': reverse('pin.reset_new_pin') })
+                  'action': reverse('pin.reset_new_pin')})
 
 
 @enforce_sequence
@@ -107,7 +107,7 @@ def reset_confirm(request):
     form.reset_flow = True
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Confirm your new PIN:'),
-                  'action': reverse('pin.reset_confirm') })
+                  'action': reverse('pin.reset_confirm')})
 
 
 @user_verified
