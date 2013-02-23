@@ -1,5 +1,5 @@
 -r base.txt
--r base-compiled.txt
+-r compiled.txt
 Pygments==1.5
 Sphinx==1.1.3
 docutils==0.9.1
