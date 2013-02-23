@@ -1,0 +1,2 @@
+Jinja2==2.6
+MySQL-python==1.2.4b2

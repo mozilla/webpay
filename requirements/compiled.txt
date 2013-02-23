@@ -1,3 +1,2 @@
-Jinja2==2.6
+-r base-compiled.txt
 M2Crypto>=0.20.0
-MySQL-python==1.2.4b2
