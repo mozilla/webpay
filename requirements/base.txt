@@ -1,0 +1,51 @@
+amqplib==1.0.2
+Babel==0.9.6
+Django==1.4.5
+anyjson==0.3.3
+billiard==2.7.3.17
+cef==0.3
+celery==2.5.1
+curling==0.1.9
+dj-database-url==0.2.1
+django-celery==2.2.4
+django-mobility==0.1
+django-multidb-router==0.5
+django-nose==1.1
+django-statsd-mozilla==0.3.7
+fudge==1.0.3
+funfactory==2.1.1
+gelato.constants==0.1.3
+GitPython==0.1.7
+gunicorn==0.14.6
+jingo==0.4
+kombu==2.1.2
+mock==1.0b1
+moz_inapp_pay==1.0.2
+nose==1.2.1
+ordereddict==1.1
+django-picklefield==0.2.1
+PyJWT-mozilla==0.1.4.2
+python-dateutil==2.1
+python-memcached==1.48
+raven==2.0.10
+requests==0.14.2
+schematic==0.2
+six==1.2.0
+slumber==0.5.1
+statsd==1.0.0
+translate-toolkit==1.9.0
+
+-e git://github.com/clouserw/tower.git@7711557f55fefa9526402b2731879edf9b128381#egg=tower
+
+-e git://github.com/jbalogh/test-utils.git@3c2214d193d1b0c0d74c77b3731c8afb0173e669#egg=test-utils
+
+-e git://github.com/jsocol/commonware.git@1b2e7623782c7aaca5401714758845cf9fcee621#egg=commonware
+-e git://github.com/jsocol/django-cronjobs.git@cfda8176c5c3a50d1b58fcf57e87e23c467789bd#egg=django-cronjobs
+-e git://github.com/jsocol/jingo-minify.git@d2ffefbd31e5035873083107e86893be302ce452#egg=jingo-minify
+
+-e git://github.com/fwenzel/django-sha2.git@f4519bf0cc9b1dd7a7d78394fa4aec4504bc86e9#egg=django-sha2
+-e git://github.com/fwenzel/django-mozilla-product-details.git@36ef06539d6b34c4f345fd0d3e16937d0db9a752#egg=django-mozilla-product-details
+
+-e git://github.com/mozilla/django-browserid.git@72009f28f55c91c8ed1bb79930bc84f88dc00211#egg=django-browserid
+-e git://github.com/mozilla/django-session-csrf.git@94e2858a427a6b278e41c051643f3c226f096f21#egg=django-session-csrf
+-e git://github.com/mozilla/nuggets.git@96e80a64aa4bfcfef4f43fc3ab6966450ccd7325#egg=nuggets
