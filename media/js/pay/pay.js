@@ -3,6 +3,10 @@ require(['cli', 'pay/bango'], function(cli, bango) {
 
     var bodyData = cli.bodyData;
 
+    // Currently we just default false, once loggedInUser is used properly we
+    // can (and will have to) put a better value here. (bug 843192)
+    var loggedIn = false;
+
     $('[name="pin"]').each(function() {
         this.type = 'number';
         this.setAttribute('placeholder', '****');
@@ -10,6 +14,7 @@ require(['cli', 'pay/bango'], function(cli, bango) {
 
     var onLogout = function() {
         // This is the default onLogout but might be replaced by other handlers.
+        console.log('default onLogout');
         $('.message').hide();
         $('#begin').fadeOut();
         $('#login').fadeIn();
@@ -21,6 +26,7 @@ require(['cli', 'pay/bango'], function(cli, bango) {
         navigator.id.watch({
             onlogin: function(assertion) {
                 console.log('nav.id onlogin');
+                loggedIn = true;
                 $('.message').hide();
                 $('#login-wait').fadeIn();
                 $.post(verifyUrl, {assertion: assertion})
@@ -41,6 +47,7 @@ require(['cli', 'pay/bango'], function(cli, bango) {
                     });
             },
             onlogout: function() {
+                loggedIn = false;
                 console.log('nav.id onlogout');
                 onLogout();
             }
@@ -93,16 +100,24 @@ require(['cli', 'pay/bango'], function(cli, bango) {
 
             // Define a new logout handler.
             onLogout = function() {
+                console.log('forgot-pin onLogout');
                 // Wait until Persona has logged us out, then redirect to the
                 // original destination.
                 window.location.href = anchor.attr('href');
 
                 // It seems necessary to nullify the logout handler because
                 // otherwise it is held in memory and called on the next page.
-                onLogout = function() {};
+                onLogout = function() {
+                    console.log('null onLogout');
+                };
             };
-            console.log('Logging out of Persona');
-            navigator.id.logout();
+            if (loggedIn) {
+                console.log('Logging out of Persona');
+                navigator.id.logout();
+            } else {
+                console.log('Already logged out of Persona, calling onLogout ourself.');
+                onLogout();
+            }
         });
     });
 });
