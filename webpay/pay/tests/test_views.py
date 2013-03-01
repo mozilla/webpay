@@ -38,6 +38,12 @@ class Base(BasicSessionCase, JWTtester):
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             self.iss.set_private_key(secret)
 
+    def set_secret(self, get_active_product):
+        get_active_product.return_value = {
+            'secret': self.secret,
+            'access': constants.ACCESS_PURCHASE
+        }
+
 
 @mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')
 @mock.patch.object(settings, 'SECRET', 'marketplace.secret')
@@ -88,17 +94,18 @@ class TestVerify(Base):
         self.session.save()
         eq_(self.client.get(self.url).status_code, 200)
 
-    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
-    def test_inapp(self, get_price, get_secret):
-        get_secret.return_value = self.secret
+    def test_inapp(self, get_price, get_active_product):
+        self.set_secret(get_active_product)
         payload = self.request(iss=self.key, app_secret=self.secret)
         eq_(self.get(payload).status_code, 200)
 
-    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
-    def test_recently_entered_pin_redirect(self, get_price, get_secret):
-        get_secret.return_value = self.secret
+    def test_recently_entered_pin_redirect(self, get_price,
+                                           get_active_product):
+        self.set_secret(get_active_product)
         self.session['last_pin_success'] = datetime.now()
         self.session.save()
         payload = self.request(iss=self.key, app_secret=self.secret)
@@ -106,11 +113,12 @@ class TestVerify(Base):
         eq_(res.status_code, 302)
         assert res['Location'].endswith(get_payment_url())
 
-    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
     @mock.patch('lib.solitude.api.SolitudeAPI.set_needs_pin_reset')
-    def test_reset_flag_true(self, set_needs_pin_reset, get_price, get_secret):
-        get_secret.return_value = self.secret
+    def test_reset_flag_true(self, set_needs_pin_reset,
+                             get_price, get_active_product):
+        self.set_secret(get_active_product)
         self.session['uuid_needs_pin_reset'] = True
         self.session['uuid'] = 'some:uuid'
         self.session.save()
@@ -119,15 +127,15 @@ class TestVerify(Base):
         eq_(res.status_code, 200)
         assert set_needs_pin_reset.called
 
-    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
-    def test_inapp_wrong_secret(self, get_secret):
-        get_secret.return_value = self.secret
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
+    def test_inapp_wrong_secret(self, get_active_product):
+        self.set_secret(get_active_product)
         payload = self.request(iss=self.key, app_secret=self.secret + '.nope')
         eq_(self.get(payload).status_code, 400)
 
-    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
-    def test_inapp_wrong_key(self, get_secret):
-        get_secret.side_effect = ValueError
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
+    def test_inapp_wrong_key(self, get_active_product):
+        get_active_product.side_effect = ValueError
         payload = self.request(iss=self.key + '.nope', app_secret=self.secret)
         eq_(self.get(payload).status_code, 400)
 
@@ -252,6 +260,14 @@ class TestVerify(Base):
                             'simulations are disabled',
                             status_code=400)
 
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
+    def test_incorrect_simulation(self, get_active_product):
+        get_active_product.return_value = {'secret': self.secret,
+                                           'access': constants.ACCESS_SIMULATE}
+        # Make a regular request, not a simulation.
+        payload = self.request(iss='third-party-app')
+        eq_(self.get(payload).status_code, 400)
+
     def test_pin_ui(self):
         with self.settings(TEST_PIN_UI=True):
             res = self.client.get(self.url)
@@ -315,9 +331,9 @@ class TestForm(Base):
     def test_unicode(self):
         self.failed(VerifyForm({'req': u'Հ'}))
 
-    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
-    def test_non_existant(self, get_secret):
-        get_secret.side_effect = ValueError
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
+    def test_non_existant(self, get_active_product):
+        get_active_product.side_effect = ValueError
         payload = self.request(iss=self.key + '.nope', app_secret=self.secret)
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             form = VerifyForm({'req': payload})
@@ -335,9 +351,9 @@ class TestForm(Base):
             form = VerifyForm({'req': payload})
             assert not form.is_valid()
 
-    @mock.patch('lib.solitude.api.SolitudeAPI.get_secret')
-    def test_valid_inapp(self, get_secret):
-        get_secret.return_value = self.secret
+    @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
+    def test_valid_inapp(self, get_active_product):
+        self.set_secret(get_active_product)
         payload = self.request(iss=self.key, app_secret=self.secret)
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             form = VerifyForm({'req': payload})

@@ -6,6 +6,7 @@ import jwt
 from tower import ugettext as _
 
 from lib.solitude.api import client
+from lib.solitude.constants import ACCESS_SIMULATE
 
 log = commonware.log.getLogger('w.pay')
 
@@ -56,14 +57,20 @@ class VerifyForm(forms.Form):
         else:
             try:
                 # Assuming that the app_id is also going to be the public_id.
-                secret = client.get_secret(app_id)
+                prod = client.get_active_product(app_id)
             except ValueError, err:
-                log.info('client.get_secret(%r) raised %s: %s' %
+                log.info('client.get_active_product(%r) raised %s: %s' %
                          (app_id, err.__class__.__name__, err))
                 raise forms.ValidationError(
                     # L10n: the first argument is a key to identify an issuer.
                     _('No one has been registered for JWT issuer {0}.')
                     .format(repr(app_id)))
-            self.key, self.secret = app_id, secret
+
+            if prod['access'] == ACCESS_SIMULATE and not self.is_simulation:
+                raise forms.ValidationError(
+                    # L10n: the first argument is a key to identify an issuer.
+                    _('This payment key, {0}, can only be used to simulate '
+                      'purchases.').format(repr(app_id)))
+            self.key, self.secret = app_id, prod['secret']
 
         return data
