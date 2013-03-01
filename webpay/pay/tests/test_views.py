@@ -48,9 +48,13 @@ class TestVerify(Base):
 
     def setUp(self):
         super(TestVerify, self).setUp()
+        self.patches = []
         patch = mock.patch('webpay.pay.views.tasks.start_pay')
         self.start_pay = patch.start()
-        self.patches = [patch]
+        self.patches.append(patch)
+        patch = mock.patch('webpay.pay.views.marketplace')
+        patch.start()
+        self.patches.append(patch)
 
     def tearDown(self):
         super(TestVerify, self).tearDown()
