@@ -410,11 +410,15 @@ class TestStartPay(test_utils.TestCase):
     @mock.patch('lib.marketplace.api.client.slumber')
     def test_existing_product(self, marketplace, solitude):
         marketplace.webpay.prices.return_value = self.prices
-        solitude.generic.seller.get_object.return_value = {
-            'resource_pk': 29,
-            'uuid': self.issue,
+        solitude.generic.seller.get.return_value = {
+            'meta': {'total_count': 1},
+            'objects': [{
+                'resource_pk': 29,
+                'uuid': self.issue,
+            }]
         }
         solitude.bango.product.get.return_value = {
+            'meta': {'total_count': 1},
             'objects': [{
                 'resource_pk': 15,
                 'bango_id': u'1113330000000311563',

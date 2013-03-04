@@ -1,3 +1,4 @@
 -r prod.txt
+-r compiled.txt
 
 nose-blockage==0.1.2

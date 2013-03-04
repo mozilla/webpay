@@ -3,7 +3,6 @@ import json
 from django.conf import settings
 from django.test import TestCase
 
-from curling.lib import HttpClientError
 import mock
 from nose.exc import SkipTest
 from nose.tools import eq_
@@ -149,46 +148,25 @@ class SolitudeAPITest(TestCase):
 
 class CreateBangoTest(TestCase):
     uuid = 'some:pin'
-    product = {'product': 'some_uri'}
 
-    def test_complete_no_bango(self):
+    def test_create_no_bango(self):
         with self.assertRaises(ValueError):
-            client.complete_product('ext:id', None, None,
-                                    {'bango': None, 'resource_pk': 'foo'})
+            client.create_product('ext:id', None,
+                                  {'bango': None, 'resource_pk': 'foo'})
 
     @mock.patch('lib.solitude.api.client.slumber')
-    def test_create(self, slumber):
-        slumber.generic.product.post.return_value = self.product
-        eq_(client.get_or_create_product('ext:id', 3),
-            (self.product, True))
-
-    @mock.patch('lib.solitude.api.client.slumber')
-    def test_exists(self, slumber):
-        err = HttpClientError()
-        err.content = {'__all__': [u'EXTERNAL_PRODUCT_ID_IS_NOT_UNIQUE']}
-        slumber.generic.product.post.side_effect = err
-        slumber.generic.product.get_object.return_value = self.product
-
-        eq_(client.get_or_create_product('ext:id', 3),
-            (self.product, False))
-        assert slumber.generic.product.post.called
-
-    @mock.patch('lib.solitude.api.client.slumber')
-    def test_other(self, slumber):
-        err = HttpClientError()
-        err.content = {}
-        slumber.generic.product.post.side_effect = err
-        slumber.generic.product.get_object.return_value = self.product
-        with self.assertRaises(HttpClientError):
-            client.get_or_create_product('ext:id', 3)
-
-    @mock.patch('lib.solitude.api.client.slumber')
-    def test_complete_product(self, slumber):
-        assert client.complete_product('ext:id', 'product_uri', 'product:name',
+    def test_create_bango(self, slumber):
+        # Temporary mocking. Remove when this is mocked properly.
+        slumber.bango.generic.post.return_value = {'product': 'some:uri'}
+        slumber.bango.product.post.return_value = {'resource_uri': 'some:uri',
+                                                   'bango_id': '5678'}
+        assert client.create_product('ext:id', 'product:name',
                 {'bango': {'seller': 's', 'resource_uri': 'r',
                            'package_id': '1234'},
                  'resource_pk': 'foo'})
-        assert slumber.bango.product.post.called
+        assert slumber.generic.product.post.called
+        kw = slumber.generic.product.post.call_args[0][0]
+        eq_(kw['external_id'], 'ext:id')
         eq_(slumber.bango.rating.post.call_count, 2)
         assert slumber.bango.premium.post.called
 
