@@ -4,6 +4,8 @@ import uuid
 
 from django.conf import settings
 
+from curling.lib import HttpClientError
+
 from ..utils import SlumberWrapper
 from .errors import ERROR_STRINGS
 from webpay.pay.models import Issuer
@@ -183,23 +185,17 @@ class SolitudeAPI(SlumberWrapper):
         log.info('transaction %s: seller: %s' % (transaction_uuid,
                                                  seller_id))
 
-        res = self.slumber.bango.product.get(
-            seller_product__seller=seller_id,
-            seller_product__external_id=product_id
-        )
-        if res['meta']['total_count'] == 0:
-            bango_product_uri = self.create_product(product_id,
-                    product_name, seller)
-        else:
-            bango_product_uri = res['objects'][0]['resource_uri']
-            log.info('transaction %s: bango product: %s'
-                     % (transaction_uuid, bango_product_uri))
+        res, created = self.get_or_create_product(product_id, seller_id)
+        product_uri = res['resource_uri']
+        if created:
+            self.complete_product(product_id, product_uri, product_name,
+                                  seller)
 
         res = self.slumber.bango.billing.post({
             'pageTitle': product_name,
             'prices': prices,
             'transaction_uuid': transaction_uuid,
-            'seller_product_bango': bango_product_uri,
+            'seller_product_bango': product_uri,
             'redirect_url_onsuccess': redirect_url_onsuccess,
             'redirect_url_onerror': redirect_url_onerror,
         })
@@ -210,7 +206,33 @@ class SolitudeAPI(SlumberWrapper):
 
         return bill_id, seller_id
 
-    def create_product(self, external_id, product_name, seller):
+    def get_or_create_product(self, external_id, seller_id):
+        """
+        Get or create a product.
+        """
+        try:
+            product = self.slumber.generic.product.post({
+                'external_id': external_id,
+                # Annoying, need to fix this up.
+                'seller': '/generic/seller/%s/' % seller_id,
+                'public_id': str(uuid.uuid4())
+            })
+            created = True
+        except HttpClientError, exc:
+            # If the external product id already exists, just get it.
+            if (exc.content.get('__all__', []) !=
+                [u'EXTERNAL_PRODUCT_ID_IS_NOT_UNIQUE']):
+                # Otherwise, re-raise.
+                raise
+
+            product = self.slumber.generic.product.get_object(
+                seller=seller_id,
+                external_id=external_id
+            )
+            created = False
+        return product, created
+
+    def complete_product(self, external_id, product_uri, product_name, seller):
         """
         Creates a product and a Bango ID on the fly in solitude.
         """
@@ -220,14 +242,9 @@ class SolitudeAPI(SlumberWrapper):
             raise ValueError('No bango account set up for %s' %
                              seller['resource_pk'])
 
-        product = self.slumber.generic.product.post({
-            'external_id': external_id,
-            'seller': seller['bango']['seller'],
-            'public_id': str(uuid.uuid4())
-        })
         bango = self.slumber.bango.product.post({
             'seller_bango': seller['bango']['resource_uri'],
-            'seller_product': product['resource_uri'],
+            'seller_product': product_uri,
             'name': product_name,
             'categoryId': 1,
             'packageId': seller['bango']['package_id'],
