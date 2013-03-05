@@ -122,6 +122,7 @@ class TestNotifyApp(NotifyTest):
     @mock.patch('lib.solitude.api.client.slumber')
     def test_notify_reversal_chargeback(self, fake_req, slumber):
         self.set_secret_mock(slumber, 'f')
+
         def req_ok(req):
             dd = jwt.decode(req['notice'], verify=False)
             eq_(dd['response']['reason'], 'reversal')
@@ -232,7 +233,9 @@ class TestNotifyApp(NotifyTest):
     def test_signed_app_response(self, fake_req, slumber):
         app_payment = self.payload()
         self.set_secret_mock(slumber, 'f')
-        slumber.generic.product.get_object_or_404.return_value = {'secret': 'f'}
+        slumber.generic.product.get_object_or_404.return_value = {
+            'secret': 'f'}
+
         # Ensure that the JWT sent to the app for payment notification
         # includes the same payment data that the app originally sent.
         def is_valid(payload):
