@@ -5,6 +5,7 @@ import uuid
 from django.conf import settings
 
 from ..utils import SlumberWrapper
+from .constants import ACCESS_PURCHASE
 from .errors import ERROR_STRINGS
 from webpay.pay.models import Issuer
 
@@ -223,7 +224,8 @@ class SolitudeAPI(SlumberWrapper):
         product = self.slumber.generic.product.post({
             'external_id': external_id,
             'seller': seller['bango']['seller'],
-            'public_id': str(uuid.uuid4())
+            'public_id': str(uuid.uuid4()),
+            'access': ACCESS_PURCHASE,
         })
         bango = self.slumber.bango.product.post({
             'seller_bango': seller['bango']['resource_uri'],
