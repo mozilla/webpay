@@ -84,3 +84,6 @@ ALLOWED_CALLBACK_SCHEMES = ['https']
 BANGO_BASE_URL = 'https://mozilla.bango.net'
 BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'
 BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
+
+# Temporarily only accept simulations while we work to get Bango online.
+ONLY_SIMULATIONS = True

@@ -200,6 +200,11 @@ class TestVerify(Base):
             # Output should show a generic error message without details.
             self.assertContains(res, 'There was an error', status_code=400)
 
+    def test_only_simulations(self):
+        with self.settings(ONLY_SIMULATIONS=True):
+            res = self.get(self.request())
+            self.assertContains(res, 'temporarily disabled', status_code=503)
+
     @mock.patch('webpay.pay.views.tasks.start_pay')
     def test_begin_simulation(self, start_pay):
         payjwt = self.payload()
@@ -211,6 +216,16 @@ class TestVerify(Base):
         eq_(self.client.session['is_simulation'], True)
         assert not start_pay.delay.called, (
                 'start_pay should not be called when simulating')
+
+    @mock.patch('webpay.pay.views.tasks.start_pay')
+    def test_begin_simulation_when_payments_disabled(self, start_pay):
+        payjwt = self.payload()
+        payjwt['request']['simulate'] = {'result': 'postback'}
+        payload = self.request(payload=payjwt)
+        with self.settings(ONLY_SIMULATIONS=True):
+            res = self.get(payload)
+        eq_(res.status_code, 200)
+        eq_(self.client.session['is_simulation'], True)
 
     def test_unknown_simulation(self):
         payjwt = self.payload()
