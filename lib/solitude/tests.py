@@ -1,13 +1,14 @@
 import json
 
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 
 import mock
 from nose.exc import SkipTest
 from nose.tools import eq_
 
-from lib.solitude.api import client
+from lib.solitude.api import client, SellerNotConfigured
 from lib.solitude.errors import ERROR_STRINGS
 from webpay.pay.models import Issuer
 
@@ -148,6 +149,9 @@ class SolitudeAPITest(TestCase):
 
 class CreateBangoTest(TestCase):
     uuid = 'some:pin'
+    seller = {'bango': {'seller': 's', 'resource_uri': 'r',
+                        'package_id': '1234'},
+              'resource_pk': 'foo'}
 
     def test_create_no_bango(self):
         with self.assertRaises(ValueError):
@@ -160,15 +164,41 @@ class CreateBangoTest(TestCase):
         slumber.bango.generic.post.return_value = {'product': 'some:uri'}
         slumber.bango.product.post.return_value = {'resource_uri': 'some:uri',
                                                    'bango_id': '5678'}
-        assert client.create_product('ext:id', 'product:name',
-                {'bango': {'seller': 's', 'resource_uri': 'r',
-                           'package_id': '1234'},
-                 'resource_pk': 'foo'})
+        assert client.create_product('ext:id', 'product:name', self.seller)
         assert slumber.generic.product.post.called
         kw = slumber.generic.product.post.call_args[0][0]
         eq_(kw['external_id'], 'ext:id')
         eq_(slumber.bango.rating.post.call_count, 2)
         assert slumber.bango.premium.post.called
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_no_seller(self, slumber):
+        slumber.generic.seller.get_object.side_effect = ObjectDoesNotExist
+        with self.assertRaises(SellerNotConfigured):
+            client.configure_product_for_billing(*range(0, 7))
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_no_seller(self, slumber):
+        slumber.generic.seller.get_object.side_effect = ObjectDoesNotExist
+        with self.assertRaises(SellerNotConfigured):
+            client.configure_product_for_billing(*range(0, 7))
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_no_bango(self, slumber):
+        slumber.generic.seller.get_object.return_value = self.seller
+        slumber.bango.billing.post.return_value = {
+            'billingConfigurationId': 'bar'}
+        slumber.bango.product.get_object.side_effect = ObjectDoesNotExist
+        eq_(client.configure_product_for_billing(*range(0, 7)), ('bar', 'foo'))
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_has_bango(self, slumber):
+        slumber.generic.seller.get_object.return_value = self.seller
+        slumber.bango.billing.post.return_value = {
+            'billingConfigurationId': 'bar'}
+        slumber.bango.product.get_object.return_value = {'resource_uri': 'foo'}
+        eq_(client.configure_product_for_billing(*range(0, 7)), ('bar', 'foo'))
+
 
 
 @mock.patch('lib.solitude.api.client.slumber')

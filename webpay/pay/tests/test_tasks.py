@@ -408,27 +408,11 @@ class TestStartPay(test_utils.TestCase):
 
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('lib.marketplace.api.client.slumber')
-    def test_existing_product(self, marketplace, solitude):
-        marketplace.webpay.prices.return_value = self.prices
-        solitude.generic.seller.get.return_value = {
-            'meta': {'total_count': 1},
-            'objects': [{
-                'resource_pk': 29,
-                'uuid': self.issue,
-            }]
-        }
-        solitude.bango.product.get.return_value = {
-            'meta': {'total_count': 1},
-            'objects': [{
-                'resource_pk': 15,
-                'bango_id': u'1113330000000311563',
-                'seller_product': u'/generic/product/20/',
-                'resource_uri': '/bango/product/15/'
-            }]
-        }
-        self.set_billing_id(solitude, 123)
+    def test_transaction_called(self, marketplace, solitude):
+        solitude.generic.transaction.get_object.return_value = {
+            'resource_pk': 5}
         self.start()
-        assert solitude.generic.transaction.called
+        solitude.generic.transaction.assert_called_with(5)
 
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('lib.marketplace.api.client.slumber')
@@ -476,7 +460,7 @@ class TestStartPay(test_utils.TestCase):
         self.start()
 
         # Check that the seller_uuid was switched to that of the app seller.
-        solitude.generic.seller.get.assert_called_with(
+        solitude.generic.seller.get_object.assert_called_with(
             uuid=app_seller_uuid)
 
     @raises(ValueError)

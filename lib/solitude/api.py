@@ -3,6 +3,7 @@ import logging
 import uuid
 
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 from ..utils import SlumberWrapper
 from .constants import ACCESS_PURCHASE
@@ -175,26 +176,25 @@ class SolitudeAPI(SlumberWrapper):
         """
         Get the billing configuration ID for a Bango transaction.
         """
-        res = self.slumber.generic.seller.get(uuid=seller_uuid)
-        if res['meta']['total_count'] == 0:
+        try:
+            seller = self.slumber.generic.seller.get_object(uuid=seller_uuid)
+        except ObjectDoesNotExist:
             raise SellerNotConfigured('Seller with uuid %s does not exist'
                                       % seller_uuid)
-        seller = res['objects'][0]
         seller_id = seller['resource_pk']
         log.info('transaction %s: seller: %s' % (transaction_uuid,
                                                  seller_id))
 
-        res = self.slumber.bango.product.get(
-            seller_product__seller=seller_id,
-            seller_product__external_id=product_id
-        )
-        if res['meta']['total_count'] == 0:
+        try:
+            bango_product_uri = self.slumber.bango.product.get_object(
+                    seller_product__seller=seller_id,
+                    seller_product__external_id=product_id)['resource_uri']
+        except ObjectDoesNotExist:
             bango_product_uri = self.create_product(product_id,
                     product_name, seller)
-        else:
-            bango_product_uri = res['objects'][0]['resource_uri']
-            log.info('transaction %s: bango product: %s'
-                     % (transaction_uuid, bango_product_uri))
+
+        log.info('transaction %s: bango product: %s'
+                 % (transaction_uuid, bango_product_uri))
 
         res = self.slumber.bango.billing.post({
             'pageTitle': product_name,
