@@ -214,7 +214,7 @@ def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED,
                                algorithm='HS256')
     success, last_error = send_pay_notice(url, trans['type'], signed_notice,
                                           trans['uuid'], notifier_task,
-                                          task_args)
+                                          task_args, simulated=simulated)
     s = Notice._meta.get_field_by_name('last_error')[0].max_length
     last_error = last_error[:s]  # truncate to fit
     Notice.objects.create(transaction_uuid=trans['uuid'],
