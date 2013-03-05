@@ -257,6 +257,14 @@ class TestVerify(Base):
         eq_(self.get(payload).status_code, 200)
         eq_(self.client.session['is_simulation'], False)
 
+    def test_incomplete_chargeback_simulation(self):
+        payjwt = self.payload()
+        payjwt['request']['simulate'] = {'result': 'chargeback'}
+        payload = self.request(payload=payjwt)
+        res = self.get(payload)
+        self.assertContains(res, 'simulation is missing the key',
+                            status_code=400)
+
     def test_bad_signature_does_not_store_simulation(self):
         payjwt = self.payload()
         payjwt['request']['simulate'] = {'result': 'postback'}

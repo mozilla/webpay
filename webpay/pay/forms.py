@@ -46,10 +46,16 @@ class VerifyForm(forms.Form):
         if self.is_simulation and not settings.ALLOW_SIMULATE:
             raise forms.ValidationError(
                 _('Payment simulations are disabled at this time.'))
-        if (self.is_simulation and sim.get('result') not in
-            settings.ALLOWED_SIMULATIONS):
-            raise forms.ValidationError(
-                _('The requested simulation result is not supported.'))
+
+        if self.is_simulation:
+            # Validate simulations.
+            if sim.get('result') not in settings.ALLOWED_SIMULATIONS:
+                raise forms.ValidationError(
+                    _('The requested simulation result is not supported.'))
+            if sim['result'] == 'chargeback' and not sim.get('reason'):
+                raise forms.ValidationError(
+                    _("The requested chargeback simulation is missing the "
+                      "key '{0}'.").format('reason'))
 
         app_id = payload.get('iss', '')
         if app_id == settings.KEY:
