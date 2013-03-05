@@ -1,5 +1,6 @@
 from django import forms
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 import commonware.log
 import jwt
@@ -58,7 +59,7 @@ class VerifyForm(forms.Form):
             try:
                 # Assuming that the app_id is also going to be the public_id.
                 prod = client.get_active_product(app_id)
-            except ValueError, err:
+            except ObjectDoesNotExist, err:
                 log.info('client.get_active_product(%r) raised %s: %s' %
                          (app_id, err.__class__.__name__, err))
                 raise forms.ValidationError(

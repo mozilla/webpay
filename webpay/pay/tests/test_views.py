@@ -5,6 +5,7 @@ import os
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 
 import mock
 from nose import SkipTest
@@ -135,7 +136,7 @@ class TestVerify(Base):
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     def test_inapp_wrong_key(self, get_active_product):
-        get_active_product.side_effect = ValueError
+        get_active_product.side_effect = ObjectDoesNotExist
         payload = self.request(iss=self.key + '.nope', app_secret=self.secret)
         eq_(self.get(payload).status_code, 400)
 
@@ -348,7 +349,7 @@ class TestForm(Base):
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     def test_non_existant(self, get_active_product):
-        get_active_product.side_effect = ValueError
+        get_active_product.side_effect = ObjectDoesNotExist
         payload = self.request(iss=self.key + '.nope', app_secret=self.secret)
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             form = VerifyForm({'req': payload})
