@@ -272,3 +272,7 @@ ALLOWED_SIMULATIONS = ('postback', 'chargeback')
 # a JWT. You can create/enter PINs but it won't let you get very far beyond
 # that.
 TEST_PIN_UI = False
+
+# If True, only simulated payments can be processed. All other requests will
+# result in an error.
+ONLY_SIMULATIONS = False

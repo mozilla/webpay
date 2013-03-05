@@ -36,6 +36,13 @@ def process_pay_req(request):
         return _error(request, msg=form.errors.as_text(),
                       is_simulation=form.is_simulation)
 
+    if settings.ONLY_SIMULATIONS and not form.is_simulation:
+        # Real payments are currently disabled.
+        # Only simulated payments are allowed.
+        return render(request, 'error.html',
+                      {'error': _('Payments are temporarily disabled.')},
+                      status=503)
+
     try:
         pay_req = verify_jwt(
             form.cleaned_data['req'],
