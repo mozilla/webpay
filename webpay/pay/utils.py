@@ -12,6 +12,8 @@ from requests.exceptions import RequestException
 
 from lib.marketplace.api import client
 
+from .models import NOT_SIMULATED
+
 log = logging.getLogger('w.pay.utils')
 
 
@@ -20,7 +22,7 @@ def format_exception(exception):
 
 
 def send_pay_notice(url, notice_type, signed_notice, trans_id,
-                    notifier_task, task_args):
+                    notifier_task, task_args, simulated=NOT_SIMULATED):
     """
     Send app a notification about a payment or chargeback.
 
@@ -39,6 +41,8 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
         celery task object
     **task_args**
         A list of args to send to the task when retrying after failures.
+    **simulated**
+        Type of payment simulation. The default is none.
 
     A tuple of (url, success, last_error) is returned.
 
@@ -75,7 +79,12 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
 
         # If it's the last retry it will re-throw the original exception.
         except Exception, final_exception:
-            notify_failure(url, trans_id)
+            if simulated == NOT_SIMULATED:
+                notify_failure(url, trans_id)
+            else:
+                # TODO(Kumar): Fix the API for this in bug 847537
+                log.info('Not notifying anyone about simulated failure '
+                         'for %r' % trans_id)
             return False, format_exception(final_exception)
 
     else:

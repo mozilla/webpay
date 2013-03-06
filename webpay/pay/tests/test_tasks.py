@@ -366,6 +366,17 @@ class TestSimulatedNotifications(NotifyTest):
         retry.assert_called_with(args=['issuer-key', payload],
                                  max_retries=ANY, eta=ANY, exc=ANY)
 
+    @mock.patch('webpay.pay.utils.requests.post')
+    @mock.patch('webpay.pay.utils.notify_failure')
+    def test_no_notifications_on_simulate(self, notify_failure, post, slumber):
+        self.set_secret_mock(slumber, 'f')
+        post.side_effect = RequestException('500 error')
+
+        req = {'simulate': {'result': 'postback'}}
+        payload = self.payload(typ=TYP_POSTBACK, extra_req=req)
+        self.notify(payload)
+        assert not notify_failure.called, 'Notification should not be sent'
+
 
 class TestStartPay(test_utils.TestCase):
 
