@@ -179,8 +179,9 @@ class TestVerify(Base):
 
     @mock.patch.object(settings, 'ALLOWED_CALLBACK_SCHEMES', ['https'])
     def test_non_https_url(self):
-        res = self.get(self.request())
-        self.assertContains(res, 'Schema must be', status_code=400)
+        with self.settings(VERBOSE_LOGGING=True):
+            res = self.get(self.request())
+            self.assertContains(res, 'Schema must be', status_code=400)
 
     @mock.patch.object(settings, 'ALLOWED_CALLBACK_SCHEMES', ['https'])
     def test_non_https_url_ok_for_simulation(self):
