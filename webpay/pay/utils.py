@@ -103,11 +103,14 @@ def notify_failure(url, trans_id):
     log.exception('Retries failed to %s: %s:' % (url, trans_id))
 
 
-def verify_urls(*urls):
+def verify_urls(*urls, **kw):
+    is_simulation = kw.pop('is_simulation', False)
     for url in urls:
         parsed = urlparse(url)
         if not parsed.scheme or not parsed.netloc:
             raise ValueError('Invalid URL: %s' % url)
-        if parsed.scheme not in settings.ALLOWED_CALLBACK_SCHEMES:
+        # If this is not a simulation, enforce URL schemes.
+        if (not is_simulation and
+            parsed.scheme not in settings.ALLOWED_CALLBACK_SCHEMES):
             raise ValueError('Schema must be one of: %s not %s' %
                              (settings.ALLOWED_CALLBACK_SCHEMES, url))

@@ -177,6 +177,18 @@ class TestVerify(Base):
             payload = self.request(payload=payjwt)
             eq_(self.get(payload).status_code, 400)
 
+    @mock.patch.object(settings, 'ALLOWED_CALLBACK_SCHEMES', ['https'])
+    def test_non_https_url(self):
+        res = self.get(self.request())
+        self.assertContains(res, 'Schema must be', status_code=400)
+
+    @mock.patch.object(settings, 'ALLOWED_CALLBACK_SCHEMES', ['https'])
+    def test_non_https_url_ok_for_simulation(self):
+        payjwt = self.payload()
+        payjwt['request']['simulate'] = {'result': 'postback'}
+        res = self.get(self.request(payload=payjwt))
+        eq_(res.status_code, 200)
+
     def test_bad_url(self):
         payjwt = self.payload()
         payjwt['request']['postbackURL'] = 'fooey!'
