@@ -3,6 +3,7 @@ from datetime import datetime
 from django import http
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
+from django.views.decorators.debug import sensitive_post_parameters
 
 import commonware.log
 
@@ -18,6 +19,7 @@ log = commonware.log.getLogger('w.pin')
 
 
 @enforce_sequence
+@sensitive_post_parameters('pin')
 def create(request):
     form = forms.CreatePinForm()
     if request.method == 'POST':
@@ -37,6 +39,7 @@ def create(request):
 
 
 @enforce_sequence
+@sensitive_post_parameters('pin')
 def confirm(request):
     form = forms.ConfirmPinForm()
     if request.method == 'POST':
@@ -50,6 +53,7 @@ def confirm(request):
 
 
 @enforce_sequence
+@sensitive_post_parameters('pin')
 def verify(request):
     form = forms.VerifyPinForm()
     if utils.pin_recently_entered(request):
@@ -66,6 +70,7 @@ def verify(request):
 
 
 @enforce_sequence
+@sensitive_post_parameters('pin')
 def reset_start(request):
     client.set_needs_pin_reset(get_user(request))
     request.session['uuid_needs_pin_reset'] = True
@@ -77,6 +82,7 @@ def reset_start(request):
 
 
 @enforce_sequence
+@sensitive_post_parameters('pin')
 def reset_new_pin(request):
     form = forms.CreatePinForm()
     if request.method == 'POST':
@@ -94,6 +100,7 @@ def reset_new_pin(request):
 
 
 @enforce_sequence
+@sensitive_post_parameters('pin')
 def reset_confirm(request):
     form = forms.ConfirmPinForm()
     if request.method == 'POST':

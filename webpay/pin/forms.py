@@ -1,5 +1,6 @@
 from django import forms
 from django.forms.util import ErrorList
+from django.views.decorators.debug import sensitive_variables
 
 from tower import ugettext_lazy as _
 
@@ -46,6 +47,7 @@ class BasePinForm(forms.Form):
 
 class CreatePinForm(BasePinForm):
 
+    @sensitive_variables('pin')
     def clean_pin(self, *args, **kwargs):
         pin = self.cleaned_data['pin']
         buyer = client.get_buyer(self.uuid)
@@ -60,6 +62,7 @@ class CreatePinForm(BasePinForm):
 
 class VerifyPinForm(BasePinForm):
 
+    @sensitive_variables('pin')
     def clean_pin(self, *args, **kwargs):
         pin = self.cleaned_data['pin']
         res = client.verify_pin(self.uuid, pin)
@@ -78,6 +81,7 @@ class VerifyPinForm(BasePinForm):
 
 class ConfirmPinForm(BasePinForm):
 
+    @sensitive_variables('pin')
     def clean_pin(self, *args, **kwargs):
         pin = self.cleaned_data['pin']
         if self.handle_client_errors(client.confirm_pin(self.uuid, pin)):
@@ -88,6 +92,7 @@ class ConfirmPinForm(BasePinForm):
 
 class ResetPinForm(BasePinForm):
 
+    @sensitive_variables('pin')
     def clean_pin(self, *args, **kwargs):
         pin = self.cleaned_data['pin']
         buyer = client.get_buyer(self.uuid)
@@ -98,6 +103,7 @@ class ResetPinForm(BasePinForm):
 
 class ResetConfirmPinForm(BasePinForm):
 
+    @sensitive_variables('pin')
     def clean_pin(self, *args, **kwargs):
         pin = self.cleaned_data['pin']
         if self.handle_client_errors(client.reset_confirm_pin(self.uuid, pin)):
