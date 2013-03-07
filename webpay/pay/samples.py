@@ -1,4 +1,4 @@
-# Copied from moz_inapp_pay. Will remove when tests are included in bundle.
+# Copied from mozpay. Will remove when tests are included in bundle.
 import calendar
 import json
 import time

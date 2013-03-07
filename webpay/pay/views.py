@@ -7,8 +7,8 @@ from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 
 import commonware.log
-from moz_inapp_pay.exc import InvalidJWT, RequestExpired
-from moz_inapp_pay.verify import verify_jwt
+from mozpay.exc import InvalidJWT, RequestExpired
+from mozpay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
