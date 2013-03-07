@@ -72,6 +72,7 @@ NOTIFY_ISSUER = DOMAIN
 VERBOSE_LOGGING = False
 
 KEY = DOMAIN
+# This must match private_mkt.APP_PURCHASE_SECRET in marketplace settings.
 SECRET = private.SECRET
 
 SOLITUDE_URL = 'https://payments.firefox.com'
