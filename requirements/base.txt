@@ -20,7 +20,7 @@ gunicorn==0.14.6
 jingo==0.4
 kombu==2.1.2
 mock==1.0b1
-moz_inapp_pay==1.0.2
+mozpay==2.0.0
 nose==1.2.1
 ordereddict==1.1
 django-picklefield==0.2.1
