@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html LANG="{{ LANG }}" dir="{{ DIR }}">
-  <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-    <title>{{ _('Something went wrong!') }}</title>
-  </head>
-  <body>
-    <h1>{{ _('Something went wrong!') }}</h1>
-    <p>
-      {% trans %}
-        There was an error processing that request.
-      {% endtrans %}
-    </p>
-  </body>
-</html>
+{% extends "base_error.html" %}
+{% block error_title %}{{ _('Something went wrong!') }}{% endblock %}
+{% block error_heading %}{{ _('Something went wrong!') }}{% endblock %}
+{% block error_content -%}
+    <p>{{ _('There was an error processing that request.') }}</p>
+    <p>{{ _('Please try again in a few moments.') }}</p>
+{% endblock %}

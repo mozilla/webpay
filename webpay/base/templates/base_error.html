@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html LANG="{{ LANG }}" dir="{{ DIR }}">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>{% block error_title %}{% endblock %}</title>
+    {% block site_css -%}
+      {{ css('pay') }}
+    {%- endblock %}
+
+  </head>
+  <body class="error-page">
+    <h1>{% block error_heading %}{% endblock %}</h1>
+    {% block error_content %}{% endblock %}
+  </body>
+</html>

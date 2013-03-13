@@ -36,9 +36,14 @@ urlpatterns = patterns('',
 )
 
 if settings.TEMPLATE_DEBUG:
+
+    from django.views.defaults import page_not_found, server_error
+
     # Remove leading and trailing slashes so the regex matches.
     media_url = settings.MEDIA_URL.lstrip('/').rstrip('/')
     urlpatterns += patterns('',
+        (r'^404$', page_not_found),
+        (r'^500$', server_error),
         (r'^%s/(?P<path>.*)$' % media_url, 'django.views.static.serve',
          {'document_root': settings.MEDIA_ROOT}),
     )
