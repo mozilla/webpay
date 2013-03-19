@@ -25,8 +25,9 @@ read this:
 import optparse
 import os
 import socket
+import subprocess
 from subprocess import check_call
-import sys
+import tempfile
 import time
 
 from gaiatest import GaiaDevice, GaiaApps, GaiaData, LockScreen
@@ -76,19 +77,9 @@ def get_installed(apps):
     return res
 
 
-def main():
-    p = optparse.OptionParser(usage='%prog [options]\n' + __doc__)
-    p.add_option('-p', '--adb-port', default=2828, type=int,
-                 help='adb port to forward on the device. Default: %default')
-    p.add_option('-s', '--shell', action='store_true',
-                 help='Drop into an interactive shell')
-    p.add_option('-w', '--wifi-ssid', help='WiFi SSID to connect to')
-    p.add_option('-k', '--wifi-key', help='WiFi key management. '
-                                          'Options: WPA-PSK, WEP')
-    p.add_option('-P', '--wifi-pass', help='WiFi password')
-    (opt, args) = p.parse_args()
+def set_up_device(opt):
     if not opt.wifi_ssid or not opt.wifi_key or not opt.wifi_pass:
-        p.error('Missing --wifi options')
+        raise ValueError('Missing --wifi options')
 
     mc = Marionette('localhost', opt.adb_port)
     for i in range(2):
@@ -143,6 +134,58 @@ def main():
     sh('adb shell start b2g')
 
     print 'When your device reboots, Marketplace Dev will be installed'
+
+
+def http_log_restart(opt):
+    sh('adb shell stop b2g')
+    print "restarting with HTTP logging enabled"
+    print "press control+C to quit"
+    sh('adb shell rm /data/local/tmp/http.log')
+    p = subprocess.Popen("""adb shell <<SHELL
+#export NSPR_LOG_MODULES=timestamp,nsHttp:5,nsSocketTransport:5,nsHostResolver:5
+export NSPR_LOG_MODULES=nsHttp:3
+export NSPR_LOG_FILE=/data/local/tmp/http.log
+/system/bin/b2g.sh
+
+SHELL
+        """, shell=True)
+    try:
+        print 'Get output with adb logcat'
+        p.wait()
+    except KeyboardInterrupt:
+        p.kill()
+        p.wait()
+
+    tmp = tempfile.gettempdir()
+    os.chdir(tmp)
+    sh('adb pull /data/local/tmp/http.log')
+    print '*' * 80
+    print 'Log file: %s/http.log' % tmp
+    print '*' * 80
+    sh('adb reboot')
+
+
+def main():
+    p = optparse.OptionParser(usage='%prog [options]\n' + __doc__)
+    p.add_option('-p', '--adb-port', default=2828, type=int,
+                 help='adb port to forward on the device. Default: %default')
+    p.add_option('-s', '--shell', action='store_true',
+                 help='Drop into an interactive shell')
+    p.add_option('-w', '--wifi-ssid', help='WiFi SSID to connect to')
+    p.add_option('-k', '--wifi-key', help='WiFi key management. '
+                                          'Options: WPA-PSK, WEP')
+    p.add_option('-P', '--wifi-pass', help='WiFi password')
+
+    # TODO: this is probably a good reason to switch to argparse.
+    p.add_option('--http-log', action='store_true',
+                 help='Restart the device with HTTP logging enabled. ')
+
+    (opt, args) = p.parse_args()
+
+    if opt.http_log:
+        http_log_restart(opt)
+    else:
+        set_up_device(opt)
 
 
 if __name__ == '__main__':
