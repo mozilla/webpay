@@ -1,0 +1,12 @@
+# Example config for use with ezboot:
+# https://github.com/kumar303/ezboot
+[setup]
+apps = https://marketplace-dev.allizom.org/manifest.webapp
+       https://marketplace.allizom.org/manifest.webapp
+wifi_ssid = your_wifi
+wifi_key = WPA-PSK
+wifi_pass = the_password
+
+[flash]
+flash_user = ...
+flash_pass = ...
