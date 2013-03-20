@@ -7,3 +7,6 @@ It hosts the payment flow inside `navigator.mozPay()`_ when
 making app purchases or in-app payments on Firefox OS.
 
 Documentation: https://webpay.readthedocs.org/
+
+.. _WebPaymentProvider: https://wiki.mozilla.org/WebAPI/WebPaymentProvider
+.. _`navigator.mozPay()`: https://wiki.mozilla.org/WebAPI/WebPayment
