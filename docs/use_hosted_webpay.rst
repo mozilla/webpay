@@ -8,6 +8,50 @@ against the production server. If you want to pay with a hosted *dev* or *stage*
 server then you'll need to put some custom settings on your B2G device.
 See the :ref:`developer docs <developers>` if you want to host your own WebPay.
 
+Set Up A Device With ezboot
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+All you need to do to start testing web payments on a device is flash a recent
+build, push some custom settings, and install the Marketplace dev/stage apps.
+
+With `ezboot`_ you can do all of this with some simple commands.
+First, install `ezboot`_ so that the command is available on your path.
+
+Now, grab the :ref:`webpay <developers>` source to get the settings you need::
+
+    git clone git://github.com/mozilla/webpay.git
+
+Change into the source dir and set up ezboot::
+
+    cd webpay
+    cp ezboot.ini-dist ezboot.ini
+
+Edit the ``ezboot.ini`` so it has your WiFi details and LDAP
+username/password if you don't want to enter them each time.
+
+Plug in your device. If this is your *first* time flashing
+an engineering build (with `Marionette`_), make sure
+Remote Debugging is enabled in
+Settings > Device Information > More Information > Developer.
+
+Make sure you're still in the webpay directory and
+flash the latest build::
+
+    ezboot flash
+
+Set up WiFi and install apps::
+
+    ezboot setup
+
+Launch either Marketplace Dev or Marketplace Stage, search for a
+paid app such as Private Yacht, and click purchase.
+
+That's it! You can stop reading this document because everything
+else is intended for using custom builds and/or custom settings.
+
+.. _`ezboot`: https://github.com/kumar303/ezboot
+.. _`Marionette`: https://developer.mozilla.org/en-US/docs/Marionette
+
 Build A Custom B2G Profile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -69,6 +113,9 @@ file with those extra prefs. Type this in the ``gaia`` directory::
     make clean profile
 
 You now have a custom B2G profile in your ``gaia/profile`` directory.
+
+These settings are available in the webpay repository:
+https://github.com/mozilla/webpay/blob/master/ezboot/custom-prefs.js
 
 Setting Up Desktop B2G
 ~~~~~~~~~~~~~~~~~~~~~~
