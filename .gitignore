@@ -20,3 +20,4 @@ build
 tmp/*
 *~
 locale/xx
+ezboot.ini
