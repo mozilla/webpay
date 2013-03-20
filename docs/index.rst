@@ -2,20 +2,28 @@
 Web Pay
 =======
 
-Web Pay is an implementation of the Web Payment Provider server. It's not
-completely standalone, but it has minimal interaction with zamboni and can be
-run and deployed independently.
+Webpay is an implementation of the `WebPaymentProvider`_ spec.
+It hosts the payment flow inside `navigator.mozPay()`_ when
+making app purchases or in-app payments on Firefox OS.
 
-It's currently a work in progress and requires:
+This guide can help you do a few things:
 
-* Access to the zamboni db. For extra points this can be a read only slave.
+* :ref:`Set up a B2G device <use-hosted>` to test payments against a hosted
+  version of the WebPay server.
+* :ref:`Install and configure <developers>` your own WebPay server for development.
+* Understand the APIs WebPay consumes and generally how things work.
+
+.. _WebPaymentProvider: https://wiki.mozilla.org/WebAPI/WebPaymentProvider
+.. _`navigator.mozPay()`: https://wiki.mozilla.org/WebAPI/WebPayment
 
 Contents
 --------
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
+   use_hosted_webpay
+   developers
    solitude_api
    localization_testing
 
