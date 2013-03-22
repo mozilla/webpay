@@ -19,6 +19,8 @@ define('pay/bango', ['cli'], function(cli) {
         logout: function() {
             var bangoReq;
 
+            // Temporary logging for bug 850899
+            console.log('do bango.logout()');
             // Log out of Bango so that cookies are cleared.
             console.log('Logging out of Bango');
             bangoReq = $.ajax({url: cli.bodyData.bangoLogoutUrl, dataType: 'script'})

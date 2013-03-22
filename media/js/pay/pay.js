@@ -93,6 +93,8 @@ require(['cli', 'pay/bango'], function(cli, bango) {
         var anchor = $(this);
         var bangoReq;
         evt.preventDefault();
+        // Temporary logging for bug 850899
+        console.log('Calling bango.logout() from', anchor.attr('id'), anchor.attr('class'));
         // TODO: Update the UI to indicate that logouts are in progress.
         bango.logout().done(function() {
             // Next, log out of Persona so that the user has to
