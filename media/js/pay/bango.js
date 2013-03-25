@@ -7,6 +7,8 @@ define('pay/bango', ['cli'], function(cli) {
                 throw new Error('userHash was empty');
             }
             var existingUser = window.localStorage.getItem('userHash');
+            // Temporary logging for bug 850899
+            console.log('bango.prepareUser()', userHash, existingUser);
             if (existingUser && existingUser !== userHash) {
                 // Make sure the old user is logged out of Bango.
                 return bango.logout();
