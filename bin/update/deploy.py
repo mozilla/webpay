@@ -34,9 +34,8 @@ def update_locales(ctx):
     change it if you need to.
 
     """
-    with ctx.lcd(os.path.join(settings.SRC_DIR, 'locale')):
-        ctx.local('svn up')
-        ctx.local('./compile-mo.sh .')
+    with ctx.lcd(settings.SRC_DIR):
+        ctx.local('bin/compile-mo.sh locale')
 
 
 @task
