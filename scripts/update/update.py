@@ -43,6 +43,12 @@ def update_code(ctx, ref='origin/master'):
 
 
 @task
+def update_locales(ctx):
+    with ctx.lcd(settings.SRC_DIR):
+        ctx.local('bin/compile-mo.sh locale')
+
+
+@task
 def compress_assets(ctx, arg=''):
     with ctx.lcd(settings.SRC_DIR):
         ctx.local("%s manage.py compress_assets %s" % (settings.PYTHON, arg))
@@ -91,6 +97,7 @@ def deploy(ctx):
 def pre_update(ctx, ref=settings.UPDATE_REF):
     ctx.local('date')
     update_code(ref)
+    update_locales()
     update_info(ref)
 
 
