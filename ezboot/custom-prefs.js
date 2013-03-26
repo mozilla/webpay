@@ -19,3 +19,9 @@ pref("dom.payment.provider.3.description", "localhost");
 pref("dom.payment.provider.3.uri", "http://localhost:8000/mozpay/?req=");
 pref("dom.payment.provider.3.type", "mozilla-local/payments/pay/v1");
 pref("dom.payment.provider.3.requestMethod", "GET");
+
+pref("dom.payment.provider.4.name", "mock");
+pref("dom.payment.provider.4.description", "mock");
+pref("dom.payment.provider.4.uri", "http://people.mozilla.com/~kmcmillan/pay-provider.html?req=");
+pref("dom.payment.provider.4.type", "mock/payments/inapp/v1");
+pref("dom.payment.provider.4.requestMethod", "GET");
