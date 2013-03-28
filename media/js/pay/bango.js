@@ -7,13 +7,19 @@ define('pay/bango', ['cli'], function(cli) {
                 throw new Error('userHash was empty');
             }
             var existingUser = window.localStorage.getItem('userHash');
+
+            function _cacheUser() {
+                window.localStorage.setItem('userHash', userHash);
+            }
+
             // Temporary logging for bug 850899
             console.log('bango.prepareUser()', userHash, existingUser);
             if (existingUser && existingUser !== userHash) {
+                _cacheUser();
                 // Make sure the old user is logged out of Bango.
                 return bango.logout();
             } else {
-                window.localStorage.setItem('userHash', userHash);
+                _cacheUser();
                 // Nothing to do so return a resolved deferred.
                 return $.Deferred().resolve();
             }
