@@ -67,8 +67,6 @@ SECRET_KEY = private.SECRET_KEY
 # Should robots.txt allow web crawlers?  Set this to True for production
 ENGAGE_ROBOTS = False
 
-# Uncomment these to activate and customize Celery:
-# CELERY_ALWAYS_EAGER = False  # required to activate celeryd
 ## Celery
 BROKER_URL = private.BROKER_URL
 CELERY_IGNORE_RESULT = True
