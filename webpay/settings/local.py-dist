@@ -75,6 +75,8 @@ SECRET_KEY = ''
 # Should robots.txt allow web crawlers?  Set this to True for production
 ENGAGE_ROBOTS = True
 
+# Run Celery synchronously for local development.
+CELERY_ALWAYS_EAGER = True
 # Uncomment these to activate and customize Celery:
 # CELERY_ALWAYS_EAGER = False  # required to activate celeryd
 # BROKER_HOST = 'localhost'

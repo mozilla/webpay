@@ -189,6 +189,10 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # subdomain.
 SESSION_COOKIE_NAME = 'webpay_sessionid'
 
+# By default, celery is active.
+# If you need to disable it, make this True in your local settings.
+CELERY_ALWAYS_EAGER = False  # required to activate celeryd
+
 # This is the key and secret for purchases, our special marketplace key and
 # secret for selling apps.
 KEY = 'marketplace'  # would typically be a URL
