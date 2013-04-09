@@ -27,3 +27,6 @@ BROWSERID_DOMAIN = 'nowhereatall.org'
 BROWSERID_UNVERIFIED_ISSUER = BROWSERID_DOMAIN
 BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
 ONLY_SIMULATIONS = False
+
+# Blockage will prevent us calling this, but we should point it to somewhere.
+MARKETPLACE_URL = 'http://example.com'
