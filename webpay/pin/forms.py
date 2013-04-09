@@ -76,7 +76,7 @@ class VerifyPinForm(BasePinForm):
             elif res.get('valid'):
                 return pin
 
-        raise forms.ValidationError(_('Incorrect PIN.'))
+        raise forms.ValidationError(_('Wrong pin'))
 
 
 class ConfirmPinForm(BasePinForm):

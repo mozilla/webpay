@@ -7,13 +7,16 @@
 
 {% block extra_content %}
   <div id="begin" class="message">
-    {{ _('Beginning payment&hellip;') }}
+    <div class="throbber"></div>
+    <span class="txt">{{ _('Beginning payment&hellip;') }}</span>
   </div>
   <div id="login" class="message hidden">
-    <p>{{ _('Sign in to continue with the payment:') }}</p>
-    <a id="signin" class="button" href="#">{{ _('Sign in') }}</a>
+    <h2>{{ _('Sign In') }}</h2>
+    <p>{{ _('Sign in to continue with the payment') }}</p>
+    <a id="signin" class="sign-in" href="#">{{ _('Sign in') }}</a>
   </div>
   <div id="login-wait" class="message hidden">
-    {{ _('logging you in to continue payment&hellip;') }}
+    <div class="throbber"></div>
+    <span class="txt">{{ _('Connecting to Persona') }}</span>
   </div>
 {% endblock %}

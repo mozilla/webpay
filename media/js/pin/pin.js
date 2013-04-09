@@ -8,7 +8,7 @@ require(['cli'], function(cli) {
         stopWatching();
 
         currentInput = $(i);
-        var len= currentInput.val().length;
+        var len = currentInput.val().length;
 
         updateDisplay(0);
 
@@ -43,29 +43,49 @@ require(['cli'], function(cli) {
 
     function stopWatching() {
         clearInterval(interval);
+        if (currentInput) {
+            currentInput.parent().find('.display span.current').removeClass('current');
+        }
         currentInput = null;
     }
 
     function updateDisplay(newLen) {
-        var bins = currentInput.parent().find('.display span');
-        for (var i=0; i<bins.length; i++) {
+        var $parent = currentInput.parent();
+        var bins = $parent.find('.display span');
+        var binLength = bins.length;
+        for (var i=0; i<binLength; i++) {
             bins.eq(i).toggleClass('filled', i < newLen)
                       .toggleClass('current', i === newLen);
         }
+        if (newLen === binLength) {
+            $('button[type="submit"]').prop('disabled', false);
+        } else if (newLen === (binLength -1)) {
+            $('button[type="submit"]').prop('disabled', true);
+        }
+
+        $('.button').toggleClass('redraw');
     }
 
     $(window).on('focus', '.pinbox input', function(e) {
         this.value = '';
+        $('.pinbox').removeClass('error');
+        $('button[type="submit"]').prop('disabled', true);
         watchInput(this);
     }).on('blur', '.pinbox input', function(e) {
         stopWatching();
+    }).on('click', '.pinbox', function(e) {
+        $('.pinbox input').focus();
     });
 
     $('.pinbox').each(function() {
         var $el = $(this);
-
         var box = $('<div class="display">');
-        box.html(Array(PINLENGTH+1).join('<span></span>'));
+        var hasError = $el.hasClass('error');
+        var pinClass = hasError ? ' class=filled' : '';
+        box.html(Array(PINLENGTH+1).join('<span'+pinClass+'></span>'));
         $el.prepend(box);
+        if (!hasError) {
+            $el.find('input').focus();
+        }
     });
 });

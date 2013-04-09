@@ -54,7 +54,7 @@ class VerifyPinFormTest(BasePinFormTestCase):
     def test_incorrect_pin(self):
         form = forms.VerifyPinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
-        assert 'Incorrect PIN.' in str(form.errors['pin'])
+        assert 'Wrong pin' in str(form.errors['pin'])
         assert not form.pin_is_locked
 
     def test_too_long_pin(self):

@@ -132,7 +132,7 @@ def lobby(request):
     return render(request, 'pay/lobby.html', {
         'action': reverse('pin.verify'),
         'form': pin_form,
-        'title': _('Enter your PIN:')
+        'title': _('Enter Pin')
     })
 
 
