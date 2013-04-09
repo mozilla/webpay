@@ -21,4 +21,9 @@ class MarketplaceAPI(SlumberWrapper):
                 raise TierNotFound(tier)
             raise
 
-client = MarketplaceAPI(settings.MARKETPLACE_URL or 'http://example.com')
+if not settings.MARKETPLACE_URL:
+    raise ValueError('MARKETPLACE_URL is required')
+
+client = MarketplaceAPI(settings.MARKETPLACE_URL)
+client.slumber.activate_oauth(settings.MARKETPLACE_OAUTH.get('key'),
+                              settings.MARKETPLACE_OAUTH.get('secret'))
