@@ -42,6 +42,8 @@ DEV = False
 
 SITE_URL = 'https://' + DOMAIN
 MARKETPLACE_URL = SITE_URL
+MARKETPLACE_OAUTH = {'key': private.MARKETPLACE_OAUTH_KEY,
+                     'secret': private.MARKETPLACE_OAUTH_SECRET}
 
 HMAC_KEYS = private.HMAC_KEYS
 
