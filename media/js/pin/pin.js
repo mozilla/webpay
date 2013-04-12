@@ -62,8 +62,6 @@ require(['cli'], function(cli) {
         } else if (newLen === (binLength -1)) {
             $('button[type="submit"]').prop('disabled', true);
         }
-
-        $('.button').toggleClass('redraw');
     }
 
     $(window).on('focus', '.pinbox input', function(e) {
