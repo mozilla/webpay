@@ -211,7 +211,9 @@ class ResetStartViewTest(PinViewTestCase):
         self.request.session['uuid_needs_pin_reset'] = False
         self.request.session.save()
         res = self.client.get(self.url)
+        form = res.context['form']
         eq_(res.status_code, 200)
+        eq_(form.reset_flow, True)
         assert set_needs_pin_reset.called
 
 

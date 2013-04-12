@@ -34,7 +34,7 @@ def create(request):
                 return http.HttpResponseRedirect(reverse('pin.confirm'))
     form.no_pin = True
     return render(request, 'pin/pin_form.html', {'form': form,
-                  'title': _('Create your PIN:'),
+                  'title': _('Create a Pin'),
                   'action': reverse('pin.create')})
 
 
@@ -48,7 +48,7 @@ def confirm(request):
             return http.HttpResponseRedirect(get_payment_url())
     form.no_pin = True
     return render(request, 'pin/pin_form.html', {'form': form,
-                  'title': _('Confirm your PIN:'),
+                  'title': _('Confirm Pin'),
                   'action': reverse('pin.confirm')})
 
 
@@ -65,7 +65,7 @@ def verify(request):
             request.session['last_pin_success'] = datetime.now()
             return http.HttpResponseRedirect(get_payment_url())
     return render(request, 'pin/pin_form.html', {'form': form,
-                  'title': _('Enter your PIN:'),
+                  'title': _('Enter Pin'),
                   'action': reverse('pin.verify')})
 
 
@@ -75,8 +75,9 @@ def reset_start(request):
     client.set_needs_pin_reset(get_user(request))
     request.session['uuid_needs_pin_reset'] = True
     form = forms.CreatePinForm()
+    form.reset_flow = True
     return render(request, 'pin/reset_start.html',
-                  {'title': _('Enter your new PIN:'),
+                  {'title': _('Reset Pin'),
                    'action': reverse('pin.reset_new_pin'),
                    'form': form})
 
@@ -95,7 +96,7 @@ def reset_new_pin(request):
 
     form.reset_flow = True
     return render(request, 'pin/pin_form.html', {'form': form,
-                  'title': _('Enter your new PIN:'),
+                  'title': _('Reset Pin'),
                   'action': reverse('pin.reset_new_pin')})
 
 
@@ -113,7 +114,7 @@ def reset_confirm(request):
             return http.HttpResponseRedirect(get_payment_url())
     form.reset_flow = True
     return render(request, 'pin/pin_form.html', {'form': form,
-                  'title': _('Confirm your new PIN:'),
+                  'title': _('Confirm Pin'),
                   'action': reverse('pin.reset_confirm')})
 
 

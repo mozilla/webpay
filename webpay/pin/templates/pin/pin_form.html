@@ -11,44 +11,57 @@
   {% block extra_content %}{% endblock %}
 
   <div {% if hide_pin %}class="hidden"{% endif %} id="enter-pin">
-    {% if form.pin.errors %}
-      <h2 class="error">{{ form.pin.errors[0] }}</h2>
+
+    {% if not form.pin_is_locked %}
+    <h2>{{ title }}</h2>
     {% else %}
-      <h2>{{ title }}</h2>
+    <h2>{{ _('Your Pin was locked') }}</h2>
     {% endif %}
-    <p>
-      <form id="pin" action="{{ action }}" method="post">
-        {{ csrf() }}
-        {% if not form.pin_is_locked %}
-        <div class="pinbox">
+
+    <form id="pin" class="pin-form" action="{{ action }}" method="post">
+      {{ csrf() }}
+      {% if not form.pin_is_locked %}
+        <div class="pinbox{% if form.pin.errors %} error{% endif %}">
           {{ form.pin }}
+          {% if form.pin.errors %}
+          <p class="error">{{ form.pin.errors[0] }}</p>
+          {% endif %}
+          {% if not form.no_pin and not form.reset_flow %}
+          {# L10n: This is the same as the standard forgot
+                   password that most sites have. #}
+          <a id="forgot-pin" class="forgot-pin" href="{{ url('pin.reset_start') }}">
+              {{ _('Forgot your pin?') }}
+          </a>
+          {% endif %}
         </div>
+      {% else %}
+        {# Show pin locked error message #}
+        <p>{{ form.pin.errors[0] }}</p>
+      {% endif %}
+
+      <footer>
+        {% if form.reset_flow  %}
+          <a class="button sec" href="{{ url('pin.reset_cancel') }}">
+            {{ _('Cancel') }}
+          </a>
+        {% elif form.pin_is_locked %}
+          <a id="forgot-pin" class="button sec" href="{{ url('pin.reset_start') }}">
+            {{ _('Reset Pin') }}
+          </a>
+        {% else %}
+          <a class="button cancel-button sec" href="#">
+            {{ _('Cancel') }}
+          </a>
         {% endif %}
-        <footer>
-            {% if form.no_pin %}
-              <a class="button cancel-button" href="#">
-                {{ _('Cancel') }}
-              </a>
-            {% elif form.reset_flow %}
-              <a class="button" href="{{ url('pin.reset_cancel') }}">
-                {{ _('Cancel') }}
-              </a>
-            {% else %}
-              {# L10n: This is the same as the standard forgot
-                 password that most sites have. #}
-              <a id="forgot-pin" class="button" href="{{ url('pin.reset_start') }}">
-                {{ _('Forgot PIN?') }}
-              </a>
-            {% endif %}
-            {% if form.pin_is_locked %}
-              <a class="button force-auth-button" href="#">
-                {{ _('Sign in') }}
-              </a>
-            {% else %}
-              <button type="submit">{{ _('Continue') }}</button>
-            {% endif %}
-        </footer>
-      </form>
-    </p>
+
+        {% if form.pin_is_locked %}
+          <a class="button force-auth-button lock-continue" href="#">
+            {{ _('Sign in') }}
+          </a> 
+        {% else %}
+          <button disabled type="submit">{{ _('Continue') }}</button>
+        {% endif %}
+      </footer>
+    </form>
   </div>
 {% endblock %}
