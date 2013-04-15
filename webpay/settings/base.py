@@ -32,7 +32,7 @@ MEDIA_URL = '/mozpay/media/'
 # A list of our CSS and JS assets for jingo-minify.
 MINIFY_BUNDLES = {
     'css': {
-        'pay': (
+        'pay/pay': (
             'css/pay/pay.less',
         ),
     },
@@ -62,6 +62,9 @@ CSS_MEDIA_DEFAULT = 'all'
 
 # Tell jingo-minify to use the media URL instead.
 JINGO_MINIFY_USE_STATIC = False
+
+# Cache-bust images in the CSS.
+CACHEBUST_IMGS = True
 
 # LESS CSS OPTIONS (Debug only)
 LESS_PREPROCESS = False  # Compile LESS with Node, rather than client-side JS?
