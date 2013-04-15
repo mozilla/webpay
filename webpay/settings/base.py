@@ -223,6 +223,9 @@ VERBOSE_LOGGING = False
 # server for it.
 SOLITUDE_URL = None
 
+# The OAuth tokens for solitude.
+SOLITUDE_OAUTH = {'key': '', 'secret': ''}
+
 # Instead of doing a real Bango pay flow, redirect to a fake placeholder
 # for the Bango flow when True.
 FAKE_PAYMENTS = False

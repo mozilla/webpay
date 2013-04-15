@@ -279,7 +279,9 @@ class SolitudeAPI(SlumberWrapper):
         return transaction
 
 
-if getattr(settings, 'SOLITUDE_URL', False):
-    client = SolitudeAPI(settings.SOLITUDE_URL)
-else:
-    client = SolitudeAPI('http://example.com')
+if not settings.SOLITUDE_URL:
+    raise ValueError('SOLITUDE_URL is required')
+
+client = SolitudeAPI(settings.SOLITUDE_URL)
+client.slumber.activate_oauth(settings.SOLITUDE_OAUTH.get('key'),
+                              settings.SOLITUDE_OAUTH.get('secret'))

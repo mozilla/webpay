@@ -99,5 +99,7 @@ KEY = DOMAIN
 SECRET = private.SECRET
 
 SOLITUDE_URL = 'https://payments-dev.allizom.org'
+SOLITUDE_OAUTH = {'key': private.SOLITUDE_AUTH_KEY,
+                  'secret': private.SOLITUDE_OAUTH_SECRET}
 
 SENTRY_DSN = private.SENTRY_DSN
