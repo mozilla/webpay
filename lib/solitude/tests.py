@@ -22,7 +22,8 @@ class SolitudeAPITest(TestCase):
     @classmethod
     def setUpClass(cls):
         # TODO(Wraithan): Add a mocked backend so we have idempotent tests.
-        if getattr(settings, 'SOLITUDE_URL', None) is None:
+        if (getattr(settings, 'SOLITUDE_URL', None)
+            in [None, 'http://example.com']):
             raise SkipTest
         client.create_buyer('dat:uuid', '1234')
 
