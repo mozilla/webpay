@@ -83,7 +83,10 @@ require(['cli'], function(cli) {
         $pinInput.focus();
     });
 
-    $('#pin').on('submit', validate);
+    $('#pin').on('submit', function() {
+        var isValid = validate();
+        return isValid ? cli.showProgress() : false;
+    });
 
     $pinBox.each(function() {
         var $el = $(this);
