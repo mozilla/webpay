@@ -29,4 +29,4 @@ BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
 ONLY_SIMULATIONS = False
 
 # Blockage will prevent us calling this, but we should point it to somewhere.
-MARKETPLACE_URL = 'http://example.com'
+MARKETPLACE_URL = SOLITUDE_URL = 'http://example.com'
