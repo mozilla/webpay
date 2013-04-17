@@ -263,6 +263,9 @@ MARKETPLACE_URL = None
 # The OAuth config from the marketplace.
 MARKETPLACE_OAUTH = {'key': '', 'secret': ''}
 
+# Height/width size of product icon images.
+PRODUCT_ICON_SIZE = 64
+
 # This is the time that a user has to buy more stuff before having to enter
 # their PIN in again in seconds.
 PIN_UNLOCK_LENGTH = 300

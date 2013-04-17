@@ -4,6 +4,7 @@ import urllib2
 
 from django import test
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 import fudge
 from fudge.inspector import arg
@@ -388,6 +389,7 @@ class TestStartPay(test_utils.TestCase):
                             'iss': 'some-seller-key',
                             'request': {'pricePoint': 1,
                                         'id': 'generated-product-uuid',
+                                        'icons': {'64': 'http://app/i.png'},
                                         'name': 'Virtual Sword'}}}
         self.prices = {'prices': [{'amount': 1, 'currency': 'EUR'}]}
 
@@ -440,6 +442,15 @@ class TestStartPay(test_utils.TestCase):
             self.prices['prices'])
 
     @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('webpay.pay.tasks.get_icon_url')
+    @mock.patch('lib.marketplace.api.client.slumber')
+    def test_icon_url_sent(self, mkt, get_icon_url, solitude):
+        url = 'http://mkt-cdn/media/icon.png'
+        get_icon_url.return_value = url
+        self.start()
+        eq_(solitude.bango.billing.post.call_args[0][0]['icon_url'], url)
+
+    @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('lib.marketplace.api.client.slumber')
     def test_price_fails(self, marketplace, solitude):
         marketplace.api.webpay.prices.side_effect = TierNotFound
@@ -484,3 +495,64 @@ class TestStartPay(test_utils.TestCase):
         self.notes['issuer_key'] = settings.KEY
         self.notes['pay_request']['request']['productData'] = 'foo-bar'
         self.start()
+
+
+class TestGetIconURL(test_utils.TestCase):
+
+    def setUp(self):
+        p = mock.patch('lib.marketplace.api.client.slumber')
+        self.marketplace = p.start()
+        self.addCleanup(p.stop)
+        self.request = {'icons': {'64': 'http://app/icon.png'}}
+        self.size = 64
+        p = mock.patch.object(settings, 'PRODUCT_ICON_SIZE', self.size)
+        p.start()
+        self.addCleanup(p.stop)
+
+    def get_icon_url(self):
+        return tasks.get_icon_url(self.request)
+
+    def test_get_url_from_api(self):
+        url = 'http://mkt-cdn/media/icon.png'
+        icon = {'url': url}
+        self.marketplace.api.webpay.product.icon.get_object.return_value = icon
+        eq_(self.get_icon_url(), url)
+
+    def test_no_cached_icon(self):
+        icon = self.marketplace.api.webpay.product.icon
+        icon.get_object.side_effect = ObjectDoesNotExist()
+        eq_(self.get_icon_url(), None)
+        post = self.marketplace.api.webpay.product.icon.post
+        post.assert_called_with(dict(ext_url=self.request['icons']['64'],
+                                     size=64, ext_size=64))
+
+    def test_no_app_icons(self):
+        del self.request['icons']
+        eq_(self.get_icon_url(), None)
+
+    def test_empty_app_icons(self):
+        self.request['icons'] = {}
+        eq_(self.get_icon_url(), None)
+
+    def test_use_largest(self):
+        self.request = {'icons': {'128': 'http://app/128.png',
+                                  '512': 'http://app/512.png'}}
+        self.get_icon_url()
+        get = self.marketplace.api.webpay.product.icon.get_object
+        get.assert_called_with(ext_url=self.request['icons']['512'],
+                               size=self.size, ext_size='512')
+
+    def test_use_exact(self):
+        self.request = {'icons': {'64': 'http://app/64.png',
+                                  '512': 'http://app/512.png'}}
+        self.get_icon_url()
+        get = self.marketplace.api.webpay.product.icon.get_object
+        get.assert_called_with(ext_url=self.request['icons']['64'],
+                               size=64, ext_size=64)
+
+    def test_icon_too_small_to_resize(self):
+        self.request = {'icons': {'48': 'http://app/48.png'}}
+        self.get_icon_url()
+        get = self.marketplace.api.webpay.product.icon.get_object
+        get.assert_called_with(ext_url=self.request['icons']['48'],
+                               size='48', ext_size='48')

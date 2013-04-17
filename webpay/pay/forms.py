@@ -80,4 +80,13 @@ class VerifyForm(forms.Form):
                       'purchases.').format(repr(app_id)))
             self.key, self.secret = app_id, prod['secret']
 
+        icons = payload['request'].get('icons', None)
+        if icons and type(icons) != dict:
+            example = '{"64": "https://.../icon_64.png"}'
+            raise forms.ValidationError(
+                    # L10n: First argument is the name of a key. Second
+                    # argument is an example of the proper key format.
+                    _('The "{0}" key must be an object of '
+                      'URLs such as {1}').format('icons', example))
+
         return data
