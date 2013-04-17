@@ -311,6 +311,21 @@ class TestVerify(Base):
         eq_(res.status_code, 200)
         self.assertTemplateUsed(res, 'pay/lobby.html')
 
+    def test_wrong_icons_type(self):
+        payjwt = self.payload()
+        payjwt['request']['icons'] = '...'  # must be a dict
+        payload = self.request(payload=payjwt)
+        with self.settings(VERBOSE_LOGGING=True):
+            res = self.get(payload)
+        self.assertContains(res, 'must be an object of URLs',
+                            status_code=400)
+
+    def test_bad_icon_url(self):
+        payjwt = self.payload()
+        payjwt['request']['icons'] = {'64': 'not-a-url'}
+        payload = self.request(payload=payjwt)
+        eq_(self.get(payload).status_code, 400)
+
 
 @mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')
 @mock.patch.object(settings, 'SECRET', 'marketplace.secret')

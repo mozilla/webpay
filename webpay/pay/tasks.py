@@ -7,6 +7,7 @@ import urlparse
 import uuid
 
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db import transaction
 
@@ -100,7 +101,8 @@ def start_pay(transaction_uuid, notes, **kw):
             pay['request']['name'],  # app/product name
             absolutify(reverse('bango.success')),
             absolutify(reverse('bango.error')),
-            prices['prices']
+            prices['prices'],
+            get_icon_url(pay['request']),
         )
         trans_pk = client.slumber.generic.transaction.get_object(
             uuid=transaction_uuid)['resource_pk']
@@ -183,6 +185,43 @@ def simulate_notify(issuer_key, pay_request, trans_uuid=None, **kw):
     log.info('Sending simulate notice %s to %s' % (sim, issuer_key))
     _notify(simulate_notify, trans, extra_response=extra_response,
             simulated=sim_flag, task_args=[issuer_key, pay_request])
+
+
+def get_icon_url(request):
+    """
+    Given a payment request dict, this finds the best icon URL to cache.
+
+    A cached URL will be returned on succes or None if it doesn't exist yet.
+    """
+    icons = request.get('icons')
+    if not icons:
+        return None
+    sizes = icons.keys()
+    size = settings.PRODUCT_ICON_SIZE
+    if str(size) in sizes:
+        # We have an exact match.
+        ext_size = size
+    else:
+        # Get the biggest icon available.
+        ext_size = max(sizes)
+        if int(ext_size) < size:
+            # We won't resize it so let's keep track of the size.
+            size = ext_size
+
+    url = icons[str(ext_size)]
+    data = {
+        'ext_url': url,
+        'ext_size': ext_size,
+        'size': size
+    }
+    try:
+        res = mkt_client.slumber.api.webpay.product.icon.get_object(**data)
+        return res['url']
+    except ObjectDoesNotExist:
+        # Queue the image to be fetched, resized and cached.
+        mkt_client.slumber.api.webpay.product.icon.post(data)
+        # The URL will be fetched on next purchase.
+        return None
 
 
 def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED,
