@@ -93,6 +93,8 @@ def start_pay(transaction_uuid, notes, **kw):
                                       pay['request'].get('productData', ''))
         # Ask the marketplace for a valid price point.
         prices = mkt_client.get_price(pay['request']['pricePoint'])
+        icon_url = get_icon_url(pay['request'])
+        log.info('icon URL for %s: %s' % (transaction_uuid, icon_url))
         # Set up the product for sale.
         bill_id, seller_product = client.configure_product_for_billing(
             transaction_uuid,
@@ -102,7 +104,7 @@ def start_pay(transaction_uuid, notes, **kw):
             absolutify(reverse('bango.success')),
             absolutify(reverse('bango.error')),
             prices['prices'],
-            get_icon_url(pay['request']),
+            icon_url,
         )
         trans_pk = client.slumber.generic.transaction.get_object(
             uuid=transaction_uuid)['resource_pk']
