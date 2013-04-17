@@ -26,8 +26,11 @@ Change into the source dir and set up ezboot::
     cd webpay
     cp ezboot.ini-dist ezboot.ini
 
-Edit the ``ezboot.ini`` so it has your WiFi details and LDAP
-username/password if you don't want to enter them each time.
+If you want to make things easier, you can edit
+``ezboot.ini`` and uncomment the wifi and flash settings
+(i.e. delete the hash prefix). You can add your WiFi details to automatically
+connect to your local network and add a flash username/password
+(your LDAP credentials) for faster downloads.
 
 Plug in your device. If this is your *first* time flashing
 an engineering build (with `Marionette`_), make sure

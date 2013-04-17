@@ -3,10 +3,15 @@
 [setup]
 apps = https://marketplace-dev.allizom.org/manifest.webapp
        https://marketplace.allizom.org/manifest.webapp
-wifi_ssid = your_wifi
-wifi_key = WPA-PSK
-wifi_pass = the_password
+
+# Uncomment these by removing the hash. Fill in with your local settings.
+
+#wifi_ssid = your_wifi
+#wifi_key = WPA-PSK
+#wifi_pass = the_password
 
 [flash]
-flash_user = ...
-flash_pass = ...
+
+# Enter a username and password for downloading a private build.
+#flash_user = ...
+#flash_pass = ...
