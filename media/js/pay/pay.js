@@ -92,6 +92,7 @@ require(['cli', 'pay/bango'], function(cli, bango) {
     $('#forgot-pin').click(function(evt) {
         var anchor = $(this);
         var bangoReq;
+        evt.stopPropagation();
         evt.preventDefault();
         // Temporary logging for bug 850899
         console.log('Calling bango.logout() from', anchor.attr('id'), anchor.attr('class'));
