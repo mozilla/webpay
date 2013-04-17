@@ -78,6 +78,8 @@ KEY = DOMAIN
 SECRET = private.SECRET
 
 SOLITUDE_URL = 'https://payments.firefox.com'
+SOLITUDE_OAUTH = {'key': private.SOLITUDE_OAUTH_KEY,
+                  'secret': private.SOLITUDE_OAUTH_SECRET}
 
 SENTRY_DSN = private.SENTRY_DSN
 
