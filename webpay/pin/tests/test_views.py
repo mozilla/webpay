@@ -133,8 +133,9 @@ class VerifyPinViewTest(PinViewTestCase):
         assert res.get('Location', '').endswith(get_payment_url())
 
     def test_pin_not_recently_entered(self):
-        self.request.session['last_pin_success'] = (datetime.now() -
-            timedelta(seconds=settings.PIN_UNLOCK_LENGTH + 60))
+        self.request.session['last_pin_success'] = (
+            datetime.now() - timedelta(seconds=settings.PIN_UNLOCK_LENGTH + 60)
+        )
         self.request.session.save()
         res = self.client.post(self.url)
         eq_(res.status_code, 200)

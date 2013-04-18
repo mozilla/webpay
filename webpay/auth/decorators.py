@@ -16,9 +16,11 @@ flow = {
     'reset': ['reset_new_pin', 'reset_confirm', 'reset_cancel'],
 }
 
+
 def log_redirect(request, step, dest):
     log_cef('Buyer was attempting %s redirecting to: %s' % (step, dest),
             request)
+
 
 def user_verified(f):
     @functools.wraps(f)

@@ -21,6 +21,7 @@ class PinRecentlyEnteredTestCase(TestCase):
         assert utils.pin_recently_entered(self.request)
 
     def test_pin_entered_after_timeout(self):
-        self.request.session['last_pin_success'] = (datetime.now() -
-            timedelta(seconds=settings.PIN_UNLOCK_LENGTH + 60))
+        self.request.session['last_pin_success'] = (
+            datetime.now() - timedelta(seconds=settings.PIN_UNLOCK_LENGTH + 60)
+        )
         assert not utils.pin_recently_entered(self.request)
