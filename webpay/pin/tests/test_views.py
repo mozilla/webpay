@@ -201,7 +201,6 @@ class ResetStartViewTest(PinViewTestCase):
         self.request.session.save()
 
     def test_unauth(self):
-        raise SkipTest('fix @enforce_sequence in 836049')
         self.unverify()
         eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
 
@@ -221,7 +220,6 @@ class ResetNewPinViewTest(PinViewTestCase):
     url_name = 'pin.reset_new_pin'
 
     def test_unauth(self):
-        raise SkipTest('fix @enforce_sequence in 836049')
         self.unverify()
         eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
 
@@ -258,7 +256,6 @@ class ResetConfirmPinViewTest(PinViewTestCase):
     url_name = 'pin.reset_confirm'
 
     def test_unauth(self):
-        raise SkipTest('fix @enforce_sequence in 836049')
         self.unverify()
         eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
 
@@ -283,7 +280,6 @@ class ResetCancelViewTest(PinViewTestCase):
     url_name = 'pin.reset_cancel'
 
     def test_unauth(self):
-        raise SkipTest('fix @enforce_sequence in 836049')
         self.unverify()
         eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
 
