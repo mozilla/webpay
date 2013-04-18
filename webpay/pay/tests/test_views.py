@@ -331,6 +331,9 @@ class TestVerify(Base):
 @mock.patch.object(settings, 'SECRET', 'marketplace.secret')
 class TestForm(Base):
 
+    def get(self, payload):
+        return self.client.get('%s?req=%s' % (self.url, payload))
+
     def failed(self, form):
         assert not form.is_valid()
         assert 'req' in form.errors
@@ -365,7 +368,7 @@ class TestForm(Base):
 
 @mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')
 @mock.patch.object(settings, 'SECRET', 'marketplace.secret')
-class TestForm(Base):
+class TestVerifyForm(Base):
 
     def failed(self, form):
         assert not form.is_valid()
