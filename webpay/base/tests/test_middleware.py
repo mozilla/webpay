@@ -100,7 +100,7 @@ class TestCEFMiddleware(TestCase):
         self.client.get('/')
         assert log_cef.called
 
-    def test_request(self, log_cef):
+    def test_request_with_content(self, log_cef):
         exc = ExcWithContent('msg', 'foo')
         CEFMiddleware().process_exception(None, exc)
         log_cef.assert_called_with('ExcWithContent', None, severity=8)
