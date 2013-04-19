@@ -23,9 +23,7 @@
       {% if not form.pin_is_locked %}
         <div class="pinbox{% if form.pin.errors %} error{% endif %}">
           {{ form.pin }}
-          {% if form.pin.errors %}
-          <p class="error">{{ form.pin.errors[0] }}</p>
-          {% endif %}
+          <p class="error-msg">{% if form.pin.errors %}{{ form.pin.errors[0] }}{% endif %}</p>
           {% if not form.no_pin and not form.reset_flow %}
           {# L10n: This is the same as the standard forgot
                    password that most sites have. #}
@@ -57,7 +55,7 @@
         {% if form.pin_is_locked %}
           <a class="button force-auth-button lock-continue" href="#">
             {{ _('Sign in') }}
-          </a> 
+          </a>
         {% else %}
           <button disabled type="submit">{{ _('Continue') }}</button>
         {% endif %}

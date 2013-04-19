@@ -37,6 +37,10 @@ class BasePinForm(forms.Form):
         errors = response.get('errors')
         if errors:
             for field, error in errors.iteritems():
+                # Solitude returns some pin errors under 'new_pin' rather than 'pin'
+                # so we ensure these are associated with the pin field too.
+                if field == 'new_pin':
+                    field = 'pin'
                 if field in self.fields:
                     self.append_to_errors(field, error)
                 else:
@@ -87,7 +91,7 @@ class ConfirmPinForm(BasePinForm):
         if self.handle_client_errors(client.confirm_pin(self.uuid, pin)):
             return pin
 
-        raise forms.ValidationError(_("PIN doesn't match."))
+        raise forms.ValidationError(_("Pins do not match."))
 
 
 class ResetPinForm(BasePinForm):
@@ -109,4 +113,4 @@ class ResetConfirmPinForm(BasePinForm):
         if self.handle_client_errors(client.reset_confirm_pin(self.uuid, pin)):
             return pin
 
-        raise forms.ValidationError(_("PIN doesn't match."))
+        raise forms.ValidationError(_("Pins do not match."))
