@@ -20,8 +20,10 @@ class VerifyForm(forms.Form):
 
     def clean_req(self):
         data = self.cleaned_data['req']
+        jwt_data = data.encode('ascii', 'ignore')
+        log.debug('incoming JWT data: %r' % jwt_data)
         try:
-            payload = jwt.decode(data.encode('ascii', 'ignore'), verify=False)
+            payload = jwt.decode(jwt_data, verify=False)
         except jwt.DecodeError, exc:
             # L10n: first argument is a detailed error message.
             err = _('Error decoding JWT: {0}').format(exc)
