@@ -88,8 +88,6 @@ SYSLOG_TAG = private.SYSLOG_TAG
 # HTTPS to disable HTTPS-only cookies.
 SESSION_COOKIE_SECURE = True
 
-#VERBOSE_LOGGING=True
-
 DOMAIN = 'marketplace-dev.allizom.org'
 ISSUER = DOMAIN
 NOTIFY_ISSUER = DOMAIN
