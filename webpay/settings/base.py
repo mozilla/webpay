@@ -266,6 +266,9 @@ MARKETPLACE_OAUTH = {'key': '', 'secret': ''}
 # Height/width size of product icon images.
 PRODUCT_ICON_SIZE = 64
 
+# When True, use the marketplace API to get product icons.
+USE_PRODUCT_ICONS = True
+
 # This is the time that a user has to buy more stuff before having to enter
 # their PIN in again in seconds.
 PIN_UNLOCK_LENGTH = 300

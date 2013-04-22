@@ -451,6 +451,15 @@ class TestStartPay(test_utils.TestCase):
         eq_(solitude.bango.billing.post.call_args[0][0]['icon_url'], url)
 
     @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('webpay.pay.tasks.get_icon_url')
+    @mock.patch('lib.marketplace.api.client.slumber')
+    def test_icon_url_disabled(self, mkt, get_icon_url, solitude):
+        with self.settings(USE_PRODUCT_ICONS=False):
+            self.start()
+        eq_(solitude.bango.billing.post.call_args[0][0]['icon_url'], None)
+        assert not get_icon_url.called
+
+    @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('lib.marketplace.api.client.slumber')
     def test_price_fails(self, marketplace, solitude):
         marketplace.api.webpay.prices.side_effect = TierNotFound
