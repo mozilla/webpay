@@ -252,6 +252,27 @@ class ResetNewPinViewTest(PinViewTestCase):
         eq_(form.errors.get('pin'),
             [ERROR_STRINGS['PIN may only consists of numbers']])
 
+    @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
+    @patch.object(client, 'set_new_pin',
+                  lambda x, y: {'errors':
+                                {'new_pin':
+                                 ['PIN must be exactly 4 numbers long']}})
+    def test_short_new_pin(self):
+        res = self.client.post(self.url, data={'pin': '123'})
+        form = res.context['form']
+        eq_(form.errors.get('pin'),
+            [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
+
+    @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
+    @patch.object(client, 'set_new_pin',
+                  lambda x, y: {'errors':
+                                {'new_pin': ['PIN may only consists of numbers']}})
+    def test_alpha_new_pin(self):
+        res = self.client.post(self.url, data={'pin': '1234'})
+        form = res.context['form']
+        eq_(form.errors.get('pin'),
+            [ERROR_STRINGS['PIN may only consists of numbers']])
+
 
 class ResetConfirmPinViewTest(PinViewTestCase):
     url_name = 'pin.reset_confirm'

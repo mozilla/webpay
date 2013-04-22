@@ -1,8 +1,12 @@
 require(['cli'], function(cli) {
-    var interval = false;
+    var $errorMsg = $('.error-msg');
+    var $forgotPin = $('.forgot-pin');
+    var $pinBox = $('.pinbox');
+    var $pinInput = $('.pinbox input');
+    var $submitButton = $('button[type="submit"]');
     var PINLENGTH = 4;
-
     var currentInput = null;
+    var interval = false;
 
     function watchInput(i) {
         stopWatching();
@@ -22,11 +26,14 @@ require(['cli'], function(cli) {
     }
 
     function warn(msg) {
-        $('h2').text(msg);
+        $errorMsg.text(msg);
+        $pinBox.addClass('error');
+        $forgotPin.hide();
+        $submitButton.prop('disabled', true);
     }
 
-    function validate(input) {
-        var value = input.val();
+    function validate() {
+        var value = $pinInput.val();
         if (!value || value.length < 4) {
             warn(cli.bodyData.pinShortWarning);
             return false;
@@ -58,28 +65,31 @@ require(['cli'], function(cli) {
                       .toggleClass('current', i === newLen);
         }
         if (newLen === binLength) {
-            $('button[type="submit"]').prop('disabled', false);
+            $submitButton.prop('disabled', false);
         } else if (newLen === (binLength -1)) {
-            $('button[type="submit"]').prop('disabled', true);
+            $submitButton.prop('disabled', true);
         }
     }
 
     $(window).on('focus', '.pinbox input', function(e) {
         this.value = '';
-        $('.pinbox').removeClass('error');
-        $('button[type="submit"]').prop('disabled', true);
+        $pinBox.removeClass('error');
+        $submitButton.prop('disabled', true);
+        $forgotPin.show();
         watchInput(this);
     }).on('blur', '.pinbox input', function(e) {
         stopWatching();
     }).on('click', '.pinbox', function(e) {
-        $('.pinbox input').focus();
+        $pinInput.focus();
     });
 
-    $('.pinbox').each(function() {
+    $('#pin').on('submit', validate);
+
+    $pinBox.each(function() {
         var $el = $(this);
         var box = $('<div class="display">');
         var hasError = $el.hasClass('error');
-        var pinClass = hasError ? ' class=filled' : '';
+        var pinClass = hasError ? ' class="filled"' : '';
         box.html(Array(PINLENGTH+1).join('<span'+pinClass+'></span>'));
         $el.prepend(box);
         if (!hasError) {
