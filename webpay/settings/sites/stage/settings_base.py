@@ -92,3 +92,5 @@ ALLOWED_CALLBACK_SCHEMES = ['http', 'https']
 BANGO_BASE_URL = 'https://mozilla.bango.net'
 BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'
 BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
+
+VERBOSE_LOGGING = True
