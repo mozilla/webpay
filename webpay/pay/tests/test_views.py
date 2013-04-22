@@ -31,6 +31,20 @@ class Base(BasicSessionCase, JWTtester):
         self.secret = 'private.secret'
         self.create()
 
+    def get(self, payload):
+        return self.client.get('%s?req=%s' % (self.url, payload))
+
+    def payload(self, **kw):
+        kw.setdefault('iss', settings.KEY)
+        return super(Base, self).payload(**kw)
+
+    def request(self, **kw):
+        # This simulates payment requests which do not have response.
+        kw.setdefault('include_response', False)
+        kw.setdefault('iss', settings.KEY)
+        kw.setdefault('app_secret', settings.SECRET)
+        return super(Base, self).request(**kw)
+
     def create(self, key=None, secret=None):
         key = key or self.key
         secret = secret or self.secret
@@ -67,20 +81,6 @@ class TestVerify(Base):
         super(TestVerify, self).tearDown()
         for p in self.patches:
             p.stop()
-
-    def payload(self, **kw):
-        kw.setdefault('iss', settings.KEY)
-        return super(TestVerify, self).payload(**kw)
-
-    def request(self, **kw):
-        # This simulates payment requests which do not have response.
-        kw.setdefault('include_response', False)
-        kw.setdefault('iss', settings.KEY)
-        kw.setdefault('app_secret', settings.SECRET)
-        return super(TestVerify, self).request(**kw)
-
-    def get(self, payload):
-        return self.client.get('%s?req=%s' % (self.url, payload))
 
     def test_post(self):
         eq_(self.client.post(self.url).status_code, 405)
@@ -331,8 +331,11 @@ class TestVerify(Base):
 @mock.patch.object(settings, 'SECRET', 'marketplace.secret')
 class TestForm(Base):
 
-    def get(self, payload):
-        return self.client.get('%s?req=%s' % (self.url, payload))
+    def setUp(self):
+        super(TestForm, self).setUp()
+        p = mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
+        p.start()
+        self.addCleanup(p.stop)
 
     def failed(self, form):
         assert not form.is_valid()
