@@ -143,16 +143,16 @@ class TestNotifyApp(NotifyTest):
 
     @mock.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
     def test_notify_marketplace(self, marketplace, solitude, requests):
         self.set_secret_mock(solitude, 'f')
         requests.post.side_effect = Timeout('Timeout')
         self.notify()
-        assert marketplace.api.webpay.failure.called
+        assert marketplace.webpay.failure.called
 
     @mock.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
     def test_notify_timeout(self, marketplace, solitude, requests):
         self.set_secret_mock(solitude, 'f')
         requests.post.side_effect = Timeout('Timeout')
@@ -174,7 +174,7 @@ class TestNotifyApp(NotifyTest):
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
     def test_any_error(self, fake_req, marketplace, solitude):
         self.set_secret_mock(solitude, 'f')
         fake_req.expects('post').raises(RequestException('some http error'))
@@ -186,7 +186,7 @@ class TestNotifyApp(NotifyTest):
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
     def test_bad_status(self, fake_req, marketplace, solitude):
         self.set_secret_mock(solitude, 'f')
         (fake_req.expects('post').returns_fake()
@@ -414,7 +414,7 @@ class TestStartPay(test_utils.TestCase):
 
     @raises(api.SellerNotConfigured)
     @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
     def test_no_seller(self, marketplace, solitude):
         raise SkipTest
         marketplace.webpay.prices.return_value = self.prices
@@ -423,7 +423,7 @@ class TestStartPay(test_utils.TestCase):
         #eq_(self.get_trans().status, TRANS_STATE_FAILED)
 
     @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
     def test_transaction_called(self, marketplace, solitude):
         solitude.generic.transaction.get_object.return_value = {
             'resource_pk': 5}
@@ -431,11 +431,11 @@ class TestStartPay(test_utils.TestCase):
         solitude.generic.transaction.assert_called_with(5)
 
     @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
     def test_price_used(self, marketplace, solitude):
         prices = mock.Mock()
         prices.get.return_value = self.prices
-        marketplace.api.webpay.prices.return_value = prices
+        marketplace.webpay.prices.return_value = prices
         self.set_billing_id(solitude, 123)
         self.start()
         eq_(solitude.bango.billing.post.call_args[0][0]['prices'],
@@ -443,7 +443,7 @@ class TestStartPay(test_utils.TestCase):
 
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.get_icon_url')
-    @mock.patch('lib.marketplace.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
     def test_icon_url_sent(self, mkt, get_icon_url, solitude):
         url = 'http://mkt-cdn/media/icon.png'
         get_icon_url.return_value = url
@@ -452,7 +452,7 @@ class TestStartPay(test_utils.TestCase):
 
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.get_icon_url')
-    @mock.patch('lib.marketplace.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
     def test_icon_url_disabled(self, mkt, get_icon_url, solitude):
         with self.settings(USE_PRODUCT_ICONS=False):
             self.start()
@@ -460,14 +460,14 @@ class TestStartPay(test_utils.TestCase):
         assert not get_icon_url.called
 
     @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
     def test_price_fails(self, marketplace, solitude):
-        marketplace.api.webpay.prices.side_effect = TierNotFound
+        marketplace.webpay.prices.side_effect = TierNotFound
         with self.assertRaises(TierNotFound):
             self.start()
 
     @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
     @raises(RuntimeError)
     def test_exception_fails_transaction(self, marketplace, slumber):
         raise SkipTest
@@ -480,9 +480,9 @@ class TestStartPay(test_utils.TestCase):
 
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
     @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
     def test_marketplace_seller_switch(self, marketplace, solitude):
-        marketplace.webpay.prices.return_value = self.prices
+        marketplace.webpay.prices.get.return_value = self.prices
         self.set_billing_id(solitude, 123)
 
         # Simulate how the Marketplace would add
@@ -499,7 +499,7 @@ class TestStartPay(test_utils.TestCase):
 
     @raises(ValueError)
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
-    @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('lib.solitude.api.client.api')
     def test_marketplace_missing_seller_uuid(self, slumber):
         self.notes['issuer_key'] = settings.KEY
         self.notes['pay_request']['request']['productData'] = 'foo-bar'
@@ -509,7 +509,7 @@ class TestStartPay(test_utils.TestCase):
 class TestGetIconURL(test_utils.TestCase):
 
     def setUp(self):
-        p = mock.patch('lib.marketplace.api.client.slumber')
+        p = mock.patch('lib.marketplace.api.client.api')
         self.marketplace = p.start()
         self.addCleanup(p.stop)
         self.request = {'icons': {'64': 'http://app/icon.png'}}
@@ -524,14 +524,14 @@ class TestGetIconURL(test_utils.TestCase):
     def test_get_url_from_api(self):
         url = 'http://mkt-cdn/media/icon.png'
         icon = {'url': url}
-        self.marketplace.api.webpay.product.icon.get_object.return_value = icon
+        self.marketplace.webpay.product.icon.get_object.return_value = icon
         eq_(self.get_icon_url(), url)
 
     def test_no_cached_icon(self):
-        icon = self.marketplace.api.webpay.product.icon
+        icon = self.marketplace.webpay.product.icon
         icon.get_object.side_effect = ObjectDoesNotExist()
         eq_(self.get_icon_url(), None)
-        post = self.marketplace.api.webpay.product.icon.post
+        post = self.marketplace.webpay.product.icon.post
         post.assert_called_with(dict(ext_url=self.request['icons']['64'],
                                      size=64, ext_size=64))
 
@@ -547,7 +547,7 @@ class TestGetIconURL(test_utils.TestCase):
         self.request = {'icons': {'128': 'http://app/128.png',
                                   '512': 'http://app/512.png'}}
         self.get_icon_url()
-        get = self.marketplace.api.webpay.product.icon.get_object
+        get = self.marketplace.webpay.product.icon.get_object
         get.assert_called_with(ext_url=self.request['icons']['512'],
                                size=self.size, ext_size='512')
 
@@ -555,13 +555,13 @@ class TestGetIconURL(test_utils.TestCase):
         self.request = {'icons': {'64': 'http://app/64.png',
                                   '512': 'http://app/512.png'}}
         self.get_icon_url()
-        get = self.marketplace.api.webpay.product.icon.get_object
+        get = self.marketplace.webpay.product.icon.get_object
         get.assert_called_with(ext_url=self.request['icons']['64'],
                                size=64, ext_size=64)
 
     def test_icon_too_small_to_resize(self):
         self.request = {'icons': {'48': 'http://app/48.png'}}
         self.get_icon_url()
-        get = self.marketplace.api.webpay.product.icon.get_object
+        get = self.marketplace.webpay.product.icon.get_object
         get.assert_called_with(ext_url=self.request['icons']['48'],
                                size='48', ext_size='48')

@@ -106,7 +106,7 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
 
 def notify_failure(url, trans_id):
     statsd.incr('purchase.send_pay_notice.failure')
-    client.slumber.api.webpay.failure(trans_id).patch({
+    client.api.webpay.failure(trans_id).patch({
                 'attempts': settings.POSTBACK_ATTEMPTS,
                 'url': url})
     log.exception('Retries failed to %s: %s:' % (url, trans_id))

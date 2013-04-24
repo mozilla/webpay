@@ -14,8 +14,7 @@ class MarketplaceAPI(SlumberWrapper):
     def get_price(self, tier):
         # TODO: cache this.
         try:
-            return (self.slumber.api.webpay.prices(id=tier)
-                        .get(provider='bango'))
+            return self.api.webpay.prices(id=tier).get(provider='bango')
         except HttpClientError, err:
             if err.response.status_code:
                 raise TierNotFound(tier)

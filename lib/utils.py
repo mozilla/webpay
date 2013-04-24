@@ -11,6 +11,7 @@ class SlumberWrapper(object):
 
     def __init__(self, url):
         self.slumber = API(url)
+        self.api = self.slumber.api.v1
 
     def parse_res(self, res):
         if res == '':
