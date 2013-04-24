@@ -3,6 +3,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 import commonware.log
+from django_paranoia.forms import ParanoidForm
 import jwt
 from tower import ugettext as _
 
@@ -12,7 +13,7 @@ from lib.solitude.constants import ACCESS_SIMULATE
 log = commonware.log.getLogger('w.pay')
 
 
-class VerifyForm(forms.Form):
+class VerifyForm(ParanoidForm):
     req = forms.CharField()
     key = settings.KEY
     secret = settings.SECRET

@@ -2,12 +2,13 @@ from django import forms
 from django.forms.util import ErrorList
 from django.views.decorators.debug import sensitive_variables
 
+from django_paranoia.forms import ParanoidForm
 from tower import ugettext_lazy as _
 
 from lib.solitude.api import client
 
 
-class BasePinForm(forms.Form):
+class BasePinForm(ParanoidForm):
     pin = forms.CharField(max_length=4, required=True)
 
     def __init__(self, uuid=None, *args, **kwargs):

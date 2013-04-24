@@ -183,7 +183,12 @@ MIDDLEWARE_CLASSES = (
     'mobility.middleware.XMobileMiddleware',
     'webpay.base.middleware.LogJSONerror',
     'webpay.base.middleware.CEFMiddleware',
+    'django_paranoia.middleware.Middleware',
 )
+
+DJANGO_PARANOIA_REPORTERS = [
+    'django_paranoia.reporters.cef_',
+]
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 

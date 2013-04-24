@@ -3,7 +3,7 @@ Babel==0.9.6
 Django==1.4.5
 anyjson==0.3.3
 billiard==2.7.3.17
-cef==0.3
+cef==0.5
 celery==2.5.1
 curling==0.2.4
 dj-database-url==0.2.1
@@ -11,6 +11,7 @@ django-celery==2.2.4
 django-mobility==0.1
 django-multidb-router==0.5
 django-nose==1.1
+django-paranoia==0.1.7
 django-statsd-mozilla==0.3.7
 fudge==1.0.3
 funfactory==2.1.1

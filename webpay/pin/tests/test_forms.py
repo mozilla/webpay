@@ -1,4 +1,7 @@
 from django.test import TestCase
+from django.test.client import RequestFactory
+
+from django_paranoia.signals import finished
 from mock import patch
 
 from lib.solitude.api import client
@@ -38,6 +41,17 @@ class CreatePinFormTest(BasePinFormTestCase):
         form = forms.CreatePinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
         assert 'has at most 4' in str(form.errors['pin'])
+
+
+class ParanoidPinFormTest(BasePinFormTestCase):
+    """Just a smoke test that forms are set up to log to CEF"""
+
+    @patch('django_paranoia.reporters.cef_.log_cef')
+    def test_dodgy(self, report):
+        data = {'pin': chr(1)}
+        forms.CreatePinForm(uuid=self.uuid, data=data)
+        finished.send(None, request=RequestFactory().get('/'))
+        assert report.called
 
 
 class VerifyPinFormTest(BasePinFormTestCase):
