@@ -218,11 +218,11 @@ def get_icon_url(request):
         'size': size
     }
     try:
-        res = mkt_client.slumber.api.webpay.product.icon.get_object(**data)
+        res = mkt_client.api.webpay.product.icon.get_object(**data)
         return res['url']
     except ObjectDoesNotExist:
         # Queue the image to be fetched, resized and cached.
-        mkt_client.slumber.api.webpay.product.icon.post(data)
+        mkt_client.api.webpay.product.icon.post(data)
         # The URL will be fetched on next purchase.
         return None
 
