@@ -94,3 +94,4 @@ BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'
 BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
 
 VERBOSE_LOGGING = True
+USE_PRODUCT_ICONS = False
