@@ -75,7 +75,7 @@ def verify(request):
             log.info('Persona assertion ok: %s' % result)
             email = result.get('unverified-email', result.get('email'))
             user_hash = set_user(request, email)
-            return {'has_pin': request.session.get('uuid_has_pin'),
+            return {'has_pin': request.session.get('uuid_has_confirmed_pin'),
                     'pin_create': reverse('pin.create'),
                     'user_hash': user_hash}
 

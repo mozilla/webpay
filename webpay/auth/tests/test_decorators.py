@@ -32,20 +32,38 @@ class TestBuyerHasPin(SessionTestCase):
         slumber.generic.buyer.get.return_value = {
             'meta': {'total_count': 1},
             'objects': [{'pin': False,
+                         'pin_confirmed': False,
                          'needs_pin_reset': False}]
         }
-        self.do_auth()
+        data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), False)
+        eq_(self.client.session.get('uuid_has_confirmed_pin'), False)
+        eq_(data['has_pin'], False)
 
     @mock.patch('lib.solitude.api.client.slumber')
-    def test_user_with_pin(self, slumber):
+    def test_user_with_unconfirmed_pin(self, slumber):
         slumber.generic.buyer.get.return_value = {
             'meta': {'total_count': 1},
             'objects': [{'pin': True,
+                         'pin_confirmed': False,
                          'needs_pin_reset': False}]
         }
         data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), True)
+        eq_(self.client.session.get('uuid_has_confirmed_pin'), False)
+        eq_(data['has_pin'], False)
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_user_with_confirmed_pin(self, slumber):
+        slumber.generic.buyer.get.return_value = {
+            'meta': {'total_count': 1},
+            'objects': [{'pin': True,
+                         'pin_confirmed': True,
+                         'needs_pin_reset': False}]
+        }
+        data = self.do_auth()
+        eq_(self.client.session.get('uuid_has_pin'), True)
+        eq_(self.client.session.get('uuid_has_confirmed_pin'), True)
         eq_(data['has_pin'], True)
         eq_(data['pin_create'], reverse('pin.create'))
 
