@@ -15,122 +15,122 @@ msgstr ""
 
 #: webpay/bango/templates/bango/error.html:4
 msgid "There was an error processing your payment."
-msgstr ""
+msgstr "Er is een fout opgetreden bij de verwerking van uw betaling."
 
 #: webpay/bango/templates/bango/success.html:8
 msgid "Your payment is complete. This window will now close."
-msgstr ""
+msgstr "Uw betaling is afgerond. Dit venster wordt nu gesloten."
 
 #: webpay/bango/templates/bango/success.html:10
 msgid "This was only a simulated payment."
-msgstr ""
+msgstr "Dit was slechts een gesimuleerde betaling."
 
 #: webpay/base/templates/404.html:5 webpay/base/templates/404.html:8
 msgid "Page not found"
-msgstr ""
+msgstr "Pagina niet gevonden"
 
 #: webpay/base/templates/404.html:10
 msgid "Sorry, but we couldn't find the page you're looking for."
-msgstr ""
+msgstr "Sorry, maar we kunnen de gevraagde pagina niet vinden."
 
 #: webpay/base/templates/500.html:5 webpay/base/templates/500.html:8
 msgid "Something went wrong!"
-msgstr ""
+msgstr "Er is iets misgegaan!"
 
 #: webpay/base/templates/500.html:10 webpay/pay/views.py:32 webpay/pay/templates/pay/error.html:4
 msgid "There was an error processing that request."
-msgstr ""
+msgstr "Er is een fout opgetreden tijdens de verwerking van dat verzoek."
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:8
 msgid "Web Pay"
-msgstr ""
+msgstr "Webbetaling"
 
 #. L10n: first argument is a detailed error message.
 #: webpay/pay/forms.py:24
 msgid "Error decoding JWT: {0}"
-msgstr ""
+msgstr "Fout bij decoderen JWT: {0}"
 
 #. L10n: first argument is a data type, such as <unicode>
 #: webpay/pay/forms.py:34
 msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr ""
+msgstr "De JWT is niet naar een JSON-object gedecodeerd. Het type was {0}."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:48
 msgid "No one has been registered for JWT issuer {0}."
-msgstr ""
+msgstr "Niemand is geregistreerd voor JWT-uitgever {0}."
 
 #: webpay/pay/models.py:26
 msgid "Active"
-msgstr ""
+msgstr "Actief"
 
 #: webpay/pay/models.py:27
 msgid "Inactive"
-msgstr ""
+msgstr "Inactief"
 
 #: webpay/pay/models.py:28
 msgid "Revoked"
-msgstr ""
+msgstr "Herroepen"
 
 #: webpay/pay/templates/pay/lobby.html:10
 msgid "Beginning payment&hellip;"
-msgstr ""
+msgstr "Betaling starten…"
 
 #: webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in to continue with the payment:"
-msgstr ""
+msgstr "Meld u aan om verder te gaan met deze betaling:"
 
 #: webpay/pay/templates/pay/lobby.html:14
 msgid "Sign in"
-msgstr ""
+msgstr "Aanmelden"
 
 #: webpay/pay/templates/pay/lobby.html:17
 msgid "logging you in to continue payment&hellip;"
-msgstr ""
+msgstr "u wordt aangemeld om door te gaan met de betaling…"
 
 #: webpay/pay/templates/pay/wait-to-start.html:10
 msgid "Waiting for payment to complete&hellip;"
-msgstr ""
+msgstr "Wachten op afronding betaling…"
 
 #: webpay/pin/forms.py:56
 msgid "You have already created a PIN."
-msgstr ""
+msgstr "U hebt al een PIN aangemaakt."
 
 #: webpay/pin/forms.py:68 webpay/pin/forms.py:78 webpay/pin/forms.py:88
 msgid "Incorrect PIN."
-msgstr ""
+msgstr "Onjuist PIN."
 
 #: webpay/pin/templates/pin/confirm.html:4
 msgid "Confirm your PIN:"
-msgstr ""
+msgstr "Bevestig uw PIN:"
 
 #: webpay/pin/templates/pin/confirm.html:15 webpay/pin/templates/pin/create.html:15 webpay/pin/templates/pin/reset_confirm.html:13 webpay/pin/templates/pin/reset_create.html:13
 msgid "Cancel"
-msgstr ""
+msgstr "Annuleren"
 
 #: webpay/pin/templates/pin/confirm.html:16 webpay/pin/templates/pin/create.html:16 webpay/pin/templates/pin/reset_confirm.html:14 webpay/pin/templates/pin/reset_create.html:14
 #: webpay/pin/templates/pin/includes/verify_form.html:13
 msgid "Continue"
-msgstr ""
+msgstr "Doorgaan"
 
 #: webpay/pin/templates/pin/create.html:4
 msgid "Create your PIN:"
-msgstr ""
+msgstr "Maak uw PIN aan:"
 
 #: webpay/pin/templates/pin/reset_confirm.html:4
 msgid "Confirm your new PIN:"
-msgstr ""
+msgstr "Bevestig uw nieuw PIN:"
 
 #: webpay/pin/templates/pin/reset_create.html:4
 msgid "Enter your new PIN:"
-msgstr ""
+msgstr "Voer uw nieuw PIN in:"
 
 #: webpay/pin/templates/pin/includes/verify_form.html:1
 msgid "Enter payment PIN:"
-msgstr ""
+msgstr "Voer betalings-PIN in:"
 
 #. This is the same as the standard forgot password that most sites have.
 #: webpay/pin/templates/pin/includes/verify_form.html:12
 msgid "Forgot PIN"
-msgstr ""
+msgstr "PIN vergeten"
