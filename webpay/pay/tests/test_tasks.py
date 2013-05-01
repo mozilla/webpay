@@ -394,7 +394,11 @@ class TestStartPay(test_utils.TestCase):
         self.prices = {'prices': [{'amount': 1, 'currency': 'EUR'}]}
 
     @mock.patch('lib.solitude.api.client.get_transaction')
-    def start(self, solitude):
+    @mock.patch('lib.marketplace.api.client.api')
+    def start(self, marketplace, solitude):
+        prices = mock.Mock()
+        prices.get_object.return_value = self.prices
+        marketplace.webpay.prices.return_value = prices
         solitude.get_transaction.return_value = {
                 'status': constants.STATUS_COMPLETED,
                 'notes': self.notes,
@@ -460,9 +464,9 @@ class TestStartPay(test_utils.TestCase):
         assert not get_icon_url.called
 
     @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.api')
-    def test_price_fails(self, marketplace, solitude):
-        marketplace.webpay.prices.side_effect = TierNotFound
+    @mock.patch('webpay.pay.tasks.mkt_client.get_price')
+    def test_price_fails(self, get_price, solitude):
+        get_price.side_effect = TierNotFound
         with self.assertRaises(TierNotFound):
             self.start()
 
