@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.test.client import RequestFactory
 
 from django_paranoia.signals import finished
 from mock import patch
@@ -50,7 +49,7 @@ class ParanoidPinFormTest(BasePinFormTestCase):
     def test_dodgy(self, report):
         data = {'pin': chr(1)}
         forms.CreatePinForm(uuid=self.uuid, data=data)
-        finished.send(None, request=RequestFactory().get('/'))
+        finished.send(None, request_meta={}, request_path='/')
         assert report.called
 
 

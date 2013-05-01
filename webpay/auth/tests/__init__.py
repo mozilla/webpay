@@ -17,14 +17,13 @@ class SessionTestCase(test.TestCase):
     in testing.
     """
 
-    def verify(self, uuid):
+    def verify(self, uuid, request_meta=None):
         # This is a rip off of the Django test client login.
         engine = import_module(settings.SESSION_ENGINE)
 
         # Create a fake request to store login details.
         request = HttpRequest()
-        request.session = engine.SessionStore()
-
+        request.session = engine.SessionStore(request_meta=request_meta)
         request.session['uuid'] = uuid
         request.session.save()
 
