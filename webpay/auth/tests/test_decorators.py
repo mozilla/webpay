@@ -49,7 +49,7 @@ class TestBuyerHasPin(SessionTestCase):
                          'needs_pin_reset': False}]
         }
         data = self.do_auth()
-        eq_(self.client.session.get('uuid_has_pin'), True)
+        eq_(self.client.session.get('uuid_has_pin'), False)
         eq_(self.client.session.get('uuid_has_confirmed_pin'), False)
         eq_(data['has_pin'], False)
 

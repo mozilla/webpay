@@ -22,8 +22,8 @@ class SolitudeAPITest(TestCase):
     @classmethod
     def setUpClass(cls):
         # TODO(Wraithan): Add a mocked backend so we have idempotent tests.
-        if (getattr(settings, 'SOLITUDE_URL', None)
-            in [None, 'http://example.com']):
+        invalid_urls = (None, 'http://example.com')
+        if (getattr(settings, 'SOLITUDE_URL', None) in invalid_urls):
             raise SkipTest
         client.create_buyer('dat:uuid', '1234')
 
@@ -146,6 +146,36 @@ class SolitudeAPITest(TestCase):
         assert client.verify_pin(uuid, new_pin)
         assert not client.reset_confirm_pin(uuid, self.pin)
         assert client.verify_pin(uuid, new_pin)
+
+    def test_change_pin_without_existing_pin(self):
+        uuid = 'change_pin_without_existing_pin'
+        new_pin = '1234'
+        buyer = client.create_buyer(uuid)
+        assert not buyer.get('pin')
+        client.change_pin(uuid, new_pin)
+        buyer = client.get_buyer(uuid)
+        assert buyer.get('pin')
+        assert client.verify_pin(uuid, new_pin)
+
+    def test_change_pin_with_existing_pin(self):
+        uuid = 'change_pin_with_existing_pin'
+        pin = '5432'
+        new_pin = pin[::-1]
+        client.create_buyer(uuid, pin)
+        client.change_pin(uuid, new_pin)
+        buyer = client.get_buyer(uuid)
+        assert buyer.get('pin')
+        assert client.verify_pin(uuid, new_pin)
+
+    def test_change_pin_to_remove_exising_pin(self):
+        uuid = 'change_pin_to_remove_exising_pin'
+        pin = '5467'
+        new_pin = None
+        buyer = client.create_buyer(uuid, pin)
+        assert buyer.get('pin')
+        client.change_pin(uuid, new_pin)
+        buyer = client.get_buyer(uuid)
+        assert not buyer.get('pin')
 
 
 class CreateBangoTest(TestCase):
