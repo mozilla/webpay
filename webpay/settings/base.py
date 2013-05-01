@@ -184,13 +184,14 @@ MIDDLEWARE_CLASSES = (
     'webpay.base.middleware.LogJSONerror',
     'webpay.base.middleware.CEFMiddleware',
     'django_paranoia.middleware.Middleware',
+    'django_paranoia.sessions.ParanoidSessionMiddleware'
 )
 
 DJANGO_PARANOIA_REPORTERS = [
     'django_paranoia.reporters.cef_',
 ]
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_ENGINE = 'django_paranoia.sessions'
 
 # Custom name of session cookie.
 # This must be a non-default so it doesn't collide with zamboni on the same
