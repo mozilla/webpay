@@ -283,6 +283,4 @@ class SolitudeAPI(SlumberWrapper):
 if not settings.SOLITUDE_URL:
     raise ValueError('SOLITUDE_URL is required')
 
-client = SolitudeAPI(settings.SOLITUDE_URL)
-client.slumber.activate_oauth(settings.SOLITUDE_OAUTH.get('key'),
-                              settings.SOLITUDE_OAUTH.get('secret'))
+client = SolitudeAPI(settings.SOLITUDE_URL, settings.SOLITUDE_OAUTH)
