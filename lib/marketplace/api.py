@@ -24,6 +24,4 @@ class MarketplaceAPI(SlumberWrapper):
 if not settings.MARKETPLACE_URL:
     raise ValueError('MARKETPLACE_URL is required')
 
-client = MarketplaceAPI(settings.MARKETPLACE_URL)
-client.slumber.activate_oauth(settings.MARKETPLACE_OAUTH.get('key'),
-                              settings.MARKETPLACE_OAUTH.get('secret'))
+client = MarketplaceAPI(settings.MARKETPLACE_URL, settings.MARKETPLACE_OAUTH)

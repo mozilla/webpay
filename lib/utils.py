@@ -9,8 +9,9 @@ class SlumberWrapper(object):
     A wrapper around the Slumber API.
     """
 
-    def __init__(self, url):
+    def __init__(self, url, oauth):
         self.slumber = API(url)
+        self.slumber.activate_oauth(oauth.get('key'), oauth.get('secret'))
         self.api = self.slumber.api.v1
 
     def parse_res(self, res):
