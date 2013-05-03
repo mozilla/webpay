@@ -464,6 +464,13 @@ class TestStartPay(test_utils.TestCase):
         assert not get_icon_url.called
 
     @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('webpay.pay.tasks.get_icon_url')
+    @mock.patch('lib.marketplace.api.client.api')
+    def test_catch_icon_exceptions(self, mkt, get_icon_url, solitude):
+        get_icon_url.side_effect = ValueError('just some exception')
+        self.start()
+
+    @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.mkt_client.get_price')
     def test_price_fails(self, get_price, solitude):
         get_price.side_effect = TierNotFound

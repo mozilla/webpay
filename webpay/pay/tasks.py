@@ -93,8 +93,12 @@ def start_pay(transaction_uuid, notes, **kw):
                                       pay['request'].get('productData', ''))
         # Ask the marketplace for a valid price point.
         prices = mkt_client.get_price(pay['request']['pricePoint'])
-        icon_url = (get_icon_url(pay['request'])
-                    if settings.USE_PRODUCT_ICONS else None)
+        try:
+            icon_url = (get_icon_url(pay['request'])
+                        if settings.USE_PRODUCT_ICONS else None)
+        except:
+            log.exception('Calling get_icon_url')
+            icon_url = None
         log.info('icon URL for %s: %s' % (transaction_uuid, icon_url))
         # Set up the product for sale.
         bill_id, seller_product = client.configure_product_for_billing(
