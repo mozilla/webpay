@@ -79,7 +79,7 @@ msgstr "Revocata"
 
 #: webpay/pay/templates/pay/lobby.html:10
 msgid "Beginning payment&hellip;"
-msgstr "Inizializzazione del pagamento&hellip;"
+msgstr "Inizio del pagamento in corso&hellip;"
 
 #: webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in to continue with the payment:"
@@ -92,7 +92,7 @@ msgstr "Accedi"
 #: webpay/pay/templates/pay/lobby.html:17
 msgid "logging you in to continue payment&hellip;"
 msgstr ""
-"Procedura d'accesso per il completamento del pagamento in corso&hellip;"
+"Accesso per il completamento del pagamento in corso&hellip;"
 
 #: webpay/pay/templates/pay/wait-to-start.html:10
 msgid "Waiting for payment to complete&hellip;"
