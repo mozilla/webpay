@@ -89,15 +89,15 @@ class SolitudeAPITest(TestCase):
         uuid = 'verify_pin_confirm_pin_good_pin'
         client.create_buyer(uuid, self.pin)
         assert client.confirm_pin(uuid, self.pin)
-        assert client.verify_pin(uuid, self.pin)
+        assert client.verify_pin(uuid, self.pin)['valid']
 
     def test_verify_without_confirm_and_good_pin(self):
         uuid = 'verify_pin_good_pin'
         client.create_buyer(uuid, self.pin)
-        assert not client.verify_pin(uuid, self.pin)
+        assert not client.verify_pin(uuid, self.pin)['valid']
 
     def test_verify_alpha_pin(self):
-        assert not client.verify_pin(self.uuid, 'lame')
+        assert 'pin' in client.verify_pin(self.uuid, 'lame')['errors']
 
     def test_reset_pin_flag_set(self):
         # set
