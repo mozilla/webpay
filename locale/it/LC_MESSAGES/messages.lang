@@ -1,0 +1,114 @@
+;There was an error processing your payment.
+Si è verificato un errore durante l'elaborazione del pagamento.
+
+
+;Your payment is complete. This window will now close.
+Il pagamento è stato completato. Questa finestra verrà chiusa.
+
+
+;This was only a simulated payment.
+Questa è soltanto una simulazione di pagamento.
+
+
+;Page not found
+Pagina non trovata
+
+
+;Sorry, but we couldn't find the page you're looking for.
+Spiacenti, ma non è stato possibile trovare la pagina che stavi cercando.
+
+
+;Something went wrong!
+Qualcosa è andato storto.
+
+
+;There was an error processing that request.
+Si è verificato un errore durante l'elaborazione di questa richiesta.
+
+
+;Web Pay
+Web Pay {ok}
+
+
+;Error decoding JWT: {0}
+Si è verificato un errore durante la decodifica del token JWT: {0}
+
+
+;The JWT did not decode to a JSON object. Its type was {0}.
+Il token JWT non può essere decodificato come oggetto JSON. Il tipo rilevato è {0}.
+
+
+;No one has been registered for JWT issuer {0}.
+Nessun soggetto si è registrato come emittente JWT {0}.
+
+
+;Active
+Attivata
+
+
+;Inactive
+Disattivata
+
+
+;Revoked
+Revocata
+
+
+;Beginning payment&hellip;
+Inizio del pagamento in corso&hellip;
+
+
+;Sign in to continue with the payment:
+Esegui l'accesso per procedere con il pagamento:
+
+
+;Sign in
+Accedi
+
+
+;logging you in to continue payment&hellip;
+Accesso per il completamento del pagamento in corso&hellip;
+
+
+;Waiting for payment to complete&hellip;
+In attesa del completamento del pagamento&hellip;
+
+
+;You have already created a PIN.
+Hai già creato un PIN.
+
+
+;Incorrect PIN.
+PIN non valido.
+
+
+;Confirm your PIN:
+Conferma del PIN:
+
+
+;Cancel
+Annulla
+
+
+;Continue
+Procedi
+
+
+;Create your PIN:
+Crea il PIN:
+
+
+;Confirm your new PIN:
+Conferma del nuovo PIN:
+
+
+;Enter your new PIN:
+Inserisci il nuovo PIN:
+
+
+;Enter payment PIN:
+Inserisci il PIN per i pagamenti:
+
+
+;Forgot PIN
+Pin dimenticato
