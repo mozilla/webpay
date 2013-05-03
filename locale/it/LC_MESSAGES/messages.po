@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-08 09:37-0700\n"
-"PO-Revision-Date: 2013-05-03 14:28+0100\n"
+"PO-Revision-Date: 2013-05-03 17:38+0100\n"
 "Last-Translator: Sandro Della Giustina <gialloporpora@gmail.com>\n"
 "Language-Team: mozillaitalia\n"
 "MIME-Version: 1.0\n"
@@ -67,15 +67,15 @@ msgstr "Nessun soggetto si è registrato come emittente JWT {0}."
 
 #: webpay/pay/models.py:26
 msgid "Active"
-msgstr "Attivato"
+msgstr "Attivata"
 
 #: webpay/pay/models.py:27
 msgid "Inactive"
-msgstr "Disattivato"
+msgstr "Disattivata"
 
 #: webpay/pay/models.py:28
 msgid "Revoked"
-msgstr "Revocato"
+msgstr "Revocata"
 
 #: webpay/pay/templates/pay/lobby.html:10
 msgid "Beginning payment&hellip;"
