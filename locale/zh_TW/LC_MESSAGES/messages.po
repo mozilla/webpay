@@ -1,135 +1,144 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-08 09:37-0700\n"
-"PO-Revision-Date: 2013-01-08 08:50-0700\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2013-05-04 18:16+0800\n"
+"Last-Translator: Peter Pin-Guang Chen <petercpg@mail.moztw.org>\n"
+"Language-Team: MozTW <petercpg@mail.moztw.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.9.0\n"
+"X-Generator: Poedit 1.5.5\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: webpay/bango/templates/bango/error.html:4
 msgid "There was an error processing your payment."
-msgstr ""
+msgstr "處理您的付款時發生錯誤。"
 
 #: webpay/bango/templates/bango/success.html:8
 msgid "Your payment is complete. This window will now close."
-msgstr ""
+msgstr "付款已完成，此視窗將會關閉。"
 
 #: webpay/bango/templates/bango/success.html:10
 msgid "This was only a simulated payment."
-msgstr ""
+msgstr "這只是模擬付款。"
 
 #: webpay/base/templates/404.html:5 webpay/base/templates/404.html:8
 msgid "Page not found"
-msgstr ""
+msgstr "找不到頁面"
 
 #: webpay/base/templates/404.html:10
 msgid "Sorry, but we couldn't find the page you're looking for."
-msgstr ""
+msgstr "抱歉，我們找不到您想開啟的網頁。"
 
 #: webpay/base/templates/500.html:5 webpay/base/templates/500.html:8
 msgid "Something went wrong!"
-msgstr ""
+msgstr "有些東西不對勁！"
 
-#: webpay/base/templates/500.html:10 webpay/pay/views.py:32 webpay/pay/templates/pay/error.html:4
+#: webpay/base/templates/500.html:10 webpay/pay/views.py:32
+#: webpay/pay/templates/pay/error.html:4
 msgid "There was an error processing that request."
-msgstr ""
+msgstr "處理該請求時發生錯誤。"
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:8
 msgid "Web Pay"
-msgstr ""
+msgstr "Web Pay"
 
 #. L10n: first argument is a detailed error message.
 #: webpay/pay/forms.py:24
 msgid "Error decoding JWT: {0}"
-msgstr ""
+msgstr "解碼 JWT 時發生錯誤: {0}"
 
 #. L10n: first argument is a data type, such as <unicode>
 #: webpay/pay/forms.py:34
 msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr ""
+msgstr "JWT 並未解碼為 JSON 物件，它的類型為 {0}。"
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:48
 msgid "No one has been registered for JWT issuer {0}."
-msgstr ""
+msgstr "沒有人註冊為 JWT 發行者 {0}。"
 
 #: webpay/pay/models.py:26
 msgid "Active"
-msgstr ""
+msgstr "啟用"
 
 #: webpay/pay/models.py:27
 msgid "Inactive"
-msgstr ""
+msgstr "停用"
 
 #: webpay/pay/models.py:28
 msgid "Revoked"
-msgstr ""
+msgstr "已註銷"
 
 #: webpay/pay/templates/pay/lobby.html:10
 msgid "Beginning payment&hellip;"
-msgstr ""
+msgstr "正在開始付款&hellip;"
 
 #: webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in to continue with the payment:"
-msgstr ""
+msgstr "登入以進行付款:"
 
 #: webpay/pay/templates/pay/lobby.html:14
 msgid "Sign in"
-msgstr ""
+msgstr "登入"
 
 #: webpay/pay/templates/pay/lobby.html:17
 msgid "logging you in to continue payment&hellip;"
-msgstr ""
+msgstr "正在將您登入&hellip;"
 
 #: webpay/pay/templates/pay/wait-to-start.html:10
 msgid "Waiting for payment to complete&hellip;"
-msgstr ""
+msgstr "正在等待付款完成&hellip;"
 
 #: webpay/pin/forms.py:56
 msgid "You have already created a PIN."
-msgstr ""
+msgstr "您已建立 PIN 碼。"
 
 #: webpay/pin/forms.py:68 webpay/pin/forms.py:78 webpay/pin/forms.py:88
 msgid "Incorrect PIN."
-msgstr ""
+msgstr "PIN 碼不正確。"
 
 #: webpay/pin/templates/pin/confirm.html:4
 msgid "Confirm your PIN:"
-msgstr ""
+msgstr "確認您的 PIN 碼:"
 
-#: webpay/pin/templates/pin/confirm.html:15 webpay/pin/templates/pin/create.html:15 webpay/pin/templates/pin/reset_confirm.html:13 webpay/pin/templates/pin/reset_create.html:13
+#: webpay/pin/templates/pin/confirm.html:15
+#: webpay/pin/templates/pin/create.html:15
+#: webpay/pin/templates/pin/reset_confirm.html:13
+#: webpay/pin/templates/pin/reset_create.html:13
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
-#: webpay/pin/templates/pin/confirm.html:16 webpay/pin/templates/pin/create.html:16 webpay/pin/templates/pin/reset_confirm.html:14 webpay/pin/templates/pin/reset_create.html:14
+#: webpay/pin/templates/pin/confirm.html:16
+#: webpay/pin/templates/pin/create.html:16
+#: webpay/pin/templates/pin/reset_confirm.html:14
+#: webpay/pin/templates/pin/reset_create.html:14
 #: webpay/pin/templates/pin/includes/verify_form.html:13
 msgid "Continue"
-msgstr ""
+msgstr "繼續"
 
 #: webpay/pin/templates/pin/create.html:4
 msgid "Create your PIN:"
-msgstr ""
+msgstr "建立您的 PIN 碼:"
 
 #: webpay/pin/templates/pin/reset_confirm.html:4
 msgid "Confirm your new PIN:"
-msgstr ""
+msgstr "確認您的新 PIN 碼:"
 
 #: webpay/pin/templates/pin/reset_create.html:4
 msgid "Enter your new PIN:"
-msgstr ""
+msgstr "說入您的新 PIN 碼:"
 
 #: webpay/pin/templates/pin/includes/verify_form.html:1
 msgid "Enter payment PIN:"
-msgstr ""
+msgstr "輸入付款 PIN 碼:"
 
 #. This is the same as the standard forgot password that most sites have.
 #: webpay/pin/templates/pin/includes/verify_form.html:12
 msgid "Forgot PIN"
-msgstr ""
+msgstr "忘記 PIN 碼"
