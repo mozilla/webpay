@@ -68,10 +68,6 @@ SYSLOG_TAG = private.SYSLOG_TAG
 # HTTPS to disable HTTPS-only cookies.
 SESSION_COOKIE_SECURE = True
 
-# This hides actual exception messages in the UI unless the developer is
-# simulating a purchase (and thus testing it).
-VERBOSE_LOGGING = False
-
 DOMAIN = 'marketplace.allizom.org'
 ISSUER = DOMAIN
 NOTIFY_ISSUER = DOMAIN
