@@ -8,7 +8,7 @@ from webpay.settings import base
 from .. import splitstrip
 
 DOMAIN = 'marketplace-dev.allizom.org'
-ALLOWED_HOSTS = [DOMAIN]
+ALLOWED_HOSTS = [DOMAIN, 'marketplace-altdev.allizom.org']
 
 DATABASES = {}
 DATABASES['default'] = dj_database_url.parse(private.DATABASES_DEFAULT_URL)
