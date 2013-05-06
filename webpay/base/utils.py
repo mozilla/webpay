@@ -4,7 +4,10 @@ from django.conf import settings
 from django.shortcuts import render
 
 from cef import log_cef as _log_cef
+import commonware.log
 from tower import ugettext as _
+
+log = commonware.log.getLogger('w.pay')
 
 
 def log_cef(msg, request, **kw):
@@ -32,4 +35,8 @@ def _error(request, msg='', exception=None,
             msg = u'%s: %s' % (exception.__class__.__name__, exception)
         if msg:
             external = msg
+        if not exception and not msg:
+            # This should never happen but it might be happening.
+            # See bug 864306
+            log.error('No detailed error message/exception in handler')
     return render(request, 'error.html', {'error': external}, status=400)
