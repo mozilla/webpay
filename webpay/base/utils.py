@@ -3,8 +3,8 @@ import functools
 from django.conf import settings
 from django.shortcuts import render
 
-from cef import log_cef as _log_cef
 import commonware.log
+from cef import log_cef as _log_cef
 from tower import ugettext as _
 
 log = commonware.log.getLogger('w.pay')
@@ -30,6 +30,8 @@ def log_cef(msg, request, **kw):
 def _error(request, msg='', exception=None,
            is_simulation=False):
     external = _('There was an error processing that request.')
+    if msg:
+        log.error('Error handler: %s' % msg)
     if settings.VERBOSE_LOGGING or is_simulation:
         if exception:
             msg = u'%s: %s' % (exception.__class__.__name__, exception)
