@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Czech (cs)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-08 09:37-0700\n"
-"PO-Revision-Date: 2013-05-03 16:23+0100\n"
+"PO-Revision-Date: 2013-05-07 22:32+0100\n"
 "Last-Translator: Pavel Cvrcek <pcvrcek@mozilla.cz>\n"
 "Language-Team: Czech Mozilla Team <info@mozilla.cz>\n"
 "Language: cs\n"
@@ -21,7 +21,7 @@ msgstr "Při zpracování vaší platby nastala chyba."
 
 #: webpay/bango/templates/bango/success.html:8
 msgid "Your payment is complete. This window will now close."
-msgstr "Vaše platba byla dokončena. Toto okno bude uzavřeno."
+msgstr "Vaše platba byla dokončena. Toto okno bude nyní uzavřeno."
 
 #: webpay/bango/templates/bango/success.html:10
 msgid "This was only a simulated payment."
@@ -50,34 +50,34 @@ msgstr "Při zpracování vašeho požadavku nastala chyba."
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:8
 msgid "Web Pay"
-msgstr ""
+msgstr "Webová platba"
 
 #. L10n: first argument is a detailed error message.
 #: webpay/pay/forms.py:24
 msgid "Error decoding JWT: {0}"
-msgstr ""
+msgstr "Chyba při dekódování JWT: {0}"
 
 #. L10n: first argument is a data type, such as <unicode>
 #: webpay/pay/forms.py:34
 msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr ""
+msgstr "JWT nebyl dekódován do JSON objektu. Jeho typ byl {0}."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:48
 msgid "No one has been registered for JWT issuer {0}."
-msgstr ""
+msgstr "Nikdo není registrován pro JWT vydavatele {0}."
 
 #: webpay/pay/models.py:26
 msgid "Active"
-msgstr ""
+msgstr "Aktivní"
 
 #: webpay/pay/models.py:27
 msgid "Inactive"
-msgstr ""
+msgstr "Neaktivní"
 
 #: webpay/pay/models.py:28
 msgid "Revoked"
-msgstr ""
+msgstr "Odvolán"
 
 #: webpay/pay/templates/pay/lobby.html:10
 msgid "Beginning payment&hellip;"
@@ -93,15 +93,15 @@ msgstr "Přihlášení"
 
 #: webpay/pay/templates/pay/lobby.html:17
 msgid "logging you in to continue payment&hellip;"
-msgstr ""
+msgstr "probíhá vaše přihlášení pro pokračování platby&hellip;"
 
 #: webpay/pay/templates/pay/wait-to-start.html:10
 msgid "Waiting for payment to complete&hellip;"
-msgstr ""
+msgstr "Čekání na dokončení platby&hellip;"
 
 #: webpay/pin/forms.py:56
 msgid "You have already created a PIN."
-msgstr ""
+msgstr "Již jste vytvořil(a) PIN."
 
 #: webpay/pin/forms.py:68
 #: webpay/pin/forms.py:78
@@ -111,7 +111,7 @@ msgstr "Neplatný PIN."
 
 #: webpay/pin/templates/pin/confirm.html:4
 msgid "Confirm your PIN:"
-msgstr "Potvrzení vašeho PINu:"
+msgstr "Potvrďte svůj PIN:"
 
 #: webpay/pin/templates/pin/confirm.html:15
 #: webpay/pin/templates/pin/create.html:15
@@ -130,15 +130,15 @@ msgstr "Pokračovat"
 
 #: webpay/pin/templates/pin/create.html:4
 msgid "Create your PIN:"
-msgstr "Vytvoření PINu:"
+msgstr "Zadejte svůj PIN:"
 
 #: webpay/pin/templates/pin/reset_confirm.html:4
 msgid "Confirm your new PIN:"
-msgstr "Potvrzení nového PINu:"
+msgstr "Potvrďte nový PIN:"
 
 #: webpay/pin/templates/pin/reset_create.html:4
 msgid "Enter your new PIN:"
-msgstr "Vložení vašeho nového PINu:"
+msgstr "Vložte svůj nový PIN:"
 
 #: webpay/pin/templates/pin/includes/verify_form.html:1
 msgid "Enter payment PIN:"
