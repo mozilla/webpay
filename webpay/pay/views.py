@@ -18,8 +18,7 @@ from webpay.base.utils import _error
 from webpay.pin.forms import VerifyPinForm
 from webpay.pin.utils import pin_recently_entered
 
-from lib.marketplace.api import (client as marketplace, HttpClientError,
-                                 TierNotFound)
+from lib.marketplace.api import client as marketplace, UnknownPricePoint
 from lib.solitude import constants
 from lib.solitude.api import client as solitude
 
@@ -76,8 +75,8 @@ def process_pay_req(request):
     # Assert pricePoint is valid.
     try:
         marketplace.get_price(pay_req['request']['pricePoint'])
-    except (TierNotFound, HttpClientError), exc:
-        log.exception('calling verifying tier')
+    except UnknownPricePoint, exc:
+        log.exception('calling get price_price()')
         return _error(request, exception=exc,
                       is_simulation=form.is_simulation)
 

@@ -1,25 +1,23 @@
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 from ..utils import SlumberWrapper
-from slumber.exceptions import HttpClientError
 
 
-class TierNotFound(Exception):
+class UnknownPricePoint(Exception):
     pass
 
 
 class MarketplaceAPI(SlumberWrapper):
     errors = {}
 
-    def get_price(self, tier):
+    def get_price(self, point):
         # TODO: cache this.
         try:
             return (self.api.webpay.prices()
-                    .get_object(provider='bango', pricePoint=tier))
-        except HttpClientError, err:
-            if err.response.status_code:
-                raise TierNotFound(tier)
-            raise
+                    .get_object(provider='bango', pricePoint=point))
+        except ObjectDoesNotExist:
+            raise UnknownPricePoint(point)
 
 if not settings.MARKETPLACE_URL:
     raise ValueError('MARKETPLACE_URL is required')
