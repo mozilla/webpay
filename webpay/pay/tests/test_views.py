@@ -11,6 +11,7 @@ import mock
 from nose import SkipTest
 from nose.tools import eq_
 
+from lib.marketplace.api import UnknownPricePoint
 from lib.solitude import constants
 
 from webpay.base.tests import BasicSessionCase
@@ -74,7 +75,7 @@ class TestVerify(Base):
         self.start_pay = patch.start()
         self.patches.append(patch)
         patch = mock.patch('webpay.pay.views.marketplace')
-        patch.start()
+        self.mkt = patch.start()
         self.patches.append(patch)
 
     def tearDown(self):
@@ -325,6 +326,14 @@ class TestVerify(Base):
         payjwt['request']['icons'] = {'64': 'not-a-url'}
         payload = self.request(payload=payjwt)
         eq_(self.get(payload).status_code, 400)
+
+    def test_invalid_price_point(self):
+        price = self.mkt.get_price
+        price.side_effect = UnknownPricePoint
+        payload = self.request(payload=self.payload())
+        res = self.get(payload)
+        assert price.called
+        eq_(res.status_code, 400)
 
 
 @mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')

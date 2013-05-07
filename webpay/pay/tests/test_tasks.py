@@ -17,7 +17,7 @@ from requests.exceptions import RequestException, Timeout
 import test_utils
 
 
-from lib.marketplace.api import TierNotFound
+from lib.marketplace.api import UnknownPricePoint
 from lib.solitude import api
 from lib.solitude import constants
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
@@ -473,8 +473,8 @@ class TestStartPay(test_utils.TestCase):
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.mkt_client.get_price')
     def test_price_fails(self, get_price, solitude):
-        get_price.side_effect = TierNotFound
-        with self.assertRaises(TierNotFound):
+        get_price.side_effect = UnknownPricePoint
+        with self.assertRaises(UnknownPricePoint):
             self.start()
 
     @mock.patch('lib.solitude.api.client.slumber')
