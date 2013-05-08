@@ -69,11 +69,12 @@ def success(request):
 
     # We should only have OK's coming from Bango, presumably.
     if request.GET.get('ResponseCode') != 'OK':
-        log.info('Invalid response code: %s' % request.GET.get('ResponseCode'))
-        return _error(request)
+        return _error(request,
+                      msg=('in success(): Invalid Bango response code: %s' %
+                           request.GET.get('ResponseCode')))
 
     if not _record(request):
-        return _error(request)
+        return _error(request, msg='Could not record Bango success')
 
     # Signature verification was successful; fulfill the payment.
     tasks.payment_notify.delay(request.GET.get('MerchantTransactionId'))
@@ -86,13 +87,14 @@ def error(request):
 
     # We should NOT have OK's coming from Bango, presumably.
     if request.GET.get('ResponseCode') == 'OK':
-        log.info('Invalid response code: %s' % request.GET.get('ResponseCode'))
-        return _error(request)
+        return _error(request,
+                      msg=('in error(): Invalid Bango response code: %s' %
+                           request.GET.get('ResponseCode')))
 
     if not _record(request):
-        return _error(request)
+        return _error(request, msg='Could not record Bango error')
 
     if request.GET.get('ResponseCode') == 'CANCEL':
         return render(request, 'bango/cancel.html')
 
-    return _error(request)
+    return _error(request, msg='Received Bango error')
