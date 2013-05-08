@@ -1,4 +1,4 @@
-require(['cli', 'pay/bango'], function(cli, bango) {
+require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
     "use strict";
 
     var bodyData = cli.bodyData;
@@ -15,16 +15,25 @@ require(['cli', 'pay/bango'], function(cli, bango) {
     var onLogout = function() {
         // This is the default onLogout but might be replaced by other handlers.
         console.log('default onLogout');
+        auth.resetUser();
         $('.message').hide();
         $('#begin').fadeOut();
         $('#login').fadeIn();
     }
 
+    function focusOnPin() {
+        $('.message').hide();
+        $('#enter-pin').fadeIn();
+        $('#pin [name="pin"]')[0].focus();
+    }
+
     if (bodyData.flow === 'lobby') {
         var verifyUrl = bodyData.verifyUrl;
+        var calledBack = false;
 
-        navigator.id.watch({
+        id.watch({
             onlogin: function(assertion) {
+                calledBack = true;
                 console.log('nav.id onlogin');
                 loggedIn = true;
                 $('.message').hide();
@@ -36,9 +45,7 @@ require(['cli', 'pay/bango'], function(cli, bango) {
                             if (!data.has_pin) {
                                 window.location = data.pin_create;
                             } else {
-                                $('.message').hide();
-                                $('#enter-pin').fadeIn();
-                                $('#pin [name="pin"]')[0].focus();
+                                focusOnPin();
                             }
                         });
                     })
@@ -47,9 +54,19 @@ require(['cli', 'pay/bango'], function(cli, bango) {
                     });
             },
             onlogout: function() {
+                calledBack = true;
                 loggedIn = false;
                 console.log('nav.id onlogout');
                 onLogout();
+            },
+            // This can become onmatch() soon.
+            // See this issue for the order of when onready is called:
+            // https://github.com/mozilla/browserid/issues/2648
+            onready: function() {
+                if (!calledBack && cli.bodyData.loggedInUser) {
+                    console.log('Probably logged in, Persona never called back');
+                    focusOnPin();
+                }
             }
         });
 
@@ -92,35 +109,37 @@ require(['cli', 'pay/bango'], function(cli, bango) {
     $('#forgot-pin').click(function(evt) {
         var anchor = $(this);
         var bangoReq;
+        var personaLoggedOut = $.Deferred();
+
         evt.stopPropagation();
         evt.preventDefault();
-        // Temporary logging for bug 850899
-        console.log('Calling bango.logout() from', anchor.attr('id'), anchor.attr('class'));
         // TODO: Update the UI to indicate that logouts are in progress.
-        bango.logout().done(function() {
-            // Next, log out of Persona so that the user has to
-            // re-authenticate before resetting a PIN.
 
-            // Define a new logout handler.
+        // Define a new logout handler.
+        onLogout = function() {
+            console.log('forgot-pin onLogout');
+            // It seems necessary to nullify the logout handler because
+            // otherwise it is held in memory and called on the next page.
             onLogout = function() {
-                console.log('forgot-pin onLogout');
-                // Wait until Persona has logged us out, then redirect to the
-                // original destination.
-                window.location.href = anchor.attr('href');
-
-                // It seems necessary to nullify the logout handler because
-                // otherwise it is held in memory and called on the next page.
-                onLogout = function() {
-                    console.log('null onLogout');
-                };
+                console.log('null onLogout');
             };
-            if (loggedIn) {
-                console.log('Logging out of Persona');
-                navigator.id.logout();
-            } else {
-                console.log('Already logged out of Persona, calling onLogout ourself.');
-                onLogout();
-            }
-        });
+            personaLoggedOut.resolve();
+        };
+
+        $.when(auth.resetUser(), bango.logout(), personaLoggedOut)
+            .done(function _allLoggedOut() {
+                // Redirect to the original destination.
+                window.location.href = anchor.attr('href');
+            });
+
+        // Finally, log out of Persona so that the user has to
+        // re-authenticate before resetting a PIN.
+        if (loggedIn) {
+            console.log('Logging out of Persona');
+            navigator.id.logout();
+        } else {
+            console.log('Already logged out of Persona, calling onLogout ourself.');
+            onLogout();
+        }
     });
 });

@@ -15,6 +15,20 @@ from .utils import get_uuid, set_user
 log = commonware.log.getLogger('w.auth')
 
 
+@require_POST
+def reset_user(request):
+    """
+    Reset the logged in Persona user.
+
+    This is not meant as a full logout. It's meant to compliment
+    navigator.id.logout() so that both Webpay and Persona think the user
+    is logged out.
+    """
+    if request.session.get('logged_in_user'):
+        del request.session['logged_in_user']
+    return http.HttpResponse('OK')
+
+
 @anonymous_csrf_exempt
 @require_POST
 @json_view
@@ -82,5 +96,5 @@ def verify(request):
 
         log.error('Persona assertion failed.')
 
-    request.session.clear()
+    request.session.flush()
     return http.HttpResponseBadRequest()

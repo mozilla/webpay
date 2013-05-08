@@ -32,6 +32,8 @@ def get_user(request):
 def set_user(request, email):
     uuid = get_uuid(email)
     request.session['uuid'] = uuid
+    # This is only used by navigator.id.watch()
+    request.session['logged_in_user'] = email
     buyer = client.get_buyer(uuid)
     set_user_has_pin(request, buyer.get('pin', False))
     set_user_has_confirmed_pin(request, buyer.get('pin_confirmed', False))

@@ -2,6 +2,7 @@
 <html LANG="{{ LANG }}" dir="{{ DIR }}">
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta name="csrf" content="{{ csrf_token }}">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     {# L10n: Web Pay is what we call the payment server/flow. #}
@@ -20,6 +21,8 @@
     data-privacy-policy="https://marketplace.firefox.com/privacy-policy"
     data-terms-of-service="https://marketplace.firefox.com/terms-of-use"
     data-unverified-issuer="{{ settings.BROWSERID_UNVERIFIED_ISSUER }}"
+    data-logged-in-user="{{ session.get('logged_in_user', '') }}"
+    data-reset-user-url="{{ url('auth.reset_user') }}"
     data-bango-logout-url="{{ settings.BANGO_LOGOUT_URL }}"
     data-pin-short-warning="{{ _('Pin must be 4 digits.') }}"
     data-pin-non-numeric-warning="{{ _('Pin can only contain digits.') }}"
