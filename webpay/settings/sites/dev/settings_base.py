@@ -101,3 +101,7 @@ SOLITUDE_OAUTH = {'key': private.SOLITUDE_OAUTH_KEY,
                   'secret': private.SOLITUDE_OAUTH_SECRET}
 
 SENTRY_DSN = private.SENTRY_DSN
+
+STATSD_HOST = private.STATSD_HOST
+STATSD_PORT = private.STATSD_PORT
+STATSD_PREFIX = private.STATSD_PREFIX

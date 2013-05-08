@@ -92,3 +92,7 @@ BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
 
 # Temporarily only accept simulations while we work to get Bango online.
 ONLY_SIMULATIONS = True
+
+STATSD_HOST = private.STATSD_HOST
+STATSD_PORT = private.STATSD_PORT
+STATSD_PREFIX = private.STATSD_PREFIX

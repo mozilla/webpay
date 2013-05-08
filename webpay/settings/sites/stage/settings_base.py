@@ -90,3 +90,7 @@ BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'
 BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
 
 VERBOSE_LOGGING = True
+
+STATSD_HOST = private.STATSD_HOST
+STATSD_PORT = private.STATSD_PORT
+STATSD_PREFIX = private.STATSD_PREFIX

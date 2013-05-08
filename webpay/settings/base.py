@@ -171,21 +171,22 @@ LOGGING = {
 
 
 MIDDLEWARE_CLASSES = (
+    'django_statsd.middleware.GraphiteRequestTimingMiddleware',
+    'django_statsd.middleware.GraphiteMiddleware',
     'webpay.base.middleware.LocaleMiddleware',
-    'multidb.middleware.PinningRouterMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'session_csrf.CsrfMiddleware',  # Must be after auth middleware.
     'django.contrib.messages.middleware.MessageMiddleware',
     'commonware.middleware.FrameOptionsHeader',
-    'mobility.middleware.DetectMobileMiddleware',
-    'mobility.middleware.XMobileMiddleware',
     'webpay.base.middleware.LogJSONerror',
     'webpay.base.middleware.CEFMiddleware',
     'django_paranoia.middleware.Middleware',
-    'django_paranoia.sessions.ParanoidSessionMiddleware'
+    'django_paranoia.sessions.ParanoidSessionMiddleware',
 )
+
+STATSD_CLIENT = 'django_statsd.clients.normal'
 
 DJANGO_PARANOIA_REPORTERS = [
     'django_paranoia.reporters.cef_',
