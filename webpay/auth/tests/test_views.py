@@ -7,6 +7,7 @@ import mock
 from nose.tools import eq_
 
 from webpay.auth.utils import get_uuid, client
+from webpay.base.tests import BasicSessionCase
 
 from . import good_assertion, SessionTestCase
 
@@ -70,3 +71,20 @@ class TestAuth(SessionTestCase):
         eq_(data['user_hash'], get_uuid(good_assertion['unverified-email']))
         assert verify_assertion.call_args[0][2]['forceAuthentication'], (
             verify_assertion.call_args)
+
+
+class TestResetUser(BasicSessionCase):
+
+    def test_reset(self):
+        uuid = 'some:uuid'
+        session = self.client.session
+        session['logged_in_user'] = 'jimmy.blazzo@hotmail.com'
+        session['uuid'] = uuid
+        session.save()
+        self.client.post(reverse('auth.reset_user'))
+        eq_(self.client.session.get('logged_in_user'), None)
+        eq_(self.client.session.get('uuid'), uuid)
+
+    def test_when_no_user(self):
+        # This should not blow up when no user is in the session.
+        self.client.post(reverse('auth.reset_user'))

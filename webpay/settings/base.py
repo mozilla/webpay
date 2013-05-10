@@ -44,7 +44,10 @@ MINIFY_BUNDLES = {
             'js/lib/format.js',
 
             # These are modules used by others.
+            # The order is important, do not alphabetize.
             'js/cli.js',
+            'js/id.js',
+            'js/auth.js',
             'js/pay/bango.js',
 
             # These are top-level modules.
@@ -101,7 +104,7 @@ BROWSERID_CREATE_USER = False
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'jingo_minify.helpers.build_ids',
     'django_browserid.context_processors.browserid',
-    'webpay.base.context_processors.static_url',
+    'webpay.base.context_processors.defaults',
 ]
 
 # Should robots.txt deny everything or disallow a calculated list of URLs we
@@ -249,9 +252,7 @@ BROWSERID_DOMAIN = 'native-persona.org'
 # be sent to the client or the verifier.
 # This looks confusing because it is! b2g2pac is the only one currently
 # whitelisted.
-#BROWSERID_UNVERIFIED_ISSUER = 'b2g2pac.personatest.org'
-# Temporarily disabling this to get auto-logins working. See bug 850084.
-BROWSERID_UNVERIFIED_ISSUER = None
+BROWSERID_UNVERIFIED_ISSUER = 'b2g2pac.personatest.org'
 BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
 BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN
 

@@ -1,24 +1,24 @@
-require(['cli', 'pay/bango'], function(cli, bango) {
+require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
     "use strict";
     var bodyData = cli.bodyData,
         on_success;
 
     function watchForceAuth(on_success) {
-        navigator.id.watch({
-            onlogin: function(assertion) {
-                console.log('nav.id onlogin');
+        id.watch({
+            onlogin: function _resetLogin(assertion) {
+                console.log('reset: nav.id onlogin');
                 $.post(bodyData.verifyUrl, {assertion: assertion})
-                    .success(function(data, textStatus, jqXHR) {
+                    .success(function _resetLoginSuccess(data, textStatus, jqXHR) {
                         console.log('login success');
                         bango.prepareUser(data.user_hash).done(function() {
                             on_success.apply(this);
                         });
                     })
-                    .error(function() {
+                    .error(function _resetLoginError() {
                         console.log('login error');
                     });
             },
-            onlogout: function() {
+            onlogout: function _resetLogout() {
                 console.log('nav.id onlogout');
             }
         });
