@@ -17,6 +17,8 @@ class BasePinForm(ParanoidForm):
         self.fields['pin'].widget.attrs.update({
             'autocomplete': 'off',
             'type': 'number',
+            # Digit only keyboard for B2G (bug 820268).
+            'x-inputmode': 'digits',
         })
 
     def append_to_errors(self, field, error):
