@@ -24,7 +24,7 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
     function focusOnPin() {
         $('.message').hide();
         $('#enter-pin').fadeIn();
-        $('#pin [name="pin"]')[0].focus();
+        $('#pin [name="pin"]').focus();
     }
 
     if (bodyData.flow === 'lobby') {
