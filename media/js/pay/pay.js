@@ -86,12 +86,7 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
         ev.preventDefault();
         $('.message').hide();
         $('#login-wait').fadeIn();
-        navigator.id.request({
-            allowUnverified: true,
-            forceIssuer: bodyData.unverifiedIssuer,
-            privacyPolicy: bodyData.privacyPolicy,
-            termsOfService: bodyData.termsOfService
-        });
+        id.request();
     });
 
     function callPaySuccess() {
