@@ -25,12 +25,8 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
     }
 
     function startForceAuth() {
-        navigator.id.request({
-            allowUnverified: true,
-            forceIssuer: bodyData.unverifiedIssuer,
-            forceAuthentication: true,
-            privacyPolicy: bodyData.privacyPolicy,
-            termsOfService: bodyData.termsOfService,
+        id.request({
+            experimental_forceAuthentication: true,
             oncancel: function() {
                 window.location.href = bodyData.cancelUrl;
             }

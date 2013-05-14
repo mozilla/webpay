@@ -5,6 +5,17 @@ define('id', ['cli'], function(cli) {
     'use strict';
 
     return {
+        request: function _request(options) {
+            var defaults = {
+                experimental_allowUnverified: true,
+                experimental_forceIssuer: cli.bodyData.unverifiedIssuer,
+                privacyPolicy: cli.bodyData.privacyPolicy,
+                termsOfService: cli.bodyData.termsOfService
+            };
+            options = $.extend({}, defaults, options || {});
+
+            navigator.id.request(options);
+        },
         watch: function _watch() {
             var user = cli.bodyData.loggedInUser;
             console.log('loggedInUser', typeof user, user);
