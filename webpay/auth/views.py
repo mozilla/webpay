@@ -25,6 +25,8 @@ def reset_user(request):
     is logged out.
     """
     if request.session.get('logged_in_user'):
+        log.info('Resetting Persona user %s'
+                 % request.session['logged_in_user'])
         del request.session['logged_in_user']
     return http.HttpResponse('OK')
 
