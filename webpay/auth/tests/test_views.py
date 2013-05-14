@@ -69,7 +69,8 @@ class TestAuth(SessionTestCase):
         eq_(res.status_code, 200)
         data = json.loads(res.content)
         eq_(data['user_hash'], get_uuid(good_assertion['unverified-email']))
-        assert verify_assertion.call_args[0][2]['forceAuthentication'], (
+        v = verify_assertion.call_args[0][2]
+        assert v['experimental_forceAuthentication'], (
             verify_assertion.call_args)
 
 

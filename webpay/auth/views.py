@@ -40,12 +40,12 @@ def reverify(request):
         # TODO: when we want to require a forced-auth login across the
         # entire site then how do we do it?
         # See bug 836060.
-        extra_params = {'forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
+        extra_params = {'experimental_forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
                         # TODO: how do we make sure this is a proper forced
                         #       auth assertion?
                         # This can also be addressed in bug 836060
-                        'forceAuthentication': 'true',
-                        'allowUnverified': 'true'}
+                        'experimental_forceAuthentication': 'true',
+                        'experimental_allowUnverified': 'true'}
 
         log.info('Re-verifying Persona assertion. url: %s, audience: %s, '
                  'extra_params: %s' % (url, audience, extra_params))
@@ -78,8 +78,8 @@ def verify(request):
     if form.is_valid():
         url = settings.BROWSERID_VERIFICATION_URL
         audience = get_audience(request)
-        extra_params = {'forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
-                        'allowUnverified': 'true'}
+        extra_params = {'experimental_forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
+                        'experimental_allowUnverified': 'true'}
         assertion = form.cleaned_data['assertion']
 
         log.info('verifying Persona assertion. url: %s, audience: %s, '
