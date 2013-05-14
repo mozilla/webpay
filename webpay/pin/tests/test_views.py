@@ -169,13 +169,17 @@ class ConfirmPinViewTest(PinViewTestCase):
         eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
 
     @patch.object(client, 'confirm_pin', lambda x, y: True)
-    def test_good_pin(self):
+    @patch('webpay.pin.views.set_user_has_confirmed_pin', auto_spec=True)
+    def test_good_pin(self, set_user_has_confirmed_pin):
         res = self.client.post(self.url, data={'pin': '1234'})
+        set_user_has_confirmed_pin.assert_called_with(ANY, True)
         assert res['Location'].endswith(get_payment_url())
 
     @patch.object(client, 'confirm_pin', lambda x, y: False)
-    def test_bad_pin(self):
+    @patch('webpay.pin.views.set_user_has_confirmed_pin', auto_spec=True)
+    def test_bad_pin(self, set_user_has_confirmed_pin):
         res = self.client.post(self.url, data={'pin': '1234'})
+        assert not set_user_has_confirmed_pin.called
         eq_(res.status_code, 200)
 
     @patch.object(client, 'confirm_pin')

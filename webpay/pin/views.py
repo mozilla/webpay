@@ -10,7 +10,8 @@ import commonware.log
 from lib.solitude.api import client
 from tower import ugettext as _
 from webpay.auth.decorators import enforce_sequence, user_verified
-from webpay.auth.utils import get_user, set_user_has_pin
+from webpay.auth.utils import (get_user, set_user_has_pin,
+                               set_user_has_confirmed_pin)
 from webpay.pay import get_payment_url
 from . import forms
 from . import utils
@@ -45,6 +46,7 @@ def confirm(request):
     if request.method == 'POST':
         form = forms.ConfirmPinForm(uuid=get_user(request), data=request.POST)
         if form.is_valid():
+            set_user_has_confirmed_pin(request, True)
             return http.HttpResponseRedirect(get_payment_url())
     form.no_pin = True
     return render(request, 'pin/pin_form.html', {'form': form,
