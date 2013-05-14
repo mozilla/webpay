@@ -18,8 +18,9 @@ flow = {
 
 
 def log_redirect(request, step, dest):
-    log_cef('Buyer was attempting %s redirecting to: %s' % (step, dest),
-            request)
+    msg = 'Buyer was attempting %s redirecting to: %s' % (step, dest)
+    log.info('enforce_sequence: %s' % msg)
+    log_cef(msg, request)
 
 
 def user_verified(f):

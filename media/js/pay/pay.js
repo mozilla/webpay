@@ -124,7 +124,9 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
         $.when(auth.resetUser(), bango.logout(), personaLoggedOut)
             .done(function _allLoggedOut() {
                 // Redirect to the original destination.
-                window.location.href = anchor.attr('href');
+                var dest = anchor.attr('href');
+                console.log('forgot-pin logout done; redirect to', dest);
+                window.location.href = dest;
             });
 
         // Finally, log out of Persona so that the user has to
