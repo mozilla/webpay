@@ -35,10 +35,12 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
 
     $('.force-auth-button').on('click', function(evt) {
         evt.preventDefault();
+        cli.showProgress(bodyData.personaMsg);
         if (window.localStorage.getItem('reset-step') === 'pin') {
             /* You've already re-signed in. */
+            cli.hideProgress();
             $('#confirm-pin-reset').hide();
-            $('#enter-pin').show();
+            $('#enter-pin').fadeIn();
             window.localStorage.removeItem('reset-step');
             return;
         }
@@ -55,8 +57,9 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
                 /* You are in the reset step and you've logged in,
                  * let's show you a pin.
                  */
+                cli.hideProgress();
                 $('#confirm-pin-reset').hide();
-                $('#enter-pin').show();
+                $('#enter-pin').fadeIn();
             };
         }
         watchForceAuth(on_success);

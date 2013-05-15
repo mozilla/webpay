@@ -26,12 +26,23 @@
     data-bango-logout-url="{{ settings.BANGO_LOGOUT_URL }}"
     data-pin-short-warning="{{ _('Pin must be 4 digits.') }}"
     data-pin-non-numeric-warning="{{ _('Pin can only contain digits.') }}"
+    data-loading-msg="{{ _('Loading') }}"
+    data-begin-msg="{{ _('Beginning payment&hellip;') }}"
+    data-persona-msg="{{ _('Connecting to Persona') }}"
+    data-complete-msg="{{ _('Payment complete') }}"
+    data-cancelled-msg="{{ _('Payment cancelled') }}"
     >
     <section class="pay">
       <div id="content">
         {% block content %}{% endblock %}
       </div>
     </section>
+
+    <div id="progress" class="progress hidden">
+      <div class="throbber"></div>
+      <span class="txt"></span>
+    </div>
+
     {% block site_js %}
       <script src="{{ settings.BROWSERID_JS_URL }}"></script>
       {{ js('pay') }}

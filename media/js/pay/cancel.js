@@ -2,6 +2,7 @@ require(['cli'], function(cli) {
     "use strict";
 
     function callPayFailure() {
+        cli.showProgress(cli.bodyData.cancelledMsg);
         // There is a delay before paymentFailed gets injected into scope it
         // seems.
         if (typeof window.paymentFailed === 'undefined') {

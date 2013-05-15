@@ -6,7 +6,8 @@
 {%- endblock %}
 
 {% block content %}
-  <div id="begin" class="message">
-    {{ _('Waiting for payment to complete&hellip;') }}
-  </div>
+<div id="progress" class="progress">
+  <div class="throbber"></div>
+  <span class="txt">{{ _('Waiting for payment to complete&hellip;') }}</span>
+</div>
 {% endblock %}

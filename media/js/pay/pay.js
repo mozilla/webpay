@@ -16,13 +16,13 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
         // This is the default onLogout but might be replaced by other handlers.
         console.log('default onLogout');
         auth.resetUser();
-        $('.message').hide();
-        $('#begin').fadeOut();
+        cli.hideProgress();
         $('#login').fadeIn();
-    }
+    };
 
     function focusOnPin() {
-        $('.message').hide();
+        $('#login').hide();
+        cli.hideProgress();
         $('#enter-pin').fadeIn();
         $('#pin [name="pin"]')[0].focus();
     }
@@ -30,14 +30,13 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
     if (bodyData.flow === 'lobby') {
         var verifyUrl = bodyData.verifyUrl;
         var calledBack = false;
-
+        cli.showProgress(bodyData.beginMsg);
         id.watch({
             onlogin: function(assertion) {
                 calledBack = true;
                 console.log('nav.id onlogin');
                 loggedIn = true;
-                $('.message').hide();
-                $('#login-wait').fadeIn();
+                cli.showProgress(bodyData.personaMsg);
                 $.post(verifyUrl, {assertion: assertion})
                     .success(function(data, textStatus, jqXHR) {
                         console.log('login success');
@@ -73,6 +72,7 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
     } else {
         var $entry = $('#enter-pin');
         if (!$entry.hasClass('hidden')) {
+            cli.hideProgress();
             $entry.fadeIn();
         }
     }
@@ -84,14 +84,14 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
     $('#signin').click(function(ev) {
         console.log('signing in manually');
         ev.preventDefault();
-        $('.message').hide();
-        $('#login-wait').fadeIn();
+        cli.showProgress(bodyData.personaMsg);
         id.request();
     });
 
     function callPaySuccess() {
         // There is a delay before paymentSuccess gets injected into scope it
         // seems.
+        cli.showProgress(bodyData.completeMsg);
         if (typeof window.paymentSuccess === 'undefined') {
             console.log('waiting for paymentSuccess to appear in scope');
             window.setTimeout(callPaySuccess, 500);
@@ -108,7 +108,7 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
 
         evt.stopPropagation();
         evt.preventDefault();
-        // TODO: Update the UI to indicate that logouts are in progress.
+        cli.showProgress();
 
         // Define a new logout handler.
         onLogout = function() {
