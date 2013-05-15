@@ -24,7 +24,7 @@
     data-logged-in-user="{{ session.get('logged_in_user', '') }}"
     data-reset-user-url="{{ url('auth.reset_user') }}"
     data-bango-logout-url="{{ settings.BANGO_LOGOUT_URL }}"
-    data-pin-short-warning="{{ _('Pin must be 4 digits.') }}"
+    data-pin-num-chars-warning="{{ _('Pin must be 4 digits.') }}"
     data-pin-non-numeric-warning="{{ _('Pin can only contain digits.') }}"
     data-loading-msg="{{ _('Loading') }}"
     data-begin-msg="{{ _('Beginning payment&hellip;') }}"
