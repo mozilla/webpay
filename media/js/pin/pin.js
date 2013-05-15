@@ -99,6 +99,7 @@ require(['cli'], function(cli) {
     }
 
     $(window).on('focus', '.pinbox input', function(e) {
+        console.log('[pin] focused');
         this.value = '';
         $pinBox.removeClass('error');
         $submitButton.prop('disabled', true);
@@ -136,8 +137,5 @@ require(['cli'], function(cli) {
         var pinClass = hasError ? ' class="filled"' : '';
         box.html(Array(PINLENGTH+1).join('<span'+pinClass+'></span>'));
         $el.prepend(box);
-        if (!hasError) {
-            $el.find('input').focus();
-        }
     });
 });
