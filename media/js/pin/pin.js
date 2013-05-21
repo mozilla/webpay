@@ -141,5 +141,7 @@ require(['cli'], function(cli) {
         var pinClass = hasError ? ' class="filled"' : '';
         box.html(Array(PINLENGTH+1).join('<span'+pinClass+'></span>'));
         $el.prepend(box);
+        console.log('[pin] requesting focus on pin');
+        cli.focusOnPin();
     });
 });

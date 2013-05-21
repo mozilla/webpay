@@ -19,6 +19,25 @@ define('cli', [], function() {
             if ($progress.length) {
                 $progress.hide();
             }
+        },
+        focusOnPin: function(config) {
+            config = config || {};
+            var $form = config.$form || $('#pin');
+            var $toHide = config.$toHide || null;
+            var $toFadeIn = config.$toFadeIn || null;
+            var $pinBox = $form.find('.pinbox');
+            var $input = $form.find('input[name="pin"]');
+            if ($toHide && $toHide.length) {
+                $toHide.hide();
+            }
+            this.hideProgress();
+            if ($toFadeIn && $toFadeIn.length) {
+                $toFadeIn.fadeIn();
+            }
+            if (!$pinBox.hasClass('error')) {
+                console.log('[cli] Focusing pin');
+                $input.focus();
+            }
         }
     };
 });

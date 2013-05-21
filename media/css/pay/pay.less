@@ -47,13 +47,14 @@ a:focus {
 }
 
 .progress {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
+    background: @bg-main-cont;
+    background: rgba(244,244,244,0.9);
     bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
     z-index: 20;
-    background: rgba(244,244,244,0.90);
 }
 
 .progress .txt {
@@ -121,7 +122,6 @@ form footer button[type=submit] {
         text-align: center;
         top: 0;
         width: 100%;
-
         &::-moz-placeholder {
           color: #888;
           font-family: monospace;
