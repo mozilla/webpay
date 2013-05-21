@@ -16,7 +16,7 @@ from webpay.auth.decorators import user_verified
 from webpay.base.decorators import json_view
 from webpay.base.utils import _error
 from webpay.pin.forms import VerifyPinForm
-from webpay.pin.utils import pin_recently_entered
+from webpay.pin.utils import has_pin, pin_recently_entered
 
 from lib.marketplace.api import client as marketplace, UnknownPricePoint
 from lib.solitude import constants
@@ -116,6 +116,9 @@ def lobby(request):
 
     if pin_recently_entered(request):
         return http.HttpResponseRedirect(get_payment_url())
+
+    if sess.get('uuid') and not has_pin(request):
+        return http.HttpResponseRedirect(reverse('pin.create'))
 
     # If the buyer closed the trusted UI during reset flow, we want to unset
     # the reset pin flag. They can hit the forgot pin button if they still

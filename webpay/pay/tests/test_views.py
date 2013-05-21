@@ -121,6 +121,10 @@ class TestVerify(Base):
     def test_reset_flag_true(self, set_needs_pin_reset,
                              get_price, get_active_product):
         self.set_secret(get_active_product)
+        # To appease has_pin
+        self.session['uuid_has_pin'] = True
+        self.session['uuid_has_confirmed_pin'] = True
+
         self.session['uuid_needs_pin_reset'] = True
         self.session['uuid'] = 'some:uuid'
         self.session.save()
