@@ -38,7 +38,7 @@ msgstr "Désolé, mais nous ne pouvons pas trouver la page que vous cherchez."
 
 #: webpay/base/templates/500.html:5 webpay/base/templates/500.html:8
 msgid "Something went wrong!"
-msgstr "Quelque chose ne pas pas !"
+msgstr "Quelque chose ne va pas !"
 
 #: webpay/base/templates/500.html:10 webpay/pay/views.py:32
 #: webpay/pay/templates/pay/error.html:4
