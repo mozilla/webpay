@@ -16,18 +16,22 @@ require(['cli'], function(cli) {
         27  // escape
     ];
 
+    function isComboKeyEvent(e) {
+        // Meta / Alt / Ctrl / Shift keys
+        return e.shiftKey || e.metaKey || e.ctrlKey || e.altKey;
+    }
+
     function isAllowedKeyEvent(e) {
-        // Checks for other ok key events such as backspace, tab etc.
-        return _.contains(acceptedKeyCodes, e.keyCode);
+        // Checks for allowed key events such as backspace, tab and shift + tab etc.
+        var kc = e.keyCode;
+        var isShiftTab =  e.shiftKey && kc == 9;
+        var isAllowedKey = _.contains(acceptedKeyCodes, kc) && !isComboKeyEvent(e);
+        return isAllowedKey || isShiftTab;
     }
 
     function isNumericKeyEvent(e){
         var charCode = e.charCode;
-        // Meta / Alt / Ctrl / Shift keys
-        var isCombo = e.shiftKey || e.metaKey || e.ctrlKey || e.altKey;
-        // 0-9
-        var isNumeric = charCode >= 48 && charCode <= 57;
-        return !isCombo && isNumeric;
+        return !isComboKeyEvent(e) && charCode >= 48 && charCode <= 57;
     }
 
     function watchInput(i) {
@@ -110,8 +114,8 @@ require(['cli'], function(cli) {
     }).on('click', '.pinbox', function(e) {
         $pinInput.focus();
     }).on('keypress', '.pinbox input', function(e) {
-        // Prevent more than 4 numbers in webkit.
-        if ($(this).val().length == PINLENGTH) {
+        // Prevent more than 4 numbers but allow backspace etc.
+        if (!isAllowedKeyEvent(e) && $(this).val().length == PINLENGTH) {
             return false;
         }
         // Don't show error for backspace/tab etc.
