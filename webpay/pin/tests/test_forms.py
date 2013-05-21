@@ -20,19 +20,19 @@ class CreatePinFormTest(BasePinFormTestCase):
     def test_new_user(self):
         form = forms.CreatePinForm(uuid=self.uuid, data=self.data)
         assert form.is_valid(), form.errors
-        assert not hasattr(form, 'buyer')
+        assert not getattr(form, 'buyer_exists', False)
 
     @patch.object(client, 'get_buyer', lambda x: {'uuid': x})
     def test_existing_buyer(self):
         form = forms.CreatePinForm(uuid=self.uuid, data=self.data)
         assert form.is_valid(), form.errors
-        assert hasattr(form, 'buyer')
+        assert getattr(form, 'buyer_exists', False)
 
     @patch.object(client, 'get_buyer', lambda x: {'uuid:': x, 'pin': 'fake'})
     def test_has_pin(self):
         form = forms.CreatePinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
-        assert hasattr(form, 'buyer')
+        assert getattr(form, 'buyer_exists', False)
         assert 'You have already created a PIN.' in str(form.errors)
 
     def test_too_long_pin(self):
