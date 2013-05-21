@@ -5,5 +5,8 @@
 {%- endblock %}
 
 {% block content %}
-  <p class="centered">{{ _('Your payment is complete.') }}</p>
+  <div id="progress" class="progress">
+    <div class="throbber"></div>
+    <span class="txt">{{ _('Your payment is complete.') }}</span>
+  </div>
 {% endblock %}
