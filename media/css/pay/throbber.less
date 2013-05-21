@@ -5,34 +5,32 @@
     margin-top: 50px;
     width: 50px;
     height: 50px;
-    -webkit-animation: 0.9s spin infinite steps(30);
-    -moz-animation: 0.9s spin infinite steps(30);
-    animation: 0.9s spin infinite steps(30);
+    -webkit-animation: 0.9s spin infinite linear;
+    -moz-animation: 0.9s spin infinite linear;
+    animation: 0.9s spin infinite linear;
 }
 
 @-webkit-keyframes spin {
     from {
-        -webkit-transform: rotate(0turn);
+        -webkit-transform: rotate(0deg);
     }
     to {
-        -webkit-transform: rotate(1turn);
+        -webkit-transform: rotate(365deg);
     }
 }
 @-moz-keyframes spin {
     from {
-        -moz-transform: rotate(0turn);
+        -moz-transform: rotate(0deg);
     }
     to {
-        -moz-transform: rotate(1turn);
+        -moz-transform: rotate(365deg);
     }
 }
 @keyframes spin {
     from {
-        transform: rotate(0turn);
+        transform: rotate(0deg);
     }
     to {
-        transform: rotate(1turn);
+        transform: rotate(365deg);
     }
 }
-
-
