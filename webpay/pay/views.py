@@ -13,6 +13,7 @@ from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
 from webpay.auth.decorators import user_verified
+from webpay.auth import utils as auth_utils
 from webpay.base.decorators import json_view
 from webpay.base.utils import _error
 from webpay.pin.forms import VerifyPinForm
@@ -115,6 +116,7 @@ def lobby(request):
     sess = request.session
 
     if sess.get('uuid'):
+        auth_utils.update_session(request, sess.get('uuid'))
         redirect_url = check_pin_status(request)
         if redirect_url is not None:
             return http.HttpResponseRedirect(redirect_url)

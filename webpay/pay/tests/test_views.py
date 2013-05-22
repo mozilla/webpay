@@ -105,7 +105,8 @@ class TestVerify(Base):
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
-    def test_recently_entered_pin_redirect(self, get_price,
+    @mock.patch('webpay.auth.utils.update_session')
+    def test_recently_entered_pin_redirect(self, update_session, get_price,
                                            get_active_product):
         self.set_secret(get_active_product)
         self.session['uuid'] = 'something'
@@ -119,7 +120,8 @@ class TestVerify(Base):
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
     @mock.patch('lib.solitude.api.SolitudeAPI.set_needs_pin_reset')
-    def test_reset_flag_true(self, set_needs_pin_reset,
+    @mock.patch('webpay.auth.utils.update_session')
+    def test_reset_flag_true(self, update_session, set_needs_pin_reset,
                              get_price, get_active_product):
         self.set_secret(get_active_product)
         # To appease has_pin
@@ -132,6 +134,7 @@ class TestVerify(Base):
         payload = self.request(iss=self.key, app_secret=self.secret)
         res = self.get(payload)
         eq_(res.status_code, 200)
+        assert update_session.called
         assert set_needs_pin_reset.called
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
