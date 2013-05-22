@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 import json
 import os
+from datetime import datetime
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -108,6 +108,7 @@ class TestVerify(Base):
     def test_recently_entered_pin_redirect(self, get_price,
                                            get_active_product):
         self.set_secret(get_active_product)
+        self.session['uuid'] = 'something'
         self.session['last_pin_success'] = datetime.now()
         self.session.save()
         payload = self.request(iss=self.key, app_secret=self.secret)
@@ -340,6 +341,7 @@ class TestVerify(Base):
         eq_(res.status_code, 400)
 
 
+# TODO(wraithan): Move to its own file like we do other places.
 @mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')
 @mock.patch.object(settings, 'SECRET', 'marketplace.secret')
 class TestForm(Base):

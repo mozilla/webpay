@@ -6,15 +6,14 @@ from django.shortcuts import render
 from django.views.decorators.debug import sensitive_post_parameters
 
 import commonware.log
+from tower import ugettext as _
 
 from lib.solitude.api import client
-from tower import ugettext as _
 from webpay.auth.decorators import enforce_sequence, user_verified
-from webpay.auth.utils import (get_user, set_user_has_pin,
-                               set_user_has_confirmed_pin)
+from webpay.auth.utils import (get_user, set_user_has_confirmed_pin,
+                               set_user_has_pin)
 from webpay.pay import get_payment_url
 from . import forms
-from . import utils
 
 log = commonware.log.getLogger('w.pin')
 
@@ -58,8 +57,6 @@ def confirm(request):
 @sensitive_post_parameters('pin')
 def verify(request):
     form = forms.VerifyPinForm()
-    if utils.pin_recently_entered(request):
-        return http.HttpResponseRedirect(get_payment_url())
 
     if request.method == 'POST':
         form = forms.VerifyPinForm(uuid=get_user(request), data=request.POST)
@@ -69,6 +66,18 @@ def verify(request):
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Enter Pin'),
                   'action': reverse('pin.verify')})
+
+
+@enforce_sequence
+def is_locked(request):
+    return render(request, 'pin/pin_is_locked.html',
+                  {'hide_pin': True})
+
+
+@enforce_sequence
+def was_locked(request):
+    return render(request, 'pin/pin_was_locked.html',
+                  {'hide_pin': True})
 
 
 @enforce_sequence

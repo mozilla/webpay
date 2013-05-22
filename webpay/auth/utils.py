@@ -39,6 +39,10 @@ def set_user(request, email):
     set_user_has_confirmed_pin(request, buyer.get('pin_confirmed', False))
     set_user_reset_pin(request, buyer.get('needs_pin_reset', False))
     set_user_has_new_pin(request, buyer.get('new_pin', False))
+    request.session['uuid_pin_was_locked'] = buyer.get('pin_was_locked_out',
+                                                       False)
+    request.session['uuid_pin_is_locked'] = buyer.get('pin_is_locked_out',
+                                                      False)
     return uuid
 
 

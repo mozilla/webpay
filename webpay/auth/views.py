@@ -1,6 +1,5 @@
 from django import http
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_POST
 
 import commonware.log
@@ -9,7 +8,7 @@ from django_browserid.forms import BrowserIDForm
 from session_csrf import anonymous_csrf_exempt
 
 from webpay.base.decorators import json_view
-from webpay.pin.utils import has_pin
+from webpay.pin.utils import check_pin_status
 from .utils import get_uuid, set_user
 
 log = commonware.log.getLogger('w.auth')
@@ -92,9 +91,12 @@ def verify(request):
             log.info('Persona assertion ok: %s' % result)
             email = result.get('unverified-email', result.get('email'))
             user_hash = set_user(request, email)
-            return {'has_pin': has_pin(request),
-                    'pin_create': reverse('pin.create'),
-                    'user_hash': user_hash}
+            redirect_url = check_pin_status(request)
+            return {
+                'needs_redirect': redirect_url is not None,
+                'redirect_url': redirect_url,
+                'user_hash': user_hash
+            }
 
         log.error('Persona assertion failed.')
 

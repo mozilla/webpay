@@ -1,10 +1,10 @@
 import functools
 
-import commonware.log
-
 from django import http
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
+
+import commonware.log
 
 from webpay.base.utils import log_cef
 
@@ -12,7 +12,8 @@ from webpay.base.utils import log_cef
 log = commonware.log.getLogger('w.auth')
 
 flow = {
-    'standard': ['create', 'confirm', 'verify', 'reset_start'],
+    'standard': ['create', 'confirm', 'verify', 'reset_start',
+                 'pin_is_locked', 'pin_was_locked'],
     'reset': ['reset_new_pin', 'reset_confirm', 'reset_cancel'],
 }
 
@@ -34,20 +35,27 @@ def user_verified(f):
 
 
 def enforce_sequence(func):
-    def wrapper(request, *args, **kw):
+    def wrapper(request, *args, **kwargs):
         step = func.func_name
         if not request.session.get('uuid'):
             log_cef('No UUID in session, not verified', request)
             raise PermissionDenied
-        if request.session.get('uuid_needs_pin_reset'):
-            return get_reset_step(request, step) or func(request, *args, **kw)
-        return get_standard_step(request, step) or func(request, *args, **kw)
+
+        locked_step = get_locked_step(request, step)
+        if locked_step is False:  # Purposefully using is to not match None.
+            if request.session.get('uuid_needs_pin_reset'):
+                return get_reset_step(request, step) or func(request, *args,
+                                                             **kwargs)
+            return get_standard_step(request, step) or func(request, *args,
+                                                            **kwargs)
+        return locked_step or func(request, *args, **kwargs)
     return functools.wraps(func)(wrapper)
 
 
 def get_reset_step(request, step):
-    """Returns the view the buyer should be at or None if they are already
-    there. This is only called if they already have needs_pin_reset flag set.
+    """Returns the view the buyer should be at or returns None if they are
+    already at the right view. This is only called if they already have
+    `needs_pin_reset` flag set.
 
     :rtype: HttpResponse or None
     """
@@ -101,3 +109,28 @@ def get_standard_step(request, step):
     elif step_index > flow['standard'].index('create'):
         log_redirect(request, step, 'create')
         return http.HttpResponseRedirect(reverse('pin.create'))
+
+
+def get_locked_step(request, step):
+    """Returns the locked view the buyer should be at, None if they are
+    already there, or False if they don't need the lock views.
+
+    :rtype: HttpResponse or None or False
+
+    """
+    try:
+        step_index = flow['standard'].index(step)
+    except ValueError:
+        step_index = -1
+
+    if request.session.get('uuid_pin_is_locked'):
+        if step_index != flow['standard'].index('pin_is_locked'):
+            log_redirect(request, step, 'pin_is_locked')
+            return http.HttpResponseRedirect(reverse('pin.is_locked'))
+        return None
+    elif request.session.get('uuid_pin_was_locked'):
+        if step_index != flow['standard'].index('pin_was_locked'):
+            log_redirect(request, step, 'pin_was_locked')
+            return http.HttpResponseRedirect(reverse('pin.was_locked'))
+        return None
+    return False

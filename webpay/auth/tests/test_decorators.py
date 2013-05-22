@@ -25,7 +25,8 @@ class TestBuyerHasPin(SessionTestCase):
         }
         data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), False)
-        eq_(data['has_pin'], False)
+        eq_(data['needs_redirect'], True)
+        eq_(data['redirect_url'], reverse('pin.create'))
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_no_pin(self, slumber):
@@ -38,7 +39,8 @@ class TestBuyerHasPin(SessionTestCase):
         data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), False)
         eq_(self.client.session.get('uuid_has_confirmed_pin'), False)
-        eq_(data['has_pin'], False)
+        eq_(data['needs_redirect'], True)
+        eq_(data['redirect_url'], reverse('pin.create'))
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_with_unconfirmed_pin(self, slumber):
@@ -51,7 +53,8 @@ class TestBuyerHasPin(SessionTestCase):
         data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), False)
         eq_(self.client.session.get('uuid_has_confirmed_pin'), False)
-        eq_(data['has_pin'], False)
+        eq_(data['needs_redirect'], True)
+        eq_(data['redirect_url'], reverse('pin.create'))
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_with_confirmed_pin(self, slumber):
@@ -64,8 +67,8 @@ class TestBuyerHasPin(SessionTestCase):
         data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), True)
         eq_(self.client.session.get('uuid_has_confirmed_pin'), True)
-        eq_(data['has_pin'], True)
-        eq_(data['pin_create'], reverse('pin.create'))
+        eq_(data['needs_redirect'], False)
+        eq_(data['redirect_url'], None)
 
 
 @mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
@@ -103,3 +106,32 @@ class TestBuyerHasResetFlag(SessionTestCase):
         }
         self.do_auth()
         eq_(self.client.session.get('uuid_needs_pin_reset'), True)
+
+
+@mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
+class TestBuyerLockedPinFlags(SessionTestCase):
+
+    def do_auth(self):
+        res = self.client.post(reverse('auth.verify'), {'assertion': 'good'})
+        eq_(res.status_code, 200, res)
+        return json.loads(res.content)
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_user_is_locked_out(self, slumber):
+        slumber.generic.buyer.get.return_value = {
+            'meta': {'total_count': 1},
+            'objects': [{'pin': True,
+                         'pin_is_locked_out': True}]
+        }
+        self.do_auth()
+        eq_(self.client.session.get('uuid_pin_is_locked'), True)
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_user_was_locked_out(self, slumber):
+        slumber.generic.buyer.get.return_value = {
+            'meta': {'total_count': 1},
+            'objects': [{'pin': True,
+                         'pin_was_locked_out': True}]
+        }
+        self.do_auth()
+        eq_(self.client.session.get('uuid_pin_was_locked'), True)

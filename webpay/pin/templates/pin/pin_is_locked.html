@@ -1,0 +1,18 @@
+{% extends "pin/pin_form.html" %}
+{% set hide_pin=True %}
+
+{% block body_attrs -%}
+  data-verify-url="{{ url('auth.reverify') }}"
+  data-cancel-url="{{ url('pin.reset_cancel') }}"
+  data-force-auth-result="show-pin"
+{%- endblock %}
+
+{% block extra_content %}
+  <h2>{{ _('Error') }}</h2>
+  <p>{{ _('You entered the pin too many times. Your account is locked. Please try your purchase again in 5 minutes.') }}</p>
+  <footer>
+    <a class="button cancel-button sec" href="{{ url('pin.verify') }}">
+      {{ _('Ok') }}
+    </a>
+  </footer>
+{% endblock %}

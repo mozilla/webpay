@@ -41,8 +41,8 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
                     .success(function(data, textStatus, jqXHR) {
                         console.log('login success');
                         bango.prepareUser(data.user_hash).done(function() {
-                            if (!data.has_pin) {
-                                window.location = data.pin_create;
+                            if (data.needs_redirect) {
+                                window.location = data.redirect_url;
                             } else {
                                 focusOnPin();
                             }
