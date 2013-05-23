@@ -14,18 +14,11 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
 
     var onLogout = function() {
         // This is the default onLogout but might be replaced by other handlers.
-        console.log('default onLogout');
+        console.log('[pay] default onLogout');
         auth.resetUser();
         cli.hideProgress();
         $('#login').fadeIn();
     };
-
-    function focusOnPin() {
-        $('#login').hide();
-        cli.hideProgress();
-        $('#enter-pin').fadeIn();
-        $('#pin [name="pin"]').focus();
-    }
 
     if (bodyData.flow === 'lobby') {
         var verifyUrl = bodyData.verifyUrl;
@@ -34,28 +27,29 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
         id.watch({
             onlogin: function(assertion) {
                 calledBack = true;
-                console.log('nav.id onlogin');
+                console.log('[pay] nav.id onlogin');
                 loggedIn = true;
                 cli.showProgress(bodyData.personaMsg);
                 $.post(verifyUrl, {assertion: assertion})
                     .success(function(data, textStatus, jqXHR) {
-                        console.log('login success');
+                        console.log('[pay] login success');
                         bango.prepareUser(data.user_hash).done(function() {
                             if (data.needs_redirect) {
                                 window.location = data.redirect_url;
                             } else {
-                                focusOnPin();
+                                console.log('[pay] requesting focus on pin (login success)');
+                                cli.focusOnPin({ $toHide: $('#login'), $toFadeIn: $('#enter-pin') });
                             }
                         });
                     })
                     .error(function() {
-                        console.log('login error');
+                        console.log('[pay] login error');
                     });
             },
             onlogout: function() {
                 calledBack = true;
                 loggedIn = false;
-                console.log('nav.id onlogout');
+                console.log('[pay] nav.id onlogout');
                 onLogout();
             },
             // This can become onmatch() soon.
@@ -63,8 +57,9 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
             // https://github.com/mozilla/browserid/issues/2648
             onready: function() {
                 if (!calledBack && cli.bodyData.loggedInUser) {
-                    console.log('Probably logged in, Persona never called back');
-                    focusOnPin();
+                    console.log('[pay] Probably logged in, Persona never called back');
+                    console.log('[pay] Requesting focus on pin');
+                    cli.focusOnPin({ $toHide: $('#login'), $toFadeIn: $('#enter-pin') });
                 }
             }
         });
@@ -72,8 +67,8 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
     } else {
         var $entry = $('#enter-pin');
         if (!$entry.hasClass('hidden')) {
-            cli.hideProgress();
-            $entry.fadeIn();
+            console.log('[pay] Requesting focus on pin');
+            cli.focusOnPin({ $toFadeIn: $entry });
         }
     }
 
@@ -82,7 +77,7 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
     }
 
     $('#signin').click(function(ev) {
-        console.log('signing in manually');
+        console.log('[pay] signing in manually');
         ev.preventDefault();
         cli.showProgress(bodyData.personaMsg);
         id.request();
@@ -93,10 +88,10 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
         // seems.
         cli.showProgress(bodyData.completeMsg);
         if (typeof window.paymentSuccess === 'undefined') {
-            console.log('waiting for paymentSuccess to appear in scope');
+            console.log('[pay] Waiting for paymentSuccess to appear in scope');
             window.setTimeout(callPaySuccess, 500);
         } else {
-            console.log('payment complete, closing window');
+            console.log('[pay] payment complete, closing window');
             window.paymentSuccess();
         }
     }
@@ -112,11 +107,11 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
 
         // Define a new logout handler.
         onLogout = function() {
-            console.log('forgot-pin onLogout');
+            console.log('[pay] forgot-pin onLogout');
             // It seems necessary to nullify the logout handler because
             // otherwise it is held in memory and called on the next page.
             onLogout = function() {
-                console.log('null onLogout');
+                console.log('[pay] null onLogout');
             };
             personaLoggedOut.resolve();
         };
@@ -125,17 +120,17 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
             .done(function _allLoggedOut() {
                 // Redirect to the original destination.
                 var dest = anchor.attr('href');
-                console.log('forgot-pin logout done; redirect to', dest);
+                console.log('[pay] forgot-pin logout done; redirect to', dest);
                 window.location.href = dest;
             });
 
         // Finally, log out of Persona so that the user has to
         // re-authenticate before resetting a PIN.
         if (loggedIn) {
-            console.log('Logging out of Persona');
+            console.log('[pay] Logging out of Persona');
             navigator.id.logout();
         } else {
-            console.log('Already logged out of Persona, calling onLogout ourself.');
+            console.log('[pay] Already logged out of Persona, calling onLogout ourself.');
             onLogout();
         }
     });

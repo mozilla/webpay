@@ -6,20 +6,20 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
     function watchForceAuth(on_success) {
         id.watch({
             onlogin: function _resetLogin(assertion) {
-                console.log('reset: nav.id onlogin');
+                console.log('[reset] nav.id onlogin');
                 $.post(bodyData.verifyUrl, {assertion: assertion})
                     .success(function _resetLoginSuccess(data, textStatus, jqXHR) {
-                        console.log('login success');
+                        console.log('[reset] login success');
                         bango.prepareUser(data.user_hash).done(function() {
                             on_success.apply(this);
                         });
                     })
                     .error(function _resetLoginError() {
-                        console.log('login error');
+                        console.log('[reset] login error');
                     });
             },
             onlogout: function _resetLogout() {
-                console.log('nav.id onlogout');
+                console.log('[reset] nav.id onlogout');
             }
         });
     }
@@ -38,9 +38,8 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
         cli.showProgress(bodyData.personaMsg);
         if (window.localStorage.getItem('reset-step') === 'pin') {
             /* You've already re-signed in. */
-            cli.hideProgress();
-            $('#confirm-pin-reset').hide();
-            $('#enter-pin').fadeIn();
+            console.log('[reset] requesting focus on pin (already re-signed in)');
+            cli.focusOnPin({ $toHide: $('#confirm-pin-reset'), $toFadeIn: $('#enter-pin') });
             window.localStorage.removeItem('reset-step');
             return;
         }
@@ -57,9 +56,8 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
                 /* You are in the reset step and you've logged in,
                  * let's show you a pin.
                  */
-                cli.hideProgress();
-                $('#confirm-pin-reset').hide();
-                $('#enter-pin').fadeIn();
+                console.log('[reset] requesting focus on pin (logged-in)');
+                cli.focusOnPin({ $toHide: $('#confirm-pin-reset'), $toFadeIn: $('#enter-pin') });
             };
         }
         watchForceAuth(on_success);
