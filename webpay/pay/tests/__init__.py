@@ -1,0 +1,50 @@
+import os
+
+from django.conf import settings
+from django.core.urlresolvers import reverse
+
+from lib.solitude import constants
+
+from webpay.base.tests import BasicSessionCase
+from webpay.pay.models import Issuer, ISSUER_ACTIVE
+from webpay.pay.samples import JWTtester
+
+sample = os.path.join(os.path.dirname(__file__), 'sample.key')
+
+
+class Base(BasicSessionCase, JWTtester):
+
+    def setUp(self):
+        super(Base, self).setUp()
+        self.url = reverse('pay.lobby')
+        self.key = 'public.key'
+        self.secret = 'private.secret'
+        self.create()
+
+    def get(self, payload):
+        return self.client.get('%s?req=%s' % (self.url, payload))
+
+    def payload(self, **kw):
+        kw.setdefault('iss', settings.KEY)
+        return super(Base, self).payload(**kw)
+
+    def request(self, **kw):
+        # This simulates payment requests which do not have response.
+        kw.setdefault('include_response', False)
+        kw.setdefault('iss', settings.KEY)
+        kw.setdefault('app_secret', settings.SECRET)
+        return super(Base, self).request(**kw)
+
+    def create(self, key=None, secret=None):
+        key = key or self.key
+        secret = secret or self.secret
+        self.iss = Issuer.objects.create(issuer_key=key,
+                                         status=ISSUER_ACTIVE)
+        with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
+            self.iss.set_private_key(secret)
+
+    def set_secret(self, get_active_product):
+        get_active_product.return_value = {
+            'secret': self.secret,
+            'access': constants.ACCESS_PURCHASE
+        }
