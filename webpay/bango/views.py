@@ -1,11 +1,14 @@
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
-from django.views.decorators.http import require_GET
+from django.views.decorators.csrf import csrf_exempt
 
 import commonware.log
+from django_paranoia.decorators import require_GET, require_POST
 from slumber.exceptions import HttpClientError
 from tower import ugettext as _
 
 from lib.solitude.api import client
+from webpay.bango.auth import basic
 from webpay.base.utils import _error
 from webpay.pay import tasks
 
@@ -99,3 +102,30 @@ def error(request):
         return render(request, 'bango/cancel.html')
 
     return _error(request, msg=_('Received Bango error'))
+
+
+@csrf_exempt
+@require_POST
+def notification(request):
+    """
+    An end point for Bango to communicate with using the Event Notification
+    API. This does the Basic Auth and then passes the whole thing on to do
+    solitude.
+    """
+    log.info('Bango notification received')
+
+    if not basic(request):
+        log.warning('Basic auth failed')
+        return HttpResponseForbidden(request)
+
+    try:
+        # Just take the whole request and stuff into JSON for passing down
+        # the pipe.
+        client.slumber.bango.event.post({'notification':
+                                         request.raw_post_data})
+    except HttpClientError, err:
+        log.error('Error calling solitude: {0}'.format(err), exc_info=True)
+        # Sending something other than a 200, will cause Bango to re-send it.
+        return HttpResponse(content='Not OK', status=502)
+
+    return HttpResponse(content='OK')

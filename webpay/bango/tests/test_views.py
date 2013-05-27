@@ -1,8 +1,11 @@
+import base64
+
 from django.core.urlresolvers import reverse
 
 import mock
 from nose.tools import eq_
 from slumber.exceptions import HttpClientError
+from test_utils import TestCase
 
 from webpay.base.tests import BasicSessionCase
 
@@ -78,3 +81,33 @@ class TestBangoReturn(BasicSessionCase):
     def test_not_ok(self, payment_notify, slumber):
         self.call(overrides={'ResponseCode': 'NOT_OK'}, url='bango.success',
                   expected_status=400)
+
+
+class TestNotification(TestCase):
+
+    def setUp(self):
+        self.url = reverse('bango.notification')
+        self.auth = 'basic ' + base64.b64encode('u:p')
+
+    def test_get(self):
+        eq_(self.client.get(self.url).status_code, 405)
+
+    def test_post_no_auth(self):
+        eq_(self.client.post(self.url, data={}).status_code, 403)
+
+    @mock.patch('webpay.bango.views.client.slumber')
+    def test_post_auth(self, slumber):
+        with self.settings(BANGO_BASIC_AUTH={'user': 'u', 'password': 'p'}):
+            res = self.client.post(self.url, data={},
+                                   HTTP_AUTHORIZATION=self.auth)
+            eq_(res.status_code, 200)
+
+        assert slumber.bango.event.post.called
+
+    @mock.patch('webpay.bango.views.client.slumber')
+    def test_post_fails(self, slumber):
+        slumber.bango.event.post.side_effect = HttpClientError
+        with self.settings(BANGO_BASIC_AUTH={'user': 'u', 'password': 'p'}):
+            res = self.client.post(self.url, data={},
+                                   HTTP_AUTHORIZATION=self.auth)
+            eq_(res.status_code, 502)

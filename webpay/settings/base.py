@@ -263,6 +263,9 @@ BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'
 # This is used by the UI to clear all Bango cookies.
 BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
 
+# Notification end points use basic auth.
+BANGO_BASIC_AUTH = {'user': '', 'password': ''}
+
 # This is the URL to the marketplace.
 MARKETPLACE_URL = None
 
