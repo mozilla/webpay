@@ -70,14 +70,12 @@ def verify(request):
 
 @enforce_sequence
 def is_locked(request):
-    return render(request, 'pin/pin_is_locked.html',
-                  {'hide_pin': True})
+    return render(request, 'pin/pin_is_locked.html')
 
 
 @enforce_sequence
 def was_locked(request):
-    return render(request, 'pin/pin_was_locked.html',
-                  {'hide_pin': True})
+    return render(request, 'pin/pin_was_locked.html')
 
 
 @enforce_sequence

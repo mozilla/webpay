@@ -1,5 +1,4 @@
-{% extends "pin/pin_form.html" %}
-{% set hide_pin=True %}
+{% extends "base.html" %}
 
 {% block body_attrs -%}
   data-verify-url="{{ url('auth.reverify') }}"
@@ -7,7 +6,7 @@
   data-force-auth-result="show-pin"
 {%- endblock %}
 
-{% block extra_content %}
+{% block content %}
   <h2>{{ _('Your Pin was locked') }}</h2>
   <p>{{ _('Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin.') }}</p>
   <footer>

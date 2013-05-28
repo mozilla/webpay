@@ -13,7 +13,7 @@ log = commonware.log.getLogger('w.auth')
 
 flow = {
     'standard': ['create', 'confirm', 'verify', 'reset_start',
-                 'pin_is_locked', 'pin_was_locked'],
+                 'is_locked', 'was_locked'],
     'reset': ['reset_new_pin', 'reset_confirm', 'reset_cancel'],
 }
 
@@ -124,13 +124,13 @@ def get_locked_step(request, step):
         step_index = -1
 
     if request.session.get('uuid_pin_is_locked'):
-        if step_index != flow['standard'].index('pin_is_locked'):
-            log_redirect(request, step, 'pin_is_locked')
+        if step_index != flow['standard'].index('is_locked'):
+            log_redirect(request, step, 'is_locked')
             return http.HttpResponseRedirect(reverse('pin.is_locked'))
         return None
     elif request.session.get('uuid_pin_was_locked'):
-        if step_index != flow['standard'].index('pin_was_locked'):
-            log_redirect(request, step, 'pin_was_locked')
+        if step_index != flow['standard'].index('was_locked'):
+            log_redirect(request, step, 'was_locked')
             return http.HttpResponseRedirect(reverse('pin.was_locked'))
         return None
     return False
