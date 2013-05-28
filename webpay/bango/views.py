@@ -92,9 +92,9 @@ def error(request):
                            request.GET.get('ResponseCode')))
 
     if not _record(request):
-        return _error(request, msg='Could not record Bango error')
+        return _error(request, msg=_('Could not record Bango error'))
 
     if request.GET.get('ResponseCode') == 'CANCEL':
         return render(request, 'bango/cancel.html')
 
-    return _error(request, msg='Received Bango error')
+    return _error(request, msg=_('Received Bango error'))
