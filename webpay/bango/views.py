@@ -3,6 +3,7 @@ from django.views.decorators.http import require_GET
 
 import commonware.log
 from slumber.exceptions import HttpClientError
+from tower import ugettext as _
 
 from lib.solitude.api import client
 from webpay.base.utils import _error
