@@ -52,11 +52,7 @@
           </a>
         {% endif %}
 
-        {% if form.pin_is_locked %}
-          <a class="button force-auth-button lock-continue" href="#">
-            {{ _('Sign in') }}
-          </a>
-        {% else %}
+        {% if not form.pin_is_locked %}
           <button disabled type="submit">{{ _('Continue') }}</button>
         {% endif %}
       </footer>
