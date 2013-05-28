@@ -197,7 +197,7 @@ class IsLockedPinViewTest(PinViewTestCase):
 
     def test_get(self):
         res = self.client.get(self.url)
-        assert res['Location'].endswith(reverse('pin.is_locked'))
+        eq_(res.status_code, 200)
 
     def test_is_not_locked(self):
         self.request.session['uuid_pin_is_locked'] = False
@@ -222,7 +222,7 @@ class WasLockedPinViewTest(PinViewTestCase):
 
     def test_get(self):
         res = self.client.get(self.url)
-        assert res['Location'].endswith(reverse('pin.was_locked'))
+        eq_(res.status_code, 200)
 
     def test_was_not_locked(self):
         self.request.session['uuid_pin_was_locked'] = False
