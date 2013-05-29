@@ -14,6 +14,19 @@ class BasePinFormTestCase(TestCase):
         self.data = {'pin': '1234'}
 
 
+class PinFormOutputTest(BasePinFormTestCase):
+
+    @patch.object(client, 'get_buyer', lambda x: {})
+    def test_html_form_attrs(self):
+        form = forms.CreatePinForm(uuid=self.uuid, data=self.data)
+        form_html = form.as_p()
+        assert 'type="number"' in form_html
+        assert 'autocomplete="off"' in form_html
+        assert 'placeholder="****"' in form_html
+        assert 'x-inputmode="digits"' in form_html
+        assert 'max="9999"' in form_html
+
+
 class CreatePinFormTest(BasePinFormTestCase):
 
     @patch.object(client, 'get_buyer', lambda x: {})

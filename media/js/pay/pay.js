@@ -7,11 +7,6 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
     // can (and will have to) put a better value here. (bug 843192)
     var loggedIn = false;
 
-    $('[name="pin"]').each(function() {
-        this.type = 'number';
-        this.setAttribute('placeholder', '****');
-    });
-
     var onLogout = function() {
         // This is the default onLogout but might be replaced by other handlers.
         console.log('[pay] default onLogout');

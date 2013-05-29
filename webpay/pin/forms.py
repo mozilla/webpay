@@ -1,5 +1,6 @@
 from django import forms
 from django.forms.util import ErrorList
+from django.forms.widgets import TextInput
 from django.views.decorators.debug import sensitive_variables
 
 from django_paranoia.forms import ParanoidForm
@@ -8,15 +9,22 @@ from tower import ugettext_lazy as _
 from lib.solitude.api import client
 
 
+class HTML5NumberWidget(TextInput):
+    """An HTML5 number input widget."""
+    input_type = 'number'
+
+
 class BasePinForm(ParanoidForm):
-    pin = forms.CharField(max_length=4, required=True)
+    pin = forms.CharField(max_length=4, required=True,
+                          widget=HTML5NumberWidget)
 
     def __init__(self, uuid=None, *args, **kwargs):
         self.uuid = uuid
         super(BasePinForm, self).__init__(*args, **kwargs)
         self.fields['pin'].widget.attrs.update({
             'autocomplete': 'off',
-            'type': 'number',
+            'max': '9999',
+            'placeholder': '****',
             # Digit only keyboard for B2G (bug 820268).
             'x-inputmode': 'digits',
         })
