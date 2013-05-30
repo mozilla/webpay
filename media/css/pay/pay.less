@@ -50,6 +50,7 @@ a:focus {
     background: @bg-main-cont;
     background: rgba(244,244,244,0.9);
     bottom: 0;
+    color: @dark-gray;
     left: 0;
     position: absolute;
     right: 0;
@@ -82,7 +83,7 @@ form {
     padding-bottom: 50px;
 }
 
-form footer {
+footer {
     background: rgba(0,0,0,0.03);
     border-top: 1px solid @light-gray;
     bottom: 0;
@@ -92,14 +93,14 @@ form footer {
     width: 100%;
 }
 
-form footer button,
-form footer .button {
+footer button,
+footer .button {
     width: 47%;
 }
 
 .lock-continue,
 .reset-pin,
-form footer button[type=submit] {
+footer button[type=submit] {
     float: right;
 }
 
@@ -281,5 +282,35 @@ a.sign-in,
     &:active,
     &:focus {
         background-position: right bottom;
+    }
+}
+
+.full-error {
+    .grain();
+    background-color: @grain;
+    color: #fff;
+    h2 {
+        border-bottom: 1px solid @border-gray;
+        padding-bottom: 5px;
+    }
+    .msg {
+        bottom: 60px;
+        left: 20px;
+        position: absolute;
+        right: 20px;
+        p {
+            font-size: 24px;
+            line-height: 32px;
+            margin: 20px 0 10px;
+        }
+    }
+    footer {
+        background: none;
+        border-top: 0;
+        padding-bottom: 20px;
+        button,
+        .button {
+            width: 100%;
+        }
     }
 }
