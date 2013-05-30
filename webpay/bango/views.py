@@ -2,17 +2,17 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-import commonware.log
 from django_paranoia.decorators import require_GET, require_POST
 from slumber.exceptions import HttpClientError
 from tower import ugettext as _
 
 from lib.solitude.api import client
 from webpay.bango.auth import basic
+from webpay.base.logger import getLogger
 from webpay.base.utils import _error
 from webpay.pay import tasks
 
-log = commonware.log.getLogger('w.bango')
+log = getLogger('w.bango')
 
 
 def _record(request):

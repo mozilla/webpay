@@ -2,16 +2,16 @@ from django import http
 from django.conf import settings
 from django.views.decorators.http import require_POST
 
-import commonware.log
 from django_browserid import get_audience, verify as verify_assertion
 from django_browserid.forms import BrowserIDForm
 from session_csrf import anonymous_csrf_exempt
 
 from webpay.base.decorators import json_view
+from webpay.base.logger import getLogger
 from webpay.pin.utils import check_pin_status
 from .utils import get_uuid, set_user
 
-log = commonware.log.getLogger('w.auth')
+log = getLogger('w.auth')
 
 
 @require_POST

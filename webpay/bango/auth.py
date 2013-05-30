@@ -2,9 +2,9 @@ import base64
 
 from django.conf import settings
 
-import commonware.log
+from webpay.base.logger import getLogger
 
-log = commonware.log.getLogger('w.bango')
+log = getLogger('w.bango')
 
 
 def basic(request):

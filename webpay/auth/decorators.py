@@ -4,12 +4,11 @@ from django import http
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 
-import commonware.log
-
+from webpay.base.logger import getLogger
 from webpay.base.utils import log_cef
 
 
-log = commonware.log.getLogger('w.auth')
+log = getLogger('w.auth')
 
 flow = {
     'standard': ['create', 'confirm', 'verify', 'reset_start'],

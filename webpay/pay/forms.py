@@ -2,7 +2,6 @@ from django import forms
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
-import commonware.log
 from django_paranoia.forms import ParanoidForm
 import jwt
 from tower import ugettext as _
@@ -10,7 +9,9 @@ from tower import ugettext as _
 from lib.solitude.api import client
 from lib.solitude.constants import ACCESS_SIMULATE
 
-log = commonware.log.getLogger('w.pay')
+from webpay.base.logger import getLogger
+
+log = getLogger('w.pay')
 
 
 class VerifyForm(ParanoidForm):

@@ -3,11 +3,12 @@ import functools
 from django.conf import settings
 from django.shortcuts import render
 
-import commonware.log
 from cef import log_cef as _log_cef
 from tower import ugettext as _
 
-log = commonware.log.getLogger('w.pay')
+from webpay.base.logger import getLogger
+
+log = getLogger('w.pay')
 
 
 def log_cef(msg, request, **kw):

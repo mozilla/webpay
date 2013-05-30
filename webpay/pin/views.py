@@ -5,17 +5,17 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.views.decorators.debug import sensitive_post_parameters
 
-import commonware.log
 from tower import ugettext as _
 
 from lib.solitude.api import client
 from webpay.auth.decorators import enforce_sequence, user_verified
 from webpay.auth.utils import (get_user, set_user_has_confirmed_pin,
                                set_user_has_pin)
+from webpay.base.logger import getLogger
 from webpay.pay import get_payment_url
 from . import forms
 
-log = commonware.log.getLogger('w.pin')
+log = getLogger('w.pin')
 
 
 @enforce_sequence

@@ -2,16 +2,16 @@ import json
 import sys
 import traceback
 
-import commonware.log
 from django.conf import settings
 from django.utils.cache import patch_vary_headers
 from django.utils.translation.trans_real import parse_accept_lang_header
 
 import tower
 
+from webpay.base.logger import getLogger
 from webpay.base.utils import log_cef
 
-log = commonware.log.getLogger('w.middleware')
+log = getLogger('w.middleware')
 
 
 class LogJSONerror:

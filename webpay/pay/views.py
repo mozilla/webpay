@@ -6,7 +6,6 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 
-import commonware.log
 from mozpay.exc import InvalidJWT, RequestExpired
 from mozpay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
@@ -15,6 +14,7 @@ from tower import ugettext as _
 from webpay.auth.decorators import user_verified
 from webpay.auth import utils as auth_utils
 from webpay.base.decorators import json_view
+from webpay.base.logger import getLogger
 from webpay.base.utils import _error
 from webpay.pin.forms import VerifyPinForm
 from webpay.pin.utils import check_pin_status
@@ -27,7 +27,7 @@ from . import tasks
 from .forms import VerifyForm
 from .utils import verify_urls
 
-log = commonware.log.getLogger('w.pay')
+log = getLogger('w.pay')
 
 
 def process_pay_req(request):

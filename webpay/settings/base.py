@@ -138,20 +138,32 @@ DOMAIN_METHODS['messages'] = [
 HAS_SYSLOG = True  # syslog is used if HAS_SYSLOG and NOT DEBUG.
 # See settings/local.py for SYSLOG_TAG, etc
 LOGGING = {
+    'formatters': {
+        'webpay': {
+            '()': 'webpay.base.logger.WebpayFormatter',
+            'format':
+                '%(name)s:%(levelname)s '
+                '%(REMOTE_ADDR)s:%(TRANSACTION_ID)s '
+                '%(message)s :%(pathname)s:%(lineno)s'
+        }
+    },
     'loggers': {
         'django_browserid': {
             'level': logging.DEBUG,
             'handlers': ['console', 'unicodesyslog'],
+            'formatter': 'webpay',
         },
         # This gives us "zamboni" logging such as the celeryutils logger.
         'z': {
             'level': logging.ERROR,
             'handlers': ['console', 'unicodesyslog', 'sentry'],
+            'formatter': 'webpay',
         },
         # This gives us webpay logging.
         'w': {
             'level': logging.DEBUG,
             'handlers': ['console', 'unicodesyslog', 'sentry'],
+            'formatter': 'webpay',
         },
         # This sends exceptions to Sentry.
         'django.request': {
@@ -187,6 +199,7 @@ MIDDLEWARE_CLASSES = (
     'webpay.base.middleware.CEFMiddleware',
     'django_paranoia.middleware.Middleware',
     'django_paranoia.sessions.ParanoidSessionMiddleware',
+    'webpay.base.logger.LoggerMiddleware',
 )
 
 STATSD_CLIENT = 'django_statsd.clients.normal'
