@@ -7,6 +7,7 @@ require(['cli'], function(cli) {
     var PINLENGTH = 4;
     var currentInput = null;
     var interval = false;
+    var lastZIndex = 10;
 
     // KeyCodes that aren't blocked.
     var acceptedKeyCodes = [
@@ -91,6 +92,7 @@ require(['cli'], function(cli) {
         var $parent = currentInput.parent();
         var bins = $parent.find('.display span');
         var binLength = bins.length;
+
         for (var i=0; i<binLength; i++) {
             bins.eq(i).toggleClass('filled', i < newLen)
                       .toggleClass('current', i === newLen);
@@ -100,6 +102,11 @@ require(['cli'], function(cli) {
         } else if (newLen === (binLength -1)) {
             $submitButton.prop('disabled', true);
         }
+
+        // Hack to workaround bug 831106.
+        var zIndex = (lastZIndex == 10) ? 11 : 10;
+        lastZIndex = zIndex;
+        $('footer button, footer .button').css('z-index', zIndex);
     }
 
     $(window).on('focus', '.pinbox input', function(e) {
