@@ -322,3 +322,7 @@ TEST_PIN_UI = False
 # If True, only simulated payments can be processed. All other requests will
 # result in an error.
 ONLY_SIMULATIONS = False
+
+# Secret key string to use in UUID HMACs which are derived from Persona emails.
+# This must not be blank in production and should be more than 32 bytes long.
+UUID_HMAC_KEY = ''

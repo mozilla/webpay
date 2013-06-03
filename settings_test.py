@@ -31,3 +31,5 @@ USE_PRODUCT_ICONS = True
 
 # Blockage will prevent us calling this, but we should point it to somewhere.
 MARKETPLACE_URL = SOLITUDE_URL = 'http://example.com'
+
+UUID_HMAC_KEY = 'this is a test value'

@@ -17,6 +17,10 @@ class TestUUID(test.TestCase):
         res = get_uuid(u'f@f.com')
         assert res.startswith('web.pay:')
 
+    def test_non_ascii(self):
+        res = get_uuid(u'kristi\u0107@apple.com')
+        assert res.startswith('web.pay:')
+
     def test_bad(self):
         with self.assertRaises(ValueError):
             get_uuid(None)
@@ -29,3 +33,9 @@ class TestUUID(test.TestCase):
         eq_(set_user(req, email), user)
         assert client.get_buyer.called
         assert req.session.__setitem__.called
+
+    @mock.patch.object(settings, 'UUID_HMAC_KEY', '')
+    @mock.patch.object(settings, 'DEBUG', False)
+    def test_no_settings(self):
+        with self.assertRaises(EnvironmentError):
+            get_uuid('f@f.com')
