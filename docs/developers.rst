@@ -10,7 +10,7 @@ Install
 ~~~~~~~
 
 You need Python 2.6, and MySQL, and a few NodeJS commands
-like `less`_ for minifying JS/CSS.
+like `stylus`_ for minifying JS/CSS.
 Install system requirements with `homebrew`_ (Mac OS X)::
 
     brew tap homebrew/versions
@@ -44,14 +44,18 @@ Create a database to work in::
     mysql -u root -e 'create database webpay'
 
 Install compressor scripts with `npm`_ for node.js.
-You'll probably want to install them globally
-in your common node modules, like this::
+You'll probably want to install them locally like this::
 
-    npm install -g less clean-css uglify-js
+    npm install
+
+Then to add this to your bash profile::
+
+    # Get the bin for any local NodeJS module on cwd.
+    PATH="./node_modules/.bin/:${PATH}"
 
 Make sure you see a valid path when you type::
 
-    which lessc
+    which stylus
     which cleancss
     which uglifyjs
 

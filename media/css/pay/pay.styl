@@ -6,11 +6,11 @@
 
 html, body {
     height: 100%;
-    background: @bg-main-cont;
+    background: $bg-main-cont;
 }
 
 body {
-    color: @dark-gray;
+    color: $dark-gray;
     font-family: 'Open Sans', sans-serif;
     font-size: 12px;
     font-weight: 400;
@@ -40,17 +40,17 @@ a:visited,
 a:hover,
 a:active,
 a:focus {
-    color: rgb(0,150,220);
+    color: rgb(0, 150, 220);
     font-size: 12px;
     line-height: 18px;
     text-decoration: none;
 }
 
 .progress {
-    background: @bg-main-cont;
-    background: rgba(244,244,244,0.9);
+    background: $bg-main-cont;
+    background: rgba(244, 244, 244, 0.9);
     bottom: 0;
-    color: @dark-gray;
+    color: $dark-gray;
     left: 0;
     position: absolute;
     right: 0;
@@ -84,8 +84,8 @@ form {
 }
 
 footer {
-    background: rgba(0,0,0,0.03);
-    border-top: 1px solid @light-gray;
+    background: rgba(0, 0, 0, 0.03);
+    border-top: 1px solid $light-gray;
     bottom: 0;
     left: 0;
     padding: 10px 20px;
@@ -136,14 +136,14 @@ footer button[type=submit] {
     }
     &.error .display span,
     &.error .display span.current {
-        .box-shadow(0px 0px 5px 0 #A50606);
+        box-shadow: 0px 0px 5px 0 #A50606;
         border: 1px solid #A50606;
     }
     .display {
         line-height: 1em;
         margin: auto;
         span {
-            .box-shadow(inset 0 2px 2px 0 rgba(177,177,177,0.30));
+            box-shadow: inset 0 2px 2px 0 rgba(177, 177, 177, 0.30);
             background: #fff;
             border-radius: 5px;
             border: 1px solid #ccc;
@@ -172,7 +172,7 @@ footer button[type=submit] {
 
             &.current {
                 border: 1px solid #0096DC;
-                .box-shadow(0 0px 5px 0 #0096DC);
+                box-shadow: 0 0px 5px 0 #0096DC;
             }
         }
     }
@@ -191,7 +191,7 @@ footer button[type=submit] {
     &:before {
         content: "|";
         padding-right: 5px;
-        color: @dark-gray;
+        color: $dark-gray;
     }
 }
 
@@ -211,12 +211,12 @@ footer button[type=submit] {
 .button,
 a.button,
 button {
-    .gradient-two-color(#00CAF2, #00AACC);
+    gradient-two-color(#00CAF2, #00AACC);
     border-radius: 3px;
     border: 1px solid #00AACC;
-    color: @dark-gray;
+    color: $dark-gray;
     display: inline-block;
-    font: 600 14px/40px @open-stack;
+    font: 600 14px/40px $open-stack;
     height: 40px;
     padding: 0 10px;
     position: relative;
@@ -231,22 +231,22 @@ button {
 
     &.sec {
         border: 1px solid #9A9A9A;
-        .gradient-two-color(@white, @light-gray);
+        gradient-two-color($white, $light-gray);
         &:hover,
         &:active,
         &:focus {
-            .gradient-two-color(@light-gray, @white);
+            gradient-two-color($light-gray, $white);
         }
     }
 
     &:hover,
     &:active {
-        .gradient-two-color(#00AACC, #00CAF2);
+        gradient-two-color(#00AACC, #00CAF2);
     }
 
     &:focus {
         border: 1px solid #0096DC;
-        .box-shadow(0 0 5px 0 #0096DC);
+        box-shadow: 0 0 5px 0 #0096DC;
         outline: none;
     }
 
@@ -266,7 +266,7 @@ button {
 
 a.sign-in,
 .sign-in {
-    color: @dark-gray;
+    color: $dark-gray;
     display: block;
     height: 42px;
     line-height: 42px;
@@ -276,7 +276,7 @@ a.sign-in,
     position: relative;
     text-align: center;
     text-decoration: none;
-    text-shadow: 0 1px 1px @white;
+    text-shadow: 0 1px 1px $white;
     width: 100%;
     &:hover,
     &:active,
@@ -286,11 +286,11 @@ a.sign-in,
 }
 
 .full-error {
-    .grain();
-    background-color: @grain;
+    grain();
+    background-color: $grain;
     color: #fff;
     h2 {
-        border-bottom: 1px solid @border-gray;
+        border-bottom: 1px solid $border-gray;
         padding-bottom: 5px;
     }
     .msg {

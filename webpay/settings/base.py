@@ -33,7 +33,7 @@ MEDIA_URL = '/mozpay/media/'
 MINIFY_BUNDLES = {
     'css': {
         'pay/pay': (
-            'css/pay/pay.less',
+            'css/pay/pay.styl',
         ),
     },
     'js': {
@@ -69,10 +69,8 @@ JINGO_MINIFY_USE_STATIC = False
 # Cache-bust images in the CSS.
 CACHEBUST_IMGS = True
 
-# LESS CSS OPTIONS (Debug only)
-LESS_PREPROCESS = False  # Compile LESS with Node, rather than client-side JS?
-LESS_LIVE_REFRESH = False  # Refresh the CSS on save?
-LESS_BIN = 'lessc'
+# Stylus / Uglify / CleanCSS.
+STYLUS_BIN = 'stylus'
 UGLIFY_BIN = 'uglifyjs'
 CLEANCSS_BIN = 'cleancss'
 

@@ -45,7 +45,7 @@ translate-toolkit==1.9.0
 
 -e git://github.com/jsocol/commonware.git@1b2e7623782c7aaca5401714758845cf9fcee621#egg=commonware
 -e git://github.com/jsocol/django-cronjobs.git@cfda8176c5c3a50d1b58fcf57e87e23c467789bd#egg=django-cronjobs
--e git://github.com/jsocol/jingo-minify.git@d2ffefbd31e5035873083107e86893be302ce452#egg=jingo-minify
+-e git://github.com/jsocol/jingo-minify.git@cb911038e20a399aeff871e199c8bc2be12b5cee#egg=jingo-minify
 
 -e git://github.com/fwenzel/django-sha2.git@f4519bf0cc9b1dd7a7d78394fa4aec4504bc86e9#egg=django-sha2
 -e git://github.com/fwenzel/django-mozilla-product-details.git@36ef06539d6b34c4f345fd0d3e16937d0db9a752#egg=django-mozilla-product-details

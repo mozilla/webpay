@@ -21,3 +21,5 @@ tmp/*
 *~
 locale/xx
 ezboot.ini
+node_modules
+*.styl.css
