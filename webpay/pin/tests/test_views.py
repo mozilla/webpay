@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from mock import ANY, patch
 from nose.tools import eq_
 
+from lib.solitude import constants
 from lib.solitude.api import client
 from lib.solitude.errors import ERROR_STRINGS
 from webpay.auth.tests import SessionTestCase
@@ -352,6 +353,11 @@ class ResetConfirmPinViewTest(ResetPinTest):
         self.unverify()
         eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
 
+    def add_fake_trans_id_to_session(self):
+        s = self.client.session
+        s['trans_id'] = 'some:uuid'
+        s.save()
+
     @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
     def test_good_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
@@ -365,6 +371,26 @@ class ResetConfirmPinViewTest(ResetPinTest):
         self.request.session.save()
         res = self.client.post(self.url, data={'pin': '1234'})
         assert res['Location'].endswith(reverse('pin.reset_start'))
+
+    @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
+    @patch('lib.solitude.api.client.get_transaction', auto_spec=True)
+    def test_messages_in_pin_reset(self, get_transaction):
+        get_transaction.return_value = {'status': 'foo'}
+        self.add_fake_trans_id_to_session()
+        res = self.client.post(self.url, data={'pin': '1234'}, follow=True)
+        eq_([u'Pin reset'], [msg.message for msg in res.context['messages']])
+
+    @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
+    @patch('lib.solitude.api.client.get_transaction', auto_spec=True)
+    @patch('webpay.pay.views._bango_start_url', auto_spec=True)
+    def test_messages_cleared_in_pin_reset(self, _bango_start_url,
+                                                 get_transaction):
+        _bango_start_url.return_value = self.url
+        get_transaction.return_value = {'status': constants.STATUS_PENDING,
+                                        'uid_pay': 1}
+        self.add_fake_trans_id_to_session()
+        res = self.client.post(self.url, data={'pin': '1234'}, follow=True)
+        eq_([], [msg.message for msg in res.context['messages']])
 
     @patch.object(client, 'reset_confirm_pin', lambda x, y: False)
     def test_bad_pin(self):

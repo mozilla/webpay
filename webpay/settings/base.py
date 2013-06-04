@@ -33,6 +33,11 @@ MEDIA_URL = '/mozpay/media/'
 MINIFY_BUNDLES = {
     'css': {
         'pay/pay': (
+            'css/pay/normalize.styl',
+            'css/pay/util.styl',
+            'css/pay/fonts.styl',
+            'css/pay/throbber.styl',
+            'css/pay/messages.styl',
             'css/pay/pay.styl',
         ),
     },
@@ -51,6 +56,7 @@ MINIFY_BUNDLES = {
             'js/pay/bango.js',
 
             # These are top-level modules.
+            'js/pay/messages.js',
             'js/pay/pay.js',
             'js/pay/wait.js',
             'js/pay/cancel.js',

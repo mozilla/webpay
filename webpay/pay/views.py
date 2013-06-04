@@ -24,7 +24,7 @@ from lib.solitude.api import client as solitude
 
 from . import tasks
 from .forms import VerifyForm
-from .utils import trans_id, verify_urls
+from .utils import clear_messages, trans_id, verify_urls
 
 log = getLogger('w.pay')
 
@@ -189,6 +189,8 @@ def wait_to_start(request):
         return _error(request, msg=_('Transaction has already ended.'))
 
     if trans['status'] == constants.STATUS_PENDING:
+        # Dump any messages so we don't show them later.
+        clear_messages(request)
         # The transaction is ready; no need to wait for it.
         return http.HttpResponseRedirect(_bango_start_url(trans['uid_pay']))
     return render(request, 'pay/wait-to-start.html')
