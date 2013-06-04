@@ -31,6 +31,7 @@ django-picklefield==0.2.1
 PyJWT-mozilla==0.1.4.2
 python-dateutil==2.1
 python-memcached==1.48
+pytz==2010e
 raven==3.1.16
 requests==0.14.2
 schematic==0.2
