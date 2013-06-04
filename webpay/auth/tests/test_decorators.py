@@ -10,8 +10,22 @@ from webpay.auth import views as auth_views
 from . import good_assertion, SessionTestCase
 
 
+class Base(SessionTestCase):
+
+    def setUp(self):
+        super(Base, self).setUp()
+        patch = mock.patch('webpay.auth.views.pay_tasks')
+        patch.start()
+        self.patches = [patch]
+
+    def tearDown(self):
+        super(Base, self).tearDown()
+        for p in self.patches:
+            p.stop()
+
+
 @mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
-class TestBuyerHasPin(SessionTestCase):
+class TestBuyerHasPin(Base):
 
     def do_auth(self):
         res = self.client.post(reverse('auth.verify'), {'assertion': 'good'})
@@ -72,7 +86,7 @@ class TestBuyerHasPin(SessionTestCase):
 
 
 @mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
-class TestBuyerHasResetFlag(SessionTestCase):
+class TestBuyerHasResetFlag(Base):
 
     def do_auth(self):
         res = self.client.post(reverse('auth.verify'), {'assertion': 'good'})
@@ -109,7 +123,7 @@ class TestBuyerHasResetFlag(SessionTestCase):
 
 
 @mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
-class TestBuyerLockedPinFlags(SessionTestCase):
+class TestBuyerLockedPinFlags(Base):
 
     def do_auth(self):
         res = self.client.post(reverse('auth.verify'), {'assertion': 'good'})

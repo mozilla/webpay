@@ -8,6 +8,7 @@ from session_csrf import anonymous_csrf_exempt
 
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
+from webpay.pay import tasks as pay_tasks
 from webpay.pin.utils import check_pin_status
 from .utils import get_uuid, set_user
 
@@ -92,6 +93,12 @@ def verify(request):
             email = result.get('unverified-email', result.get('email'))
             user_hash = set_user(request, email)
             redirect_url = check_pin_status(request)
+
+            # Before we verify the user's PIN let's save some
+            # time and get the transaction configured via Bango in the
+            # background.
+            pay_tasks.configure_transaction(request)
+
             return {
                 'needs_redirect': redirect_url is not None,
                 'redirect_url': redirect_url,
