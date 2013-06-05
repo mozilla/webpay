@@ -43,12 +43,8 @@ Create a database to work in::
 
     mysql -u root -e 'create database webpay'
 
-Install compressor scripts with `npm`_ for node.js.
-You'll probably want to install them locally like this::
-
-    npm install
-
-Then to add this to your bash profile::
+Node dependencies are included in the source tree.
+For node to find them add this to your bash profile::
 
     # Get the bin for any local NodeJS module on cwd.
     PATH="./node_modules/.bin/:${PATH}"
