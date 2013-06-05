@@ -36,6 +36,12 @@ class TestUUID(test.TestCase):
             with self.assertRaises(PermissionDenied):
                 set_user(mock.MagicMock(), 'f@f.com')
 
+    @mock.patch.object(settings, 'UUID_HMAC_KEY', '')
+    @mock.patch.object(settings, 'DEBUG', False)
+    def test_no_settings(self):
+        with self.assertRaises(EnvironmentError):
+            get_uuid('f@f.com')
+
 
 class TestWhitelist(test.TestCase):
 
