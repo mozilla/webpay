@@ -1,5 +1,6 @@
 from django import http
 from django.conf import settings
+from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
 from django_browserid import get_audience, verify as verify_assertion
@@ -102,3 +103,7 @@ def verify(request):
 
     request.session.flush()
     return http.HttpResponseBadRequest()
+
+
+def denied(request):
+    return render(request, '403.html')

@@ -322,3 +322,9 @@ TEST_PIN_UI = False
 # If True, only simulated payments can be processed. All other requests will
 # result in an error.
 ONLY_SIMULATIONS = False
+
+# If empty, all users will be allowed through.
+# If not empty, each string will be compiled as a regular expression
+# and the email from persona checked using match, not search. If any of the
+# expressions match, the user will be let through.
+USER_WHITELIST = []

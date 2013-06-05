@@ -1,8 +1,23 @@
 import hashlib
+import re
 
 from django.conf import settings
+from django.core.exceptions import PermissionDenied
 
 from lib.solitude.api import client
+
+
+def check_whitelist(email):
+    whitelist = settings.USER_WHITELIST
+
+    if not whitelist:
+        return True
+
+    for email_re in whitelist:
+        if re.match(email_re, email):
+            return True
+
+    return False
 
 
 def get_uuid(email):
@@ -30,6 +45,9 @@ def get_user(request):
 
 
 def set_user(request, email):
+    if not check_whitelist(email):
+        raise PermissionDenied
+
     uuid = get_uuid(email)
     request.session['uuid'] = uuid
     # This is only used by navigator.id.watch()
