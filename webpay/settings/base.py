@@ -328,3 +328,7 @@ ONLY_SIMULATIONS = False
 # and the email from persona checked using match, not search. If any of the
 # expressions match, the user will be let through.
 USER_WHITELIST = []
+
+# Secret key string to use in UUID HMACs which are derived from Persona emails.
+# This must not be blank in production and should be more than 32 bytes long.
+UUID_HMAC_KEY = ''

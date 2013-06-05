@@ -172,7 +172,8 @@ class SolitudeAPI(SlumberWrapper):
                                       product_id, product_name,
                                       redirect_url_onsuccess,
                                       redirect_url_onerror,
-                                      prices, icon_url):
+                                      prices, icon_url,
+                                      user_uuid):
         """
         Get the billing configuration ID for a Bango transaction.
         """
@@ -204,6 +205,7 @@ class SolitudeAPI(SlumberWrapper):
             'redirect_url_onsuccess': redirect_url_onsuccess,
             'redirect_url_onerror': redirect_url_onerror,
             'icon_url': icon_url,
+            'user_uuid': user_uuid
         })
         bill_id = res['billingConfigurationId']
         log.info('transaction %s: billing config ID: %s; '

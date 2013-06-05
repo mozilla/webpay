@@ -34,3 +34,4 @@ MARKETPLACE_URL = SOLITUDE_URL = 'http://example.com'
 
 # If you want test this, do so explicitly in the tests.
 USER_WHITELIST = []
+UUID_HMAC_KEY = 'this is a test value'

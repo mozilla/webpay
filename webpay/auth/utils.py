@@ -1,4 +1,5 @@
 import hashlib
+import hmac
 import re
 
 from django.conf import settings
@@ -22,18 +23,23 @@ def check_whitelist(email):
 
 def get_uuid(email):
     """
-    Given an email returns the hash of the email for this site. This will be
+    Given an email returns an email token for this site. This will be
     consistent for each email for this site and can be used as the uuid in
-    solitude. Because the leakage of the email is more of a privacy concern
-    than a security concern, we are just doing a simple sha1 hash.
+    solitude. The email is protected by HMAC for privacy purposes.
 
-    :email: the email to hash.
+    :email: the email to tokenize.
     """
+    if not settings.DEBUG and not settings.UUID_HMAC_KEY:
+        raise EnvironmentError('UUID_HMAC_KEY setting cannot be empty in '
+                               'production')
     if not isinstance(email, basestring):
         raise ValueError('get_uuid requires a string or unicode')
-    hashed = hashlib.sha1()
-    hashed.update(email)
-    return '%s:%s' % (settings.DOMAIN, hashed.hexdigest())
+    if isinstance(email, unicode):
+        # Emails should always be UTF8 compatible but let's cope
+        # with it if not.
+        email = email.encode('utf8', 'replace')
+    uid = hmac.new(settings.UUID_HMAC_KEY, email, hashlib.sha256).hexdigest()
+    return '%s:%s' % (settings.DOMAIN, uid)
 
 
 def get_user(request):

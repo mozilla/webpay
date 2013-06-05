@@ -18,8 +18,17 @@ from . import good_assertion, SessionTestCase
 class TestAuth(SessionTestCase):
 
     def setUp(self):
+        super(TestAuth, self).setUp()
         self.url = reverse('auth.verify')
         self.reverify_url = reverse('auth.reverify')
+        patch = mock.patch('webpay.auth.views.pay_tasks.configure_transaction')
+        self.config_trans = patch.start()
+        self.patches = [patch]
+
+    def tearDown(self):
+        super(TestAuth, self).tearDown()
+        for p in self.patches:
+            p.stop()
 
     @mock.patch('webpay.auth.views.verify_assertion')
     @mock.patch('webpay.auth.views.set_user')
@@ -34,6 +43,8 @@ class TestAuth(SessionTestCase):
         data = json.loads(res.content)
         eq_(data['user_hash'], '<user_hash>')
         set_user_mock.assert_called_with(mock.ANY, 'a@a.com')
+        assert self.config_trans.called, (
+                'After login, transaction should be configured in background')
 
     @mock.patch('webpay.auth.views.verify_assertion')
     @mock.patch('webpay.auth.views.set_user')
