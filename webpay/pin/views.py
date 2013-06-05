@@ -78,6 +78,7 @@ def is_locked(request):
 
 @enforce_sequence
 def was_locked(request):
+    request.session['uuid_pin_was_locked'] = False
     return render(request, 'pin/pin_was_locked.html')
 
 
