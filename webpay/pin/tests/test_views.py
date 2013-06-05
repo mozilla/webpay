@@ -111,7 +111,8 @@ class VerifyPinViewTest(PinViewTestCase):
                                                       'valid': False})
     def test_locked_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        eq_(res.status_code, 200)
+        eq_(res.status_code, 302)
+        assert res.get('Location', '').endswith(reverse('pin.is_locked'))
 
     @patch.object(client, 'verify_pin')
     def test_uuid_used(self, verify_pin):

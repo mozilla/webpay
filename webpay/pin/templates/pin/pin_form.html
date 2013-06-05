@@ -12,49 +12,33 @@
 
   <div {% if hide_pin %}class="hidden"{% endif %} id="enter-pin">
 
-    {% if not form.pin_is_locked %}
     <h2>{{ title }}</h2>
-    {% else %}
-    <h2>{{ _('Your Pin was locked') }}</h2>
-    {% endif %}
 
     <form id="pin" class="pin-form" action="{{ action }}" method="post">
       {{ csrf() }}
-      {% if not form.pin_is_locked %}
-        <div class="pinbox{% if form.pin.errors %} error{% endif %}">
-          {{ form.pin }}
-          <p class="error-msg">{% if form.pin.errors %}{{ form.pin.errors[0] }}{% endif %}</p>
-          {% if not form.no_pin and not form.reset_flow %}
-          {# L10n: This is the same as the standard forgot
-                   password that most sites have. #}
-          <a id="forgot-pin" class="forgot-pin" href="{{ url('pin.reset_start') }}">
-              {{ _('Forgot your pin?') }}
-          </a>
-          {% endif %}
-        </div>
-      {% else %}
-        {# Show pin locked error message #}
-        <p>{{ form.pin.errors[0] }}</p>
-      {% endif %}
+      <div class="pinbox{% if form.pin.errors %} error{% endif %}">
+        {{ form.pin }}
+        <p class="error-msg">{% if form.pin.errors %}{{ form.pin.errors[0] }}{% endif %}</p>
+        {% if not form.no_pin and not form.reset_flow %}
+        {# L10n: This is the same as the standard forgot
+                 password that most sites have. #}
+        <a id="forgot-pin" class="forgot-pin" href="{{ url('pin.reset_start') }}">
+          {{ _('Forgot your pin?') }}
+        </a>
+        {% endif %}
+      </div>
 
       <footer>
         {% if form.reset_flow  %}
           <a class="button sec" href="{{ url('pin.reset_cancel') }}">
             {{ _('Cancel') }}
           </a>
-        {% elif form.pin_is_locked %}
-          <a id="forgot-pin" class="button sec" href="{{ url('pin.reset_start') }}">
-            {{ _('Reset Pin') }}
-          </a>
         {% else %}
           <a class="button cancel-button sec" href="#">
             {{ _('Cancel') }}
           </a>
         {% endif %}
-
-        {% if not form.pin_is_locked %}
-          <button disabled type="submit">{{ _('Continue') }}</button>
-        {% endif %}
+        <button disabled type="submit">{{ _('Continue') }}</button>
       </footer>
     </form>
   </div>

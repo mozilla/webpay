@@ -63,6 +63,9 @@ def verify(request):
         if form.is_valid():
             request.session['last_pin_success'] = datetime.now()
             return http.HttpResponseRedirect(get_payment_url())
+        elif form.pin_is_locked:
+            request.session['uuid_pin_is_locked'] = True
+            return http.HttpResponseRedirect(reverse('pin.is_locked'))
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Enter Pin'),
                   'action': reverse('pin.verify')})
