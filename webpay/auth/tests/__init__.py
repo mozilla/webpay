@@ -42,4 +42,5 @@ class SessionTestCase(test.TestCase):
 
     def unverify(self):
         # Remove the browserid verification.
-        del self.client.cookies[settings.SESSION_COOKIE_NAME]
+        del self.request.session['uuid']
+        self.request.session.save()

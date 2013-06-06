@@ -263,7 +263,16 @@ class ResetStartViewTest(PinViewTestCase):
         assert res['Location'].endswith(reverse('pin.is_locked'))
 
 
-class ResetNewPinViewTest(PinViewTestCase):
+class ResetPinTest(PinViewTestCase):
+
+    def setUp(self):
+        super(ResetPinTest, self).setUp()
+        # Simulate a previous Persona user/pass reverification.
+        self.request.session['was_reverified'] = True
+        self.request.session.save()
+
+
+class ResetNewPinViewTest(ResetPinTest):
     url_name = 'pin.reset_new_pin'
 
     def test_unauth(self):
@@ -276,6 +285,15 @@ class ResetNewPinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert set_new_pin.called
         assert res['Location'].endswith(reverse('pin.reset_confirm'))
+
+    @patch('lib.solitude.api.client.set_new_pin', auto_spec=True)
+    @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
+    def test_attempt_before_reverify(self, set_new_pin):
+        self.request.session['was_reverified'] = False
+        self.request.session.save()
+        res = self.client.post(self.url, data={'pin': '1234'})
+        assert not set_new_pin.called
+        assert res['Location'].endswith(reverse('pin.reset_start'))
 
     @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
     @patch.object(client, 'set_new_pin',
@@ -327,7 +345,7 @@ class ResetNewPinViewTest(PinViewTestCase):
         assert res['Location'].endswith(reverse('pin.is_locked'))
 
 
-class ResetConfirmPinViewTest(PinViewTestCase):
+class ResetConfirmPinViewTest(ResetPinTest):
     url_name = 'pin.reset_confirm'
 
     def test_unauth(self):
@@ -338,6 +356,15 @@ class ResetConfirmPinViewTest(PinViewTestCase):
     def test_good_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert res['Location'].endswith(get_payment_url())
+        # Make sure the reverification flag was cleared out.
+        eq_(res.client.session['was_reverified'], False)
+
+    @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
+    def test_attempt_before_reverify(self):
+        self.request.session['was_reverified'] = False
+        self.request.session.save()
+        res = self.client.post(self.url, data={'pin': '1234'})
+        assert res['Location'].endswith(reverse('pin.reset_start'))
 
     @patch.object(client, 'reset_confirm_pin', lambda x, y: False)
     def test_bad_pin(self):
