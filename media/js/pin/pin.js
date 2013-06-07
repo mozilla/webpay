@@ -1,4 +1,5 @@
 require(['cli'], function(cli) {
+    var $buttons = $('footer button, footer .button');
     var $errorMsg = $('.error-msg');
     var $forgotPin = $('.forgot-pin');
     var $pinBox = $('.pinbox');
@@ -57,11 +58,15 @@ require(['cli'], function(cli) {
         $pinBox.addClass('error');
         $forgotPin.hide();
         $submitButton.prop('disabled', true);
+        repaintButtons();
     }
 
     function clearError() {
-        $pinBox.removeClass('error');
-        $forgotPin.show();
+        if ($pinBox.hasClass('error')) {
+            $pinBox.removeClass('error');
+            $forgotPin.show();
+            repaintButtons();
+        }
     }
 
     function validate() {
@@ -86,6 +91,17 @@ require(['cli'], function(cli) {
             currentInput.parent().find('.display span.current').removeClass('current');
         }
         currentInput = null;
+        repaintButtons();
+    }
+
+    function repaintButtons() {
+        // Hack to workaround bug 831106.
+        var zIndex = (lastZIndex == 10) ? 11 : 10;
+        lastZIndex = zIndex;
+        if (!$buttons.length) {
+            $buttons = $('footer button, footer .button');
+        }
+        $buttons.css('z-index', zIndex);
     }
 
     function updateDisplay(newLen) {
@@ -102,11 +118,7 @@ require(['cli'], function(cli) {
         } else if (newLen === (binLength -1)) {
             $submitButton.prop('disabled', true);
         }
-
-        // Hack to workaround bug 831106.
-        var zIndex = (lastZIndex == 10) ? 11 : 10;
-        lastZIndex = zIndex;
-        $('footer button, footer .button').css('z-index', zIndex);
+        repaintButtons();
     }
 
     $(window).on('focus', '.pinbox input', function(e) {
