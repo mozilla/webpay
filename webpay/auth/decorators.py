@@ -133,3 +133,20 @@ def get_locked_step(request, step):
             return http.HttpResponseRedirect(reverse('pin.was_locked'))
         return None
     return False
+
+
+def require_reverification(f):
+    """
+    Ensures user reverifed their username/password before accessing a view.
+
+    See bug 836060 for details on the attacks that this mitigates.
+    """
+    @functools.wraps(f)
+    def wrapper(request, *args, **kw):
+        if not request.session.get('was_reverified'):
+            log.info('Reverification check failed; uuid=%r; was_reverified=%r'
+                     % (request.session.get('uuid'),
+                        request.session.get('was_reverified')))
+            return http.HttpResponseRedirect(reverse('pin.reset_start'))
+        return f(request, *args, **kw)
+    return wrapper

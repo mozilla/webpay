@@ -40,15 +40,11 @@ def reverify(request):
     if form.is_valid():
         url = settings.BROWSERID_VERIFICATION_URL
         audience = get_audience(request)
-        # TODO: when we want to require a forced-auth login across the
-        # entire site then how do we do it?
-        # See bug 836060.
-        extra_params = {'experimental_forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
-                        # TODO: how do we make sure this is a proper forced
-                        #       auth assertion?
-                        # This can also be addressed in bug 836060
-                        'experimental_forceAuthentication': 'true',
-                        'experimental_allowUnverified': 'true'}
+        extra_params = {
+            'experimental_forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
+            'experimental_forceAuthentication': 'true',
+            'experimental_allowUnverified': 'true'
+        }
 
         log.info('Re-verifying Persona assertion. url: %s, audience: %s, '
                  'extra_params: %s' % (url, audience, extra_params))
@@ -62,8 +58,9 @@ def reverify(request):
             reverified_user = get_uuid(email)
             if logged_user and logged_user != reverified_user:
                 # TODO: Should we try to support this?
-                raise ValueError('A user tried to reverify herself with a '
-                                 'new email: %s' % email)
+                raise ValueError('User %r tried to reverify as '
+                                 'new email: %s' % (logged_user, email))
+            request.session['was_reverified'] = True
 
             return {'user_hash': reverified_user}
 
@@ -81,8 +78,10 @@ def verify(request):
     if form.is_valid():
         url = settings.BROWSERID_VERIFICATION_URL
         audience = get_audience(request)
-        extra_params = {'experimental_forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
-                        'experimental_allowUnverified': 'true'}
+        extra_params = {
+            'experimental_forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
+            'experimental_allowUnverified': 'true'
+        }
         assertion = form.cleaned_data['assertion']
 
         log.info('verifying Persona assertion. url: %s, audience: %s, '
@@ -92,7 +91,8 @@ def verify(request):
         if result:
             log.info('Persona assertion ok: %s' % result)
             email = result.get('unverified-email', result.get('email'))
-            user_hash = set_user(request, email)
+            user_uuid = set_user(request, email)
+
             redirect_url = check_pin_status(request)
 
             # Before we verify the user's PIN let's save some
@@ -103,7 +103,7 @@ def verify(request):
             return {
                 'needs_redirect': redirect_url is not None,
                 'redirect_url': redirect_url,
-                'user_hash': user_hash
+                'user_hash': user_uuid
             }
 
         log.error('Persona assertion failed.')

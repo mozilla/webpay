@@ -65,6 +65,7 @@ class TestAuth(SessionTestCase):
     def test_bad(self, verify_assertion):
         verify_assertion.return_value = False
         eq_(self.client.post(self.url, {'assertion': 'bad'}).status_code, 400)
+        eq_(self.client.session.get('was_reverified'), None)
 
     @mock.patch('webpay.auth.views.verify_assertion')
     def test_session_cleaned(self, verify_assertion):
@@ -83,6 +84,7 @@ class TestAuth(SessionTestCase):
         v = verify_assertion.call_args[0][2]
         assert v['experimental_forceAuthentication'], (
             verify_assertion.call_args)
+        eq_(self.client.session['was_reverified'], True)
 
 
 class TestResetUser(BasicSessionCase):
