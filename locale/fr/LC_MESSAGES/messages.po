@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-28 15:15-0700\n"
-"PO-Revision-Date: 2013-05-21 18:37+0200\n"
+"PO-Revision-Date: 2013-06-09 17:09+0200\n"
 "Last-Translator: Alexandre Lissy <lissyx@mozfr.org>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -18,19 +18,20 @@ msgstr ""
 
 #: webpay/bango/views.py:96
 msgid "Could not record Bango error"
-msgstr ""
+msgstr "Impossible d'enregistrer l'erreur Bango"
 
 #: webpay/bango/views.py:101
 msgid "Received Bango error"
-msgstr ""
+msgstr "Une erreur Bango est survenue"
 
 #: webpay/bango/templates/bango/cancel.html:10
 msgid "Payment cancelled."
-msgstr ""
+msgstr "Paiement annulé."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10
+#: webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
-msgstr ""
+msgstr "Votre paiement est complet."
 
 #: webpay/base/utils.py:32 webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
@@ -50,7 +51,7 @@ msgstr "Quelque chose ne va pas !"
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
-msgstr ""
+msgstr "Merci de réessayer dans quelques instants."
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9
@@ -59,15 +60,15 @@ msgstr "Web Pay"
 
 #: webpay/base/templates/base.html:27
 msgid "Pin must be 4 digits."
-msgstr ""
+msgstr "Le code PIN doit comprendre 4 chiffres."
 
 #: webpay/base/templates/base.html:28
 msgid "Pin can only contain digits."
-msgstr ""
+msgstr "le code PIN ne peut être composé que de chiffres."
 
 #: webpay/base/templates/base.html:29
 msgid "Loading"
-msgstr ""
+msgstr "Chargement"
 
 #: webpay/base/templates/base.html:30
 msgid "Beginning payment&hellip;"
@@ -75,21 +76,25 @@ msgstr "Début du paiement &hellip;"
 
 #: webpay/base/templates/base.html:31
 msgid "Connecting to Persona"
-msgstr ""
+msgstr "Connection à Persona"
 
 #: webpay/base/templates/base.html:32
 msgid "Payment complete"
-msgstr ""
+msgstr "Paiement complété"
 
 #: webpay/base/templates/base.html:33
 msgid "Payment cancelled"
-msgstr ""
+msgstr "Paiement annulé"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:10
+#: webpay/base/templates/error.html:4
+#: webpay/pin/templates/pin/pin_is_locked.html:10
 msgid "Error"
-msgstr ""
+msgstr "Erreur"
 
-#: webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/pin_form.html:51
+#: webpay/base/templates/error.html:8
+#: webpay/pay/templates/pay/simulate.html:18
+#: webpay/pin/templates/pin/pin_form.html:43
+#: webpay/pin/templates/pin/pin_form.html:51
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Annuler"
@@ -106,15 +111,15 @@ msgstr "JWT n'a pas été décodé en un objet JSON. Son type était {0}."
 
 #: webpay/pay/forms.py:51
 msgid "Payment simulations are disabled at this time."
-msgstr ""
+msgstr "Les simulations de paiement sont désactivées à cet instant."
 
 #: webpay/pay/forms.py:57
 msgid "The requested simulation result is not supported."
-msgstr ""
+msgstr "Le résultat de la simulation demandée n'est pas pris en charge."
 
 #: webpay/pay/forms.py:60
 msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr ""
+msgstr "La simulation de remboursement demandée ne contient pas la clef '{0}'."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:76
@@ -125,12 +130,13 @@ msgstr "Personne n'a été enregistré pour gérer JWT {0}."
 #: webpay/pay/forms.py:82
 msgid "This payment key, {0}, can only be used to simulate purchases."
 msgstr ""
+"La clef de paiement, {0}, ne peut être utilisée que pour simuler des achats."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is an example of the proper key format.
 #: webpay/pay/forms.py:92
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
-msgstr ""
+msgstr "La clef « {0} » doit être un objet des URLs parmi {1}"
 
 #: webpay/pay/models.py:28
 msgid "Active"
@@ -146,41 +152,44 @@ msgstr "Révoqué"
 
 #: webpay/pay/views.py:43
 msgid "Payments are temporarily disabled."
-msgstr ""
+msgstr "Les paiements sont temporairement désactivés."
 
 #: webpay/pay/views.py:142 webpay/pin/views.py:67
 msgid "Enter Pin"
-msgstr ""
+msgstr "Entrez le code PIN"
 
 #: webpay/pay/views.py:188
 msgid "Transaction has already ended."
-msgstr ""
+msgstr "La transaction est déjà terminée."
 
 #: webpay/pay/templates/pay/lobby.html:10
 msgid "Sign In"
-msgstr ""
+msgstr "Connexion"
 
 #: webpay/pay/templates/pay/lobby.html:11
 msgid "Sign in to continue with the payment"
-msgstr ""
+msgstr "Connectez-vous pour continuer le paiement"
 
 #: webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in"
 msgstr "Connexion"
 
-#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7
+#: webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
-msgstr ""
+msgstr "Simuler le paiement"
 
 #: webpay/pay/templates/pay/simulate.html:8
 msgid "You will not be charged."
-msgstr ""
+msgstr "Aucun prélèvement ne sera effectué."
 
 #: webpay/pay/templates/pay/simulate.html:10
 msgid "result"
-msgstr ""
+msgstr "résultat"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:56 webpay/pin/templates/pin/pin_was_locked.html:17
+#: webpay/pay/templates/pay/simulate.html:20
+#: webpay/pin/templates/pin/pin_form.html:56
+#: webpay/pin/templates/pin/pin_was_locked.html:17
 msgid "Continue"
 msgstr "Continuer"
 
@@ -195,53 +204,72 @@ msgstr "Vous avez déjà créé un code PIN."
 #: webpay/pin/forms.py:80
 msgid "Your PIN was entered incorrectly too many times. Sign in to continue."
 msgstr ""
+"Votre code PIN a été entré de manière incorrecte trop de fois. Merci de vous "
+"connecter pour continuer."
 
 #: webpay/pin/forms.py:86
 msgid "Wrong pin"
-msgstr ""
+msgstr "Mauvais code PIN"
 
 #: webpay/pin/forms.py:97 webpay/pin/forms.py:119
 msgid "Pins do not match."
-msgstr ""
+msgstr "Les codes PIN ne correspondent pas."
 
 #: webpay/pin/views.py:37
 msgid "Create a Pin"
-msgstr ""
+msgstr "Créer un code PIN"
 
 #: webpay/pin/views.py:52 webpay/pin/views.py:126
 msgid "Confirm Pin"
-msgstr ""
+msgstr "Confirmer le code PIN"
 
-#: webpay/pin/views.py:89 webpay/pin/views.py:108 webpay/pin/templates/pin/pin_form.html:47 webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:89 webpay/pin/views.py:108
+#: webpay/pin/templates/pin/pin_form.html:47
+#: webpay/pin/templates/pin/pin_was_locked.html:14
 msgid "Reset Pin"
-msgstr ""
+msgstr "Remise à zéro du code PIN"
 
-#: webpay/pin/templates/pin/pin_form.html:18 webpay/pin/templates/pin/pin_was_locked.html:10
+#: webpay/pin/templates/pin/pin_form.html:18
+#: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your Pin was locked"
-msgstr ""
+msgstr "Votre code PIN était verrouillé"
 
 #. This is the same as the standard forgot
 #.                    password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:12
+#: webpay/pin/templates/pin/pin_form.html:31
+#: webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
-msgstr ""
+msgstr "Code PIN oublié ?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:11
-msgid "You entered the pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
+msgid ""
+"You entered the pin too many times. Your account is locked. Please try your "
+"purchase again in 5 minutes."
 msgstr ""
+"Vous avez entré un code PIN erroné trop de fois, votre compte est bloqué. "
+"Merci de réessayer votre achat dans 5 minutes."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:14
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:11
-msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
+msgid ""
+"Your pin was locked because you entered it incorrectly too many times. You "
+"can continue and try entering your pin again or reset your pin."
 msgstr ""
+"Votre code PIN était bloqué suite à trop de tentatives erronées. Vous pouvez "
+"continuer et essayer d'entrer votre code PIN encore, ou bien le remettre à "
+"zéro."
 
 #: webpay/pin/templates/pin/reset_start.html:13
-msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
+msgid ""
+"Are you sure you want to reset your pin? You must sign in to Persona to "
+"reset your pin."
 msgstr ""
+"Êtes-vous sûr de vouloir remettre à zéro votre code PIN ? Vous devez vous "
+"connecter avec Persona pour la remise à zéro."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
-msgstr ""
+msgstr "Remise à zéro"
