@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-28 15:15-0700\n"
+"POT-Creation-Date: 2013-06-10 08:55-0700\n"
 "PO-Revision-Date: 2013-04-05 08:50-0500\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -13,11 +13,11 @@ msgstr ""
 "X-Generator: Translate Toolkit 1.9.0\n"
 "Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : (n>2 && n<7) ? 2 :(n>6 && n<11) ? 3 : 4;\n"
 
-#: webpay/bango/views.py:96
+#: webpay/bango/views.py:99
 msgid "Could not record Bango error"
 msgstr "Níorbh fhéidir earráid Bango a thaifeadadh"
 
-#: webpay/bango/views.py:101
+#: webpay/bango/views.py:104
 msgid "Received Bango error"
 msgstr "Fuarthas earráid Bango"
 
@@ -29,9 +29,22 @@ msgstr "Íocaíocht curtha ar ceal."
 msgid "Your payment is complete."
 msgstr "Bhí d'íocaíocht curtha i gcrích."
 
-#: webpay/base/utils.py:32 webpay/base/templates/500.html:5
+#: webpay/base/utils.py:33 webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
 msgstr "Tharla earráid agus an t-iarratas sin á phróiseáil."
+
+#: webpay/base/templates/403.html:4
+msgid "Not Allowed"
+msgstr ""
+
+#: webpay/base/templates/403.html:5
+msgid "Sorry, you are not allowed to do that."
+msgstr ""
+
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/pin/templates/pin/reset_start.html:16
+msgid "Cancel"
+msgstr "Cealaigh"
 
 #: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
 msgid "Page not found"
@@ -54,78 +67,73 @@ msgstr "Déan iarracht eile i gceann nóiméid."
 msgid "Web Pay"
 msgstr "Íocaíocht Ghréasáin"
 
-#: webpay/base/templates/base.html:27
+#: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
 msgstr "Ní mór 4 dhigit a bheith in UAP."
 
-#: webpay/base/templates/base.html:28
+#: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
 msgstr "Ní cheadaítear ach digití in UAP."
 
-#: webpay/base/templates/base.html:29
+#: webpay/base/templates/base.html:30
 msgid "Loading"
 msgstr "Ag Luchtú"
 
-#: webpay/base/templates/base.html:30
+#: webpay/base/templates/base.html:31
 msgid "Beginning payment&hellip;"
 msgstr "Íocaíocht á tosú&hellip;"
 
-#: webpay/base/templates/base.html:31
+#: webpay/base/templates/base.html:32
 msgid "Connecting to Persona"
 msgstr "Ag ceangal le Persona"
 
-#: webpay/base/templates/base.html:32
+#: webpay/base/templates/base.html:33
 msgid "Payment complete"
 msgstr "Íocaíocht curtha i gcrích"
 
-#: webpay/base/templates/base.html:33
+#: webpay/base/templates/base.html:34
 msgid "Payment cancelled"
 msgstr "Íocaíocht curtha ar ceal"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:10
+#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Earráid"
 
-#: webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/pin_form.html:51
-#: webpay/pin/templates/pin/reset_start.html:16
-msgid "Cancel"
-msgstr "Cealaigh"
-
 #. L10n: first argument is a detailed error message.
-#: webpay/pay/forms.py:30
+#: webpay/pay/forms.py:31
 msgid "Error decoding JWT: {0}"
 msgstr "Earráid agus JWT á dhíchódú: {0}"
 
 #. L10n: first argument is a data type, such as <unicode>
-#: webpay/pay/forms.py:41
+#: webpay/pay/forms.py:42
 msgid "The JWT did not decode to a JSON object. Its type was {0}."
 msgstr "Níorbh fhéidir réad JSON a dhéanamh as an JWT. Cineál: {0}."
 
-#: webpay/pay/forms.py:51
+#: webpay/pay/forms.py:52
 msgid "Payment simulations are disabled at this time."
 msgstr "Níl insamhaltaí ar íocaíochtaí ar fáil faoi láthair."
 
-#: webpay/pay/forms.py:57
+#: webpay/pay/forms.py:58
 msgid "The requested simulation result is not supported."
 msgstr "Ní thacaítear leis an insamhladh iarrtha."
 
-#: webpay/pay/forms.py:60
+#: webpay/pay/forms.py:61
 msgid "The requested chargeback simulation is missing the key '{0}'."
 msgstr "Eochair '{0}' ar iarraidh ón insamhladh iarrtha ar aisíocaíocht."
 
 #. L10n: the first argument is a key to identify an issuer.
-#: webpay/pay/forms.py:76
+#: webpay/pay/forms.py:77
 msgid "No one has been registered for JWT issuer {0}."
 msgstr "Níl éinne cláraithe le haghaidh eisitheoir JWT {0}."
 
 #. L10n: the first argument is a key to identify an issuer.
-#: webpay/pay/forms.py:82
+#: webpay/pay/forms.py:83
 msgid "This payment key, {0}, can only be used to simulate purchases."
 msgstr "Ní féidir an eochair íocaíochta seo, {0}, a úsáid ach chun íocaíochtaí a insamhladh."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is an example of the proper key format.
-#: webpay/pay/forms.py:92
+#: webpay/pay/forms.py:93
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
 msgstr "Ní mór don eochair \"{0}\" a bheith ina réad URL, mar shampla {1}"
 
@@ -141,15 +149,15 @@ msgstr "Neamhghníomhach"
 msgid "Revoked"
 msgstr "Cúlghairthe"
 
-#: webpay/pay/views.py:43
+#: webpay/pay/views.py:44
 msgid "Payments are temporarily disabled."
 msgstr "Tá íocaíochtaí díchumasaithe go sealadach."
 
-#: webpay/pay/views.py:142 webpay/pin/views.py:67
+#: webpay/pay/views.py:142 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Cuir UAP isteach"
 
-#: webpay/pay/views.py:188
+#: webpay/pay/views.py:191
 msgid "Transaction has already ended."
 msgstr "Tá an beart críochnaithe cheana."
 
@@ -177,7 +185,7 @@ msgstr "Ní bhainfear aon airgead díot."
 msgid "result"
 msgstr "toradh"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:56 webpay/pin/templates/pin/pin_was_locked.html:17
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:17
 msgid "Continue"
 msgstr "Lean ar aghaidh"
 
@@ -185,51 +193,47 @@ msgstr "Lean ar aghaidh"
 msgid "Waiting for payment to complete&hellip;"
 msgstr "Ag fanacht leis an íocaíocht&hellip;"
 
-#: webpay/pin/forms.py:65
+#: webpay/pin/forms.py:73
 msgid "You have already created a PIN."
 msgstr "Chruthaigh tú UAP cheana."
 
-#: webpay/pin/forms.py:80
-msgid "Your PIN was entered incorrectly too many times. Sign in to continue."
-msgstr "Rinne tú an iomarca iarrachtaí ar an UAP a chur isteach.  Logáil isteach chun dul ar aghaidh."
-
-#: webpay/pin/forms.py:86
+#: webpay/pin/forms.py:93
 msgid "Wrong pin"
 msgstr "UAP mhícheart"
 
-#: webpay/pin/forms.py:97 webpay/pin/forms.py:119
+#: webpay/pin/forms.py:104 webpay/pin/forms.py:126
 msgid "Pins do not match."
 msgstr "Ní ionann na UAPanna."
 
-#: webpay/pin/views.py:37
+#: webpay/pin/views.py:38
 msgid "Create a Pin"
 msgstr "Cruthaigh UAP"
 
-#: webpay/pin/views.py:52 webpay/pin/views.py:126
+#: webpay/pin/views.py:53 webpay/pin/views.py:136
 msgid "Confirm Pin"
 msgstr "Deimhnigh an UAP"
 
-#: webpay/pin/views.py:89 webpay/pin/views.py:108 webpay/pin/templates/pin/pin_form.html:47 webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:95 webpay/pin/views.py:115 webpay/pin/templates/pin/pin_was_locked.html:14
 msgid "Reset Pin"
 msgstr "Athshocraigh an UAP"
 
-#: webpay/pin/templates/pin/pin_form.html:18 webpay/pin/templates/pin/pin_was_locked.html:10
-msgid "Your Pin was locked"
-msgstr "Cuireadh do UAP faoi ghlas"
-
 #. This is the same as the standard forgot
-#.                    password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:12
+#.                  password that most sites have.
+#: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
 msgstr "UAP dearmadta?"
 
-#: webpay/pin/templates/pin/pin_is_locked.html:11
-msgid "You entered the pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr "Rinne tú an iomarca iarrachtaí ar an UAP a chur isteach. Tá do chuntas faoi ghlas anois. Déan iarracht eile i gceann 5 nóiméid."
+#: webpay/pin/templates/pin/pin_is_locked.html:13
+msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
+msgstr ""
 
-#: webpay/pin/templates/pin/pin_is_locked.html:14
-msgid "Ok"
-msgstr "OK"
+#: webpay/pin/templates/pin/pin_is_locked.html:17
+msgid "OK"
+msgstr ""
+
+#: webpay/pin/templates/pin/pin_was_locked.html:10
+msgid "Your Pin was locked"
+msgstr "Cuireadh do UAP faoi ghlas"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:11
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
