@@ -4,12 +4,11 @@ from django import http
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 
-import commonware.log
-
+from webpay.base.logger import getLogger
 from webpay.base.utils import log_cef
 
 
-log = commonware.log.getLogger('w.auth')
+log = getLogger('w.auth')
 
 flow = {
     'standard': ['create', 'confirm', 'verify', 'reset_start'],
@@ -134,3 +133,20 @@ def get_locked_step(request, step):
             return http.HttpResponseRedirect(reverse('pin.was_locked'))
         return None
     return False
+
+
+def require_reverification(f):
+    """
+    Ensures user reverifed their username/password before accessing a view.
+
+    See bug 836060 for details on the attacks that this mitigates.
+    """
+    @functools.wraps(f)
+    def wrapper(request, *args, **kw):
+        if not request.session.get('was_reverified'):
+            log.info('Reverification check failed; uuid=%r; was_reverified=%r'
+                     % (request.session.get('uuid'),
+                        request.session.get('was_reverified')))
+            return http.HttpResponseRedirect(reverse('pin.reset_start'))
+        return f(request, *args, **kw)
+    return wrapper

@@ -1,4 +1,5 @@
 require(['cli'], function(cli) {
+    var $buttons = $('footer button, footer .button');
     var $errorMsg = $('.error-msg');
     var $forgotPin = $('.forgot-pin');
     var $pinBox = $('.pinbox');
@@ -7,6 +8,7 @@ require(['cli'], function(cli) {
     var PINLENGTH = 4;
     var currentInput = null;
     var interval = false;
+    var lastZIndex = 10;
 
     // KeyCodes that aren't blocked.
     var acceptedKeyCodes = [
@@ -56,11 +58,15 @@ require(['cli'], function(cli) {
         $pinBox.addClass('error');
         $forgotPin.hide();
         $submitButton.prop('disabled', true);
+        repaintButtons();
     }
 
     function clearError() {
-        $pinBox.removeClass('error');
-        $forgotPin.show();
+        if ($pinBox.hasClass('error')) {
+            $pinBox.removeClass('error');
+            $forgotPin.show();
+            repaintButtons();
+        }
     }
 
     function validate() {
@@ -85,12 +91,24 @@ require(['cli'], function(cli) {
             currentInput.parent().find('.display span.current').removeClass('current');
         }
         currentInput = null;
+        repaintButtons();
+    }
+
+    function repaintButtons() {
+        // Hack to workaround bug 831106.
+        var zIndex = (lastZIndex == 10) ? 11 : 10;
+        lastZIndex = zIndex;
+        if (!$buttons.length) {
+            $buttons = $('footer button, footer .button');
+        }
+        $buttons.css('z-index', zIndex);
     }
 
     function updateDisplay(newLen) {
         var $parent = currentInput.parent();
         var bins = $parent.find('.display span');
         var binLength = bins.length;
+
         for (var i=0; i<binLength; i++) {
             bins.eq(i).toggleClass('filled', i < newLen)
                       .toggleClass('current', i === newLen);
@@ -100,6 +118,7 @@ require(['cli'], function(cli) {
         } else if (newLen === (binLength -1)) {
             $submitButton.prop('disabled', true);
         }
+        repaintButtons();
     }
 
     $(window).on('focus', '.pinbox input', function(e) {

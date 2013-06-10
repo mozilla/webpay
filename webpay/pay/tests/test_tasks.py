@@ -383,6 +383,7 @@ class TestStartPay(test_utils.TestCase):
 
     def setUp(self):
         self.issue = 'some-seller-uuid'
+        self.user_uuid = 'some-user-uuid'
         self.transaction_uuid = 'webpay:some-id'
         self.notes = {'issuer_key': self.issue,
                       'pay_request': {
@@ -405,7 +406,7 @@ class TestStartPay(test_utils.TestCase):
                 'type': constants.TYPE_PAYMENT,
                 'uuid': self.transaction_uuid
         }
-        tasks.start_pay(self.transaction_uuid, self.notes)
+        tasks.start_pay(self.transaction_uuid, self.notes, self.user_uuid)
 
     def set_billing_id(self, slumber, num):
         slumber.bango.billing.post.return_value = {
@@ -430,6 +431,7 @@ class TestStartPay(test_utils.TestCase):
     @mock.patch('lib.marketplace.api.client.api')
     def test_transaction_called(self, marketplace, solitude):
         solitude.generic.transaction.get_object.return_value = {
+            'status': 'not-pending',
             'resource_pk': 5}
         self.start()
         solitude.generic.transaction.assert_called_with(5)
@@ -511,10 +513,29 @@ class TestStartPay(test_utils.TestCase):
     @raises(ValueError)
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
     @mock.patch('lib.solitude.api.client.api')
-    def test_marketplace_missing_seller_uuid(self, slumber):
+    @mock.patch('webpay.pay.tasks.client')
+    def test_marketplace_missing_seller_uuid(self, cli, slumber):
         self.notes['issuer_key'] = settings.KEY
         self.notes['pay_request']['request']['productData'] = 'foo-bar'
         self.start()
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
+    def test_prevent_restarting_received(self, marketplace, solitude):
+        solitude.generic.transaction.get_object.return_value = {
+            'status': constants.STATUS_RECEIVED,
+            'resource_pk': '1'}
+        self.start()
+        assert not solitude.generic.transaction.called
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('lib.marketplace.api.client.api')
+    def test_prevent_restarting_pending(self, marketplace, solitude):
+        solitude.generic.transaction.get_object.return_value = {
+            'status': constants.STATUS_PENDING,
+            'resource_pk': '1'}
+        self.start()
+        assert not solitude.generic.transaction.called
 
 
 class TestGetIconURL(test_utils.TestCase):
@@ -576,3 +597,39 @@ class TestGetIconURL(test_utils.TestCase):
         get = self.marketplace.webpay.product.icon.get_object
         get.assert_called_with(ext_url=self.request['icons']['48'],
                                size='48', ext_size='48')
+
+
+class TestConfigureTrans(test.TestCase):
+
+    def configure(self):
+        tasks.configure_transaction(self.request)
+
+    def setUp(self):
+        self.request = mock.Mock()
+        sess = {}
+        self.request.session = sess
+        sess['is_simulation'] = False
+        sess['notes'] = {}
+        sess['trans_id'] = 'trans-id'
+        sess['uuid'] = 'some-email-token'
+        patch = mock.patch('webpay.pay.tasks.start_pay')
+        self.start_pay = patch.start()
+        self.patches = [patch]
+
+    def tearDown(self):
+        for p in self.patches:
+            p.stop()
+
+    def test_configure(self):
+        self.configure()
+        assert self.start_pay.delay.called
+
+    def test_skip_when_fake(self):
+        with self.settings(FAKE_PAYMENTS=True):
+            self.configure()
+        assert not self.start_pay.delay.called
+
+    def test_skip_when_simulating(self):
+        self.request.session['is_simulation'] = True
+        self.configure()
+        assert not self.start_pay.delay.called

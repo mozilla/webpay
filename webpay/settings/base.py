@@ -33,7 +33,7 @@ MEDIA_URL = '/mozpay/media/'
 MINIFY_BUNDLES = {
     'css': {
         'pay/pay': (
-            'css/pay/pay.less',
+            'css/pay/pay.styl',
         ),
     },
     'js': {
@@ -69,10 +69,8 @@ JINGO_MINIFY_USE_STATIC = False
 # Cache-bust images in the CSS.
 CACHEBUST_IMGS = True
 
-# LESS CSS OPTIONS (Debug only)
-LESS_PREPROCESS = False  # Compile LESS with Node, rather than client-side JS?
-LESS_LIVE_REFRESH = False  # Refresh the CSS on save?
-LESS_BIN = 'lessc'
+# Stylus / Uglify / CleanCSS.
+STYLUS_BIN = 'stylus'
 UGLIFY_BIN = 'uglifyjs'
 CLEANCSS_BIN = 'cleancss'
 
@@ -138,20 +136,32 @@ DOMAIN_METHODS['messages'] = [
 HAS_SYSLOG = True  # syslog is used if HAS_SYSLOG and NOT DEBUG.
 # See settings/local.py for SYSLOG_TAG, etc
 LOGGING = {
+    'formatters': {
+        'webpay': {
+            '()': 'webpay.base.logger.WebpayFormatter',
+            'format':
+                '%(name)s:%(levelname)s '
+                '%(REMOTE_ADDR)s:%(TRANSACTION_ID)s '
+                '%(message)s :%(pathname)s:%(lineno)s'
+        }
+    },
     'loggers': {
         'django_browserid': {
             'level': logging.DEBUG,
             'handlers': ['console', 'unicodesyslog'],
+            'formatter': 'webpay',
         },
         # This gives us "zamboni" logging such as the celeryutils logger.
         'z': {
             'level': logging.ERROR,
             'handlers': ['console', 'unicodesyslog', 'sentry'],
+            'formatter': 'webpay',
         },
         # This gives us webpay logging.
         'w': {
             'level': logging.DEBUG,
             'handlers': ['console', 'unicodesyslog', 'sentry'],
+            'formatter': 'webpay',
         },
         # This sends exceptions to Sentry.
         'django.request': {
@@ -187,6 +197,7 @@ MIDDLEWARE_CLASSES = (
     'webpay.base.middleware.CEFMiddleware',
     'django_paranoia.middleware.Middleware',
     'django_paranoia.sessions.ParanoidSessionMiddleware',
+    'webpay.base.logger.LoggerMiddleware',
 )
 
 STATSD_CLIENT = 'django_statsd.clients.normal'
@@ -306,3 +317,13 @@ TEST_PIN_UI = False
 # If True, only simulated payments can be processed. All other requests will
 # result in an error.
 ONLY_SIMULATIONS = False
+
+# If empty, all users will be allowed through.
+# If not empty, each string will be compiled as a regular expression
+# and the email from persona checked using match, not search. If any of the
+# expressions match, the user will be let through.
+USER_WHITELIST = []
+
+# Secret key string to use in UUID HMACs which are derived from Persona emails.
+# This must not be blank in production and should be more than 32 bytes long.
+UUID_HMAC_KEY = ''

@@ -6,7 +6,6 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 
-import commonware.log
 from mozpay.exc import InvalidJWT, RequestExpired
 from mozpay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
@@ -15,7 +14,9 @@ from tower import ugettext as _
 from webpay.auth.decorators import user_verified
 from webpay.auth import utils as auth_utils
 from webpay.base.decorators import json_view
+from webpay.base.logger import getLogger
 from webpay.base.utils import _error
+from webpay.pay.tasks import configure_transaction
 from webpay.pin.forms import VerifyPinForm
 from webpay.pin.utils import check_pin_status
 
@@ -27,7 +28,7 @@ from . import tasks
 from .forms import VerifyForm
 from .utils import verify_urls
 
-log = commonware.log.getLogger('w.pay')
+log = getLogger('w.pay')
 
 
 def process_pay_req(request):
@@ -87,13 +88,6 @@ def process_pay_req(request):
                                 'issuer_key': form.key}
     request.session['trans_id'] = 'webpay:%s' % uuid.uuid4()
 
-    # Before we verify the user's PIN let's save some
-    # time and get the transaction configured via Bango in the
-    # background.
-    if not settings.FAKE_PAYMENTS and not form.is_simulation:
-        tasks.start_pay.delay(request.session['trans_id'],
-                              request.session['notes'])
-
 
 @anonymous_csrf_exempt
 @require_GET
@@ -117,6 +111,12 @@ def lobby(request):
 
     if sess.get('uuid'):
         auth_utils.update_session(request, sess.get('uuid'))
+
+        # Before we continue with the buy flow, let's save some
+        # time and get the transaction configured via Bango in the
+        # background.
+        configure_transaction(request)
+
         redirect_url = check_pin_status(request)
         if redirect_url is not None:
             return http.HttpResponseRedirect(redirect_url)
@@ -173,6 +173,9 @@ def fake_bango_url(request):
 def wait_to_start(request):
     """
     Wait until the transaction is in a ready state.
+
+    The transaction was started previously during the buy flow in the
+    background from webpay.pay.tasks.
 
     Serve JS that polls for transaction state.
     When ready, redirect to the Bango payment URL using

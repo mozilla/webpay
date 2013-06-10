@@ -12,6 +12,8 @@ apps = https://marketplace-dev.allizom.org/manifest.webapp
 
 [flash]
 
-# Enter a username and password for downloading a private build.
+## Enter a username and password for downloading a private build.
 #flash_user = ...
 #flash_pass = ...
+## If you uncomment this, make sure you are actually flashing an unagi device!
+#flash_device = unagi

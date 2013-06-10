@@ -33,6 +33,23 @@ class TransactionOutOfSync(Exception):
     """The transaction's state is unexpected."""
 
 
+def configure_transaction(request):
+    """
+    Begins a background task to configure a payment transaction.
+    """
+    if settings.FAKE_PAYMENTS:
+        log.info('FAKE_PAYMENTS: skipping configure payments step')
+        return
+    if request.session['is_simulation']:
+        log.info('is_simulation: skipping configure payments step')
+        return
+
+    log.info('configuring payment in background')
+    start_pay.delay(request.session['trans_id'],
+                    request.session['notes'],
+                    request.session['uuid'])
+
+
 def get_secret(issuer_key):
     """Resolve the secret for this JWT."""
     if is_marketplace(issuer_key):
@@ -77,16 +94,27 @@ def is_marketplace(issuer_key):
 @task
 @use_master
 @transaction.commit_on_success
-def start_pay(transaction_uuid, notes, **kw):
+def start_pay(transaction_uuid, notes, user_uuid, **kw):
     """
     Work with Solitude to begin a Bango payment.
 
     This puts the transaction in a state where it's
     ready to be fulfilled by Bango.
     """
-    # Because this is called from views, we get a new transaction every
-    # time. If you re-use this task, you'd want to add some checking about the
-    # transaction state.
+    try:
+        # This task is fired from multiple locations. This checks first to
+        # see if it already ran.
+        trans = (client.slumber.generic.transaction
+                 .get_object(uuid=transaction_uuid))
+        if trans['status'] in (constants.STATUS_RECEIVED,
+                               constants.STATUS_PENDING):
+            log.info('trans %s (status=%r) already configured: '
+                     'skipping configure payments step' % (transaction_uuid,
+                                                           trans['status']))
+            return
+    except ObjectDoesNotExist:
+        pass
+
     pay = notes['pay_request']
     try:
         seller_uuid = get_seller_uuid(notes['issuer_key'],
@@ -110,6 +138,7 @@ def start_pay(transaction_uuid, notes, **kw):
             absolutify(reverse('bango.error')),
             prices['prices'],
             icon_url,
+            user_uuid
         )
         trans_pk = client.slumber.generic.transaction.get_object(
             uuid=transaction_uuid)['resource_pk']

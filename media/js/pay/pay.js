@@ -37,7 +37,11 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
                             }
                         });
                     })
-                    .error(function() {
+                    .error(function(xhr) {
+                        if (xhr.status === 403) {
+                            console.log('[pay] permission denied after auth');
+                            window.location.href = bodyData.deniedUrl;
+                        }
                         console.log('[pay] login error');
                     });
             },
@@ -79,15 +83,23 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
     });
 
     function callPaySuccess() {
-        // There is a delay before paymentSuccess gets injected into scope it
-        // seems.
+        // Bug 872987 introduced the injection of the "paymentSuccess" and
+        // "paymentFailed" functions within a "mozPaymentProvider" object
+        // instead of injecting them in the global scope. So we need to support
+        // both APIs.
+        var paymentSuccess = ((window.mozPaymentProvider &&
+                               window.mozPaymentProvider.paymentSuccess) ||
+                               window.paymentSuccess);
+        // After Bug 843309 landed, there should not be any delay before the
+        // mozPaymentProvider API is injected into scope, but we keep the
+        // polling loop as a safe guard.
         cli.showProgress(bodyData.completeMsg);
-        if (typeof window.paymentSuccess === 'undefined') {
+        if (typeof paymentSuccess === 'undefined') {
             console.log('[pay] Waiting for paymentSuccess to appear in scope');
             window.setTimeout(callPaySuccess, 500);
         } else {
             console.log('[pay] payment complete, closing window');
-            window.paymentSuccess();
+            paymentSuccess();
         }
     }
 

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{{ _('Not Allowed') }}</h2>
+  <p class="centered">{{ _('Sorry, you are not allowed to do that.') }}</p>
+  <p class="centered">
+    <a class="button cancel-button" href="#">
+      {{ _('Cancel') }}
+    </a>
+  </p>
+{% endblock %}

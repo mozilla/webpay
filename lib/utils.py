@@ -3,6 +3,12 @@ import json
 from curling.lib import API
 from slumber.exceptions import HttpClientError
 
+from webpay.base.logger import get_transaction_id
+
+
+def add_transaction_id(slumber, headers=None, **kwargs):
+    headers['Transaction-Id'] = get_transaction_id()
+
 
 class SlumberWrapper(object):
     """
@@ -12,6 +18,7 @@ class SlumberWrapper(object):
     def __init__(self, url, oauth):
         self.slumber = API(url)
         self.slumber.activate_oauth(oauth.get('key'), oauth.get('secret'))
+        self.slumber._add_callback({'method': add_transaction_id})
         self.api = self.slumber.api.v1
 
     def parse_res(self, res):
