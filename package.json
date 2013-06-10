@@ -1,0 +1,14 @@
+{
+  "name": "webpay",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">= 0.6.15",
+    "npm": ">= 1.1.x"
+  },
+  "dependencies": {
+    "clean-css": "0.10.x",
+    "stylus": "0.32.x",
+    "uglify-js": "2.2.x"
+  }
+}
