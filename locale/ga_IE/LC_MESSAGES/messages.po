@@ -35,11 +35,11 @@ msgstr "Tharla earráid agus an t-iarratas sin á phróiseáil."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "Ní cheadaítear é sin"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "Níl cead agat é sin a dhéanamh."
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
@@ -225,11 +225,11 @@ msgstr "UAP dearmadta?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr ""
+msgstr "Cuireadh do chuntas faoi ghlas toisc go ndearna tú an iomarca iarrachtaí an UAP a chur isteach. Déan iarracht eile do cheannach a chur i gcrích i gceann cúig nóiméid."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your Pin was locked"
