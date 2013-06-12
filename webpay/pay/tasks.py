@@ -121,6 +121,8 @@ def start_pay(transaction_uuid, notes, user_uuid, **kw):
                                       pay['request'].get('productData', ''))
         # Ask the marketplace for a valid price point.
         prices = mkt_client.get_price(pay['request']['pricePoint'])
+        log.debug('pricePoint=%s prices=%s' % (pay['request']['pricePoint'],
+                                               prices['prices']))
         try:
             icon_url = (get_icon_url(pay['request'])
                         if settings.USE_PRODUCT_ICONS else None)
