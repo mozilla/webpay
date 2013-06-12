@@ -142,7 +142,7 @@ msgstr "Nessun soggetto si è registrato come emittente JWT {0}."
 #: webpay/pay/forms.py:83
 msgid "This payment key, {0}, can only be used to simulate purchases."
 msgstr ""
-"Questa chiave pagamenti, {0}, può essere utilizzata solo nelle simulazioni "
+"La chiave pagamenti, {0}, può essere utilizzata solo nelle simulazioni "
 "d'acquisto."
 
 #. L10n: First argument is the name of a key. Second
@@ -165,7 +165,7 @@ msgstr "Revocata"
 
 #: webpay/pay/views.py:44
 msgid "Payments are temporarily disabled."
-msgstr "I pagamenti sono momentaneamente disattivati."
+msgstr "I pagamenti sono attualmente disattivati."
 
 #: webpay/pay/views.py:142 webpay/pin/views.py:71
 msgid "Enter Pin"
@@ -248,7 +248,7 @@ msgid ""
 "your purchase again in 5 minutes."
 msgstr ""
 "Hai digitato troppe volte un codice PIN non valido. Il tuo account è stato "
-"bloccato. Riprova a effettuare l'acquisto fra cinque minuti."
+"bloccato. Riprova a effettuare l'acquisto fra 5 minuti."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
