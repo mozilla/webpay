@@ -36,11 +36,13 @@ msgstr "Si è verificato un errore durante l'elaborazione di questa richiesta."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "Non consentito"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
 msgstr ""
+"Spiacenti, non possiedi le autorizzazioni necessarie per effettuare quanto "
+"richiesto."
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
@@ -227,10 +229,12 @@ msgstr "Hai dimenticato il codice PIN?"
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
 msgstr ""
+"Hai digitato troppe volte un codice PIN non valido. Il tuo account è stato "
+"bloccato. Riprova a effettuare l'acquisto fra 5 minuti."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your Pin was locked"
