@@ -1,6 +1,7 @@
 import json
 import logging
 import uuid
+import warnings
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -283,6 +284,8 @@ class SolitudeAPI(SlumberWrapper):
 
 
 if not settings.SOLITUDE_URL:
-    raise ValueError('SOLITUDE_URL is required')
-
-client = SolitudeAPI(settings.SOLITUDE_URL, settings.SOLITUDE_OAUTH)
+    # This will typically happen when Sphinx builds the docs.
+    warnings.warn('SOLITUDE_URL not found, not setting up client')
+    client = None
+else:
+    client = SolitudeAPI(settings.SOLITUDE_URL, settings.SOLITUDE_OAUTH)
