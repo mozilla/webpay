@@ -42,9 +42,20 @@ flash the latest build::
 
     ezboot flash
 
-Set up WiFi and install apps::
+Set up WiFi::
 
     ezboot setup
+
+Ask someone for a cert file
+(see `this issue <https://github.com/briansmith/marketplace-certs/issues/1>`_),
+download the file, and unzip it.
+Push the dev certs to your device::
+
+    ezboot mkt_certs --dev --certs_path ~/Downloads/certdb.tmp/
+
+Install the packaged Marketplace app::
+
+    ezboot install_mkt --dev
 
 Launch either Marketplace Dev or Marketplace Stage, search for a
 paid app such as Private Yacht, and click purchase.
