@@ -242,7 +242,7 @@ Start up your local server exactly like this::
 
 You'll need to submit an app locally to make sure it is
 paid. You can also edit one of your apps to make it paid.
-Make sure your waffle switch ``disable-payments`` is not
+Make sure your waffle switch ``disabled-payments`` is not
 active. That is, switch it off.
 
 .. _WebPaymentProvider: https://wiki.mozilla.org/WebAPI/WebPaymentProvider
