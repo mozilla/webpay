@@ -101,6 +101,11 @@ def error(request):
     if request.GET.get('ResponseCode') == 'CANCEL':
         return render(request, 'bango/cancel.html')
 
+    if request.GET.get('ResponseCode') == 'NOT_SUPPORTED':
+        return _error(request, display=True,
+                      msg=_('Price tier unavailable for this region or '
+                            'carrier.'))
+
     return _error(request, msg=_('Received Bango error'))
 
 

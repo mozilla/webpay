@@ -35,7 +35,7 @@ def process_pay_req(request):
     form = VerifyForm(request.GET)
     if not form.is_valid():
         return _error(request, msg=form.errors.as_text(),
-                      is_simulation=form.is_simulation)
+                      display=form.is_simulation)
 
     if settings.ONLY_SIMULATIONS and not form.is_simulation:
         # Real payments are currently disabled.
@@ -58,7 +58,7 @@ def process_pay_req(request):
     except (TypeError, InvalidJWT, RequestExpired), exc:
         log.exception('calling verify_jwt')
         return _error(request, exception=exc,
-                      is_simulation=form.is_simulation)
+                      display=form.is_simulation)
 
     icon_urls = []
     if pay_req['request'].get('icons'):
@@ -72,7 +72,7 @@ def process_pay_req(request):
     except ValueError, exc:
         log.exception('invalid URLs')
         return _error(request, exception=exc,
-                      is_simulation=form.is_simulation)
+                      display=form.is_simulation)
 
     # Assert pricePoint is valid.
     try:
@@ -80,7 +80,7 @@ def process_pay_req(request):
     except UnknownPricePoint, exc:
         log.exception('calling get price_price()')
         return _error(request, exception=exc,
-                      is_simulation=form.is_simulation)
+                      display=form.is_simulation)
 
     # All validation passed, save state to the session.
     request.session['is_simulation'] = form.is_simulation
