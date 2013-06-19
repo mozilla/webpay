@@ -135,7 +135,7 @@ msgstr "Esta clave de pago, {0}, solo puede utilizarse para simular compras."
 #. argument is an example of the proper key format.
 #: webpay/pay/forms.py:93
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
-msgstr "La clave \"{0}\" debe ser un objeto de URL como {1}
+msgstr "La clave \"{0}\" debe ser un objeto de URL como {1}"
 
 #: webpay/pay/models.py:28
 msgid "Active"
