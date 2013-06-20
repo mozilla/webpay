@@ -11,7 +11,7 @@ django-celery==3.0.17
 django-mobility==0.1
 django-multidb-router==0.5
 django-nose==1.1
-django-paranoia==0.1.8.4
+django-paranoia==0.1.8.6
 django-statsd-mozilla==0.3.7
 fudge==1.0.3
 funfactory==2.1.1
@@ -22,6 +22,7 @@ httplib2==0.7.6
 importlib-no-failure==1.0.2
 jingo==0.4
 kombu==2.5.10
+m2secret==0.1.1
 mock==1.0b1
 mozpay==2.0.0
 nose==1.2.1
@@ -54,3 +55,6 @@ translate-toolkit==1.9.0
 -e git://github.com/mozilla/django-browserid.git@72009f28f55c91c8ed1bb79930bc84f88dc00211#egg=django-browserid
 -e git://github.com/mozilla/django-session-csrf.git@94e2858a427a6b278e41c051643f3c226f096f21#egg=django-session-csrf
 -e git://github.com/mozilla/nuggets.git@96e80a64aa4bfcfef4f43fc3ab6966450ccd7325#egg=nuggets
+
+# Waiting on 1.1.0 release in PyPI.
+-e git://github.com/kumar303/django-encrypted-cookie-session.git@e232551768da96299bb11acbf6fb3918315b19a0#egg=django-encrypted-cookie-session

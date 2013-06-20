@@ -24,7 +24,7 @@ class TestBangoReturn(BasicSessionCase):
         self.session['trans_id'] = self.trans_uuid
         self.session['notes'] = {'pay_request': '<request>',
                                  'issuer_key': '<issuer>'}
-        self.session.save()
+        self.save_session()
 
     def call(self, overrides=None, expected_status=200,
              url='bango.success'):
@@ -54,7 +54,7 @@ class TestBangoReturn(BasicSessionCase):
 
     def test_transaction_not_in_session(self, payment_notify, slumber):
         del self.session['trans_id']
-        self.session.save()
+        self.save_session()
 
         self.call(overrides={'MerchantTransactionId': 'invalid-trans'},
                   expected_status=200)

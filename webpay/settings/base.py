@@ -260,7 +260,7 @@ DJANGO_PARANOIA_REPORTERS = [
     'django_paranoia.reporters.cef_',
 ]
 
-SESSION_ENGINE = 'django_paranoia.sessions'
+SESSION_ENGINE = 'encrypted_cookies'
 
 # Custom name of session cookie.
 # This must be a non-default so it doesn't collide with zamboni on the same
@@ -381,3 +381,8 @@ USER_WHITELIST = []
 # Secret key string to use in UUID HMACs which are derived from Persona emails.
 # This must not be blank in production and should be more than 32 bytes long.
 UUID_HMAC_KEY = ''
+
+# This string is used for encrypting session cookies. It should be at least 64
+# bytes and should be set to a random value. In development (or if you leave
+# this empty), SECRET_KEY is used.
+#ENCRYPTED_COOKIE_KEY = ''

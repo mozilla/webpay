@@ -109,3 +109,5 @@ UUID_HMAC_KEY = private.UUID_HMAC_KEY
 
 # Bypass Bango on Dev when True.
 #FAKE_PAYMENTS = True
+
+#ENCRYPTED_COOKIE_KEY = private.ENCRYPTED_COOKIE_KEY
