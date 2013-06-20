@@ -55,7 +55,7 @@ msgstr "Errorea JWT deskodetzean: {0}"
 #. L10n: first argument is a data type, such as <unicode>
 #: webpay/pay/forms.py:34
 msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr "JWT-a ez da deskodetu eta JSON objektu bihurtu. Hori {0} motakoa zen."
+msgstr "JWTa ez da deskodetu eta JSON objektu bihurtu. Hori {0} motakoa zen."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:48
@@ -76,15 +76,15 @@ msgstr "Errebokatua"
 
 #: webpay/pay/templates/pay/lobby.html:10
 msgid "Beginning payment&hellip;"
-msgstr "ordainketa hasten&hellip;"
+msgstr "Ordainketa hasten&hellip;"
 
 #: webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in to continue with the payment:"
-msgstr "Saioa hasi, ordainketarekin jarraitzeko:"
+msgstr "Hasi saioa ordainketarekin jarraitzeko:"
 
 #: webpay/pay/templates/pay/lobby.html:14
 msgid "Sign in"
-msgstr "Saioa hasi"
+msgstr "Hasi saioa"
 
 #: webpay/pay/templates/pay/lobby.html:17
 msgid "logging you in to continue payment&hellip;"
