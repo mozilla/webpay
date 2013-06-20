@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
+import logging
 from urllib2 import HTTPError
 from urlparse import urlparse
-import logging
+import uuid
 
 from django.conf import settings
 
@@ -123,3 +124,10 @@ def verify_urls(*urls, **kw):
             parsed.scheme not in settings.ALLOWED_CALLBACK_SCHEMES):
             raise ValueError('Schema must be one of: %s not %s' %
                              (settings.ALLOWED_CALLBACK_SCHEMES, url))
+
+
+def trans_id():
+    """
+    Generate a unique transaction ID.
+    """
+    return 'webpay:%s' % uuid.uuid4()
