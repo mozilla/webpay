@@ -12,16 +12,17 @@ Set Up A Device With ezboot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 All you need to do to start testing web payments on a device is flash a recent
-build, push some custom settings, and install the Marketplace dev/stage apps.
+build, install certs for permissions, push custom settings, and install the
+Marketplace dev/stage apps.
 
-With `ezboot`_ you can do all of this with some simple commands.
-First, install `ezboot`_ so that the command is available on your path.
+With `ezboot`_ you can do all of this with some commands.
+First, install `ezboot`_ so that the command line script is available on your path.
 
 Now, grab the :ref:`webpay <developers>` source to get the settings you need::
 
     git clone git://github.com/mozilla/webpay.git
 
-Change into the source dir and set up ezboot::
+Change into the source directory and set up ezboot::
 
     cd webpay
     cp ezboot.ini-dist ezboot.ini
@@ -56,6 +57,11 @@ Push the dev certs to your device::
 Install the packaged Marketplace app::
 
     ezboot install_mkt --dev
+
+At this time, you need to use the hosted version of Marketplace Stage (not
+packaged). Install it using the manifest, like this::
+
+    ezboot install --manifest https://marketplace.allizom.org/manifest.webapp
 
 Launch either Marketplace Dev or Marketplace Stage, search for a
 paid app such as Private Yacht, and click purchase.
