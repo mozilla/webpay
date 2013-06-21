@@ -1,5 +1,3 @@
-import uuid
-
 from django import http
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -16,7 +14,6 @@ from webpay.auth import utils as auth_utils
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
 from webpay.base.utils import _error
-from webpay.pay.tasks import configure_transaction
 from webpay.pin.forms import VerifyPinForm
 from webpay.pin.utils import check_pin_status
 
@@ -26,7 +23,7 @@ from lib.solitude.api import client as solitude
 
 from . import tasks
 from .forms import VerifyForm
-from .utils import verify_urls
+from .utils import trans_id, verify_urls
 
 log = getLogger('w.pay')
 
@@ -86,7 +83,7 @@ def process_pay_req(request):
     request.session['is_simulation'] = form.is_simulation
     request.session['notes'] = {'pay_request': pay_req,
                                 'issuer_key': form.key}
-    request.session['trans_id'] = 'webpay:%s' % uuid.uuid4()
+    request.session['trans_id'] = trans_id()
 
 
 @anonymous_csrf_exempt
@@ -101,7 +98,7 @@ def lobby(request):
     elif settings.TEST_PIN_UI:
         # This won't get you very far but it lets you create/enter PINs
         # and stops a traceback after that.
-        request.session['trans_id'] = uuid.uuid4()
+        request.session['trans_id'] = trans_id()
     elif not 'notes' in request.session:
         # A JWT was not passed in and no JWT is in the session.
         return _error(request, msg='req is required')
@@ -115,7 +112,7 @@ def lobby(request):
         # Before we continue with the buy flow, let's save some
         # time and get the transaction configured via Bango in the
         # background.
-        configure_transaction(request)
+        tasks.configure_transaction(request)
 
         redirect_url = check_pin_status(request)
         if redirect_url is not None:
