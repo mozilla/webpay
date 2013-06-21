@@ -29,8 +29,8 @@ class TestVerify(Base):
     def setUp(self):
         super(TestVerify, self).setUp()
         self.patches = []
-        patch = mock.patch('webpay.pay.tasks.configure_transaction')
-        self.configure_transaction = patch.start()
+        patch = mock.patch('webpay.pay.tasks.start_pay')
+        self.start_pay = patch.start()
         self.patches.append(patch)
         patch = mock.patch('webpay.pay.views.marketplace')
         self.mkt = patch.start()
@@ -194,8 +194,8 @@ class TestVerify(Base):
         eq_(res.status_code, 200)
         self.assertTemplateUsed(res, 'pay/simulate.html')
         eq_(self.client.session['is_simulation'], True)
-        assert not self.configure_transaction.called, (
-            'configure_transaction should not be called when simulating')
+        assert not self.start_pay.delay.called, (
+            'start_pay should not be called when simulating')
 
     @mock.patch('webpay.auth.utils.client')
     @mock.patch('webpay.pay.views.check_pin_status')
@@ -209,8 +209,8 @@ class TestVerify(Base):
         payload = self.request(payload=self.payload())
         res = self.get(payload)
         eq_(res.status_code, 200)
-        assert self.configure_transaction.called, (
-            'lobby should configure_transaction when user is logged in')
+        assert self.start_pay.delay.called, (
+            'lobby should start_pay when user is logged in')
 
     def test_begin_simulation_when_payments_disabled(self):
         payjwt = self.payload()
@@ -406,7 +406,7 @@ class TestSimulate(BasicSessionCase, JWTtester):
         self.session.save()
         # Stub out non-simulate code in case it gets called.
         self.patches = [
-            mock.patch('webpay.pay.tasks.configure_transaction'),
+            mock.patch('webpay.pay.tasks.start_pay'),
             mock.patch('webpay.pay.views.marketplace')
         ]
         for p in self.patches:
