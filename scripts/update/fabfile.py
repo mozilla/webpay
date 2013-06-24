@@ -116,7 +116,6 @@ def deploy():
 
     execute(restart_workers)
     rpmbuild.clean()
-    managecmd('cron cleanup_validation_results')
 
 
 @task
