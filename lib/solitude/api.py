@@ -267,11 +267,7 @@ class SolitudeAPI(SlumberWrapper):
         return bango['resource_uri']
 
     def get_transaction(self, uuid):
-        transaction = self.slumber.generic.transaction.get(uuid=uuid)
-        # TODO: fix with curling.
-        if len(transaction['objects']) != 1:
-            raise ObjectDoesNotExist('No transaction found for %s.' % uuid)
-        transaction = transaction['objects'][0]
+        transaction = self.slumber.generic.transaction.get_object(uuid=uuid)
         # Notes may contain some JSON, including the original pay request.
         notes = transaction['notes']
         if notes:

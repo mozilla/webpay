@@ -228,27 +228,17 @@ class CreateBangoTest(TestCase):
 @mock.patch('lib.solitude.api.client.slumber')
 class TransactionTest(TestCase):
 
-    def test_no_transaction(self, slumber):
-        slumber.generic.transaction.get.return_value = {'objects': []}
-        with self.assertRaises(ObjectDoesNotExist):
-            client.get_transaction('x')
-
-    def test_multiple_transactions(self, slumber):
-        slumber.generic.transaction.get.return_value = {'objects': [1, 2]}
-        with self.assertRaises(ObjectDoesNotExist):
-            client.get_transaction('x')
-
     def test_notes_transactions(self, slumber):
-        slumber.generic.transaction.get.return_value = {'objects': [
-            {'notes': json.dumps({'foo': 'bar'})}
-        ]}
+        slumber.generic.transaction.get_object.return_value = {
+                'notes': json.dumps({'foo': 'bar'})
+        }
         trans = client.get_transaction('x')
         eq_(trans['notes'], {'foo': 'bar'})
 
     def test_notes_issuer_transactions(self, slumber):
         iss = Issuer.objects.create()
-        slumber.generic.transaction.get.return_value = {'objects': [
-            {'notes': json.dumps({'issuer': iss.pk})}
-        ]}
+        slumber.generic.transaction.get_object.return_value = {
+                'notes': json.dumps({'issuer': iss.pk})
+        }
         trans = client.get_transaction('x')
         eq_(trans['notes']['issuer'], iss)
