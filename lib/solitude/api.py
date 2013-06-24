@@ -270,7 +270,7 @@ class SolitudeAPI(SlumberWrapper):
         transaction = self.slumber.generic.transaction.get(uuid=uuid)
         # TODO: fix with curling.
         if len(transaction['objects']) != 1:
-            raise ValueError('No transaction found for %s.' % uuid)
+            raise ObjectDoesNotExist('No transaction found for %s.' % uuid)
         transaction = transaction['objects'][0]
         # Notes may contain some JSON, including the original pay request.
         notes = transaction['notes']
