@@ -230,12 +230,12 @@ class TransactionTest(TestCase):
 
     def test_no_transaction(self, slumber):
         slumber.generic.transaction.get.return_value = {'objects': []}
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ObjectDoesNotExist):
             client.get_transaction('x')
 
     def test_multiple_transactions(self, slumber):
         slumber.generic.transaction.get.return_value = {'objects': [1, 2]}
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ObjectDoesNotExist):
             client.get_transaction('x')
 
     def test_notes_transactions(self, slumber):
