@@ -36,6 +36,13 @@
     <section class="pay">
       <div id="content">
         {% block content %}{% endblock %}
+        {% if messages %}
+        <ul class="messages">
+           {% for message in messages %}
+           <li><p>{{ message }}</p></li>
+           {% endfor %}
+        </ul>
+        {% endif %}
       </div>
     </section>
 

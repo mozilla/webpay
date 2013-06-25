@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django import http
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.views.decorators.debug import sensitive_post_parameters
@@ -127,6 +128,7 @@ def reset_confirm(request):
         if form.is_valid():
             # Clear reverification state since this PIN reset is finished.
             request.session['was_reverified'] = False
+            messages.success(request, _('Pin reset'))
             # Copy pin into place is handled in solitude, webpay
             # merely asked solitude to verify the new pin which
             # happens in validation of the form.

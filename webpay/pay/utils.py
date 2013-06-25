@@ -5,6 +5,7 @@ from urlparse import urlparse
 import uuid
 
 from django.conf import settings
+from django.contrib import messages
 
 from celery.exceptions import RetryTaskError
 from django_statsd.clients import statsd
@@ -131,3 +132,8 @@ def trans_id():
     Generate a unique transaction ID.
     """
     return 'webpay:%s' % uuid.uuid4()
+
+
+def clear_messages(request):
+    """Dump messages by iterating over them."""
+    list(messages.get_messages(request))
