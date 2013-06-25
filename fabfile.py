@@ -1,4 +1,5 @@
 import os
+from os.path import join as pjoin
 from fabric.api import (env, execute, lcd, local, parallel,
                         run, roles, task)
 
@@ -13,8 +14,7 @@ env.key_filename = settings.SSH_KEY
 fabdeploytools.envs.loadenv(os.path.join('/etc/deploytools/envs',
                                          settings.CLUSTER))
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                    '..', '..', '..'))
+ROOT = os.path.abspath(pjoin(os.path.dirname(__file__), '..'))
 WEBPAY = os.path.join(ROOT, 'webpay')
 
 VIRTUALENV = os.path.join(ROOT, 'venv')
