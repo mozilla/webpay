@@ -37,7 +37,11 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
                             }
                         });
                     })
-                    .error(function() {
+                    .error(function(xhr) {
+                        if (xhr.status === 403) {
+                            console.log('[pay] permission denied after auth');
+                            window.location.href = bodyData.deniedUrl;
+                        }
                         console.log('[pay] login error');
                     });
             },

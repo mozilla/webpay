@@ -1,7 +1,6 @@
-import uuid
-
 from django import http
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
@@ -25,7 +24,7 @@ from lib.solitude.api import client as solitude
 
 from . import tasks
 from .forms import VerifyForm
-from .utils import verify_urls
+from .utils import clear_messages, trans_id, verify_urls
 
 log = getLogger('w.pay')
 
@@ -34,7 +33,7 @@ def process_pay_req(request):
     form = VerifyForm(request.GET)
     if not form.is_valid():
         return _error(request, msg=form.errors.as_text(),
-                      is_simulation=form.is_simulation)
+                      display=form.is_simulation)
 
     if settings.ONLY_SIMULATIONS and not form.is_simulation:
         # Real payments are currently disabled.
@@ -57,7 +56,7 @@ def process_pay_req(request):
     except (TypeError, InvalidJWT, RequestExpired), exc:
         log.exception('calling verify_jwt')
         return _error(request, exception=exc,
-                      is_simulation=form.is_simulation)
+                      display=form.is_simulation)
 
     icon_urls = []
     if pay_req['request'].get('icons'):
@@ -71,7 +70,7 @@ def process_pay_req(request):
     except ValueError, exc:
         log.exception('invalid URLs')
         return _error(request, exception=exc,
-                      is_simulation=form.is_simulation)
+                      display=form.is_simulation)
 
     # Assert pricePoint is valid.
     try:
@@ -79,20 +78,13 @@ def process_pay_req(request):
     except UnknownPricePoint, exc:
         log.exception('calling get price_price()')
         return _error(request, exception=exc,
-                      is_simulation=form.is_simulation)
+                      display=form.is_simulation)
 
     # All validation passed, save state to the session.
     request.session['is_simulation'] = form.is_simulation
     request.session['notes'] = {'pay_request': pay_req,
                                 'issuer_key': form.key}
-    request.session['trans_id'] = 'webpay:%s' % uuid.uuid4()
-
-    # Before we verify the user's PIN let's save some
-    # time and get the transaction configured via Bango in the
-    # background.
-    if not settings.FAKE_PAYMENTS and not form.is_simulation:
-        tasks.start_pay.delay(request.session['trans_id'],
-                              request.session['notes'])
+    request.session['trans_id'] = trans_id()
 
 
 @anonymous_csrf_exempt
@@ -107,7 +99,7 @@ def lobby(request):
     elif settings.TEST_PIN_UI:
         # This won't get you very far but it lets you create/enter PINs
         # and stops a traceback after that.
-        request.session['trans_id'] = uuid.uuid4()
+        request.session['trans_id'] = trans_id()
     elif not 'notes' in request.session:
         # A JWT was not passed in and no JWT is in the session.
         return _error(request, msg='req is required')
@@ -117,6 +109,12 @@ def lobby(request):
 
     if sess.get('uuid'):
         auth_utils.update_session(request, sess.get('uuid'))
+
+        # Before we continue with the buy flow, let's save some
+        # time and get the transaction configured via Bango in the
+        # background.
+        tasks.configure_transaction(request)
+
         redirect_url = check_pin_status(request)
         if redirect_url is not None:
             return http.HttpResponseRedirect(redirect_url)
@@ -174,13 +172,16 @@ def wait_to_start(request):
     """
     Wait until the transaction is in a ready state.
 
+    The transaction was started previously during the buy flow in the
+    background from webpay.pay.tasks.
+
     Serve JS that polls for transaction state.
     When ready, redirect to the Bango payment URL using
     the generated billing configuration ID.
     """
     try:
         trans = solitude.get_transaction(request.session['trans_id'])
-    except ValueError:
+    except ObjectDoesNotExist:
         trans = {'status': None}
 
     if trans['status'] in constants.STATUS_ENDED:
@@ -188,6 +189,8 @@ def wait_to_start(request):
         return _error(request, msg=_('Transaction has already ended.'))
 
     if trans['status'] == constants.STATUS_PENDING:
+        # Dump any messages so we don't show them later.
+        clear_messages(request)
         # The transaction is ready; no need to wait for it.
         return http.HttpResponseRedirect(_bango_start_url(trans['uid_pay']))
     return render(request, 'pay/wait-to-start.html')
@@ -202,7 +205,7 @@ def trans_start_url(request):
     """
     try:
         trans = solitude.get_transaction(request.session['trans_id'])
-    except ValueError:
+    except ObjectDoesNotExist:
         trans = {'status': None}
     data = {'url': None, 'status': trans['status']}
     if trans['status'] == constants.STATUS_PENDING:

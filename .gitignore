@@ -21,3 +21,4 @@ tmp/*
 *~
 locale/xx
 ezboot.ini
+*.styl.css

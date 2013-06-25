@@ -1,6 +1,7 @@
 import json
 import logging
 import uuid
+import warnings
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -172,7 +173,8 @@ class SolitudeAPI(SlumberWrapper):
                                       product_id, product_name,
                                       redirect_url_onsuccess,
                                       redirect_url_onerror,
-                                      prices, icon_url):
+                                      prices, icon_url,
+                                      user_uuid):
         """
         Get the billing configuration ID for a Bango transaction.
         """
@@ -204,6 +206,7 @@ class SolitudeAPI(SlumberWrapper):
             'redirect_url_onsuccess': redirect_url_onsuccess,
             'redirect_url_onerror': redirect_url_onerror,
             'icon_url': icon_url,
+            'user_uuid': user_uuid
         })
         bill_id = res['billingConfigurationId']
         log.info('transaction %s: billing config ID: %s; '
@@ -264,11 +267,7 @@ class SolitudeAPI(SlumberWrapper):
         return bango['resource_uri']
 
     def get_transaction(self, uuid):
-        transaction = self.slumber.generic.transaction.get(uuid=uuid)
-        # TODO: fix with curling.
-        if len(transaction['objects']) != 1:
-            raise ValueError('No transaction found for %s.' % uuid)
-        transaction = transaction['objects'][0]
+        transaction = self.slumber.generic.transaction.get_object(uuid=uuid)
         # Notes may contain some JSON, including the original pay request.
         notes = transaction['notes']
         if notes:
@@ -281,6 +280,8 @@ class SolitudeAPI(SlumberWrapper):
 
 
 if not settings.SOLITUDE_URL:
-    raise ValueError('SOLITUDE_URL is required')
-
-client = SolitudeAPI(settings.SOLITUDE_URL, settings.SOLITUDE_OAUTH)
+    # This will typically happen when Sphinx builds the docs.
+    warnings.warn('SOLITUDE_URL not found, not setting up client')
+    client = None
+else:
+    client = SolitudeAPI(settings.SOLITUDE_URL, settings.SOLITUDE_OAUTH)

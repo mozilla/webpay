@@ -23,6 +23,7 @@
     data-unverified-issuer="{{ settings.BROWSERID_UNVERIFIED_ISSUER }}"
     data-logged-in-user="{{ session.get('logged_in_user', '') }}"
     data-reset-user-url="{{ url('auth.reset_user') }}"
+    data-denied-url="{{ url('auth.denied') }}"
     data-bango-logout-url="{{ settings.BANGO_LOGOUT_URL }}"
     data-pin-num-chars-warning="{{ _('Pin must be 4 digits.') }}"
     data-pin-non-numeric-warning="{{ _('Pin can only contain digits.') }}"
@@ -35,6 +36,13 @@
     <section class="pay">
       <div id="content">
         {% block content %}{% endblock %}
+        {% if messages %}
+        <ul class="messages">
+           {% for message in messages %}
+           <li><p>{{ message }}</p></li>
+           {% endfor %}
+        </ul>
+        {% endif %}
       </div>
     </section>
 

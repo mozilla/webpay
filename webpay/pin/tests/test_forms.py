@@ -94,7 +94,6 @@ class VerifyPinFormTest(BasePinFormTestCase):
     def test_locked_pin(self):
         form = forms.VerifyPinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
-        assert 'incorrectly too many times' in str(form.errors['pin'])
         assert form.pin_is_locked
 
 

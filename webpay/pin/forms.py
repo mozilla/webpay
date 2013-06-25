@@ -85,9 +85,8 @@ class VerifyPinForm(BasePinForm):
         if self.handle_client_errors(res):
             if res.get('locked'):
                 self.pin_is_locked = True
-                raise forms.ValidationError(_('Your PIN was entered '
-                                              'incorrectly too many times. '
-                                              'Sign in to continue.'))
+                # Not displayed to the user.
+                raise forms.ValidationError('pin locked')
             elif res.get('valid'):
                 return pin
 

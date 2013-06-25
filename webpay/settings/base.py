@@ -33,7 +33,12 @@ MEDIA_URL = '/mozpay/media/'
 MINIFY_BUNDLES = {
     'css': {
         'pay/pay': (
-            'css/pay/pay.less',
+            'css/pay/normalize.styl',
+            'css/pay/util.styl',
+            'css/pay/fonts.styl',
+            'css/pay/throbber.styl',
+            'css/pay/messages.styl',
+            'css/pay/pay.styl',
         ),
     },
     'js': {
@@ -51,6 +56,7 @@ MINIFY_BUNDLES = {
             'js/pay/bango.js',
 
             # These are top-level modules.
+            'js/pay/messages.js',
             'js/pay/pay.js',
             'js/pay/wait.js',
             'js/pay/cancel.js',
@@ -69,10 +75,8 @@ JINGO_MINIFY_USE_STATIC = False
 # Cache-bust images in the CSS.
 CACHEBUST_IMGS = True
 
-# LESS CSS OPTIONS (Debug only)
-LESS_PREPROCESS = False  # Compile LESS with Node, rather than client-side JS?
-LESS_LIVE_REFRESH = False  # Refresh the CSS on save?
-LESS_BIN = 'lessc'
+# Stylus / Uglify / CleanCSS.
+STYLUS_BIN = 'stylus'
 UGLIFY_BIN = 'uglifyjs'
 CLEANCSS_BIN = 'cleancss'
 
@@ -276,9 +280,6 @@ BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'
 # This is used by the UI to clear all Bango cookies.
 BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
 
-# Notification end points use basic auth.
-BANGO_BASIC_AUTH = {'user': '', 'password': ''}
-
 # This is the URL to the marketplace.
 MARKETPLACE_URL = None
 
@@ -322,3 +323,13 @@ TEST_PIN_UI = False
 # If True, only simulated payments can be processed. All other requests will
 # result in an error.
 ONLY_SIMULATIONS = False
+
+# If empty, all users will be allowed through.
+# If not empty, each string will be compiled as a regular expression
+# and the email from persona checked using match, not search. If any of the
+# expressions match, the user will be let through.
+USER_WHITELIST = []
+
+# Secret key string to use in UUID HMACs which are derived from Persona emails.
+# This must not be blank in production and should be more than 32 bytes long.
+UUID_HMAC_KEY = ''

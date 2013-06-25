@@ -28,12 +28,11 @@ def log_cef(msg, request, **kw):
     _log_cef(msg, severity, request.META.copy(), **cef_kw)
 
 
-def _error(request, msg='', exception=None,
-           is_simulation=False):
+def _error(request, msg='', exception=None, display=False):
     external = _('There was an error processing that request.')
     if msg:
         log.error('Error handler: %s' % msg)
-    if settings.VERBOSE_LOGGING or is_simulation:
+    if settings.VERBOSE_LOGGING or display:
         if exception:
             msg = u'%s: %s' % (exception.__class__.__name__, exception)
         if msg:

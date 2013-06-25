@@ -22,7 +22,7 @@ from webpay.base.helpers import absolutify
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from .models import (Notice, NOT_SIMULATED, SIMULATED_POSTBACK,
                      SIMULATED_CHARGEBACK)
-from .utils import send_pay_notice
+from .utils import send_pay_notice, trans_id
 
 log = logging.getLogger('w.pay.tasks')
 notify_kw = dict(default_retry_delay=15,  # seconds
@@ -31,6 +31,45 @@ notify_kw = dict(default_retry_delay=15,  # seconds
 
 class TransactionOutOfSync(Exception):
     """The transaction's state is unexpected."""
+
+
+def configure_transaction(request):
+    """
+    Begins a background task to configure a payment transaction.
+    """
+    if settings.FAKE_PAYMENTS:
+        log.info('FAKE_PAYMENTS: skipping configure payments step')
+        return
+    if request.session['is_simulation']:
+        log.info('is_simulation: skipping configure payments step')
+        return
+
+    try:
+        trans = client.get_transaction(uuid=request.session['trans_id'])
+        if trans['status'] == constants.STATUS_PENDING:
+            log.info('trans %s (status=%r) already configured: '
+                     'skipping configure payments step'
+                     % (request.session['trans_id'], trans['status']))
+            return
+        elif trans['status'] in constants.STATUS_RETRY_OK:
+            new_trans_id = trans_id()
+            log.info('retrying trans {0} (status={1}) as {2}'
+                     .format(request.session['trans_id'],
+                             trans['status'], new_trans_id))
+            request.session['trans_id'] = new_trans_id
+        else:
+            raise TransactionOutOfSync('cannot configure transaction {0}, '
+                                       'status={1}'.format(
+                                           request.session['trans_id'],
+                                           trans['status']))
+    except ObjectDoesNotExist:
+        pass
+
+    log.info('configuring payment in background for trans {0}'
+             .format(request.session['trans_id']))
+    start_pay.delay(request.session['trans_id'],
+                    request.session['notes'],
+                    request.session['uuid'])
 
 
 def get_secret(issuer_key):
@@ -77,22 +116,21 @@ def is_marketplace(issuer_key):
 @task
 @use_master
 @transaction.commit_on_success
-def start_pay(transaction_uuid, notes, **kw):
+def start_pay(transaction_uuid, notes, user_uuid, **kw):
     """
     Work with Solitude to begin a Bango payment.
 
     This puts the transaction in a state where it's
     ready to be fulfilled by Bango.
     """
-    # Because this is called from views, we get a new transaction every
-    # time. If you re-use this task, you'd want to add some checking about the
-    # transaction state.
     pay = notes['pay_request']
     try:
         seller_uuid = get_seller_uuid(notes['issuer_key'],
                                       pay['request'].get('productData', ''))
         # Ask the marketplace for a valid price point.
         prices = mkt_client.get_price(pay['request']['pricePoint'])
+        log.debug('pricePoint=%s prices=%s' % (pay['request']['pricePoint'],
+                                               prices['prices']))
         try:
             icon_url = (get_icon_url(pay['request'])
                         if settings.USE_PRODUCT_ICONS else None)
@@ -110,6 +148,7 @@ def start_pay(transaction_uuid, notes, **kw):
             absolutify(reverse('bango.error')),
             prices['prices'],
             icon_url,
+            user_uuid
         )
         trans_pk = client.slumber.generic.transaction.get_object(
             uuid=transaction_uuid)['resource_pk']

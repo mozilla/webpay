@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django import http
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.views.decorators.debug import sensitive_post_parameters
@@ -8,7 +9,8 @@ from django.views.decorators.debug import sensitive_post_parameters
 from tower import ugettext as _
 
 from lib.solitude.api import client
-from webpay.auth.decorators import enforce_sequence, user_verified
+from webpay.auth.decorators import (enforce_sequence, require_reverification,
+                                    user_verified)
 from webpay.auth.utils import (get_user, set_user_has_confirmed_pin,
                                set_user_has_pin)
 from webpay.base.logger import getLogger
@@ -63,6 +65,9 @@ def verify(request):
         if form.is_valid():
             request.session['last_pin_success'] = datetime.now()
             return http.HttpResponseRedirect(get_payment_url())
+        elif form.pin_is_locked:
+            request.session['uuid_pin_is_locked'] = True
+            return http.HttpResponseRedirect(reverse('pin.is_locked'))
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Enter Pin'),
                   'action': reverse('pin.verify')})
@@ -75,12 +80,14 @@ def is_locked(request):
 
 @enforce_sequence
 def was_locked(request):
+    request.session['uuid_pin_was_locked'] = False
     return render(request, 'pin/pin_was_locked.html')
 
 
 @enforce_sequence
 @sensitive_post_parameters('pin')
 def reset_start(request):
+    request.session['was_reverified'] = False
     client.set_needs_pin_reset(get_user(request))
     request.session['uuid_needs_pin_reset'] = True
     form = forms.CreatePinForm()
@@ -91,6 +98,7 @@ def reset_start(request):
                    'form': form})
 
 
+@require_reverification
 @enforce_sequence
 @sensitive_post_parameters('pin')
 def reset_new_pin(request):
@@ -109,6 +117,7 @@ def reset_new_pin(request):
                   'action': reverse('pin.reset_new_pin')})
 
 
+@require_reverification
 @enforce_sequence
 @sensitive_post_parameters('pin')
 def reset_confirm(request):
@@ -117,6 +126,9 @@ def reset_confirm(request):
         form = forms.ResetConfirmPinForm(uuid=get_user(request),
                                          data=request.POST)
         if form.is_valid():
+            # Clear reverification state since this PIN reset is finished.
+            request.session['was_reverified'] = False
+            messages.success(request, _('Pin reset'))
             # Copy pin into place is handled in solitude, webpay
             # merely asked solitude to verify the new pin which
             # happens in validation of the form.

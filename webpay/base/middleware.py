@@ -29,7 +29,7 @@ class LogJSONerror:
                 log.error('%s: %s: JSON: %s'
                           % (etype, exception,
                              json.loads(exception.content)))
-            except ValueError:
+            except (TypeError, ValueError):
                 log.error('%s: %s: %s... (not JSON content)'
                           % (etype, exception,
                              str(exception.content)[0:50]))

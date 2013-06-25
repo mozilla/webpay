@@ -96,3 +96,6 @@ ONLY_SIMULATIONS = True
 STATSD_HOST = private.STATSD_HOST
 STATSD_PORT = private.STATSD_PORT
 STATSD_PREFIX = private.STATSD_PREFIX
+UUID_HMAC_KEY = private.UUID_HMAC_KEY
+
+USER_WHITELIST = ['^.*@mozilla\.com$', '^.*@intertek\.com$']

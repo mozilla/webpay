@@ -78,6 +78,10 @@ class TestBangoReturn(BasicSessionCase):
         self.call(overrides={'ResponseCode': 'OK'}, url='bango.error',
                   expected_status=400)
 
+    def test_bad_tier(self, payment_notify, slumber):
+        self.call(overrides={'ResponseCode': 'NOT_SUPPORTED'},
+                  url='bango.error', expected_status=400)
+
     def test_not_ok(self, payment_notify, slumber):
         self.call(overrides={'ResponseCode': 'NOT_OK'}, url='bango.success',
                   expected_status=400)
@@ -97,17 +101,6 @@ class TestNotification(TestCase):
 
     @mock.patch('webpay.bango.views.client.slumber')
     def test_post_auth(self, slumber):
-        with self.settings(BANGO_BASIC_AUTH={'user': 'u', 'password': 'p'}):
-            res = self.client.post(self.url, data={},
-                                   HTTP_AUTHORIZATION=self.auth)
-            eq_(res.status_code, 200)
-
-        assert slumber.bango.event.post.called
-
-    @mock.patch('webpay.bango.views.client.slumber')
-    def test_post_fails(self, slumber):
-        slumber.bango.event.post.side_effect = HttpClientError
-        with self.settings(BANGO_BASIC_AUTH={'user': 'u', 'password': 'p'}):
-            res = self.client.post(self.url, data={},
-                                   HTTP_AUTHORIZATION=self.auth)
-            eq_(res.status_code, 502)
+        res = self.client.post(self.url, data={},
+                               HTTP_AUTHORIZATION=self.auth)
+        eq_(res.status_code, 200)

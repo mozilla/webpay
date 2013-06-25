@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from mock import ANY, patch
 from nose.tools import eq_
 
+from lib.solitude import constants
 from lib.solitude.api import client
 from lib.solitude.errors import ERROR_STRINGS
 from webpay.auth.tests import SessionTestCase
@@ -111,7 +112,8 @@ class VerifyPinViewTest(PinViewTestCase):
                                                       'valid': False})
     def test_locked_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        eq_(res.status_code, 200)
+        eq_(res.status_code, 302)
+        assert res.get('Location', '').endswith(reverse('pin.is_locked'))
 
     @patch.object(client, 'verify_pin')
     def test_uuid_used(self, verify_pin):
@@ -262,7 +264,16 @@ class ResetStartViewTest(PinViewTestCase):
         assert res['Location'].endswith(reverse('pin.is_locked'))
 
 
-class ResetNewPinViewTest(PinViewTestCase):
+class ResetPinTest(PinViewTestCase):
+
+    def setUp(self):
+        super(ResetPinTest, self).setUp()
+        # Simulate a previous Persona user/pass reverification.
+        self.request.session['was_reverified'] = True
+        self.request.session.save()
+
+
+class ResetNewPinViewTest(ResetPinTest):
     url_name = 'pin.reset_new_pin'
 
     def test_unauth(self):
@@ -275,6 +286,15 @@ class ResetNewPinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert set_new_pin.called
         assert res['Location'].endswith(reverse('pin.reset_confirm'))
+
+    @patch('lib.solitude.api.client.set_new_pin', auto_spec=True)
+    @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
+    def test_attempt_before_reverify(self, set_new_pin):
+        self.request.session['was_reverified'] = False
+        self.request.session.save()
+        res = self.client.post(self.url, data={'pin': '1234'})
+        assert not set_new_pin.called
+        assert res['Location'].endswith(reverse('pin.reset_start'))
 
     @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
     @patch.object(client, 'set_new_pin',
@@ -326,17 +346,51 @@ class ResetNewPinViewTest(PinViewTestCase):
         assert res['Location'].endswith(reverse('pin.is_locked'))
 
 
-class ResetConfirmPinViewTest(PinViewTestCase):
+class ResetConfirmPinViewTest(ResetPinTest):
     url_name = 'pin.reset_confirm'
 
     def test_unauth(self):
         self.unverify()
         eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
 
+    def add_fake_trans_id_to_session(self):
+        s = self.client.session
+        s['trans_id'] = 'some:uuid'
+        s.save()
+
     @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
     def test_good_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert res['Location'].endswith(get_payment_url())
+        # Make sure the reverification flag was cleared out.
+        eq_(res.client.session['was_reverified'], False)
+
+    @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
+    def test_attempt_before_reverify(self):
+        self.request.session['was_reverified'] = False
+        self.request.session.save()
+        res = self.client.post(self.url, data={'pin': '1234'})
+        assert res['Location'].endswith(reverse('pin.reset_start'))
+
+    @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
+    @patch('lib.solitude.api.client.get_transaction', auto_spec=True)
+    def test_messages_in_pin_reset(self, get_transaction):
+        get_transaction.return_value = {'status': 'foo'}
+        self.add_fake_trans_id_to_session()
+        res = self.client.post(self.url, data={'pin': '1234'}, follow=True)
+        eq_([u'Pin reset'], [msg.message for msg in res.context['messages']])
+
+    @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
+    @patch('lib.solitude.api.client.get_transaction', auto_spec=True)
+    @patch('webpay.pay.views._bango_start_url', auto_spec=True)
+    def test_messages_cleared_in_pin_reset(self, _bango_start_url,
+                                                 get_transaction):
+        _bango_start_url.return_value = self.url
+        get_transaction.return_value = {'status': constants.STATUS_PENDING,
+                                        'uid_pay': 1}
+        self.add_fake_trans_id_to_session()
+        res = self.client.post(self.url, data={'pin': '1234'}, follow=True)
+        eq_([], [msg.message for msg in res.context['messages']])
 
     @patch.object(client, 'reset_confirm_pin', lambda x, y: False)
     def test_bad_pin(self):

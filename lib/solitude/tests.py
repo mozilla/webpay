@@ -206,7 +206,7 @@ class CreateBangoTest(TestCase):
     def test_no_seller(self, slumber):
         slumber.generic.seller.get_object.side_effect = ObjectDoesNotExist
         with self.assertRaises(SellerNotConfigured):
-            client.configure_product_for_billing(*range(0, 8))
+            client.configure_product_for_billing(*range(0, 9))
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_no_bango(self, slumber):
@@ -214,7 +214,7 @@ class CreateBangoTest(TestCase):
         slumber.bango.billing.post.return_value = {
             'billingConfigurationId': 'bar'}
         slumber.bango.product.get_object.side_effect = ObjectDoesNotExist
-        eq_(client.configure_product_for_billing(*range(0, 8)), ('bar', 'foo'))
+        eq_(client.configure_product_for_billing(*range(0, 9)), ('bar', 'foo'))
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_has_bango(self, slumber):
@@ -222,33 +222,23 @@ class CreateBangoTest(TestCase):
         slumber.bango.billing.post.return_value = {
             'billingConfigurationId': 'bar'}
         slumber.bango.product.get_object.return_value = {'resource_uri': 'foo'}
-        eq_(client.configure_product_for_billing(*range(0, 8)), ('bar', 'foo'))
+        eq_(client.configure_product_for_billing(*range(0, 9)), ('bar', 'foo'))
 
 
 @mock.patch('lib.solitude.api.client.slumber')
 class TransactionTest(TestCase):
 
-    def test_no_transaction(self, slumber):
-        slumber.generic.transaction.get.return_value = {'objects': []}
-        with self.assertRaises(ValueError):
-            client.get_transaction('x')
-
-    def test_multiple_transactions(self, slumber):
-        slumber.generic.transaction.get.return_value = {'objects': [1, 2]}
-        with self.assertRaises(ValueError):
-            client.get_transaction('x')
-
     def test_notes_transactions(self, slumber):
-        slumber.generic.transaction.get.return_value = {'objects': [
-            {'notes': json.dumps({'foo': 'bar'})}
-        ]}
+        slumber.generic.transaction.get_object.return_value = {
+                'notes': json.dumps({'foo': 'bar'})
+        }
         trans = client.get_transaction('x')
         eq_(trans['notes'], {'foo': 'bar'})
 
     def test_notes_issuer_transactions(self, slumber):
         iss = Issuer.objects.create()
-        slumber.generic.transaction.get.return_value = {'objects': [
-            {'notes': json.dumps({'issuer': iss.pk})}
-        ]}
+        slumber.generic.transaction.get_object.return_value = {
+                'notes': json.dumps({'issuer': iss.pk})
+        }
         trans = client.get_transaction('x')
         eq_(trans['notes']['issuer'], iss)

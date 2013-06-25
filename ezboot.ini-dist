@@ -1,10 +1,12 @@
 # Example config for use with ezboot:
 # https://github.com/kumar303/ezboot
 [setup]
-apps = https://marketplace-dev.allizom.org/manifest.webapp
-       https://marketplace.allizom.org/manifest.webapp
 
 # Uncomment these by removing the hash. Fill in with your local settings.
+
+## See docs for how to install packaged apps instead of hosted apps.
+#apps = https://marketplace-dev.allizom.org/manifest.webapp
+#       https://marketplace.allizom.org/manifest.webapp
 
 #wifi_ssid = your_wifi
 #wifi_key = WPA-PSK
@@ -12,6 +14,8 @@ apps = https://marketplace-dev.allizom.org/manifest.webapp
 
 [flash]
 
-# Enter a username and password for downloading a private build.
+## Enter a username and password for downloading a private build.
 #flash_user = ...
 #flash_pass = ...
+## If you uncomment this, make sure you are actually flashing an unagi device!
+#flash_device = unagi

@@ -101,6 +101,11 @@ def error(request):
     if request.GET.get('ResponseCode') == 'CANCEL':
         return render(request, 'bango/cancel.html')
 
+    if request.GET.get('ResponseCode') == 'NOT_SUPPORTED':
+        return _error(request, display=True,
+                      msg=_('Price point unavailable for this region or '
+                            'carrier.'))
+
     return _error(request, msg=_('Received Bango error'))
 
 
@@ -114,15 +119,20 @@ def notification(request):
     """
     log.info('Bango notification received')
 
-    if not basic(request):
+    try:
+        username, password = basic(request)
+    except ValueError:
         log.warning('Basic auth failed')
         return HttpResponseForbidden(request)
 
     try:
         # Just take the whole request and stuff into JSON for passing down
         # the pipe.
-        client.slumber.bango.event.post({'notification':
-                                         request.raw_post_data})
+        client.slumber.bango.event.post({
+            'notification': request.raw_post_data,
+            'password': password,
+            'username': username
+        })
     except HttpClientError, err:
         log.error('Error calling solitude: {0}'.format(err), exc_info=True)
         # Sending something other than a 200, will cause Bango to re-send it.

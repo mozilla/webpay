@@ -29,8 +29,8 @@ class TestVerify(Base):
     def setUp(self):
         super(TestVerify, self).setUp()
         self.patches = []
-        patch = mock.patch('webpay.pay.views.tasks.start_pay')
-        self.start_pay = patch.start()
+        patch = mock.patch('webpay.pay.tasks.configure_transaction')
+        self.configure_transaction = patch.start()
         self.patches.append(patch)
         patch = mock.patch('webpay.pay.views.marketplace')
         self.mkt = patch.start()
@@ -186,8 +186,7 @@ class TestVerify(Base):
             res = self.get(self.request())
             self.assertContains(res, 'temporarily disabled', status_code=503)
 
-    @mock.patch('webpay.pay.views.tasks.start_pay')
-    def test_begin_simulation(self, start_pay):
+    def test_begin_simulation(self):
         payjwt = self.payload()
         payjwt['request']['simulate'] = {'result': 'postback'}
         payload = self.request(payload=payjwt)
@@ -195,11 +194,25 @@ class TestVerify(Base):
         eq_(res.status_code, 200)
         self.assertTemplateUsed(res, 'pay/simulate.html')
         eq_(self.client.session['is_simulation'], True)
-        assert not start_pay.delay.called, (
-            'start_pay should not be called when simulating')
+        assert not self.configure_transaction.called, (
+            'configure_transaction should not be called when simulating')
 
-    @mock.patch('webpay.pay.views.tasks.start_pay')
-    def test_begin_simulation_when_payments_disabled(self, start_pay):
+    @mock.patch('webpay.auth.utils.client')
+    @mock.patch('webpay.pay.views.check_pin_status')
+    @mock.patch('webpay.pay.views.solitude')
+    def test_start_pay_when_logged_in(self, api, check_pin, client):
+        check_pin.return_value = None
+        # This is a repeat purchase scenario. We call start_pay because login
+        # will not call it for this scenario.
+        self.session['uuid'] = 'some-email-token'
+        self.session.save()
+        payload = self.request(payload=self.payload())
+        res = self.get(payload)
+        eq_(res.status_code, 200)
+        assert self.configure_transaction.called, (
+            'lobby should configure_transaction when user is logged in')
+
+    def test_begin_simulation_when_payments_disabled(self):
         payjwt = self.payload()
         payjwt['request']['simulate'] = {'result': 'postback'}
         payload = self.request(payload=payjwt)
@@ -338,7 +351,7 @@ class TestWaitToStart(Base):
         eq_(data['status'], constants.STATUS_PENDING)
 
     def test_start_not_there(self, get_transaction):
-        get_transaction.side_effect = ValueError
+        get_transaction.side_effect = ObjectDoesNotExist
         res = self.client.get(self.start)
         eq_(res.status_code, 200, res.content)
         data = json.loads(res.content)
@@ -393,7 +406,7 @@ class TestSimulate(BasicSessionCase, JWTtester):
         self.session.save()
         # Stub out non-simulate code in case it gets called.
         self.patches = [
-            mock.patch('webpay.pay.views.tasks.start_pay'),
+            mock.patch('webpay.pay.tasks.configure_transaction'),
             mock.patch('webpay.pay.views.marketplace')
         ]
         for p in self.patches:
