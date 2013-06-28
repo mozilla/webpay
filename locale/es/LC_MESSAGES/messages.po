@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-10 08:55-0700\n"
+"POT-Creation-Date: 2013-06-28 09:19-0700\n"
 "PO-Revision-Date: 2013-01-08 07:44-0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,7 +17,11 @@ msgstr ""
 msgid "Could not record Bango error"
 msgstr "No pudimos registrar el error de Bango"
 
-#: webpay/bango/views.py:104
+#: webpay/bango/views.py:106
+msgid "Price point unavailable for this region or carrier."
+msgstr ""
+
+#: webpay/bango/views.py:109
 msgid "Received Bango error"
 msgstr "Error de Bango recibido"
 
@@ -29,7 +33,7 @@ msgstr "Pago cancelado"
 msgid "Your payment is complete."
 msgstr "Tu pago está completo."
 
-#: webpay/base/utils.py:33 webpay/base/templates/500.html:5
+#: webpay/base/utils.py:32 webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
 msgstr "Hubo un error al procesar la petición."
 
@@ -149,15 +153,15 @@ msgstr "Inactivo"
 msgid "Revoked"
 msgstr "Revocado"
 
-#: webpay/pay/views.py:44
+#: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
 msgstr "Los pagos están deshabilitados temporalmente."
 
-#: webpay/pay/views.py:142 webpay/pin/views.py:71
+#: webpay/pay/views.py:140 webpay/pin/views.py:72
 msgid "Enter Pin"
 msgstr "Escribir PIN"
 
-#: webpay/pay/views.py:191
+#: webpay/pay/views.py:189
 msgid "Transaction has already ended."
 msgstr "Ya se ha finalizado la transacción."
 
@@ -205,17 +209,21 @@ msgstr "PIN erróneo"
 msgid "Pins do not match."
 msgstr "Los PIN no coinciden."
 
-#: webpay/pin/views.py:38
+#: webpay/pin/views.py:39
 msgid "Create a Pin"
 msgstr "Crear un PIN"
 
-#: webpay/pin/views.py:53 webpay/pin/views.py:136
+#: webpay/pin/views.py:54 webpay/pin/views.py:138
 msgid "Confirm Pin"
 msgstr "Confirmar PIN"
 
-#: webpay/pin/views.py:95 webpay/pin/views.py:115 webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:14
 msgid "Reset Pin"
 msgstr "Restablecer PIN"
+
+#: webpay/pin/views.py:131
+msgid "Pin reset"
+msgstr ""
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.

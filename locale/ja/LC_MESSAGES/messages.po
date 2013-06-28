@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-10 08:55-0700\n"
+"POT-Creation-Date: 2013-06-28 09:19-0700\n"
 "PO-Revision-Date: 2013-06-24 09:10+0900\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -17,7 +17,11 @@ msgstr ""
 msgid "Could not record Bango error"
 msgstr "Bango のエラーを記録できませんでした"
 
-#: webpay/bango/views.py:104
+#: webpay/bango/views.py:106
+msgid "Price point unavailable for this region or carrier."
+msgstr ""
+
+#: webpay/bango/views.py:109
 msgid "Received Bango error"
 msgstr "Bango のエラーを受信しました"
 
@@ -29,7 +33,7 @@ msgstr "支払いはキャンセルされました。"
 msgid "Your payment is complete."
 msgstr "支払いが完了しました。"
 
-#: webpay/base/utils.py:33 webpay/base/templates/500.html:5
+#: webpay/base/utils.py:32 webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
 msgstr "リクエストの処理中に問題が発生しました。"
 
@@ -149,15 +153,15 @@ msgstr "無効"
 msgid "Revoked"
 msgstr "キャンセル"
 
-#: webpay/pay/views.py:44
+#: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
 msgstr "支払いは一時的に無効化されています。"
 
-#: webpay/pay/views.py:142 webpay/pin/views.py:71
+#: webpay/pay/views.py:140 webpay/pin/views.py:72
 msgid "Enter Pin"
 msgstr "暗証番号を入力"
 
-#: webpay/pay/views.py:191
+#: webpay/pay/views.py:189
 msgid "Transaction has already ended."
 msgstr "トランザクションは既に終了しています。"
 
@@ -205,17 +209,21 @@ msgstr "暗証番号が違います"
 msgid "Pins do not match."
 msgstr "暗証番号が一致しません。"
 
-#: webpay/pin/views.py:38
+#: webpay/pin/views.py:39
 msgid "Create a Pin"
 msgstr "暗証番号の登録"
 
-#: webpay/pin/views.py:53 webpay/pin/views.py:136
+#: webpay/pin/views.py:54 webpay/pin/views.py:138
 msgid "Confirm Pin"
 msgstr "暗証番号の確認"
 
-#: webpay/pin/views.py:95 webpay/pin/views.py:115 webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:14
 msgid "Reset Pin"
 msgstr "暗証番号のリセット"
+
+#: webpay/pin/views.py:131
+msgid "Pin reset"
+msgstr ""
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
