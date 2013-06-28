@@ -51,7 +51,7 @@ def reverify(request):
         result = verify_assertion(form.cleaned_data['assertion'], audience,
                                   extra_params)
 
-        log.info('Reverify got result: %s')
+        log.info('Reverify got result: %s' % result)
         if result:
             logged_user = request.session.get('uuid')
             email = result.get('unverified-email', result.get('email'))

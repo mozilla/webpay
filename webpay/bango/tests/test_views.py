@@ -78,6 +78,10 @@ class TestBangoReturn(BasicSessionCase):
         self.call(overrides={'ResponseCode': 'OK'}, url='bango.error',
                   expected_status=400)
 
+    def test_bad_tier(self, payment_notify, slumber):
+        self.call(overrides={'ResponseCode': 'NOT_SUPPORTED'},
+                  url='bango.error', expected_status=400)
+
     def test_not_ok(self, payment_notify, slumber):
         self.call(overrides={'ResponseCode': 'NOT_OK'}, url='bango.success',
                   expected_status=400)

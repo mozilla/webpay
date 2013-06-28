@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Czech (cs)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-10 08:55-0700\n"
-"PO-Revision-Date: 2013-05-30 21:08+0100\n"
+"POT-Creation-Date: 2013-06-28 09:19-0700\n"
+"PO-Revision-Date: 2013-06-14 12:46+0100\n"
 "Last-Translator: Pavel Cvrček <pcvrcek@mozilla.cz>\n"
 "Language-Team: Czech Mozilla Team <info@mozilla.cz>\n"
 "Language: cs\n"
@@ -17,7 +17,11 @@ msgstr ""
 msgid "Could not record Bango error"
 msgstr "Nepodařilo se zaznamenat chybu od Bango"
 
-#: webpay/bango/views.py:104
+#: webpay/bango/views.py:106
+msgid "Price point unavailable for this region or carrier."
+msgstr ""
+
+#: webpay/bango/views.py:109
 msgid "Received Bango error"
 msgstr "Obdržena chyba od Bango"
 
@@ -29,17 +33,17 @@ msgstr "Platba zrušena."
 msgid "Your payment is complete."
 msgstr "Vaše platba byla dokončena."
 
-#: webpay/base/utils.py:33 webpay/base/templates/500.html:5
+#: webpay/base/utils.py:32 webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
 msgstr "Při zpracování vašeho požadavku nastala chyba."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "Není povoleno"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "Omlouváme se, ale tuto akci nemáte povolenu."
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
@@ -149,15 +153,15 @@ msgstr "Neaktivní"
 msgid "Revoked"
 msgstr "Odvolán"
 
-#: webpay/pay/views.py:44
+#: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
 msgstr "Platby jsou dočasně zakázány"
 
-#: webpay/pay/views.py:142 webpay/pin/views.py:71
+#: webpay/pay/views.py:140 webpay/pin/views.py:72
 msgid "Enter Pin"
 msgstr "Vložte PIN"
 
-#: webpay/pay/views.py:191
+#: webpay/pay/views.py:189
 msgid "Transaction has already ended."
 msgstr "Transakce již byla ukončena."
 
@@ -205,17 +209,21 @@ msgstr "Špatný pin"
 msgid "Pins do not match."
 msgstr "Piny si neodpovídají."
 
-#: webpay/pin/views.py:38
+#: webpay/pin/views.py:39
 msgid "Create a Pin"
 msgstr "Vytvoření PINu"
 
-#: webpay/pin/views.py:53 webpay/pin/views.py:136
+#: webpay/pin/views.py:54 webpay/pin/views.py:138
 msgid "Confirm Pin"
 msgstr "Potvrzení PINu"
 
-#: webpay/pin/views.py:95 webpay/pin/views.py:115 webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:14
 msgid "Reset Pin"
 msgstr "Obnova PINu"
+
+#: webpay/pin/views.py:131
+msgid "Pin reset"
+msgstr ""
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
@@ -225,11 +233,11 @@ msgstr "Zapomněl(a) jste svůj PIN?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr ""
+msgstr "Zadal(a) jste opakovaně špatný kód PIN. Váš účet je nyní zablokován. Zkuste znovu svůj nákup za 5 minut."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your Pin was locked"

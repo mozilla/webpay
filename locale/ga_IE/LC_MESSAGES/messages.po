@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-10 08:55-0700\n"
+"POT-Creation-Date: 2013-06-28 09:19-0700\n"
 "PO-Revision-Date: 2013-04-05 08:50-0500\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,7 +17,11 @@ msgstr ""
 msgid "Could not record Bango error"
 msgstr "Níorbh fhéidir earráid Bango a thaifeadadh"
 
-#: webpay/bango/views.py:104
+#: webpay/bango/views.py:106
+msgid "Price point unavailable for this region or carrier."
+msgstr ""
+
+#: webpay/bango/views.py:109
 msgid "Received Bango error"
 msgstr "Fuarthas earráid Bango"
 
@@ -29,17 +33,17 @@ msgstr "Íocaíocht curtha ar ceal."
 msgid "Your payment is complete."
 msgstr "Bhí d'íocaíocht curtha i gcrích."
 
-#: webpay/base/utils.py:33 webpay/base/templates/500.html:5
+#: webpay/base/utils.py:32 webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
 msgstr "Tharla earráid agus an t-iarratas sin á phróiseáil."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "Ní cheadaítear é sin"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "Níl cead agat é sin a dhéanamh."
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
@@ -149,15 +153,15 @@ msgstr "Neamhghníomhach"
 msgid "Revoked"
 msgstr "Cúlghairthe"
 
-#: webpay/pay/views.py:44
+#: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
 msgstr "Tá íocaíochtaí díchumasaithe go sealadach."
 
-#: webpay/pay/views.py:142 webpay/pin/views.py:71
+#: webpay/pay/views.py:140 webpay/pin/views.py:72
 msgid "Enter Pin"
 msgstr "Cuir UAP isteach"
 
-#: webpay/pay/views.py:191
+#: webpay/pay/views.py:189
 msgid "Transaction has already ended."
 msgstr "Tá an beart críochnaithe cheana."
 
@@ -205,17 +209,21 @@ msgstr "UAP mhícheart"
 msgid "Pins do not match."
 msgstr "Ní ionann na UAPanna."
 
-#: webpay/pin/views.py:38
+#: webpay/pin/views.py:39
 msgid "Create a Pin"
 msgstr "Cruthaigh UAP"
 
-#: webpay/pin/views.py:53 webpay/pin/views.py:136
+#: webpay/pin/views.py:54 webpay/pin/views.py:138
 msgid "Confirm Pin"
 msgstr "Deimhnigh an UAP"
 
-#: webpay/pin/views.py:95 webpay/pin/views.py:115 webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:14
 msgid "Reset Pin"
 msgstr "Athshocraigh an UAP"
+
+#: webpay/pin/views.py:131
+msgid "Pin reset"
+msgstr ""
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
@@ -225,11 +233,11 @@ msgstr "UAP dearmadta?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr ""
+msgstr "Cuireadh do chuntas faoi ghlas toisc go ndearna tú an iomarca iarrachtaí an UAP a chur isteach. Déan iarracht eile do cheannach a chur i gcrích i gceann cúig nóiméid."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your Pin was locked"

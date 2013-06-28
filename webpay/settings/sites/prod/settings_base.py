@@ -68,7 +68,6 @@ SYSLOG_TAG = private.SYSLOG_TAG
 # HTTPS to disable HTTPS-only cookies.
 SESSION_COOKIE_SECURE = True
 
-DOMAIN = 'marketplace.firefox.com'
 ISSUER = DOMAIN
 NOTIFY_ISSUER = DOMAIN
 VERBOSE_LOGGING = False
@@ -90,10 +89,9 @@ BANGO_BASE_URL = 'https://mozilla.bango.net'
 BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'
 BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
 
-# Temporarily only accept simulations while we work to get Bango online.
-ONLY_SIMULATIONS = True
-
 STATSD_HOST = private.STATSD_HOST
 STATSD_PORT = private.STATSD_PORT
 STATSD_PREFIX = private.STATSD_PREFIX
 UUID_HMAC_KEY = private.UUID_HMAC_KEY
+
+USER_WHITELIST = ['^.*@mozilla\.com$', '^.*@intertek\.com$']
