@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-06-28 09:19-0700\n"
-"PO-Revision-Date: 2013-06-24 09:10+0900\n"
+"PO-Revision-Date: 2013-06-29 03:23+0900\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -19,7 +19,7 @@ msgstr "Bango のエラーを記録できませんでした"
 
 #: webpay/bango/views.py:106
 msgid "Price point unavailable for this region or carrier."
-msgstr ""
+msgstr "この地域もしくはこのキャリア向けの価格は設定されていません"
 
 #: webpay/bango/views.py:109
 msgid "Received Bango error"
@@ -211,19 +211,19 @@ msgstr "暗証番号が一致しません。"
 
 #: webpay/pin/views.py:39
 msgid "Create a Pin"
-msgstr "暗証番号の登録"
+msgstr "暗証番号を登録"
 
 #: webpay/pin/views.py:54 webpay/pin/views.py:138
 msgid "Confirm Pin"
-msgstr "暗証番号の確認"
+msgstr "暗証番号を確認"
 
 #: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:14
 msgid "Reset Pin"
-msgstr "暗証番号のリセット"
+msgstr "暗証番号をリセット"
 
 #: webpay/pin/views.py:131
 msgid "Pin reset"
-msgstr ""
+msgstr "暗証番号のリセット"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
