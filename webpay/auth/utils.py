@@ -6,6 +6,9 @@ from django.conf import settings
 from django.core.exceptions import PermissionDenied
 
 from lib.solitude.api import client
+from webpay.base.logger import getLogger
+
+log  = getLogger('w.auth')
 
 
 def check_whitelist(email):
@@ -52,6 +55,7 @@ def get_user(request):
 
 def set_user(request, email):
     if not check_whitelist(email):
+        log.warning('Whitelist denied access to: {0}'.format(email))
         raise PermissionDenied
 
     uuid = get_uuid(email)

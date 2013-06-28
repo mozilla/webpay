@@ -21,6 +21,13 @@ define('cli', [], function() {
             }
         },
         focusOnPin: function(config) {
+            // Ensure the trusted-ui is currently in focus
+            // which is necessary to ensure the reliability of
+            // the keyboard appearing when we focus the input
+            // (bug 863328).
+            if (window.focus) {
+                window.focus();
+            }
             config = config || {};
             var $form = config.$form || $('#pin');
             var $toHide = config.$toHide || null;

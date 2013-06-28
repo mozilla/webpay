@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-10 08:55-0700\n"
+"POT-Creation-Date: 2013-06-28 09:19-0700\n"
 "PO-Revision-Date: 2013-06-19 22:43+0100\n"
 "Last-Translator: Saša Teković <sasa@tekovic.com>\n"
 "Language-Team: none\n"
@@ -17,7 +17,11 @@ msgstr ""
 msgid "Could not record Bango error"
 msgstr "Nije moguće zapisati Bango grešku"
 
-#: webpay/bango/views.py:104
+#: webpay/bango/views.py:106
+msgid "Price point unavailable for this region or carrier."
+msgstr ""
+
+#: webpay/bango/views.py:109
 msgid "Received Bango error"
 msgstr "Dobivena je Bango greška"
 
@@ -25,13 +29,11 @@ msgstr "Dobivena je Bango greška"
 msgid "Payment cancelled."
 msgstr "Plaćanje otkazano."
 
-#: webpay/bango/templates/bango/success.html:10
-#: webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
 msgstr "Plaćanje dovršeno."
 
-#: webpay/base/utils.py:33
-#: webpay/base/templates/500.html:5
+#: webpay/base/utils.py:32 webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
 msgstr "Došlo je do greške pri obradi tog zahtjeva."
 
@@ -43,17 +45,12 @@ msgstr "Nije dopušteno"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Žalim, to vam nije dopušteno."
 
-#: webpay/base/templates/403.html:8
-#: webpay/base/templates/error.html:8
-#: webpay/pay/templates/pay/simulate.html:18
-#: webpay/pin/templates/pin/pin_form.html:34
-#: webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Otkaži"
 
-#: webpay/base/templates/404.html:2
-#: webpay/base/templates/404.html:3
+#: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
 msgid "Page not found"
 msgstr "Stranica nije pronađena"
 
@@ -61,8 +58,7 @@ msgstr "Stranica nije pronađena"
 msgid "Sorry, but we couldn't find the page you're looking for."
 msgstr "Žao nam je, ali nismo mogli pronaći stranicu koju tražite."
 
-#: webpay/base/templates/500.html:2
-#: webpay/base/templates/500.html:3
+#: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
 msgstr "Nešto je pošlo po zlu!"
 
@@ -103,8 +99,7 @@ msgstr "Plaćanje dovršeno"
 msgid "Payment cancelled"
 msgstr "Plaćanje otkazano"
 
-#: webpay/base/templates/error.html:4
-#: webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Greška"
 
@@ -158,16 +153,15 @@ msgstr ""
 msgid "Revoked"
 msgstr ""
 
-#: webpay/pay/views.py:44
+#: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
 msgstr ""
 
-#: webpay/pay/views.py:142
-#: webpay/pin/views.py:71
+#: webpay/pay/views.py:140 webpay/pin/views.py:72
 msgid "Enter Pin"
 msgstr ""
 
-#: webpay/pay/views.py:191
+#: webpay/pay/views.py:189
 msgid "Transaction has already ended."
 msgstr ""
 
@@ -183,8 +177,7 @@ msgstr ""
 msgid "Sign in"
 msgstr ""
 
-#: webpay/pay/templates/pay/simulate.html:7
-#: webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Simuliraj plaćanje"
 
@@ -196,9 +189,7 @@ msgstr "Nećete biti terećeni."
 msgid "result"
 msgstr "rezultat"
 
-#: webpay/pay/templates/pay/simulate.html:20
-#: webpay/pin/templates/pin/pin_form.html:41
-#: webpay/pin/templates/pin/pin_was_locked.html:17
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:17
 msgid "Continue"
 msgstr "Nastavi"
 
@@ -214,30 +205,29 @@ msgstr "Već ste stvorili PIN."
 msgid "Wrong pin"
 msgstr "Netočan PIN"
 
-#: webpay/pin/forms.py:104
-#: webpay/pin/forms.py:126
+#: webpay/pin/forms.py:104 webpay/pin/forms.py:126
 msgid "Pins do not match."
 msgstr "PIN-ovi se ne podudaraju."
 
-#: webpay/pin/views.py:38
+#: webpay/pin/views.py:39
 msgid "Create a Pin"
 msgstr "Stvorite PIN"
 
-#: webpay/pin/views.py:53
-#: webpay/pin/views.py:136
+#: webpay/pin/views.py:54 webpay/pin/views.py:138
 msgid "Confirm Pin"
 msgstr "Potvrdite PIN"
 
-#: webpay/pin/views.py:95
-#: webpay/pin/views.py:115
-#: webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:14
 msgid "Reset Pin"
 msgstr "Resetiraj PIN"
 
+#: webpay/pin/views.py:131
+msgid "Pin reset"
+msgstr ""
+
 #. This is the same as the standard forgot
-#. password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:26
-#: webpay/pin/templates/pin/reset_start.html:12
+#.                  password that most sites have.
+#: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
 msgstr "Zaboravili ste PIN?"
 
@@ -264,4 +254,3 @@ msgstr "Jeste li sigurni da želite resetirati vaš PIN? Da biste ga mogli reset
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
 msgstr "Resetiraj"
-
