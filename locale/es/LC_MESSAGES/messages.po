@@ -19,7 +19,7 @@ msgstr "No pudimos registrar el error de Bango"
 
 #: webpay/bango/views.py:106
 msgid "Price point unavailable for this region or carrier."
-msgstr ""
+msgstr "El rango de precio no está disponible para esta región o este operador."
 
 #: webpay/bango/views.py:109
 msgid "Received Bango error"
@@ -27,7 +27,7 @@ msgstr "Error de Bango recibido"
 
 #: webpay/bango/templates/bango/cancel.html:10
 msgid "Payment cancelled."
-msgstr "Pago cancelado"
+msgstr "Pago cancelado."
 
 #: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
@@ -64,7 +64,7 @@ msgstr "Algo no salió bien."
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
-msgstr "Inténtalo de nuevo pasados unos minutos"
+msgstr "Inténtalo de nuevo pasados unos minutos."
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9
@@ -223,7 +223,7 @@ msgstr "Restablecer PIN"
 
 #: webpay/pin/views.py:131
 msgid "Pin reset"
-msgstr ""
+msgstr "PIN restablecido"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
