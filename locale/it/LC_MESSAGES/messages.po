@@ -20,7 +20,7 @@ msgstr "Impossibile annotare l'errore verificatosi con Bango"
 
 #: webpay/bango/views.py:106
 msgid "Price point unavailable for this region or carrier."
-msgstr "Prezzo di vendita non disponibile per questa regione o operatore."
+msgstr "Punto di vendita non disponibile per questa regione o operatore."
 
 #: webpay/bango/views.py:109
 msgid "Received Bango error"
