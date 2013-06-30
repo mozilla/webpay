@@ -1,9 +1,10 @@
+# Wojciech Szczęsny, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-06-28 09:19-0700\n"
-"PO-Revision-Date: 2013-06-11 13:10+0200\n"
+"PO-Revision-Date: 2013-06-30 19:54+0200\n"
 "Last-Translator: Wojciech Szczęsny\n"
 "Language-Team: Polish <>\n"
 "Language: pl\n"
@@ -11,7 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.4\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 
 #: webpay/bango/views.py:99
 msgid "Could not record Bango error"
@@ -19,7 +21,7 @@ msgstr "Nie można zapisać błędu Bango"
 
 #: webpay/bango/views.py:106
 msgid "Price point unavailable for this region or carrier."
-msgstr ""
+msgstr "Cena bazowa jest niedostępna dla tego regionu lub operatora."
 
 #: webpay/bango/views.py:109
 msgid "Received Bango error"
@@ -133,7 +135,8 @@ msgstr "Nikt nie został zarejestrowany dla emitenta JWT {0}."
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:83
 msgid "This payment key, {0}, can only be used to simulate purchases."
-msgstr "Ten klucz płatności, {0}, może być używany jedynie do symulowania zakupów."
+msgstr ""
+"Ten klucz płatności, {0}, może być używany jedynie do symulowania zakupów."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is an example of the proper key format.
@@ -223,7 +226,7 @@ msgstr "Resetuj kod PIN"
 
 #: webpay/pin/views.py:131
 msgid "Pin reset"
-msgstr ""
+msgstr "Resetowanie kodu PIN"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
@@ -232,8 +235,12 @@ msgid "Forgot your pin?"
 msgstr "Nie pamiętasz swojego kodu PIN?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
-msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr "Błędny kod PIN wprowadzono zbyt wiele razy. Twoje konto jest zablokowane. Spróbuj ponownie dokonać zakupu za 5 minut."
+msgid ""
+"You entered the wrong pin too many times. Your account is locked. Please try "
+"your purchase again in 5 minutes."
+msgstr ""
+"Błędny kod PIN wprowadzono zbyt wiele razy. Twoje konto jest zablokowane. "
+"Spróbuj ponownie dokonać zakupu za 5 minut."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -244,13 +251,23 @@ msgid "Your Pin was locked"
 msgstr "Twój kod PIN został zablokowany"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:11
-msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
-msgstr "Twój kod PIN został zablokowany, ponieważ wprowadzono go niepoprawnie zbyt wiele razy. Możesz kontynuować i spróbować wprowadzić swój kod PIN ponownie lub zresetować go."
+msgid ""
+"Your pin was locked because you entered it incorrectly too many times. You "
+"can continue and try entering your pin again or reset your pin."
+msgstr ""
+"Twój kod PIN został zablokowany, ponieważ wprowadzono go niepoprawnie zbyt "
+"wiele razy. Możesz kontynuować i spróbować wprowadzić swój kod PIN ponownie "
+"lub zresetować go."
 
 #: webpay/pin/templates/pin/reset_start.html:13
-msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr "Czy na pewno chcesz zresetować kod PIN? Musisz zalogować się do usługi Persona, by to zrobić."
+msgid ""
+"Are you sure you want to reset your pin? You must sign in to Persona to reset "
+"your pin."
+msgstr ""
+"Czy na pewno chcesz zresetować kod PIN? Musisz zalogować się do usługi "
+"Persona, by to zrobić."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
 msgstr "Resetuj"
+
