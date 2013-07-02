@@ -3,7 +3,7 @@
 {% block body_attrs -%}
   data-verify-url="{{ url('auth.reverify') }}"
   data-cancel-url="{{ url('pin.reset_cancel') }}"
-  data-force-auth-result="show-pin"
+  data-reset-url="{{ url('pin.reset_start') }}"
 {%- endblock %}
 
 {% block content %}
