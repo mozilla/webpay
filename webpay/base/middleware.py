@@ -100,7 +100,10 @@ class LocaleMiddleware(object):
                          x in settings.LANGUAGE_URL_MAP if
                          x.split('-', 1)[0] == lang.lower().split('-', 1)[0]]
             if len(supported):
+                log.info('mapped locale {0} -> {1}'.format(lang, supported[0]))
                 return supported[0]
+
+        log.info('unsupported locale: {0}'.format(lang))
         return settings.LANGUAGE_CODE
 
     def process_request(self, request):
