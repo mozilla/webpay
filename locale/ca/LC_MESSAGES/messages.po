@@ -1,255 +1,257 @@
+# Toni Hermoso Pulido <toniher@softcatala.org>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-28 09:19-0700\n"
-"PO-Revision-Date: 2013-01-08 08:50-0700\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2013-06-10 08:55-0700\n"
+"PO-Revision-Date: 2013-06-27 09:49+0200\n"
+"Last-Translator: Toni Hermoso Pulido <toniher@softcatala.org>\n"
+"Language-Team: Catalan <ca@dodds.net>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.9.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.0\n"
 
 #: webpay/bango/views.py:99
 msgid "Could not record Bango error"
-msgstr ""
+msgstr "No s'ha pogut registrar l'error de Bango"
 
-#: webpay/bango/views.py:106
-msgid "Price point unavailable for this region or carrier."
-msgstr ""
-
-#: webpay/bango/views.py:109
+#: webpay/bango/views.py:104
 msgid "Received Bango error"
-msgstr ""
+msgstr "S'ha rebut un error de Bango"
 
 #: webpay/bango/templates/bango/cancel.html:10
 msgid "Payment cancelled."
-msgstr ""
+msgstr "S'ha cancel·lat el pagament."
 
 #: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
-msgstr ""
+msgstr "S'ha completat el pagament."
 
-#: webpay/base/utils.py:32 webpay/base/templates/500.html:5
+#: webpay/base/utils.py:33 webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
-msgstr ""
+msgstr "S'ha produït un error en processar la sol·licitud."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "No és permès"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "Ho sentim, no podeu fer-ho."
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
-msgstr ""
+msgstr "Cancel·la"
 
 #: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
 msgid "Page not found"
-msgstr ""
+msgstr "No s'ha trobat la pàgina"
 
 #: webpay/base/templates/404.html:5
 msgid "Sorry, but we couldn't find the page you're looking for."
-msgstr ""
+msgstr "Ho sentim, no hem pogut trobar la pàgina que cercàveu."
 
 #: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
-msgstr ""
+msgstr "Quelcom no ha funcionat!"
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
-msgstr ""
+msgstr "Torneu-ho a provar en uns moments."
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9
 msgid "Web Pay"
-msgstr ""
+msgstr "Web Pay"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr ""
+msgstr "El PIN ha tenir 4 dígits."
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr ""
+msgstr "El PIN només pot contenir dígits."
 
 #: webpay/base/templates/base.html:30
 msgid "Loading"
-msgstr ""
+msgstr "S'està carregant"
 
 #: webpay/base/templates/base.html:31
 msgid "Beginning payment&hellip;"
-msgstr ""
+msgstr "Comença el pagament&hellip;"
 
 #: webpay/base/templates/base.html:32
 msgid "Connecting to Persona"
-msgstr ""
+msgstr "S'està connectant a Persona"
 
 #: webpay/base/templates/base.html:33
 msgid "Payment complete"
-msgstr ""
+msgstr "Pagament completat"
 
 #: webpay/base/templates/base.html:34
 msgid "Payment cancelled"
-msgstr ""
+msgstr "Pagament cancel·lat"
 
 #: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #. L10n: first argument is a detailed error message.
 #: webpay/pay/forms.py:31
 msgid "Error decoding JWT: {0}"
-msgstr ""
+msgstr "Error en descodificar JWT: {0}"
 
 #. L10n: first argument is a data type, such as <unicode>
 #: webpay/pay/forms.py:42
 msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr ""
+msgstr "El JSON no s'ha descodificat en un objecte JSON. El seu tipus era {0}."
 
 #: webpay/pay/forms.py:52
 msgid "Payment simulations are disabled at this time."
-msgstr ""
+msgstr "Les simulacions de pagament estan inhabilitades ara mateix."
 
 #: webpay/pay/forms.py:58
 msgid "The requested simulation result is not supported."
-msgstr ""
+msgstr "La simulació de sol·licitud no està implementada."
 
 #: webpay/pay/forms.py:61
 msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr ""
+msgstr "A la simulació de recàrrega sol·licitada li manca la clau '{0}'."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:77
 msgid "No one has been registered for JWT issuer {0}."
-msgstr ""
+msgstr "Ningú ha estat registrat per a l'emissor JWT {0}."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:83
 msgid "This payment key, {0}, can only be used to simulate purchases."
 msgstr ""
+"La clau de pagament, {0}, només pot utilitzar-se per simular les compres."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is an example of the proper key format.
 #: webpay/pay/forms.py:93
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
-msgstr ""
+msgstr "La clau «{0}» ha de ser un objecte d'URL com ara {1}"
 
 #: webpay/pay/models.py:28
 msgid "Active"
-msgstr ""
+msgstr "Actiu"
 
 #: webpay/pay/models.py:29
 msgid "Inactive"
-msgstr ""
+msgstr "Inactiu"
 
 #: webpay/pay/models.py:30
 msgid "Revoked"
-msgstr ""
+msgstr "Revocat"
 
-#: webpay/pay/views.py:42
+#: webpay/pay/views.py:44
 msgid "Payments are temporarily disabled."
-msgstr ""
+msgstr "Els pagaments estan inhabilitats temporalment"
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:72
+#: webpay/pay/views.py:142 webpay/pin/views.py:71
 msgid "Enter Pin"
-msgstr ""
+msgstr "Introduïu el PIN"
 
-#: webpay/pay/views.py:189
+#: webpay/pay/views.py:191
 msgid "Transaction has already ended."
-msgstr ""
+msgstr "La transacció ja ha acabat."
 
 #: webpay/pay/templates/pay/lobby.html:10
 msgid "Sign In"
-msgstr ""
+msgstr "Inicia una sessió"
 
 #: webpay/pay/templates/pay/lobby.html:11
 msgid "Sign in to continue with the payment"
-msgstr ""
+msgstr "Inicia una sessió per continuar amb el pagament"
 
 #: webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in"
-msgstr ""
+msgstr "Inicia una sessió"
 
 #: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
-msgstr ""
+msgstr "Simula el pagament"
 
 #: webpay/pay/templates/pay/simulate.html:8
 msgid "You will not be charged."
-msgstr ""
+msgstr "No se us cobrarà."
 
 #: webpay/pay/templates/pay/simulate.html:10
 msgid "result"
-msgstr ""
+msgstr "resultat"
 
 #: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:17
 msgid "Continue"
-msgstr ""
+msgstr "Continua"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
-msgstr ""
+msgstr "A l'espera de completar el pagament&hellip;"
 
 #: webpay/pin/forms.py:73
 msgid "You have already created a PIN."
-msgstr ""
+msgstr "Ja heu creat un PIN."
 
 #: webpay/pin/forms.py:93
 msgid "Wrong pin"
-msgstr ""
+msgstr "PIN incorrecte"
 
 #: webpay/pin/forms.py:104 webpay/pin/forms.py:126
 msgid "Pins do not match."
-msgstr ""
+msgstr "Els PIN no coincideixen."
 
-#: webpay/pin/views.py:39
+#: webpay/pin/views.py:38
 msgid "Create a Pin"
-msgstr ""
+msgstr "Crea un PIN"
 
-#: webpay/pin/views.py:54 webpay/pin/views.py:138
+#: webpay/pin/views.py:53 webpay/pin/views.py:136
 msgid "Confirm Pin"
-msgstr ""
+msgstr "Confirma el PIN"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:95 webpay/pin/views.py:115 webpay/pin/templates/pin/pin_was_locked.html:14
 msgid "Reset Pin"
-msgstr ""
-
-#: webpay/pin/views.py:131
-msgid "Pin reset"
-msgstr ""
+msgstr "Reinicia el PIN"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
-msgstr ""
+msgstr "Heu oblidat el PIN?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
 msgstr ""
+"Heu introduït un PIN incorrecte massa vegades. El vostre compte està "
+"bloquejat. Continueu amb la vostra compra d'aquí a 5 minuts."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "D'acord"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your Pin was locked"
-msgstr ""
+msgstr "El vostre PIN estava bloquejat"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:11
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
 msgstr ""
+"El vostre PIN estava bloquejat perquè vau introduir-lo de forma incorrecte "
+"massa vegades. Podeu continuar i provar d'introduir el PIN de nou o "
+"reiniciar-lo."
 
 #: webpay/pin/templates/pin/reset_start.html:13
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
 msgstr ""
+"Esteu segur que voleu reiniciar el PIN? Heu d'iniciar una sessió a Persona "
+"per reiniciar-lo."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
-msgstr ""
+msgstr "Reinicia"
