@@ -81,7 +81,7 @@ msgstr "PIN-code mag alleen cijfers bevatten."
 
 #: webpay/base/templates/base.html:30
 msgid "Loading"
-msgstr "Ladne"
+msgstr "Laden"
 
 #: webpay/base/templates/base.html:31
 msgid "Beginning payment&hellip;"
@@ -123,7 +123,7 @@ msgstr "Het aangevraagde simulatieresultaat wordt niet ondersteund."
 
 #: webpay/pay/forms.py:61
 msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr "De anagevraagde restitutiesimulatie mist de sleuten ‘{0}’."
+msgstr "De aangevraagde restitutiesimulatie mist de sleutel ‘{0}’."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:77
@@ -207,7 +207,7 @@ msgstr "Foutieve PIN-code"
 
 #: webpay/pin/forms.py:104 webpay/pin/forms.py:126
 msgid "Pins do not match."
-msgstr "Pin-codes komen niet overeen."
+msgstr "PIN-codes komen niet overeen."
 
 #: webpay/pin/views.py:39
 msgid "Create a Pin"
