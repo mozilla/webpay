@@ -1,256 +1,269 @@
+# Kalman Kemenczy <kkemenczy@gmail.com>, 2013.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-06-28 09:19-0700\n"
-"PO-Revision-Date: 2013-01-08 08:50-0700\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2013-07-05 07:48+0200\n"
+"Last-Translator: Kalman Kemenczy <kkemenczy@gmail.com>\n"
+"Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.9.0\n"
+"X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: webpay/bango/views.py:99
 msgid "Could not record Bango error"
-msgstr ""
+msgstr "Nem sikerült rögzíteni a Bango hibát"
 
 #: webpay/bango/views.py:106
 msgid "Price point unavailable for this region or carrier."
-msgstr ""
+msgstr "Ebben a régióban vagy szolgáltatónál nincsenek pontok."
 
 #: webpay/bango/views.py:109
 msgid "Received Bango error"
-msgstr ""
+msgstr "Bango hiba történt"
 
 #: webpay/bango/templates/bango/cancel.html:10
 msgid "Payment cancelled."
-msgstr ""
+msgstr "Fizetés törölve."
 
 #: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
-msgstr ""
+msgstr "A fizetés megtörtént."
 
 #: webpay/base/utils.py:32 webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
-msgstr ""
+msgstr "Hiba történt a kérés feldolgozása közben."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "Nem engedélyezett"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "Nincs jogosultsága ehhez a művelethez."
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
-msgstr ""
+msgstr "Mégse"
 
 #: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
 msgid "Page not found"
-msgstr ""
+msgstr "Ez az oldal nem található"
 
 #: webpay/base/templates/404.html:5
 msgid "Sorry, but we couldn't find the page you're looking for."
-msgstr ""
+msgstr "Sajnos nem találjuk a keresett oldalt."
 
 #: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
-msgstr ""
+msgstr "Valami hiba történt!"
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
-msgstr ""
+msgstr "Próbálja meg pár perc múlva."
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9
 msgid "Web Pay"
-msgstr ""
+msgstr "Web Pay"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr ""
+msgstr "A PIN 4-jegyű."
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr ""
+msgstr "A PIN csak számokból állhat."
 
 #: webpay/base/templates/base.html:30
 msgid "Loading"
-msgstr ""
+msgstr "Betöltés"
 
 #: webpay/base/templates/base.html:31
 msgid "Beginning payment&hellip;"
-msgstr ""
+msgstr "Fizetés megkezdése&hellip;"
 
 #: webpay/base/templates/base.html:32
 msgid "Connecting to Persona"
-msgstr ""
+msgstr "Kapcsolódás a Personahoz"
 
 #: webpay/base/templates/base.html:33
 msgid "Payment complete"
-msgstr ""
+msgstr "A fizetés megtörtént"
 
 #: webpay/base/templates/base.html:34
 msgid "Payment cancelled"
-msgstr ""
+msgstr "Fizetés törölve"
 
 #: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
-msgstr ""
+msgstr "Hiba"
 
 #. L10n: first argument is a detailed error message.
 #: webpay/pay/forms.py:31
 msgid "Error decoding JWT: {0}"
-msgstr ""
+msgstr "JWT dekódolási hiba: {0}"
 
 #. L10n: first argument is a data type, such as <unicode>
 #: webpay/pay/forms.py:42
 msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr ""
+msgstr "A JWT nem dekódolta JSON objektumba. {0} volt a típusa."
 
 #: webpay/pay/forms.py:52
 msgid "Payment simulations are disabled at this time."
-msgstr ""
+msgstr "A fizetés szimulációja jelenleg le van tiltva."
 
 #: webpay/pay/forms.py:58
 msgid "The requested simulation result is not supported."
-msgstr ""
+msgstr "A kért szimulációs eredmény nem támogatott."
 
 #: webpay/pay/forms.py:61
 msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr ""
+msgstr "A kért visszafizetési szimuláció hiányolja a(z) '{0}' kulcsot."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:77
 msgid "No one has been registered for JWT issuer {0}."
-msgstr ""
+msgstr "Senki sem regisztrált a(z) {0} JWT kibocsátóhoz."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:83
 msgid "This payment key, {0}, can only be used to simulate purchases."
-msgstr ""
+msgstr "A {0} fizetési kulcs csak szimulációhoz használható."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is an example of the proper key format.
 #: webpay/pay/forms.py:93
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
-msgstr ""
+msgstr "A \"{0}\" kulcsnak URL objektumnak kell lenni, pl. {1}"
 
 #: webpay/pay/models.py:28
 msgid "Active"
-msgstr ""
+msgstr "Aktív"
 
 #: webpay/pay/models.py:29
 msgid "Inactive"
-msgstr ""
+msgstr "Inaktív"
 
 #: webpay/pay/models.py:30
 msgid "Revoked"
-msgstr ""
+msgstr "Visszavonva"
 
 #: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
-msgstr ""
+msgstr "A fizetés átmenetileg szünetel."
 
 #: webpay/pay/views.py:140 webpay/pin/views.py:72
 msgid "Enter Pin"
-msgstr ""
+msgstr "Adja meg a PIN-kódot"
 
 #: webpay/pay/views.py:189
 msgid "Transaction has already ended."
-msgstr ""
+msgstr "A tranzakció már befejeződött."
 
 #: webpay/pay/templates/pay/lobby.html:10
 msgid "Sign In"
-msgstr ""
+msgstr "Bejelentkezés"
 
 #: webpay/pay/templates/pay/lobby.html:11
 msgid "Sign in to continue with the payment"
-msgstr ""
+msgstr "Jelentkezzen be a fizetés folytatásához"
 
 #: webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in"
-msgstr ""
+msgstr "Bejelentkezés"
 
 #: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
-msgstr ""
+msgstr "Fizetés szimulációja"
 
 #: webpay/pay/templates/pay/simulate.html:8
 msgid "You will not be charged."
-msgstr ""
+msgstr "Összeg nem kerül levonásra."
 
 #: webpay/pay/templates/pay/simulate.html:10
 msgid "result"
-msgstr ""
+msgstr "eredmény"
 
 #: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:17
 msgid "Continue"
-msgstr ""
+msgstr "Folytatás"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
-msgstr ""
+msgstr "Várakozás a fizetés befejezésére&hellip;"
 
 #: webpay/pin/forms.py:73
 msgid "You have already created a PIN."
-msgstr ""
+msgstr "Már létrehozott egy PIN kódot"
 
 #: webpay/pin/forms.py:93
 msgid "Wrong pin"
-msgstr ""
+msgstr "Hibás PIN"
 
 #: webpay/pin/forms.py:104 webpay/pin/forms.py:126
 msgid "Pins do not match."
-msgstr ""
+msgstr "A PIN kódok nem egyeznek."
 
 #: webpay/pin/views.py:39
 msgid "Create a Pin"
-msgstr ""
+msgstr "PIN létrehozása"
 
 #: webpay/pin/views.py:54 webpay/pin/views.py:138
 msgid "Confirm Pin"
-msgstr ""
+msgstr "PIN megerősítése"
 
 #: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:14
 msgid "Reset Pin"
-msgstr ""
+msgstr "PIN visszaállítása"
 
 #: webpay/pin/views.py:131
 msgid "Pin reset"
-msgstr ""
+msgstr "PIN visszaállítása"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
-msgstr ""
+msgstr "Elfelejtette a PIN kódot?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
-msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
+msgid ""
+"You entered the wrong pin too many times. Your account is locked. Please try "
+"your purchase again in 5 minutes."
 msgstr ""
+"Túl sokszor adott meg hibás PIN kódot. A felhasználói fiókját zároltuk. "
+"Próbálja megismételni a vásárlást 5 perc múlva."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your Pin was locked"
-msgstr ""
+msgstr "A PIN zárolva van"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:11
-msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
+msgid ""
+"Your pin was locked because you entered it incorrectly too many times. You "
+"can continue and try entering your pin again or reset your pin."
 msgstr ""
+"A PIN zárolva volt, mert túl sokszor adta meg hibásan. Megpróbálhatja újra "
+"megadni vagy megváltoztathatja."
 
 #: webpay/pin/templates/pin/reset_start.html:13
-msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
+msgid ""
+"Are you sure you want to reset your pin? You must sign in to Persona to reset "
+"your pin."
 msgstr ""
+"Valóban vissza kívánja állítani a PIN kódját? Ehhez be kell lépni a Personába."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
-msgstr ""
+msgstr "Visszaállítás"
+
