@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-06-28 09:19-0700\n"
-"PO-Revision-Date: 2013-07-05 07:48+0200\n"
+"PO-Revision-Date: 2013-07-06 14:53+0200\n"
 "Last-Translator: Kalman Kemenczy <kkemenczy@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -140,7 +140,7 @@ msgstr "A {0} fizetési kulcs csak szimulációhoz használható."
 #. argument is an example of the proper key format.
 #: webpay/pay/forms.py:93
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
-msgstr "A \"{0}\" kulcsnak URL objektumnak kell lenni, pl. {1}"
+msgstr "A(z) \"{0}\" kulcsnak URL objektumnak kell lennie, pl. {1}"
 
 #: webpay/pay/models.py:28
 msgid "Active"
@@ -253,7 +253,7 @@ msgid ""
 "Your pin was locked because you entered it incorrectly too many times. You "
 "can continue and try entering your pin again or reset your pin."
 msgstr ""
-"A PIN zárolva volt, mert túl sokszor adta meg hibásan. Megpróbálhatja újra "
+"A PIN zárolva lett, mert túl sokszor adta meg hibásan. Megpróbálhatja újra "
 "megadni vagy megváltoztathatja."
 
 #: webpay/pin/templates/pin/reset_start.html:13
@@ -266,4 +266,5 @@ msgstr ""
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
 msgstr "Visszaállítás"
+
 
