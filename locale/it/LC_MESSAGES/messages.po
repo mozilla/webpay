@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-28 09:19-0700\n"
+"POT-Creation-Date: 2013-07-07 21:04-0700\n"
 "PO-Revision-Date: 2013-06-28 22:05-0000\n"
 "Last-Translator: Sandro Della Giustina <gialloporpora@gmail.com>\n"
 "Language-Team: mozillaitalia\n"
@@ -30,8 +30,7 @@ msgstr "Bango ha riportato un errore"
 msgid "Payment cancelled."
 msgstr "Il pagamento è stato annullato."
 
-#: webpay/bango/templates/bango/success.html:10
-#: webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
 msgstr "Il pagamento è stato effettuato."
 
@@ -45,14 +44,9 @@ msgstr "Non consentito"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
-"Spiacenti, non possiedi le autorizzazioni necessarie per effettuare quanto "
-"richiesto."
+msgstr "Spiacenti, non possiedi le autorizzazioni necessarie per effettuare quanto richiesto."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8
-#: webpay/pay/templates/pay/simulate.html:18
-#: webpay/pin/templates/pin/pin_form.html:34
-#: webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Annulla"
@@ -63,8 +57,7 @@ msgstr "Pagina non trovata"
 
 #: webpay/base/templates/404.html:5
 msgid "Sorry, but we couldn't find the page you're looking for."
-msgstr ""
-"Spiacenti, ma non è stato possibile trovare la pagina che stavi cercando."
+msgstr "Spiacenti, ma non è stato possibile trovare la pagina che stavi cercando."
 
 #: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
@@ -107,8 +100,7 @@ msgstr "Pagamento effettuato"
 msgid "Payment cancelled"
 msgstr "Pagamento annullato"
 
-#: webpay/base/templates/error.html:4
-#: webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Errore"
 
@@ -120,9 +112,7 @@ msgstr "Si è verificato un errore durante la decodifica del token JWT: {0}"
 #. L10n: first argument is a data type, such as <unicode>
 #: webpay/pay/forms.py:42
 msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr ""
-"Il token JWT non può essere decodificato come oggetto JSON. Il tipo rilevato "
-"è {0}."
+msgstr "Il token JWT non può essere decodificato come oggetto JSON. Il tipo rilevato è {0}."
 
 #: webpay/pay/forms.py:52
 msgid "Payment simulations are disabled at this time."
@@ -134,8 +124,7 @@ msgstr "Il risultato della simulazione richiesto non è disponibile."
 
 #: webpay/pay/forms.py:61
 msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr ""
-"La simulazione di riaccredito richiesta non dispone della chiave '{0}'."
+msgstr "La simulazione di riaccredito richiesta non dispone della chiave '{0}'."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:77
@@ -145,9 +134,7 @@ msgstr "Nessun soggetto si è registrato come emittente JWT {0}."
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:83
 msgid "This payment key, {0}, can only be used to simulate purchases."
-msgstr ""
-"Questa chiave pagamenti, {0}, può essere utilizzata solo nelle simulazioni "
-"d'acquisto."
+msgstr "Questa chiave pagamenti, {0}, può essere utilizzata solo nelle simulazioni d'acquisto."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is an example of the proper key format.
@@ -191,8 +178,7 @@ msgstr "Accedi per effettuare il pagamento"
 msgid "Sign in"
 msgstr "Accedi"
 
-#: webpay/pay/templates/pay/simulate.html:7
-#: webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Simula pagamento"
 
@@ -204,9 +190,7 @@ msgstr "Il pagamento della simulazione non ti verrà addebitato."
 msgid "result"
 msgstr "Risultato"
 
-#: webpay/pay/templates/pay/simulate.html:20
-#: webpay/pin/templates/pin/pin_form.html:41
-#: webpay/pin/templates/pin/pin_was_locked.html:17
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Procedi"
 
@@ -234,8 +218,7 @@ msgstr "Crea un codice PIN"
 msgid "Confirm Pin"
 msgstr "Verifica codice PIN"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:116
-#: webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Reimposta codice PIN"
 
@@ -244,43 +227,30 @@ msgid "Pin reset"
 msgstr "Reimpostazione del codice PIN"
 
 #. This is the same as the standard forgot
-#. password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:26
-#: webpay/pin/templates/pin/reset_start.html:12
+#.                  password that most sites have.
+#: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
 msgstr "Hai dimenticato il codice PIN?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
-msgid ""
-"You entered the wrong pin too many times. Your account is locked. Please try "
-"your purchase again in 5 minutes."
-msgstr ""
-"Hai digitato troppe volte un codice PIN non valido. Il tuo account è stato "
-"bloccato. Riprova a effettuare l'acquisto fra 5 minuti."
+msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
+msgstr "Hai digitato troppe volte un codice PIN non valido. Il tuo account è stato bloccato. Riprova a effettuare l'acquisto fra 5 minuti."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "OK"
 
-#: webpay/pin/templates/pin/pin_was_locked.html:10
+#: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
 msgstr "Il tuo codice PIN è stato bloccato"
 
-#: webpay/pin/templates/pin/pin_was_locked.html:11
-msgid ""
-"Your pin was locked because you entered it incorrectly too many times. You "
-"can continue and try entering your pin again or reset your pin."
-msgstr ""
-"Il tuo codice PIN è stato bloccato in quanto hai effettuato troppi tentativi "
-"errati di inserimento. Puoi effettuare altri tentativi oppure reimpostarlo."
+#: webpay/pin/templates/pin/pin_was_locked.html:10
+msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
+msgstr "Il tuo codice PIN è stato bloccato in quanto hai effettuato troppi tentativi errati di inserimento. Puoi effettuare altri tentativi oppure reimpostarlo."
 
 #: webpay/pin/templates/pin/reset_start.html:13
-msgid ""
-"Are you sure you want to reset your pin? You must sign in to Persona to "
-"reset your pin."
-msgstr ""
-"Sei sicuro di voler reimpostare il tuo codice PIN? Dovrai effettuare "
-"l'accesso con Persona per completare questa operazione."
+msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
+msgstr "Sei sicuro di voler reimpostare il tuo codice PIN? Dovrai effettuare l'accesso con Persona per completare questa operazione."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"

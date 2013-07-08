@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-28 09:19-0700\n"
+"POT-Creation-Date: 2013-07-07 21:04-0700\n"
 "PO-Revision-Date: 2013-06-19 22:43+0100\n"
 "Last-Translator: Saša Teković <sasa@tekovic.com>\n"
 "Language-Team: none\n"
@@ -189,7 +189,7 @@ msgstr "Nećete biti terećeni."
 msgid "result"
 msgstr "rezultat"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:17
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Nastavi"
 
@@ -217,7 +217,7 @@ msgstr "Stvorite PIN"
 msgid "Confirm Pin"
 msgstr "Potvrdite PIN"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Resetiraj PIN"
 
@@ -239,11 +239,11 @@ msgstr "Upisali ste netočan PIN previše puta. Vaš korisnički račun je zaklj
 msgid "OK"
 msgstr "U redu"
 
-#: webpay/pin/templates/pin/pin_was_locked.html:10
+#: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
 msgstr "Vaš PIN je bio zaključan"
 
-#: webpay/pin/templates/pin/pin_was_locked.html:11
+#: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
 msgstr "Vaš PIN je bio zaključan jer ste ga netočno upisali previše puta. Možete nastaviti ponovnim upisivanjem PIN-a ili resetiranjem PIN-a."
 

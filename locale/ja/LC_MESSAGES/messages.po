@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-28 09:19-0700\n"
+"POT-Creation-Date: 2013-07-07 21:04-0700\n"
 "PO-Revision-Date: 2013-06-29 03:23+0900\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -189,7 +189,7 @@ msgstr "実際に課金されることはありません。"
 msgid "result"
 msgstr "結果"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:17
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "続ける"
 
@@ -217,7 +217,7 @@ msgstr "暗証番号を登録"
 msgid "Confirm Pin"
 msgstr "暗証番号を確認"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "暗証番号をリセット"
 
@@ -239,11 +239,11 @@ msgstr "間違った暗証番号が何度も入力されたため、あなたの
 msgid "OK"
 msgstr "OK"
 
-#: webpay/pin/templates/pin/pin_was_locked.html:10
+#: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
 msgstr "あなたの暗証番号はロックされました"
 
-#: webpay/pin/templates/pin/pin_was_locked.html:11
+#: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
 msgstr "間違った暗証番号が何度も入力されたため、あなたの暗証番号はロックされました。暗証番号をもう一度入力するか、リセットすることもできます。"
 

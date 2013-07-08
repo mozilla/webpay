@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-28 09:19-0700\n"
+"POT-Creation-Date: 2013-07-07 21:04-0700\n"
 "PO-Revision-Date: 2013-06-01 17:20+0100\n"
 "Last-Translator: Jørgen Rasmussen <joergenr@stofanet.dk>\n"
 "Language-Team: MozillaDanmark\n"
@@ -189,7 +189,7 @@ msgstr "Du vil ikke blive opkrævet."
 msgid "result"
 msgstr "resultat"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:17
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Fortsæt"
 
@@ -217,7 +217,7 @@ msgstr "Opret en Pin-kode"
 msgid "Confirm Pin"
 msgstr "Bekræft Pin-kode"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Nulstil Pin-kode"
 
@@ -239,11 +239,11 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: webpay/pin/templates/pin/pin_was_locked.html:10
+#: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
 msgstr "Din Pin-kode er blevet spærret"
 
-#: webpay/pin/templates/pin/pin_was_locked.html:11
+#: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
 msgstr "Din pin-kode blev spærret fordi du indtastede den forkert for mange gange. Du kan fortsætte og prøve at indtaste din pin-kode igen eller nulstille din pin-kode."
 

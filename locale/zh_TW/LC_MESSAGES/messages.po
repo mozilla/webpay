@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-28 09:19-0700\n"
+"POT-Creation-Date: 2013-07-07 21:04-0700\n"
 "PO-Revision-Date: 2013-05-29 20:21+0800\n"
 "Last-Translator: Peter Chen < petercpg@gmail.com>\n"
 "Language-Team: MozTW <petercpg@mail.moztw.org>\n"
@@ -190,7 +190,7 @@ msgstr "您將不會被收費。"
 msgid "result"
 msgstr "結果"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:17
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "繼續"
 
@@ -218,7 +218,7 @@ msgstr "建立 Pin 碼"
 msgid "Confirm Pin"
 msgstr "確認 Pin 碼"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:14
+#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "重設 Pin 碼"
 
@@ -240,11 +240,11 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: webpay/pin/templates/pin/pin_was_locked.html:10
+#: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
 msgstr "您的 Pin 碼已被鎖定"
 
-#: webpay/pin/templates/pin/pin_was_locked.html:11
+#: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
 msgstr "您輸錯太多次 Pin 碼，已被鎖定。您可以繼續嘗試輸入，或重設您的 Pin 碼。"
 
