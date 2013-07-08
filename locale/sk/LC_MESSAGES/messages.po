@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-07 21:04-0700\n"
-"PO-Revision-Date: 2013-06-26 18:42+0100\n"
+"PO-Revision-Date: 2013-07-08 23:42+0100\n"
 "Last-Translator: wladow <info@wladow.sk>\n"
 "Language-Team: Mozilla.sk <l10n@mozilla.sk>\n"
 "Language: sk\n"
@@ -19,7 +19,7 @@ msgstr "Nebolo možné zachytiť chybu systému Bango"
 
 #: webpay/bango/views.py:106
 msgid "Price point unavailable for this region or carrier."
-msgstr ""
+msgstr "Cenová hladina nie je pre tento región alebo operátora dostupná."
 
 #: webpay/bango/views.py:109
 msgid "Received Bango error"
@@ -29,7 +29,8 @@ msgstr "Objavila sa chyba systému Bango"
 msgid "Payment cancelled."
 msgstr "Platba zrušená"
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10
+#: webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
 msgstr "Platba je dokončená."
 
@@ -45,7 +46,10 @@ msgstr "Nie je povolené"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Ospravedlňujeme sa, ale na toto nemáte oprávnenie."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8
+#: webpay/pay/templates/pay/simulate.html:18
+#: webpay/pin/templates/pin/pin_form.html:34
+#: webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Zrušiť"
@@ -99,7 +103,8 @@ msgstr "Platba dokončená"
 msgid "Payment cancelled"
 msgstr "Platba zrušená"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:4
+#: webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Chyba"
 
@@ -177,7 +182,8 @@ msgstr "Ak chcete pokračovať v platbe, prihláste sa."
 msgid "Sign in"
 msgstr "Prihlásiť sa"
 
-#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7
+#: webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Simulovať platbu"
 
@@ -189,7 +195,9 @@ msgstr "Platba vám nebude účtovaná."
 msgid "result"
 msgstr "výlsedok"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20
+#: webpay/pin/templates/pin/pin_form.html:41
+#: webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Pokračovať"
 
@@ -217,23 +225,29 @@ msgstr "Vytvoriť PIN"
 msgid "Confirm Pin"
 msgstr "Potvrdiť PIN"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:96 webpay/pin/views.py:116
+#: webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Vynulovať PIN"
 
 #: webpay/pin/views.py:131
 msgid "Pin reset"
-msgstr ""
+msgstr "Kód PIN vynulovaný"
 
 #. This is the same as the standard forgot
-#.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
+#. password that most sites have.
+#: webpay/pin/templates/pin/pin_form.html:26
+#: webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
 msgstr "Zabudli ste svoj PIN?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
-msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr "Zadali ste príliš veľa krát nesprávny kód PIN. Váš účet je zablokovaný. Objednávku zopakujte o 5 minút."
+msgid ""
+"You entered the wrong pin too many times. Your account is locked. Please try "
+"your purchase again in 5 minutes."
+msgstr ""
+"Zadali ste príliš veľa krát nesprávny kód PIN. Váš účet je zablokovaný. "
+"Objednávku zopakujte o 5 minút."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -244,12 +258,20 @@ msgid "Your Pin was locked"
 msgstr "Váš PIN bol zablokovaný"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
-msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
-msgstr "Váš PIN bol zablokovaný, pretože ste ho nesprávne zadali príliš veľa kráť. Teraz môžete pokračovať a zadajte ho znvoa alebo si ho zmeňte."
+msgid ""
+"Your pin was locked because you entered it incorrectly too many times. You "
+"can continue and try entering your pin again or reset your pin."
+msgstr ""
+"Váš PIN bol zablokovaný, pretože ste ho nesprávne zadali príliš veľa kráť. "
+"Teraz môžete pokračovať a zadajte ho znvoa alebo si ho zmeňte."
 
 #: webpay/pin/templates/pin/reset_start.html:13
-msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr "Naozaj chcete vynulovať váš PIN? Ak to chcete urobiť, musíte sa prihlásiť k účtu Persona."
+msgid ""
+"Are you sure you want to reset your pin? You must sign in to Persona to "
+"reset your pin."
+msgstr ""
+"Naozaj chcete vynulovať váš PIN? Ak to chcete urobiť, musíte sa prihlásiť k "
+"účtu Persona."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
