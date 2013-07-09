@@ -115,6 +115,7 @@ def deploy():
     execute(install_package, rpmbuild)
 
     execute(restart_workers)
+    execute(update_celery)
     rpmbuild.clean()
 
 
