@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-07 21:04-0700\n"
+"POT-Creation-Date: 2013-07-10 12:19-0700\n"
 "PO-Revision-Date: 2013-06-19 22:43+0100\n"
 "Last-Translator: Saša Teković <sasa@tekovic.com>\n"
 "Language-Team: none\n"
@@ -157,7 +157,7 @@ msgstr ""
 msgid "Payments are temporarily disabled."
 msgstr ""
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:72
+#: webpay/pay/views.py:140 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr ""
 
@@ -209,19 +209,19 @@ msgstr "Netočan PIN"
 msgid "Pins do not match."
 msgstr "PIN-ovi se ne podudaraju."
 
-#: webpay/pin/views.py:39
+#: webpay/pin/views.py:38
 msgid "Create a Pin"
 msgstr "Stvorite PIN"
 
-#: webpay/pin/views.py:54 webpay/pin/views.py:138
+#: webpay/pin/views.py:53 webpay/pin/views.py:135
 msgid "Confirm Pin"
 msgstr "Potvrdite PIN"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Resetiraj PIN"
 
-#: webpay/pin/views.py:131
+#: webpay/pin/views.py:128
 msgid "Pin reset"
 msgstr ""
 

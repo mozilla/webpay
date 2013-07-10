@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-07 21:04-0700\n"
+"POT-Creation-Date: 2013-07-10 12:19-0700\n"
 "PO-Revision-Date: 2013-07-09 12:07+0400\n"
 "Last-Translator: Alexander Slovesnik <unghost@mozilla-russia.org>\n"
 "Language-Team: none\n"
@@ -29,13 +29,11 @@ msgstr "Получена ошибка Bango"
 msgid "Payment cancelled."
 msgstr "Платёж отменён."
 
-#: webpay/bango/templates/bango/success.html:10
-#: webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
 msgstr "Ваш платеж завершён."
 
-#: webpay/base/utils.py:32
-#: webpay/base/templates/500.html:5
+#: webpay/base/utils.py:32 webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
 msgstr "При обработке этого запроса произошла ошибка."
 
@@ -47,17 +45,12 @@ msgstr "Не разрешено"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Извините, вам не разрешено это делать."
 
-#: webpay/base/templates/403.html:8
-#: webpay/base/templates/error.html:8
-#: webpay/pay/templates/pay/simulate.html:18
-#: webpay/pin/templates/pin/pin_form.html:34
-#: webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Отмена"
 
-#: webpay/base/templates/404.html:2
-#: webpay/base/templates/404.html:3
+#: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
 msgid "Page not found"
 msgstr "Страница не найдена"
 
@@ -65,8 +58,7 @@ msgstr "Страница не найдена"
 msgid "Sorry, but we couldn't find the page you're looking for."
 msgstr "Извините, но мы не смогли найти страницу, которую вы ищете."
 
-#: webpay/base/templates/500.html:2
-#: webpay/base/templates/500.html:3
+#: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
 msgstr "Что-то пошло не так!"
 
@@ -107,8 +99,7 @@ msgstr "Платёж завершён"
 msgid "Payment cancelled"
 msgstr "Платёж отменён"
 
-#: webpay/base/templates/error.html:4
-#: webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Ошибка"
 
@@ -166,8 +157,7 @@ msgstr "Отозванный"
 msgid "Payments are temporarily disabled."
 msgstr "Платежи временно отключены."
 
-#: webpay/pay/views.py:140
-#: webpay/pin/views.py:72
+#: webpay/pay/views.py:140 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Введите PIN-код"
 
@@ -187,8 +177,7 @@ msgstr "Войдите, чтобы продолжить совершение п�
 msgid "Sign in"
 msgstr "Войти"
 
-#: webpay/pay/templates/pay/simulate.html:7
-#: webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Симулировать платёж"
 
@@ -200,9 +189,7 @@ msgstr "С вас не возьмут денег."
 msgid "result"
 msgstr "результат"
 
-#: webpay/pay/templates/pay/simulate.html:20
-#: webpay/pin/templates/pin/pin_form.html:41
-#: webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Продолжить"
 
@@ -218,34 +205,29 @@ msgstr "Вы уже создали PIN-код."
 msgid "Wrong pin"
 msgstr "Неверный PIN-код"
 
-#: webpay/pin/forms.py:104
-#: webpay/pin/forms.py:126
+#: webpay/pin/forms.py:104 webpay/pin/forms.py:126
 msgid "Pins do not match."
 msgstr "PIN-коды не совпадают."
 
-#: webpay/pin/views.py:39
+#: webpay/pin/views.py:38
 msgid "Create a Pin"
 msgstr "Создать PIN-код"
 
-#: webpay/pin/views.py:54
-#: webpay/pin/views.py:138
+#: webpay/pin/views.py:53 webpay/pin/views.py:135
 msgid "Confirm Pin"
 msgstr "Подтвердить PIN-код"
 
-#: webpay/pin/views.py:96
-#: webpay/pin/views.py:116
-#: webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Сбросить PIN-код"
 
-#: webpay/pin/views.py:131
+#: webpay/pin/views.py:128
 msgid "Pin reset"
 msgstr "Сброс PIN-кода"
 
 #. This is the same as the standard forgot
-#. password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:26
-#: webpay/pin/templates/pin/reset_start.html:12
+#.                  password that most sites have.
+#: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
 msgstr "Забыли свой PIN-код?"
 
@@ -272,4 +254,3 @@ msgstr "Вы уверены, что хотите сбросить свой PIN-�
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
 msgstr "Сбросить"
-

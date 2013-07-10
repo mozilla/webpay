@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-07 21:04-0700\n"
+"POT-Creation-Date: 2013-07-10 12:19-0700\n"
 "PO-Revision-Date: 2013-06-30 10:51+0200\n"
 "Last-Translator: Alexandre Lissy <lissyx@mozfr.org>\n"
 "Language-Team: français <>\n"
@@ -160,7 +160,7 @@ msgstr "Révoqué"
 msgid "Payments are temporarily disabled."
 msgstr "Les paiements sont temporairement désactivés."
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:72
+#: webpay/pay/views.py:140 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Entrez le code PIN"
 
@@ -212,19 +212,19 @@ msgstr "Mauvais code PIN"
 msgid "Pins do not match."
 msgstr "Les codes PIN ne correspondent pas."
 
-#: webpay/pin/views.py:39
+#: webpay/pin/views.py:38
 msgid "Create a Pin"
 msgstr "Créer un code PIN"
 
-#: webpay/pin/views.py:54 webpay/pin/views.py:138
+#: webpay/pin/views.py:53 webpay/pin/views.py:135
 msgid "Confirm Pin"
 msgstr "Confirmer le code PIN"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Remise à zéro du code PIN"
 
-#: webpay/pin/views.py:131
+#: webpay/pin/views.py:128
 msgid "Pin reset"
 msgstr "Remise à zéro du code PIN"
 

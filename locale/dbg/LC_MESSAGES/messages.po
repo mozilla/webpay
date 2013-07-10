@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-07 21:04-0700\n"
+"POT-Creation-Date: 2013-07-10 12:19-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -166,7 +166,7 @@ msgid "Payments are temporarily disabled."
 msgstr "Ƥȧẏḿḗƞŧş ȧřḗ ŧḗḿƥǿřȧřīŀẏ ḓīşȧƀŀḗḓ."
 
 #: webpay/pay/views.py:140
-#: webpay/pin/views.py:72
+#: webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Ḗƞŧḗř Ƥīƞ"
 
@@ -222,22 +222,22 @@ msgstr "Ẇřǿƞɠ ƥīƞ"
 msgid "Pins do not match."
 msgstr "Ƥīƞş ḓǿ ƞǿŧ ḿȧŧƈħ."
 
-#: webpay/pin/views.py:39
+#: webpay/pin/views.py:38
 msgid "Create a Pin"
 msgstr "Ƈřḗȧŧḗ ȧ Ƥīƞ"
 
-#: webpay/pin/views.py:54
-#: webpay/pin/views.py:138
+#: webpay/pin/views.py:53
+#: webpay/pin/views.py:135
 msgid "Confirm Pin"
 msgstr "Ƈǿƞƒīřḿ Ƥīƞ"
 
-#: webpay/pin/views.py:96
-#: webpay/pin/views.py:116
+#: webpay/pin/views.py:95
+#: webpay/pin/views.py:114
 #: webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Řḗşḗŧ Ƥīƞ"
 
-#: webpay/pin/views.py:131
+#: webpay/pin/views.py:128
 msgid "Pin reset"
 msgstr "Ƥīƞ řḗşḗŧ"
 

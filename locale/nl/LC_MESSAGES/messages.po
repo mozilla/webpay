@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-07 21:04-0700\n"
+"POT-Creation-Date: 2013-07-10 12:19-0700\n"
 "PO-Revision-Date: 2013-01-08 08:50-0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -157,7 +157,7 @@ msgstr "Herroepen"
 msgid "Payments are temporarily disabled."
 msgstr "Betalingen zijn tijdelijk uitgeschakeld."
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:72
+#: webpay/pay/views.py:140 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Voer PIN-code in"
 
@@ -209,19 +209,19 @@ msgstr "Foutieve PIN-code"
 msgid "Pins do not match."
 msgstr "PIN-codes komen niet overeen."
 
-#: webpay/pin/views.py:39
+#: webpay/pin/views.py:38
 msgid "Create a Pin"
 msgstr "PIN-code aanmaken"
 
-#: webpay/pin/views.py:54 webpay/pin/views.py:138
+#: webpay/pin/views.py:53 webpay/pin/views.py:135
 msgid "Confirm Pin"
 msgstr "PIN-code bevestigen"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "PIN-code resetten"
 
-#: webpay/pin/views.py:131
+#: webpay/pin/views.py:128
 msgid "Pin reset"
 msgstr "Reset PIN-code"
 

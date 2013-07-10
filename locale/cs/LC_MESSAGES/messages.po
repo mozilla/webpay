@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Czech (cs)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-07 21:04-0700\n"
+"POT-Creation-Date: 2013-07-10 12:19-0700\n"
 "PO-Revision-Date: 2013-07-01 10:10+0100\n"
 "Last-Translator: Pavel Cvrček <pcvrcek@mozilla.cz>\n"
 "Language-Team: Czech Mozilla Team <info@mozilla.cz>\n"
@@ -157,7 +157,7 @@ msgstr "Odvolán"
 msgid "Payments are temporarily disabled."
 msgstr "Platby jsou dočasně zakázány"
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:72
+#: webpay/pay/views.py:140 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Vložte PIN"
 
@@ -209,19 +209,19 @@ msgstr "Špatný pin"
 msgid "Pins do not match."
 msgstr "Piny si neodpovídají."
 
-#: webpay/pin/views.py:39
+#: webpay/pin/views.py:38
 msgid "Create a Pin"
 msgstr "Vytvoření PINu"
 
-#: webpay/pin/views.py:54 webpay/pin/views.py:138
+#: webpay/pin/views.py:53 webpay/pin/views.py:135
 msgid "Confirm Pin"
 msgstr "Potvrzení PINu"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Obnova PINu"
 
-#: webpay/pin/views.py:131
+#: webpay/pin/views.py:128
 msgid "Pin reset"
 msgstr "Obnova kódu PIN"
 

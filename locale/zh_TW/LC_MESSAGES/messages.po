@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-07 21:04-0700\n"
+"POT-Creation-Date: 2013-07-10 12:19-0700\n"
 "PO-Revision-Date: 2013-05-29 20:21+0800\n"
 "Last-Translator: Peter Chen < petercpg@gmail.com>\n"
 "Language-Team: MozTW <petercpg@mail.moztw.org>\n"
@@ -158,7 +158,7 @@ msgstr "已註銷"
 msgid "Payments are temporarily disabled."
 msgstr "目前暫時停用付款功能。"
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:72
+#: webpay/pay/views.py:140 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "輸入 Pin 碼"
 
@@ -210,19 +210,19 @@ msgstr "Pin 碼錯誤"
 msgid "Pins do not match."
 msgstr "輸入的 Pin 碼不同。"
 
-#: webpay/pin/views.py:39
+#: webpay/pin/views.py:38
 msgid "Create a Pin"
 msgstr "建立 Pin 碼"
 
-#: webpay/pin/views.py:54 webpay/pin/views.py:138
+#: webpay/pin/views.py:53 webpay/pin/views.py:135
 msgid "Confirm Pin"
 msgstr "確認 Pin 碼"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:116 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "重設 Pin 碼"
 
-#: webpay/pin/views.py:131
+#: webpay/pin/views.py:128
 msgid "Pin reset"
 msgstr ""
 
