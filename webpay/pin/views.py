@@ -9,8 +9,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 from tower import ugettext as _
 
 from lib.solitude.api import client
-from webpay.auth.decorators import (enforce_sequence, require_reverification,
-                                    user_verified)
+from webpay.auth.decorators import enforce_sequence, user_verified
 from webpay.auth.utils import (get_user, set_user_has_confirmed_pin,
                                set_user_has_pin)
 from webpay.base.logger import getLogger
@@ -98,7 +97,6 @@ def reset_start(request):
                    'form': form})
 
 
-@require_reverification
 @enforce_sequence
 @sensitive_post_parameters('pin')
 def reset_new_pin(request):
@@ -117,7 +115,6 @@ def reset_new_pin(request):
                   'action': reverse('pin.reset_new_pin')})
 
 
-@require_reverification
 @enforce_sequence
 @sensitive_post_parameters('pin')
 def reset_confirm(request):

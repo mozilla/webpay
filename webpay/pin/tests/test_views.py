@@ -133,7 +133,7 @@ class VerifyPinViewTest(PinViewTestCase):
         self.request.session.save()
         res = self.client.post(self.url)
         eq_(res.status_code, 302)
-        assert res.get('Location', '').endswith(reverse('pin.reset_new_pin'))
+        assert res.get('Location', '').endswith(reverse('pin.reset_start'))
 
     def test_redirects_to_locked_view(self):
         self.request.session['uuid_pin_is_locked'] = True
@@ -290,6 +290,7 @@ class ResetNewPinViewTest(ResetPinTest):
     @patch('lib.solitude.api.client.set_new_pin', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
     def test_attempt_before_reverify(self, set_new_pin):
+        self.request.session['uuid_needs_pin_reset'] = True
         self.request.session['was_reverified'] = False
         self.request.session.save()
         res = self.client.post(self.url, data={'pin': '1234'})
@@ -367,6 +368,7 @@ class ResetConfirmPinViewTest(ResetPinTest):
 
     @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
     def test_attempt_before_reverify(self):
+        self.request.session['uuid_needs_pin_reset'] = True
         self.request.session['was_reverified'] = False
         self.request.session.save()
         res = self.client.post(self.url, data={'pin': '1234'})

@@ -63,6 +63,11 @@ def get_reset_step(request, step):
     except ValueError:
         step_index = -1
 
+    # If they have not reverified, send them to start to reverify.
+    if not request.session.get('was_reverified'):
+        log_redirect(request, step, 'reset_start')
+        return http.HttpResponseRedirect(reverse('pin.reset_start'))
+
     # If they have a new pin already, make sure they are headed to confirm or
     # cancel.
     if request.session.get('uuid_has_new_pin'):
@@ -133,20 +138,3 @@ def get_locked_step(request, step):
             return http.HttpResponseRedirect(reverse('pin.was_locked'))
         return None
     return False
-
-
-def require_reverification(f):
-    """
-    Ensures user reverifed their username/password before accessing a view.
-
-    See bug 836060 for details on the attacks that this mitigates.
-    """
-    @functools.wraps(f)
-    def wrapper(request, *args, **kw):
-        if not request.session.get('was_reverified'):
-            log.info('Reverification check failed; uuid=%r; was_reverified=%r'
-                     % (request.session.get('uuid'),
-                        request.session.get('was_reverified')))
-            return http.HttpResponseRedirect(reverse('pin.reset_start'))
-        return f(request, *args, **kw)
-    return wrapper
