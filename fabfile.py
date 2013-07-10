@@ -1,5 +1,4 @@
 import os
-from os.path import join as pjoin
 from fabric.api import (env, execute, lcd, local, parallel,
                         run, roles, task)
 
@@ -11,11 +10,9 @@ import deploysettings as settings
 
 
 env.key_filename = settings.SSH_KEY
-fabdeploytools.envs.loadenv(os.path.join('/etc/deploytools/envs',
-                                         settings.CLUSTER))
+fabdeploytools.envs.loadenv(settings.CLUSTER)
 
-ROOT = os.path.abspath(pjoin(os.path.dirname(__file__), '..'))
-WEBPAY = os.path.join(ROOT, 'webpay')
+ROOT, WEBPAY = helpers.get_app_dirs(__file__)
 
 VIRTUALENV = os.path.join(ROOT, 'venv')
 PYTHON = os.path.join(VIRTUALENV, 'bin', 'python')
@@ -70,13 +67,6 @@ def update_info(ref='origin/master'):
 
 
 @task
-@roles('web', 'celery')
-@parallel
-def install_package(rpmbuild):
-    rpmbuild.install_package()
-
-
-@task
 @roles('web')
 @parallel
 def restart_workers():
@@ -102,21 +92,16 @@ def update_celery():
 
 @task
 def deploy():
-    with lcd(WEBPAY):
-        ref = local('git rev-parse HEAD', capture=True)
-
-    rpmbuild = RPMBuild(name='webpay',
-                        env=settings.ENV,
-                        ref=ref,
-                        cluster=settings.CLUSTER,
-                        domain=settings.DOMAIN)
-
-    rpmbuild.build_rpm(ROOT, ['webpay', 'venv'])
-    execute(install_package, rpmbuild)
+    helpers.deploy(name='webpay',
+                   env=settings.ENV,
+                   cluster=settings.CLUSTER,
+                   domain=settings.DOMAIN,
+                   root=ROOT,
+                   deploy_roles=['web', 'celery'],
+                   package_dirs=['webpay', 'venv'])
 
     execute(restart_workers)
     execute(update_celery)
-    rpmbuild.clean()
 
 
 @task
