@@ -129,11 +129,12 @@ class VerifyPinViewTest(PinViewTestCase):
         assert res.get('Location', '').endswith(reverse('pin.confirm'))
 
     def test_redirects_to_reset_flow(self):
+        self.request.session['was_reverified'] = True
         self.request.session['uuid_needs_pin_reset'] = True
         self.request.session.save()
         res = self.client.post(self.url)
         eq_(res.status_code, 302)
-        assert res.get('Location', '').endswith(reverse('pin.reset_start'))
+        assert res.get('Location', '').endswith(reverse('pin.reset_new_pin'))
 
     def test_redirects_to_locked_view(self):
         self.request.session['uuid_pin_is_locked'] = True

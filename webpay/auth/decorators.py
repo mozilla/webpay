@@ -63,7 +63,7 @@ def get_reset_step(request, step):
     except ValueError:
         step_index = -1
 
-    # If they have not reverified, send them to start to reverify.
+    # If they have not reverified, send them to start to reverification.
     if not request.session.get('was_reverified'):
         log_redirect(request, step, 'reset_start')
         return http.HttpResponseRedirect(reverse('pin.reset_start'))
