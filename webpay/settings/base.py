@@ -84,6 +84,53 @@ LOCALE_PATHS = (
     os.path.join(ROOT, PROJECT_MODULE, 'locale'),
 )
 
+# In production, all locales must be whitelisted for use, regardless of the
+# existence of po files.
+PROD_LANGUAGES = (
+    'af',
+    'bg',
+    'ca',
+    'cs',
+    'da',
+    'de',
+    'el',
+    'en-US',
+    'es',
+    'eu',
+    'fi',
+    'fr',
+    'fy-NL',
+    'ga-IE',
+    'hr',
+    'hu',
+    'id',
+    'it',
+    'ja',
+    'ko',
+    'mk',
+    'my',
+    'nl',
+    'pl',
+    'pt-BR',
+    'pt-PT',
+    'ro',
+    'ru',
+    'sk',
+    'sl',
+    'sq',
+    'sr',
+    'sr-Latn',
+    'srp',
+    'sv-SE',
+    'te',
+    'th',
+    'ur',
+    'vi',
+    'zh-CN',
+    'zh-TW',
+)
+
+
 # Because Jinja2 is the default template loader, add any non-Jinja templated
 # apps here:
 JINGO_EXCLUDE_APPS = [
