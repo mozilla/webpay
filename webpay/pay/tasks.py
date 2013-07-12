@@ -164,6 +164,20 @@ def start_pay(transaction_uuid, notes, user_uuid, **kw):
 
 
 @task(**notify_kw)
+def fake_payment_notify(transaction_uuid, pay_request, issuer_key, **kw):
+    if not settings.FAKE_PAYMENTS:
+        raise ValueError(
+            'Cannot call this task when fake payments are disabled')
+    log.info('Sending fake payment notice for {0}'
+             .format(transaction_uuid))
+    trans = {'uuid': transaction_uuid,
+             'type': constants.TYPE_PAYMENT,
+             'notes': {'pay_request': pay_request,
+                       'issuer_key': issuer_key}}
+    _notify(fake_payment_notify, trans)
+
+
+@task(**notify_kw)
 @use_master
 def payment_notify(transaction_uuid, **kw):
     """
