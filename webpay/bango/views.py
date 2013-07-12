@@ -1,3 +1,6 @@
+import uuid
+
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -69,6 +72,16 @@ def success(request):
     c2cf7b937720c6e41f8b6401696cf7aef56975ebe54f8cee51eff4eb317841af
     &Currency=USD&Network=USA_TMOBILE&Price=0.99&P=
     """
+    if settings.FAKE_PAYMENTS:
+        trans = 'fakepay:{0}'.format(uuid.uuid4())
+        log.info('Faking a successful payment with transaction {0}'
+                 .format(trans))
+        tasks.fake_payment_notify.delay(
+            trans,
+            request.session['notes']['pay_request'],
+            request.session['notes']['issuer_key'])
+        return render(request, 'bango/success.html')
+
     log.info('Bango success: %s' % request.GET)
 
     # We should only have OK's coming from Bango, presumably.

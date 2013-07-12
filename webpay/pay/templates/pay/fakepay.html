@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div>
-    Charge this payment to your bill (not really)
-  </div>
-  <p>
-    <a href="{{ url('bango.success') }}">Complete the payment</a>
+  <h2 class="centered">Fake a payment</h2>
+  <p class="centered">
+    <a class="button" href="{{ url('bango.success') }}">Success</a>
   </p>
 {% endblock %}

@@ -3,6 +3,7 @@ import base64
 from django.core.urlresolvers import reverse
 
 import mock
+from mock import ANY
 from nose.tools import eq_
 from slumber.exceptions import HttpClientError
 from test_utils import TestCase
@@ -21,6 +22,8 @@ class TestBangoReturn(BasicSessionCase):
         # Start a payment.
         self.trans_uuid = 'solitude-trans-uuid'
         self.session['trans_id'] = self.trans_uuid
+        self.session['notes'] = {'pay_request': '<request>',
+                                 'issuer_key': '<issuer>'}
         self.session.save()
 
     def call(self, overrides=None, expected_status=200,
@@ -85,6 +88,13 @@ class TestBangoReturn(BasicSessionCase):
     def test_not_ok(self, payment_notify, slumber):
         self.call(overrides={'ResponseCode': 'NOT_OK'}, url='bango.success',
                   expected_status=400)
+
+    @mock.patch('webpay.bango.views.tasks.fake_payment_notify')
+    def test_fake_notice(self, fake_notify, pay_notify, slumber):
+        with self.settings(FAKE_PAYMENTS=True):
+            self.call()
+        fake_notify.delay.assert_called_with(ANY, '<request>', '<issuer>')
+        assert not pay_notify.called
 
 
 class TestNotification(TestCase):
