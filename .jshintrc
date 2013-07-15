@@ -1,0 +1,11 @@
+{
+    "globals": {
+        "_": false,
+        "$": false,
+        "document": false,
+        "DocumentTouch": false,
+        "console": false,
+        "navigator": false,
+        "window": false
+    }
+}

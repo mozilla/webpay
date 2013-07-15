@@ -1,7 +1,12 @@
-require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
+require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, auth, bango, checkLongText) {
     "use strict";
 
     var bodyData = cli.bodyData;
+    var $doc = cli.doc;
+    // Elements to be labelled if longtext is detected.
+    var $longTextElms = $('footer, body');
+    // Elements to be checked for overflowing text.
+    var $chkLongTextElms = $('.ltchk');
 
     // Currently we just default false, once loggedInUser is used properly we
     // can (and will have to) put a better value here. (bug 843192)
@@ -14,6 +19,19 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
         cli.hideProgress();
         $('#login').fadeIn();
     };
+
+    // Setup debounced resize custom event.
+    cli.win.on('resize', _.debounce(function() { $doc.trigger('saferesize');}, 200));
+
+    // Check text for overflow on resize
+    $doc.on('saferesize', function() { $chkLongTextElms.checkLongText($longTextElms, true); })
+        .on('check-long-text', function() { $chkLongTextElms.checkLongText($longTextElms, true);  });
+
+    // Run immediately.
+    $chkLongTextElms.checkLongText($longTextElms, true);
+
+    // Transition in all footers to hide longtext changes.
+    $('footer').addClass('visible');
 
     if (bodyData.flow === 'lobby') {
         var verifyUrl = bodyData.verifyUrl;
@@ -33,7 +51,7 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
                                 window.location = data.redirect_url;
                             } else {
                                 console.log('[pay] requesting focus on pin (login success)');
-                                cli.focusOnPin({ $toHide: $('#login'), $toFadeIn: $('#enter-pin') });
+                                cli.focusOnPin({ $toHide: $('#login'), $toShow: $('#enter-pin') });
                             }
                         });
                     })
@@ -58,16 +76,16 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
                 if (!calledBack && cli.bodyData.loggedInUser) {
                     console.log('[pay] Probably logged in, Persona never called back');
                     console.log('[pay] Requesting focus on pin');
-                    cli.focusOnPin({ $toHide: $('#login'), $toFadeIn: $('#enter-pin') });
+                    cli.focusOnPin({ $toHide: $('#login'), $toShow: $('#enter-pin') });
                 }
             }
         });
 
     } else {
         var $entry = $('#enter-pin');
-        if (!$entry.hasClass('hidden')) {
+        if ($entry.length && !$entry.hasClass('hidden')) {
             console.log('[pay] Requesting focus on pin');
-            cli.focusOnPin({ $toFadeIn: $entry });
+            cli.focusOnPin({ $toShow: $entry });
         }
     }
 
@@ -141,4 +159,5 @@ require(['cli', 'id', 'auth', 'pay/bango'], function(cli, id, auth, bango) {
             onLogout();
         }
     });
+
 });

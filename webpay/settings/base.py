@@ -47,6 +47,7 @@ MINIFY_BUNDLES = {
             'js/lib/require.js',
             'js/lib/underscore.js',
             'js/lib/format.js',
+            'js/lib/longtext.js',
 
             # These are modules used by others.
             # The order is important, do not alphabetize.
