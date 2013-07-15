@@ -107,5 +107,5 @@ STATSD_PORT = private.STATSD_PORT
 STATSD_PREFIX = private.STATSD_PREFIX
 UUID_HMAC_KEY = private.UUID_HMAC_KEY
 
-# Bypass Bango on Dev.
-FAKE_PAYMENTS = True
+# Bypass Bango on Dev when True.
+FAKE_PAYMENTS = False
