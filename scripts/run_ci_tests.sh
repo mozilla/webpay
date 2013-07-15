@@ -17,7 +17,7 @@ fi
 
 source $VENV/bin/activate
 
-pip install -U --exists-action=w --no-deps -q -r requirements/test.txt
+pip --log ./pip.log install -U --exists-action=w --no-deps -q -r requirements/test.txt
 
 cat > webpay/settings/local.py <<SETTINGS
 from webpay.settings.base import *
