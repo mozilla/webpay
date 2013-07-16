@@ -23,7 +23,9 @@ To develop locally you also need:
   then some things will still work.
   You can configure webpay with ``SOLITUDE_URL`` pointing at your
   localhost.
-* Access to the zamboni db. For extra points this can be a read only slave.
+* Access to the `Zamboni`_ db. For extra points this can be a read only slave.
+  You can configure zamboni with ``MARKETPLACE_URL`` pointing at your
+  localhost.
 
 Let's install webpay! Clone the source::
 
@@ -47,7 +49,7 @@ Node dependencies are included in the source tree.
 For node to find them add this to your bash profile::
 
     # Get the bin for any local NodeJS module on cwd.
-    PATH="./node_modules/.bin/:${PATH}"
+    PATH="./node_modules/.bin:${PATH}"
 
 Make sure you see a valid path when you type::
 
@@ -74,9 +76,9 @@ Now you should be ready to run the test suite::
 
 If they all pass then fire up a development server::
 
-    python manage.py runserver 0.0.0.0:8000
+    python manage.py runserver 0.0.0.0:8001
 
-Try it out at http://localhost:8000/mozpay/ .
+Try it out at http://localhost:8001/mozpay/ .
 If you see a form error about a missing JWT then
 you are successfully up and running.
 
@@ -94,6 +96,7 @@ Building the Docs
 To build these very docs that you are reading while developing locally,
 do this from your webpay root::
 
+    pip install -r requirements/docs.txt
     make -C docs/ html
 
 Then open ``docs/_build/html/index.html`` in a browser.
@@ -108,7 +111,7 @@ in your ``webpay/settings/local.py``::
 
     TEST_PIN_UI = True
 
-Then load the front page: http://localhost:8000/mozpay/
+Then load the front page: http://localhost:8001/mozpay/
 
 Using JWTs for development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,7 +125,7 @@ When you start a purchase from B2G check your B2G console. In stdout you
 should see a link that you can copy and paste into a browser to use better dev
 tools. Here is an example of what that looks like::
 
-    http://localhost:8000/mozpay/?req=eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJhdWQiOiAibG9jYWxob3N0IiwgImlzcyI6ICJtYXJrZXRwbGFjZSIsICJyZXF1ZXN0IjogeyJwcmljZSI6IFt7ImN1cnJlbmN5IjogIlVTRCIsICJhbW91bnQiOiAiMC45OSJ9XSwgIm5hbWUiOiAiTXkgYmFuZHMgbGF0ZXN0IGFsYnVtIiwgInByb2R1Y3RkYXRhIjogIm15X3Byb2R1Y3RfaWQ9MTIzNCIsICJkZXNjcmlwdGlvbiI6ICIzMjBrYnBzIE1QMyBkb3dubG9hZCwgRFJNIGZyZWUhIn0sICJleHAiOiAxMzUwOTQ3MjE3LCAiaWF0IjogMTM1MDk0MzYxNywgInR5cCI6ICJtb3ppbGxhL3BheW1lbnRzL3BheS92MSJ9.ZW-Y9-UroJk7-ZpDjebUU-uYOx4h7TfztO7JBi2d5z4
+    http://localhost:8001/mozpay/?req=eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJhdWQiOiAibG9jYWxob3N0IiwgImlzcyI6ICJtYXJrZXRwbGFjZSIsICJyZXF1ZXN0IjogeyJwcmljZSI6IFt7ImN1cnJlbmN5IjogIlVTRCIsICJhbW91bnQiOiAiMC45OSJ9XSwgIm5hbWUiOiAiTXkgYmFuZHMgbGF0ZXN0IGFsYnVtIiwgInByb2R1Y3RkYXRhIjogIm15X3Byb2R1Y3RfaWQ9MTIzNCIsICJkZXNjcmlwdGlvbiI6ICIzMjBrYnBzIE1QMyBkb3dubG9hZCwgRFJNIGZyZWUhIn0sICJleHAiOiAxMzUwOTQ3MjE3LCAiaWF0IjogMTM1MDk0MzYxNywgInR5cCI6ICJtb3ppbGxhL3BheW1lbnRzL3BheS92MSJ9.ZW-Y9-UroJk7-ZpDjebUU-uYOx4h7TfztO7JBi2d5z4
 
 .. _WebPaymentProvider: https://wiki.mozilla.org/WebAPI/WebPaymentProvider
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
@@ -133,6 +136,7 @@ tools. Here is an example of what that looks like::
 .. _less: http://lesscss.org/
 .. _npm: https://npmjs.org/
 .. _`nightly B2G desktop`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/
+.. _`stylus`: http://learnboost.github.io/stylus/
 .. _`Solitude`: https://solitude.readthedocs.org/en/latest/index.html
 .. _`Android Developer Tools`: http://developer.android.com/sdk/index.html
 .. _git: http://git-scm.com/

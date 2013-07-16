@@ -109,6 +109,7 @@ CELERY_ALWAYS_EAGER = True
 # API.)
 
 SOLITUDE_URL = 'http://localhost:9000'
+MARKETPLACE_URL = 'http://localhost:8000'
 
 # If you want to test the pay flow without making a real Bango
 # payment, set this to True.
