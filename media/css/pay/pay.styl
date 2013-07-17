@@ -62,7 +62,6 @@ a:focus {
 
 section.pay {
     margin: 0 auto;
-    max-height: 480px;
     max-width: 600px;
     min-height: 100%;
     position: relative;
@@ -282,28 +281,38 @@ a.sign-in,
 }
 
 .full-error {
-    grain();
     background-color: $grain;
     color: #fff;
+    grain();
+    position: relative;
+    width: 100%;
+    #content {
+        bottom: 0;
+        left: 0;
+        max-height: 100%; /* Causes scroll bars when content is too large */
+        overflow-y: auto;
+        padding-bottom: 0;
+        position: absolute;
+        right: 0;
+        width: 100%;
+    }
     h2 {
         border-bottom: 1px solid $border-gray;
         padding-bottom: 5px;
     }
     .msg {
-        bottom: 60px;
-        left: 20px;
-        position: absolute;
-        right: 20px;
         p {
             font-size: 24px;
             line-height: 32px;
-            margin: 20px 0 10px;
+            margin: 20px 0 0;
         }
     }
     footer {
         background: none;
         border-top: 0;
-        padding-bottom: 20px;
+        margin: 10px 0 20px;
+        padding: 0;
+        position: static;
         button,
         .button {
             width: 100%;
