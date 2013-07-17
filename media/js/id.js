@@ -23,11 +23,11 @@ define('id', ['cli'], function(cli) {
                 // When we get a falsey user, set an undefined state
                 // which will trigger onlogout(),
                 // see https://developer.mozilla.org/en-US/docs/DOM/navigator.id.watch
-                loggedInUser: user || undefined,
+                loggedInUser: user || undefined
             };
             var params = $.extend({}, defaults, arguments[0]);
 
             navigator.id.watch(params);
         }
-    }
+    };
 });
