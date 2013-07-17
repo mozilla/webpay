@@ -65,6 +65,15 @@ def configure_transaction(request):
     except ObjectDoesNotExist:
         pass
 
+    # Localize the product before sending it off to solitude/bango.
+    if hasattr(request, 'locale'):
+        req = (request.session['notes'].get('pay_request', {})
+                .get('request', {}))
+        locale = req.get('locales', {}).get(request.locale)
+        if locale:
+            req['name'] = locale['name']
+            req['description'] = locale['description']
+
     log.info('configuring payment in background for trans {0}'
              .format(request.session['trans_id']))
     start_pay.delay(request.session['trans_id'],

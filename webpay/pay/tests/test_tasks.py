@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import calendar
 import time
 import urllib2
@@ -405,10 +406,10 @@ class TestStartPay(BaseStartPay):
         prices.get_object.return_value = self.prices
         marketplace.webpay.prices.return_value = prices
         solitude.get_transaction.return_value = {
-                'status': constants.STATUS_CANCELLED,
-                'notes': self.notes,
-                'type': constants.TYPE_PAYMENT,
-                'uuid': self.transaction_uuid
+            'status': constants.STATUS_CANCELLED,
+            'notes': self.notes,
+            'type': constants.TYPE_PAYMENT,
+            'uuid': self.transaction_uuid
         }
         tasks.start_pay(self.transaction_uuid, self.notes, self.user_uuid)
 
@@ -528,17 +529,19 @@ class TestConfigureTransaction(BaseStartPay):
 
     @mock.patch('lib.solitude.api.client')
     @mock.patch('lib.marketplace.api.client.api')
-    def start(self, marketplace, solitude):
+    def start(self, marketplace, solitude, locale=None):
         prices = mock.Mock()
         prices.get_object.return_value = self.prices
         marketplace.webpay.prices.return_value = prices
         solitude.get_transaction.return_value = {
-                'status': constants.STATUS_CANCELLED,
-                'notes': self.notes,
-                'type': constants.TYPE_PAYMENT,
-                'uuid': self.transaction_uuid
+            'status': constants.STATUS_CANCELLED,
+            'notes': self.notes,
+            'type': constants.TYPE_PAYMENT,
+            'uuid': self.transaction_uuid
         }
         request = RequestFactory().get('/')
+        if locale:
+            request.locale = locale
         request.session = {}
         request.session['trans_id'] = self.transaction_uuid
         request.session['notes'] = self.notes
@@ -581,6 +584,27 @@ class TestConfigureTransaction(BaseStartPay):
                 'status': st, 'resource_pk': '1'}
             with self.assertRaises(tasks.TransactionOutOfSync):
                 self.start()
+
+    @mock.patch('webpay.pay.tasks.client')
+    @mock.patch('lib.marketplace.api.client.api')
+    @mock.patch('webpay.pay.tasks.start_pay.delay')
+    def test_use_locale_name(self, start_pay, marketplace, solitude):
+        solitude.get_transaction.return_value = {
+            'status': constants.STATUS_CANCELLED, 'resource_pk': '1'}
+        name = 'Die App Հ'
+        description = 'Die beste Beschreibung.'
+        self.notes['pay_request']['request']['locales'] = {
+            'de': {
+                'name': name,
+                'description': description
+            }
+        }
+        self.start(locale='de')
+        assert start_pay.called
+        eq_(start_pay.call_args[0][1]['pay_request']['request']['name'],
+            name)
+        eq_(start_pay.call_args[0][1]['pay_request']['request']['description'],
+            description)
 
 
 class TestGetIconURL(test_utils.TestCase):
