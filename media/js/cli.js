@@ -2,8 +2,12 @@ define('cli', [], function() {
     'use strict';
 
     var $progress = $('#progress');
+    var $doc = $(document);
+    var $win = $(window);
 
     return {
+        win: $win,
+        doc: $doc,
         hasTouch: ('ontouchstart' in window) ||
                    window.DocumentTouch &&
                    document instanceof DocumentTouch,
@@ -31,17 +35,18 @@ define('cli', [], function() {
             config = config || {};
             var $form = config.$form || $('#pin');
             var $toHide = config.$toHide || null;
-            var $toFadeIn = config.$toFadeIn || null;
+            var $toShow = config.$toShow || null;
             var $pinBox = $form.find('.pinbox');
             var $input = $form.find('input[name="pin"]');
             if ($toHide && $toHide.length) {
                 $toHide.hide();
             }
             this.hideProgress();
-            if ($toFadeIn && $toFadeIn.length) {
-                $toFadeIn.fadeIn();
+            if ($toShow && $toShow.length) {
+                $toShow.show();
+                $doc.trigger('check-long-text');
             }
-            if (!$pinBox.hasClass('error')) {
+            if ($pinBox.length && !$pinBox.hasClass('error')) {
                 console.log('[cli] Focusing pin');
                 $input.focus();
             }

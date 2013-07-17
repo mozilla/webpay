@@ -39,7 +39,7 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
         if (window.localStorage.getItem('reset-step') === 'pin') {
             /* You've already re-signed in. */
             console.log('[reset] requesting focus on pin (already re-signed in)');
-            cli.focusOnPin({ $toHide: $('#confirm-pin-reset'), $toFadeIn: $('#enter-pin') });
+            cli.focusOnPin({ $toHide: $('#confirm-pin-reset'), $toShow: $('#enter-pin') });
             window.localStorage.removeItem('reset-step');
             return;
         }
@@ -57,7 +57,7 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
                  * let's show you a pin.
                  */
                 console.log('[reset] requesting focus on pin (logged-in)');
-                cli.focusOnPin({ $toHide: $('#confirm-pin-reset'), $toFadeIn: $('#enter-pin') });
+                cli.focusOnPin({ $toHide: $('#confirm-pin-reset'), $toShow: $('#enter-pin') });
             };
         }
         watchForceAuth(on_success);

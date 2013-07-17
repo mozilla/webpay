@@ -30,15 +30,15 @@
 
       <footer>
         {% if form.reset_flow  %}
-          <a class="button sec" href="{{ url('pin.reset_cancel') }}">
+          <a class="button ltchk sec" href="{{ url('pin.reset_cancel') }}">
             {{ _('Cancel') }}
           </a>
         {% else %}
-          <a class="button cancel-button sec" href="#">
+          <a class="button cancel-button ltchk sec" href="#">
             {{ _('Cancel') }}
           </a>
         {% endif %}
-        <button disabled type="submit">{{ _('Continue') }}</button>
+        <button disabled class="button ltchk" type="submit">{{ _('Continue') }}</button>
       </footer>
     </form>
   </div>

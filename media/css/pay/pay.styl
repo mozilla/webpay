@@ -12,6 +12,7 @@ body {
     font-weight: 400;
     line-height: 22px;
     margin: 0;
+    overflow-x: hidden;
     &.error-page {
         padding: 10px;
     }
@@ -53,7 +54,6 @@ a:focus {
     top: 0;
     z-index: 20;
 }
-
 .progress .txt {
     display: block;
     margin-top: 20px;
@@ -64,9 +64,14 @@ section.pay {
     margin: 0 auto;
     max-width: 600px;
     min-height: 100%;
+    padding-bottom: 50px;
     position: relative;
     width: 100%;
     word-wrap: break-word;
+}
+
+.longtext .pay {
+    padding-bottom: 150px;
 }
 
 pre {
@@ -74,23 +79,26 @@ pre {
     word-wrap: break-word;
 }
 
-form {
-    padding-bottom: 50px;
-}
-
 footer {
     background: rgba(0, 0, 0, 0.03);
     border-top: 1px solid $light-gray;
     bottom: 0;
     left: 0;
+    opacity: 0;
     padding: 10px 20px;
     position: absolute;
+    transition(opacity 1s ease-in);
     width: 100%;
-}
-
-footer button,
-footer .button {
-    width: 47%;
+    &.longtext .button {
+        margin: 5px 0;
+        width: 100%;
+    }
+    &.visible {
+        opacity: 1;
+    }
+    .button {
+        width: 47%;
+    }
 }
 
 .lock-continue,
@@ -203,25 +211,27 @@ footer button[type=submit] {
 }
 
 /* Buttons */
-.button,
 a.button,
-button {
-    gradient-two-color(#00CAF2, #00AACC);
+.button {
     border-radius: 3px;
     border: 1px solid #00AACC;
     color: $dark-gray;
     display: inline-block;
     font: 600 14px/40px $open-stack;
+    gradient-two-color(#00CAF2, #00AACC);
     height: 40px;
+    overflow: hidden;
     padding: 0 10px;
     position: relative;
     text-align: center;
     text-decoration: none;
+    text-overflow: ellipsis;
     text-shadow: 0 1px 0 #fff;
     white-space: nowrap;
 
     &::-moz-focus-inner {
-        border: none;
+        border: 0;
+        padding: 0 10px;
     }
 
     &.sec {
@@ -249,6 +259,7 @@ button {
         background: #e7e7e7;
         border-color: #c7c7c7;
         color: #c7c7c7;
+        padding: 0 10px;
         pointer-events: none;
         text-shadow: none;
     }
