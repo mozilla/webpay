@@ -123,3 +123,32 @@ class TestVerifyForm(Base):
         assert form.is_valid()
         eq_(form.key, settings.KEY)
         eq_(form.secret, settings.SECRET)
+
+    def test_locales_and_without_defaultLocale(self):
+        payload = self.payload(extra_req={
+            'locales': {
+                'de': {
+                    'name': 'Die App',
+                    'description': 'Eine Beschreibung für die App.'
+                }
+            }
+        })
+        req = self.request(iss=self.key, app_secret=self.secret,
+                           payload=payload)
+        form = VerifyForm({'req': req})
+        assert not form.is_valid()
+
+    def test_locales_and_with_defaultLocale(self):
+        payload = self.payload(extra_req={
+            'locales': {
+                'de': {
+                    'name': 'Die App',
+                    'description': 'Eine Beschreibung für die App. Հ'
+                }
+            },
+            'defaultLocale': 'en'
+        })
+        req = self.request(iss=self.key, app_secret=self.secret,
+                           payload=payload)
+        form = VerifyForm({'req': req})
+        assert form.is_valid(), form.errors

@@ -93,4 +93,11 @@ class VerifyForm(ParanoidForm):
                     _('The "{0}" key must be an object of '
                       'URLs such as {1}').format('icons', example))
 
+        if payload['request'].get('locales'):
+            if not payload['request'].get('defaultLocale'):
+                raise forms.ValidationError(
+                    # L10n: First and second arguements are the names of keys.
+                    _('If {0} is defined, then you must also define {1}.')
+                        .format('locales', 'defaultLocale'))
+
         return data
