@@ -26,7 +26,7 @@ def managecmd(cmd):
 @task
 def create_virtualenv():
     with lcd(WEBPAY):
-        status = local('git diff HEAD@{1} HEAD --name-only')
+        status = local('git diff HEAD@{1} HEAD --name-only', capture=True)
 
     if 'requirements/' in status:
         venv = VIRTUALENV
