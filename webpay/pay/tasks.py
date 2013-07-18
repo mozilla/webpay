@@ -66,19 +66,44 @@ def configure_transaction(request):
         pass
 
     # Localize the product before sending it off to solitude/bango.
-    if hasattr(request, 'locale'):
-        req = (request.session['notes'].get('pay_request', {})
-                .get('request', {}))
-        locale = req.get('locales', {}).get(request.locale)
-        if locale:
-            req['name'] = locale['name']
-            req['description'] = locale['description']
+    _localize_pay_request(request)
 
     log.info('configuring payment in background for trans {0}'
              .format(request.session['trans_id']))
     start_pay.delay(request.session['trans_id'],
                     request.session['notes'],
                     request.session['uuid'])
+
+
+def _localize_pay_request(request):
+    if hasattr(request, 'locale'):
+        try:
+            pay_req = request.session['notes']['pay_request']
+            req = pay_req['request']
+        except KeyError:
+            return
+
+        trans_id = request.session.get('trans_id')
+
+        locales = req.get('locales')
+        if locales:
+            fallback = request.locale.split('-')[0]
+            if request.locale in locales:
+                loc = locales[request.locale]
+            elif fallback in locales:
+                log.info('Fell back from {0} to {1} (iss: {2}, trans_id: {3})'
+                         .format(request.locale, fallback, pay_req.get('iss'),
+                                 trans_id))
+                loc = locales[fallback]
+            else:
+                log.info(('No localization found for {0} (iss: {2}, '
+                          'trans_id: {3})').format(request.locale,
+                                                   pay_req.get('iss'),
+                                                   trans_id))
+                return
+
+            req['name'] = loc.get('name', req['name'])
+            req['description'] = loc.get('description', req['description'])
 
 
 def get_secret(issuer_key):

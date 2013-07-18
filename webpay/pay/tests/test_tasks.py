@@ -393,7 +393,8 @@ class BaseStartPay(test_utils.TestCase):
                             'request': {'pricePoint': 1,
                                         'id': 'generated-product-uuid',
                                         'icons': {'64': 'http://app/i.png'},
-                                        'name': 'Virtual Sword'}}}
+                                        'name': 'Virtual Sword',
+                                        'description': 'A fancy sword'}}}
         self.prices = {'prices': [{'amount': 1, 'currency': 'EUR'}]}
 
 
@@ -605,6 +606,60 @@ class TestConfigureTransaction(BaseStartPay):
             name)
         eq_(start_pay.call_args[0][1]['pay_request']['request']['description'],
             description)
+
+class TestLocalizePayRequest(test_utils.TestCase):
+
+    def setUp(self):
+        self.request = RequestFactory().get('/')
+        self.request.session = {
+            'notes': {
+                'pay_request': {
+                    'request': {
+                        'name': 'Virtual Sword',
+                        'description': 'A fancy sword',
+                        'locales': {
+                            'en': {
+                                'name': 'English Virtual Sword',
+                                'description': 'A fancy English sword'
+                            },
+                            'en-GB': {
+                                'name': 'British Virtual Sword'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    def _get_pay_request_details(self):
+        return self.request.session['notes']['pay_request']['request']
+
+    def test_no_locale(self):
+        tasks._localize_pay_request(self.request)
+        req = self._get_pay_request_details()
+        eq_(req['name'], 'Virtual Sword')
+        eq_(req['description'], 'A fancy sword')
+
+    def test_only_lang(self):
+        self.request.locale = 'en'
+        tasks._localize_pay_request(self.request)
+        req = self._get_pay_request_details()
+        eq_(req['name'], 'English Virtual Sword')
+        eq_(req['description'], 'A fancy English sword')
+
+    def test_lang_and_region(self):
+        self.request.locale = 'en-GB'
+        tasks._localize_pay_request(self.request)
+        req = self._get_pay_request_details()
+        eq_(req['name'], 'British Virtual Sword')
+        eq_(req['description'], 'A fancy sword')
+
+    def test_lang_and_unlocalized_region(self):
+        self.request.locale = 'en-US'
+        tasks._localize_pay_request(self.request)
+        req = self._get_pay_request_details()
+        eq_(req['name'], 'English Virtual Sword')
+        eq_(req['description'], 'A fancy English sword')
 
 
 class TestGetIconURL(test_utils.TestCase):
