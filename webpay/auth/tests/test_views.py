@@ -94,7 +94,8 @@ class TestResetUser(BasicSessionCase):
         session = self.client.session
         session['logged_in_user'] = 'jimmy.blazzo@hotmail.com'
         session['uuid'] = uuid
-        session.save()
+        self.save_session(session)
+
         self.client.post(reverse('auth.reset_user'))
         eq_(self.client.session.get('logged_in_user'), None)
         eq_(self.client.session.get('uuid'), uuid)

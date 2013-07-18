@@ -88,9 +88,9 @@ class VerifyPinViewTest(PinViewTestCase):
 
     def setUp(self):
         super(VerifyPinViewTest, self).setUp()
-        self.request.session['uuid_has_pin'] = True
-        self.request.session['uuid_has_confirmed_pin'] = True
-        self.request.session.save()
+        self.session['uuid_has_pin'] = True
+        self.session['uuid_has_confirmed_pin'] = True
+        self.save_session()
 
     def test_unauth(self):
         self.unverify()
@@ -122,23 +122,23 @@ class VerifyPinViewTest(PinViewTestCase):
         eq_(verify_pin.call_args[0][0], 'a:b')
 
     def test_needs_verified_pin(self):
-        self.request.session['uuid_has_confirmed_pin'] = False
-        self.request.session.save()
+        self.session['uuid_has_confirmed_pin'] = False
+        self.save_session()
         res = self.client.post(self.url)
         eq_(res.status_code, 302)
         assert res.get('Location', '').endswith(reverse('pin.confirm'))
 
     def test_redirects_to_reset_flow(self):
-        self.request.session['was_reverified'] = True
-        self.request.session['uuid_needs_pin_reset'] = True
-        self.request.session.save()
+        self.session['was_reverified'] = True
+        self.session['uuid_needs_pin_reset'] = True
+        self.save_session()
         res = self.client.post(self.url)
         eq_(res.status_code, 302)
         assert res.get('Location', '').endswith(reverse('pin.reset_new_pin'))
 
     def test_redirects_to_locked_view(self):
-        self.request.session['uuid_pin_is_locked'] = True
-        self.request.session.save()
+        self.session['uuid_pin_is_locked'] = True
+        self.save_session()
         res = self.client.get(self.url)
         assert res['Location'].endswith(reverse('pin.is_locked'))
 
@@ -148,9 +148,9 @@ class ConfirmPinViewTest(PinViewTestCase):
 
     def setUp(self):
         super(ConfirmPinViewTest, self).setUp()
-        self.request.session['uuid_has_confirmed_pin'] = False
-        self.request.session['uuid_has_pin'] = True
-        self.request.session.save()
+        self.session['uuid_has_confirmed_pin'] = False
+        self.session['uuid_has_pin'] = True
+        self.save_session()
 
     def test_unauth(self):
         self.unverify()
@@ -177,8 +177,8 @@ class ConfirmPinViewTest(PinViewTestCase):
         eq_(confirm_pin.call_args[0][0], 'a:b')
 
     def test_needs_pin(self):
-        self.request.session['uuid_has_pin'] = False
-        self.request.session.save()
+        self.session['uuid_has_pin'] = False
+        self.save_session()
         res = self.client.post(self.url)
         eq_(res.status_code, 302)
         assert res.get('Location', '').endswith(reverse('pin.create'))
@@ -189,10 +189,10 @@ class IsLockedPinViewTest(PinViewTestCase):
 
     def setUp(self):
         super(IsLockedPinViewTest, self).setUp()
-        self.request.session['uuid_pin_is_locked'] = True
-        self.request.session['uuid_has_confirmed_pin'] = True
-        self.request.session['uuid_has_pin'] = True
-        self.request.session.save()
+        self.session['uuid_pin_is_locked'] = True
+        self.session['uuid_has_confirmed_pin'] = True
+        self.session['uuid_has_pin'] = True
+        self.save_session()
 
     def test_unauth(self):
         self.unverify()
@@ -203,8 +203,8 @@ class IsLockedPinViewTest(PinViewTestCase):
         eq_(res.status_code, 200)
 
     def test_is_not_locked(self):
-        self.request.session['uuid_pin_is_locked'] = False
-        self.request.session.save()
+        self.session['uuid_pin_is_locked'] = False
+        self.save_session()
         res = self.client.get(self.url)
         assert res['Location'].endswith(reverse('pin.verify'))
 
@@ -214,10 +214,10 @@ class WasLockedPinViewTest(PinViewTestCase):
 
     def setUp(self):
         super(WasLockedPinViewTest, self).setUp()
-        self.request.session['uuid_pin_was_locked'] = True
-        self.request.session['uuid_has_confirmed_pin'] = True
-        self.request.session['uuid_has_pin'] = True
-        self.request.session.save()
+        self.session['uuid_pin_was_locked'] = True
+        self.session['uuid_has_confirmed_pin'] = True
+        self.session['uuid_has_pin'] = True
+        self.save_session()
 
     def test_unauth(self):
         self.unverify()
@@ -228,8 +228,8 @@ class WasLockedPinViewTest(PinViewTestCase):
         eq_(res.status_code, 200)
 
     def test_was_not_locked(self):
-        self.request.session['uuid_pin_was_locked'] = False
-        self.request.session.save()
+        self.session['uuid_pin_was_locked'] = False
+        self.save_session()
         res = self.client.get(self.url)
         assert res['Location'].endswith(reverse('pin.verify'))
 
@@ -239,9 +239,9 @@ class ResetStartViewTest(PinViewTestCase):
 
     def setUp(self):
         super(ResetStartViewTest, self).setUp()
-        self.request.session['uuid_has_confirmed_pin'] = True
-        self.request.session['uuid_needs_pin_reset'] = True
-        self.request.session.save()
+        self.session['uuid_has_confirmed_pin'] = True
+        self.session['uuid_needs_pin_reset'] = True
+        self.save_session()
 
     def test_unauth(self):
         self.unverify()
@@ -250,8 +250,8 @@ class ResetStartViewTest(PinViewTestCase):
     @patch('lib.solitude.api.client.set_needs_pin_reset', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
     def test_view(self, set_needs_pin_reset):
-        self.request.session['uuid_needs_pin_reset'] = False
-        self.request.session.save()
+        self.session['uuid_needs_pin_reset'] = False
+        self.save_session()
         res = self.client.get(self.url)
         form = res.context['form']
         eq_(res.status_code, 200)
@@ -259,8 +259,8 @@ class ResetStartViewTest(PinViewTestCase):
         assert set_needs_pin_reset.called
 
     def test_redirects_to_locked_view(self):
-        self.request.session['uuid_pin_is_locked'] = True
-        self.request.session.save()
+        self.session['uuid_pin_is_locked'] = True
+        self.save_session()
         res = self.client.get(self.url)
         assert res['Location'].endswith(reverse('pin.is_locked'))
 
@@ -270,8 +270,8 @@ class ResetPinTest(PinViewTestCase):
     def setUp(self):
         super(ResetPinTest, self).setUp()
         # Simulate a previous Persona user/pass reverification.
-        self.request.session['was_reverified'] = True
-        self.request.session.save()
+        self.session['was_reverified'] = True
+        self.save_session()
 
 
 class ResetNewPinViewTest(ResetPinTest):
@@ -291,9 +291,9 @@ class ResetNewPinViewTest(ResetPinTest):
     @patch('lib.solitude.api.client.set_new_pin', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
     def test_attempt_before_reverify(self, set_new_pin):
-        self.request.session['uuid_needs_pin_reset'] = True
-        self.request.session['was_reverified'] = False
-        self.request.session.save()
+        self.session['uuid_needs_pin_reset'] = True
+        self.session['was_reverified'] = False
+        self.save_session()
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not set_new_pin.called
         assert res['Location'].endswith(reverse('pin.reset_start'))
@@ -342,8 +342,8 @@ class ResetNewPinViewTest(ResetPinTest):
             [ERROR_STRINGS['PIN may only consists of numbers']])
 
     def test_redirects_to_locked_view(self):
-        self.request.session['uuid_pin_is_locked'] = True
-        self.request.session.save()
+        self.session['uuid_pin_is_locked'] = True
+        self.save_session()
         res = self.client.get(self.url)
         assert res['Location'].endswith(reverse('pin.is_locked'))
 
@@ -356,9 +356,9 @@ class ResetConfirmPinViewTest(ResetPinTest):
         eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
 
     def add_fake_trans_id_to_session(self):
-        s = self.client.session
-        s['trans_id'] = 'some:uuid'
-        s.save()
+        sess = self.client.session
+        sess['trans_id'] = 'some:uuid'
+        self.save_session(sess)
 
     @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
     def test_good_pin(self):
@@ -369,9 +369,9 @@ class ResetConfirmPinViewTest(ResetPinTest):
 
     @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
     def test_attempt_before_reverify(self):
-        self.request.session['uuid_needs_pin_reset'] = True
-        self.request.session['was_reverified'] = False
-        self.request.session.save()
+        self.session['uuid_needs_pin_reset'] = True
+        self.session['was_reverified'] = False
+        self.save_session()
         res = self.client.post(self.url, data={'pin': '1234'})
         assert res['Location'].endswith(reverse('pin.reset_start'))
 

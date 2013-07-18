@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-import json
+from collections import defaultdict
 from datetime import datetime
+import json
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -51,7 +52,7 @@ class TestVerify(Base):
         # Setting this is the minimum needed to simulate that you've already
         # started a transaction.
         self.session['notes'] = {}
-        self.session.save()
+        self.save_session()
         eq_(self.client.get(self.url).status_code, 200)
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
@@ -69,7 +70,7 @@ class TestVerify(Base):
         self.set_secret(get_active_product)
         self.session['uuid'] = 'something'
         self.session['last_pin_success'] = datetime.now()
-        self.session.save()
+        self.save_session()
         payload = self.request(iss=self.key, app_secret=self.secret)
         res = self.get(payload)
         eq_(res.status_code, 302)
@@ -88,7 +89,7 @@ class TestVerify(Base):
 
         self.session['uuid_needs_pin_reset'] = True
         self.session['uuid'] = 'some:uuid'
-        self.session.save()
+        self.save_session()
         payload = self.request(iss=self.key, app_secret=self.secret)
         res = self.get(payload)
         eq_(res.status_code, 200)
@@ -201,11 +202,12 @@ class TestVerify(Base):
     @mock.patch('webpay.pay.views.check_pin_status')
     @mock.patch('webpay.pay.views.solitude')
     def test_start_pay_when_logged_in(self, api, check_pin, client):
+        client.get_buyer.return_value = defaultdict(lambda: '<stub>')
         check_pin.return_value = None
         # This is a repeat purchase scenario. We call start_pay because login
         # will not call it for this scenario.
         self.session['uuid'] = 'some-email-token'
-        self.session.save()
+        self.save_session()
         payload = self.request(payload=self.payload())
         res = self.get(payload)
         eq_(res.status_code, 200)
@@ -327,7 +329,7 @@ class TestWaitToStart(Base):
         self.session['uuid'] = 'verified-user'
         # Start a payment.
         self.session['trans_id'] = 'some:trans'
-        self.session.save()
+        self.save_session()
 
     @mock.patch.object(settings, 'BANGO_PAY_URL', 'http://bango/pay?bcid=%s')
     def test_redirect_when_ready(self, get_transaction):
@@ -403,7 +405,8 @@ class TestSimulate(BasicSessionCase, JWTtester):
         req = self.payload()
         req['request']['simulate'] = {'result': 'postback'}
         self.session['notes']['pay_request'] = req
-        self.session.save()
+        self.save_session()
+
         # Stub out non-simulate code in case it gets called.
         self.patches = [
             mock.patch('webpay.pay.tasks.configure_transaction'),
@@ -418,12 +421,12 @@ class TestSimulate(BasicSessionCase, JWTtester):
 
     def test_not_simulating(self):
         del self.session['is_simulation']
-        self.session.save()
+        self.save_session()
         eq_(self.client.post(self.simulate_url).status_code, 403)
 
     def test_false_simulation(self):
         self.session['is_simulation'] = False
-        self.session.save()
+        self.save_session()
         eq_(self.client.post(self.simulate_url).status_code, 403)
 
     def test_simulate(self):
