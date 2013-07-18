@@ -101,6 +101,7 @@ def deploy():
                    package_dirs=['webpay', 'venv'])
 
     execute(restart_workers)
+    helpers.restart_uwsgi(getattr(settings, 'UWSGI', []))
     execute(update_celery)
 
 
