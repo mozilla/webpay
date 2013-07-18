@@ -26,6 +26,7 @@ def managecmd(cmd):
 @task
 def create_virtualenv():
     with lcd(WEBPAY):
+        # Compare the last reflog change with the latest change we introduced.
         status = local('git diff HEAD@{1} HEAD --name-only', capture=True)
 
     if 'requirements/' in status:
