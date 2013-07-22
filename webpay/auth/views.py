@@ -3,7 +3,8 @@ from django.conf import settings
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
-from django_browserid import get_audience, verify as verify_assertion
+from django_browserid import (get_audience as get_aud_from_request,
+                              verify as verify_assertion)
 from django_browserid.forms import BrowserIDForm
 from session_csrf import anonymous_csrf_exempt
 
@@ -114,3 +115,11 @@ def verify(request):
 
 def denied(request):
     return render(request, '403.html')
+
+
+def get_audience(request):
+    if settings.DEV:
+        # This is insecure but convenient.
+        return get_aud_from_request(request)
+    else:
+        return settings.SITE_URL
