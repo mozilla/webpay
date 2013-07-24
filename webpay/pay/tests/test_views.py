@@ -74,7 +74,7 @@ class TestVerify(Base):
         payload = self.request(iss=self.key, app_secret=self.secret)
         res = self.get(payload)
         eq_(res.status_code, 302)
-        assert res['Location'].endswith(get_payment_url())
+        assert res['Location'].endswith(get_payment_url(mock.Mock()))
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
@@ -441,3 +441,35 @@ class TestSimulate(BasicSessionCase, JWTtester):
         notify.delay.assert_called_with(self.issuer_key,
                                         self.session['notes']['pay_request'])
         self.assertTemplateUsed(res, 'pay/simulate_done.html')
+
+
+@mock.patch('webpay.pay.views.tasks.simulate_notify')
+class TestSuperSimulate(BasicSessionCase):
+
+    def setUp(self):
+        super(TestSuperSimulate, self).setUp()
+        self.request = {'request': {}}
+        self.session['notes'] = {'issuer_key': '<issuer_key>',
+                                 'pay_request': self.request}
+        self.save_session()
+
+    def set_perms(self, perms):
+        self.session['mkt_permissions'] = perms
+        self.save_session()
+
+    def test_do_simulate(self, fake_notify):
+        self.set_perms({'admin': False, 'reviewer': True})
+        self.client.post(reverse('pay.super_simulate'))
+        fake_notify.delay.assert_called_with('<issuer_key>', mock.ANY)
+        eq_(self.client.session['is_simulation'], True)
+        req = self.client.session['notes']['pay_request']['request']
+        eq_(req['simulate'], {'result': 'postback'})
+
+    def test_invalid_permissions(self, fake_notify):
+        self.set_perms({'admin': False, 'reviewer': False})
+        res = self.client.post(reverse('pay.super_simulate'))
+        eq_(res.status_code, 403)
+        try:
+            eq_(self.client.session['is_simulation'], False)
+        except KeyError:
+            pass

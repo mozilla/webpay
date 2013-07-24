@@ -10,7 +10,7 @@ from mozpay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
-from webpay.auth.decorators import user_verified
+from webpay.auth.decorators import user_verified, user_can_simulate
 from webpay.auth import utils as auth_utils
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
@@ -146,9 +146,26 @@ def simulate(request):
     if not request.session.get('is_simulation', False):
         log.info('Request to simulate without a valid session')
         return http.HttpResponseForbidden()
+
     tasks.simulate_notify.delay(request.session['notes']['issuer_key'],
                                 request.session['notes']['pay_request'])
     return render(request, 'pay/simulate_done.html', {})
+
+
+@user_can_simulate
+def super_simulate(request):
+    if not settings.ALLOW_ADMIN_SIMULATIONS:
+        return http.HttpResponseForbidden()
+    if request.method == 'POST':
+        request.session['is_simulation'] = True
+        req = request.session['notes']['pay_request']
+        req['request']['simulate'] = {'result': 'postback'}
+        # TODO: support simulating refunds.
+        tasks.simulate_notify.delay(request.session['notes']['issuer_key'],
+                                    request.session['notes']['pay_request'])
+        return render(request, 'pay/simulate_done.html', {})
+
+    return render(request, 'pay/super_simulate.html')
 
 
 @anonymous_csrf_exempt

@@ -1,6 +1,9 @@
 from django.conf import settings
 from django.utils.importlib import import_module
 
+import mock
+from curling.lib import HttpClientError
+
 from webpay.base.tests import BasicSessionCase
 
 
@@ -27,3 +30,16 @@ class SessionTestCase(BasicSessionCase):
         # Remove the browserid verification.
         del self.session['uuid']
         self.save_session()
+
+
+def set_up_no_mkt_account(runner):
+    """
+    Set up a non-existant marketplace account if you don't need to test that
+    logic.
+    """
+    patcher = mock.patch('lib.marketplace.api.client.api')
+    mkt = patcher.start()
+    login = mock.Mock()
+    login.post.side_effect = HttpClientError  # e.g. 401, no user.
+    mkt.account.login.return_value = login
+    runner.addCleanup(patcher.stop)

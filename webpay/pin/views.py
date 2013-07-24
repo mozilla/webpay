@@ -47,7 +47,7 @@ def confirm(request):
         form = forms.ConfirmPinForm(uuid=get_user(request), data=request.POST)
         if form.is_valid():
             set_user_has_confirmed_pin(request, True)
-            return http.HttpResponseRedirect(get_payment_url())
+            return http.HttpResponseRedirect(get_payment_url(request))
     form.no_pin = True
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Confirm Pin'),
@@ -63,7 +63,7 @@ def verify(request):
         form = forms.VerifyPinForm(uuid=get_user(request), data=request.POST)
         if form.is_valid():
             request.session['last_pin_success'] = datetime.now()
-            return http.HttpResponseRedirect(get_payment_url())
+            return http.HttpResponseRedirect(get_payment_url(request))
         elif form.pin_is_locked:
             request.session['uuid_pin_is_locked'] = True
             return http.HttpResponseRedirect(reverse('pin.is_locked'))
@@ -129,7 +129,7 @@ def reset_confirm(request):
             # Copy pin into place is handled in solitude, webpay
             # merely asked solitude to verify the new pin which
             # happens in validation of the form.
-            return http.HttpResponseRedirect(get_payment_url())
+            return http.HttpResponseRedirect(get_payment_url(request))
     form.reset_flow = True
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Confirm Pin'),

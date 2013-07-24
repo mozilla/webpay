@@ -1,13 +1,16 @@
 import json
 
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
+from django.http import HttpRequest
 
 import mock
 from nose.tools import eq_
 
 from webpay.auth import views as auth_views
+from webpay.auth.decorators import user_can_simulate
 
-from . import good_assertion, SessionTestCase
+from . import good_assertion, SessionTestCase, set_up_no_mkt_account
 
 
 class Base(SessionTestCase):
@@ -26,6 +29,10 @@ class Base(SessionTestCase):
 
 @mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
 class TestBuyerHasPin(Base):
+
+    def setUp(self):
+        super(TestBuyerHasPin, self).setUp()
+        set_up_no_mkt_account(self)
 
     def do_auth(self):
         res = self.client.post(reverse('auth.verify'), {'assertion': 'good'})
@@ -88,6 +95,10 @@ class TestBuyerHasPin(Base):
 @mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
 class TestBuyerHasResetFlag(Base):
 
+    def setUp(self):
+        super(TestBuyerHasResetFlag, self).setUp()
+        set_up_no_mkt_account(self)
+
     def do_auth(self):
         res = self.client.post(reverse('auth.verify'), {'assertion': 'good'})
         eq_(res.status_code, 200, res)
@@ -125,6 +136,10 @@ class TestBuyerHasResetFlag(Base):
 @mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
 class TestBuyerLockedPinFlags(Base):
 
+    def setUp(self):
+        super(TestBuyerLockedPinFlags, self).setUp()
+        set_up_no_mkt_account(self)
+
     def do_auth(self):
         res = self.client.post(reverse('auth.verify'), {'assertion': 'good'})
         eq_(res.status_code, 200, res)
@@ -149,3 +164,41 @@ class TestBuyerLockedPinFlags(Base):
         }
         self.do_auth()
         eq_(self.client.session.get('uuid_pin_was_locked'), True)
+
+
+class TestUserCanSimulate(Base):
+
+    def setUp(self):
+        super(TestUserCanSimulate, self).setUp()
+        self.session = {}
+
+    def execute_view(self):
+        request = HttpRequest()
+        request.session = self.session
+        # Wrap a fake view in the decorator then execute it.
+        user_can_simulate(lambda r: None)(request)
+
+    def perms(self, p):
+        self.session['mkt_permissions'] = p
+
+    def test_admin(self):
+        self.perms({'admin': True, 'reviewer': False})
+        self.execute_view()
+
+    def test_reviewer(self):
+        self.perms({'admin': False, 'reviewer': True})
+        self.execute_view()
+
+    def test_both(self):
+        self.perms({'admin': True, 'reviewer': True})
+        self.execute_view()
+
+    def test_neither(self):
+        self.perms({'admin': False, 'reviewer': False})
+        with self.assertRaises(PermissionDenied):
+            self.execute_view()
+
+    def test_no_data(self):
+        # No permissions saved to session.
+        with self.assertRaises(PermissionDenied):
+            self.execute_view()

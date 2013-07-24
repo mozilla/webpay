@@ -18,7 +18,7 @@ def check_pin_status(request):
     last_success = request.session.get('last_pin_success')
     if (last_success and ((datetime.now() - last_success).seconds <
                           settings.PIN_UNLOCK_LENGTH)):
-        return get_payment_url()
+        return get_payment_url(request)
 
     if request.session.get('uuid_has_pin'):
         if request.session.get('uuid_has_confirmed_pin'):
