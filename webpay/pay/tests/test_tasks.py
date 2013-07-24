@@ -2,6 +2,7 @@
 import calendar
 import time
 import urllib2
+from urllib import urlencode
 
 from django import test
 from django.conf import settings
@@ -507,7 +508,7 @@ class TestStartPay(BaseStartPay):
         # Simulate how the Marketplace would add
         # a custom seller_uuid to the product data in the JWT.
         app_seller_uuid = 'some-seller-uuid'
-        data = 'seller_uuid=%s' % app_seller_uuid
+        data = urlencode({'seller_uuid': app_seller_uuid})
         self.notes['issuer_key'] = 'marketplace-domain'
         self.notes['pay_request']['request']['productData'] = data
         self.start()
@@ -515,6 +516,45 @@ class TestStartPay(BaseStartPay):
         # Check that the seller_uuid was switched to that of the app seller.
         solitude.generic.seller.get_object.assert_called_with(
             uuid=app_seller_uuid)
+
+    @mock.patch.object(settings, 'KEY', 'marketplace-domain')
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_marketplace_application_size(self, solitude):
+        # Simulate how the Marketplace would add
+        # a custom seller_uuid and application_size
+        # to the product data in the JWT.
+        app_seller_uuid = 'some-seller-uuid'
+        application_size = 10
+        data = urlencode({
+            'seller_uuid': app_seller_uuid,
+            'application_size': application_size})
+        self.notes['issuer_key'] = 'marketplace-domain'
+        self.notes['pay_request']['request']['productData'] = data
+        solitude.bango.product.get_object.side_effect = ObjectDoesNotExist
+        self.start()
+
+        # Check that the application size is the one submitted in productData.
+        eq_(solitude.bango.billing.post.call_args[0][0]['application_size'],
+            application_size)
+
+
+    @mock.patch.object(settings, 'KEY', 'marketplace-domain')
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_marketplace_wrong_application_size(self, solitude):
+        app_seller_uuid = 'some-seller-uuid'
+        application_size = 'foo'
+        data = urlencode({
+            'seller_uuid': app_seller_uuid,
+            'application_size': application_size})
+        self.notes['issuer_key'] = 'marketplace-domain'
+        self.notes['pay_request']['request']['productData'] = data
+        solitude.bango.product.get_object.side_effect = ObjectDoesNotExist
+        self.start()
+
+        # Check that the application size fallbacks to None if invalid.
+        eq_(solitude.bango.billing.post.call_args[0][0]['application_size'],
+            None)
+
 
     @raises(ValueError)
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')

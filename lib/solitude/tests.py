@@ -206,7 +206,7 @@ class CreateBangoTest(TestCase):
     def test_no_seller(self, slumber):
         slumber.generic.seller.get_object.side_effect = ObjectDoesNotExist
         with self.assertRaises(SellerNotConfigured):
-            client.configure_product_for_billing(*range(0, 9))
+            client.configure_product_for_billing(*range(0, 10))
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_no_bango(self, slumber):
@@ -214,7 +214,7 @@ class CreateBangoTest(TestCase):
         slumber.bango.billing.post.return_value = {
             'billingConfigurationId': 'bar'}
         slumber.bango.product.get_object.side_effect = ObjectDoesNotExist
-        eq_(client.configure_product_for_billing(*range(0, 9)), ('bar', 'foo'))
+        eq_(client.configure_product_for_billing(*range(0, 10)), ('bar', 'foo'))
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_has_bango(self, slumber):
@@ -222,7 +222,7 @@ class CreateBangoTest(TestCase):
         slumber.bango.billing.post.return_value = {
             'billingConfigurationId': 'bar'}
         slumber.bango.product.get_object.return_value = {'resource_uri': 'foo'}
-        eq_(client.configure_product_for_billing(*range(0, 9)), ('bar', 'foo'))
+        eq_(client.configure_product_for_billing(*range(0, 10)), ('bar', 'foo'))
 
 
 @mock.patch('lib.solitude.api.client.slumber')

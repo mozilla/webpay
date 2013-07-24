@@ -123,7 +123,7 @@ def get_seller_uuid(issuer_key, product_data):
         # actual Solitude/Bango seller_uuid to associate the
         # product to the right account.
         try:
-            seller_uuid = urlparse.parse_qs(product_data)['seller_uuid'][0]
+            seller_uuid = product_data['seller_uuid'][0]
         except KeyError:
             raise ValueError('Marketplace %r did not put a seller_uuid '
                              'in productData: %r'
@@ -158,9 +158,14 @@ def start_pay(transaction_uuid, notes, user_uuid, **kw):
     ready to be fulfilled by Bango.
     """
     pay = notes['pay_request']
+    product_data = urlparse.parse_qs(pay['request'].get('productData', ''))
     try:
-        seller_uuid = get_seller_uuid(notes['issuer_key'],
-                                      pay['request'].get('productData', ''))
+        seller_uuid = get_seller_uuid(notes['issuer_key'], product_data)
+        try:
+            application_size = int(product_data['application_size'][0])
+        except (KeyError, ValueError):
+            application_size = None
+
         # Ask the marketplace for a valid price point.
         prices = mkt_client.get_price(pay['request']['pricePoint'])
         log.debug('pricePoint=%s prices=%s' % (pay['request']['pricePoint'],
@@ -182,7 +187,8 @@ def start_pay(transaction_uuid, notes, user_uuid, **kw):
             absolutify(reverse('bango.error')),
             prices['prices'],
             icon_url,
-            user_uuid
+            user_uuid,
+            application_size,
         )
         trans_pk = client.slumber.generic.transaction.get_object(
             uuid=transaction_uuid)['resource_pk']
