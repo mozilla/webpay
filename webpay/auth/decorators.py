@@ -138,3 +138,23 @@ def get_locked_step(request, step):
             return http.HttpResponseRedirect(reverse('pin.was_locked'))
         return None
     return False
+
+
+def user_can_simulate(view):
+    """
+    Allow a view to proceed only if the user has Marketplace permissions
+    to simulate payments.
+    """
+    @functools.wraps(view)
+    def wrapper(request, *args, **kw):
+        can_simulate = False
+        try:
+            can_simulate = (request.session['mkt_permissions']['admin'] or
+                            request.session['mkt_permissions']['reviewer'])
+        except (KeyError, TypeError):
+            pass
+        if not can_simulate:
+            raise PermissionDenied
+
+        return view(request, *args, **kw)
+    return wrapper

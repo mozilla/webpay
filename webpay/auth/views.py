@@ -3,11 +3,13 @@ from django.conf import settings
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
+from curling.lib import HttpClientError
 from django_browserid import (get_audience as get_aud_from_request,
                               verify as verify_assertion)
 from django_browserid.forms import BrowserIDForm
 from session_csrf import anonymous_csrf_exempt
 
+from lib.marketplace.api import client as mkt_client
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
 from webpay.pay import tasks as pay_tasks
@@ -26,10 +28,14 @@ def reset_user(request):
     navigator.id.logout() so that both Webpay and Persona think the user
     is logged out.
     """
-    if request.session.get('logged_in_user'):
+    if 'logged_in_user' in request.session:
         log.info('Resetting Persona user %s'
                  % request.session['logged_in_user'])
         del request.session['logged_in_user']
+    if 'mkt_permissions' in request.session:
+        # This isn't strictly necessary since permissions are reset on
+        # login but it's good for paranoia.
+        del request.session['mkt_permissions']
     return http.HttpResponse('OK')
 
 
@@ -47,13 +53,14 @@ def reverify(request):
             'experimental_allowUnverified': 'true'
         }
 
+        assertion = form.cleaned_data['assertion']
         log.info('Re-verifying Persona assertion. url: %s, audience: %s, '
                  'extra_params: %s' % (url, audience, extra_params))
-        result = verify_assertion(form.cleaned_data['assertion'], audience,
-                                  extra_params)
+        result = verify_assertion(assertion, audience, extra_params)
 
         log.info('Reverify got result: %s' % result)
         if result:
+            store_mkt_permissions(request, assertion, audience)
             logged_user = request.session.get('uuid')
             email = result.get('unverified-email', result.get('email'))
             reverified_user = get_uuid(email)
@@ -90,6 +97,7 @@ def verify(request):
                                                       extra_params, assertion))
         result = verify_assertion(assertion, audience, extra_params)
         if result:
+            store_mkt_permissions(request, assertion, audience)
             log.info('Persona assertion ok: %s' % result)
             email = result.get('unverified-email', result.get('email'))
             user_uuid = set_user(request, email)
@@ -123,3 +131,36 @@ def get_audience(request):
         return get_aud_from_request(request)
     else:
         return settings.SITE_URL
+
+
+def store_mkt_permissions(request, assertion, audience):
+    """
+    After logging into webpay, try logging into Marketplace with the
+    same assertion.
+
+    If successful, store the marketplace user permissions.
+    This can be used later to allow elevated privileges, such as simulated
+    purchases.
+
+    The marketplace login will only work if the Persona email in webpay
+    matches the marketplace one exactly.
+    """
+    if not settings.ALLOW_ADMIN_SIMULATIONS:
+        log.info('admin simulations are disabled')
+        return
+
+    permissions = {}
+    try:
+        result = (mkt_client.api.account.login()
+                  .post(dict(assertion=assertion, audience=audience)))
+        # e.g. {u'admin': False, u'localizer': False, u'lookup': False,
+        #       u'webpay': False, u'reviewer': False, u'developer': False}
+        permissions = result['permissions']
+        log.info('granting mkt permissions: {0} to user {1}'
+                 .format(permissions, result['settings']['email']))
+    except HttpClientError, exc:
+        # This would typically be a 401 -- a non-existent user.
+        log.info('Not storing mkt permissions: {0}: {1}'
+                 .format(exc.__class__.__name__, exc))
+
+    request.session['mkt_permissions'] = permissions

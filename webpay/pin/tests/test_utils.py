@@ -32,7 +32,8 @@ class CheckPinStatusTestCase(TestCase):
 
     def test_pin_recently_entered_successfully(self):
         self.request.session['last_pin_success'] = datetime.now()
-        eq_(utils.check_pin_status(self.request), get_payment_url())
+        eq_(utils.check_pin_status(self.request),
+            get_payment_url(mock.Mock()))
 
     def test_locked_out_but_pin_recently_entered_successfully(self):
         self.request.session['last_pin_success'] = datetime.now()

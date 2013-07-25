@@ -9,7 +9,7 @@ from nose.tools import eq_
 from webpay.auth.utils import get_uuid, client
 from webpay.base.tests import BasicSessionCase
 
-from . import good_assertion, SessionTestCase
+from . import good_assertion, SessionTestCase, set_up_no_mkt_account
 
 
 @mock.patch.object(client, 'get_buyer',
@@ -24,6 +24,7 @@ class TestAuth(SessionTestCase):
         patch = mock.patch('webpay.auth.views.pay_tasks.configure_transaction')
         self.config_trans = patch.start()
         self.patches = [patch]
+        set_up_no_mkt_account(self)
 
     def tearDown(self):
         super(TestAuth, self).tearDown()
@@ -32,7 +33,8 @@ class TestAuth(SessionTestCase):
 
     @mock.patch('webpay.auth.views.verify_assertion')
     @mock.patch('webpay.auth.views.set_user')
-    def test_good_verified(self, set_user_mock, verify_assertion):
+    @mock.patch('webpay.auth.views.store_mkt_permissions')
+    def test_good_verified(self, store_mkt, set_user_mock, verify_assertion):
         set_user_mock.return_value = '<user_hash>'
         assertion = dict(good_assertion)
         del assertion['unverified-email']
@@ -45,6 +47,8 @@ class TestAuth(SessionTestCase):
         set_user_mock.assert_called_with(mock.ANY, 'a@a.com')
         assert self.config_trans.called, (
                 'After login, transaction should be configured in background')
+        assert store_mkt.called, (
+                'After login, marketplace permissions should be stored')
 
     @mock.patch('webpay.auth.views.verify_assertion')
     @mock.patch('webpay.auth.views.set_user')
@@ -75,7 +79,8 @@ class TestAuth(SessionTestCase):
         eq_(self.client.session.get('uuid'), None)
 
     @mock.patch('webpay.auth.views.verify_assertion')
-    def test_reverify(self, verify_assertion):
+    @mock.patch('webpay.auth.views.store_mkt_permissions')
+    def test_reverify(self, store_mkt, verify_assertion):
         verify_assertion.return_value = dict(good_assertion)
         res = self.client.post(self.reverify_url, {'assertion': 'good'})
         eq_(res.status_code, 200)
@@ -85,6 +90,50 @@ class TestAuth(SessionTestCase):
         assert v['experimental_forceAuthentication'], (
             verify_assertion.call_args)
         eq_(self.client.session['was_reverified'], True)
+        assert store_mkt.called, (
+                'After reverify, marketplace permissions should be stored')
+
+
+class TestMktPermissions(SessionTestCase):
+
+    def setUp(self):
+        super(TestMktPermissions, self).setUp()
+        self.url = reverse('auth.verify')
+        self.patch('webpay.auth.views.pay_tasks.configure_transaction')
+        self.patch('webpay.auth.utils.client.get_buyer')
+        self.patch('webpay.auth.views.set_user').return_value = '<user_hash>'
+        v = self.patch('webpay.auth.views.verify_assertion')
+        v.return_value = good_assertion
+
+        mkt = self.patch('lib.marketplace.api.client.api')
+        login = mock.Mock()
+        mkt.account.login.return_value = login
+        self.account_post = login.post
+
+    def patch(self, path):
+        p = mock.patch(path)
+        self.addCleanup(p.stop)
+        return p.start()
+
+    def verify(self):
+        return self.client.post(self.url, {'assertion': 'good'})
+
+    def perms(self):
+        perms = {'admin': True, 'reviewer': False}
+        self.account_post.return_value = {'permissions': perms,
+                                          'settings': {'email': 'a'}}
+        return perms
+
+    def test_copy_permissions(self):
+        perms = self.perms()
+        self.verify()
+        eq_(self.client.session['mkt_permissions'], perms)
+
+    @mock.patch.object(settings, 'ALLOW_ADMIN_SIMULATIONS', False)
+    def test_no_copy(self):
+        self.perms()
+        self.verify()
+        assert 'mkt_permissions' not in self.client.session
 
 
 class TestResetUser(BasicSessionCase):
@@ -92,6 +141,7 @@ class TestResetUser(BasicSessionCase):
     def test_reset(self):
         uuid = 'some:uuid'
         session = self.client.session
+        session['mkt_permissions'] = {'admin': True}
         session['logged_in_user'] = 'jimmy.blazzo@hotmail.com'
         session['uuid'] = uuid
         self.save_session(session)
@@ -99,6 +149,7 @@ class TestResetUser(BasicSessionCase):
         self.client.post(reverse('auth.reset_user'))
         eq_(self.client.session.get('logged_in_user'), None)
         eq_(self.client.session.get('uuid'), uuid)
+        eq_(self.client.session.get('mkt_permissions'), None)
 
     def test_when_no_user(self):
         # This should not blow up when no user is in the session.

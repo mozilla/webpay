@@ -372,6 +372,10 @@ TEST_PIN_UI = False
 # result in an error.
 ONLY_SIMULATIONS = False
 
+# When True, allow Marketplace admins and reviewers to force a simulated payment
+# if needed.
+ALLOW_ADMIN_SIMULATIONS = False
+
 # If empty, all users will be allowed through.
 # If not empty, each string will be compiled as a regular expression
 # and the email from persona checked using match, not search. If any of the
