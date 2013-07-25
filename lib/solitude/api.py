@@ -174,7 +174,7 @@ class SolitudeAPI(SlumberWrapper):
                                       redirect_url_onsuccess,
                                       redirect_url_onerror,
                                       prices, icon_url,
-                                      user_uuid, application_size):
+                                      user_uuid):
         """
         Get the billing configuration ID for a Bango transaction.
         """
@@ -192,8 +192,8 @@ class SolitudeAPI(SlumberWrapper):
                     seller_product__seller=seller_id,
                     seller_product__external_id=product_id)['resource_uri']
         except ObjectDoesNotExist:
-            bango_product_uri = self.create_product(product_id, product_name,
-                                                    seller)
+            bango_product_uri = self.create_product(product_id,
+                    product_name, seller)
 
         log.info('transaction %s: bango product: %s'
                  % (transaction_uuid, bango_product_uri))
@@ -206,8 +206,7 @@ class SolitudeAPI(SlumberWrapper):
             'redirect_url_onsuccess': redirect_url_onsuccess,
             'redirect_url_onerror': redirect_url_onerror,
             'icon_url': icon_url,
-            'user_uuid': user_uuid,
-            'application_size': application_size
+            'user_uuid': user_uuid
         })
         bill_id = res['billingConfigurationId']
         log.info('transaction %s: billing config ID: %s; '
