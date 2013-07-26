@@ -334,7 +334,7 @@ class TestWaitToStart(Base):
     @mock.patch.object(settings, 'BANGO_PAY_URL', 'http://bango/pay?bcid=%s')
     def test_redirect_when_ready(self, get_transaction):
         get_transaction.return_value = {
-            'status': constants.STATUS_RECEIVED,
+            'status': constants.STATUS_PENDING,
             'uid_pay': 123,
         }
         res = self.client.get(self.wait)
@@ -343,14 +343,14 @@ class TestWaitToStart(Base):
     @mock.patch.object(settings, 'BANGO_PAY_URL', 'http://bango/pay?bcid=%s')
     def test_start_ready(self, get_transaction):
         get_transaction.return_value = {
-            'status': constants.STATUS_RECEIVED,
+            'status': constants.STATUS_PENDING,
             'uid_pay': 123,
         }
         res = self.client.get(self.start)
         eq_(res.status_code, 200, res.content)
         data = json.loads(res.content)
         eq_(data['url'], settings.BANGO_PAY_URL % 123)
-        eq_(data['status'], constants.STATUS_RECEIVED)
+        eq_(data['status'], constants.STATUS_PENDING)
 
     def test_start_not_there(self, get_transaction):
         get_transaction.side_effect = ObjectDoesNotExist
@@ -362,14 +362,14 @@ class TestWaitToStart(Base):
 
     def test_start_not_ready(self, get_transaction):
         get_transaction.return_value = {
-            'status': constants.STATUS_PENDING,
+            'status': constants.STATUS_RECEIVED,
             'uid_pay': 123,
         }
         res = self.client.get(self.start)
         eq_(res.status_code, 200, res.content)
         data = json.loads(res.content)
         eq_(data['url'], None)
-        eq_(data['status'], constants.STATUS_PENDING)
+        eq_(data['status'], constants.STATUS_RECEIVED)
 
     def wait_ended_transaction(self, get_transaction, status):
         with self.settings(VERBOSE_LOGGING=True):
