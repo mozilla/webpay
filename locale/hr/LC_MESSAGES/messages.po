@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-26 15:06-0700\n"
-"PO-Revision-Date: 2013-06-19 22:43+0100\n"
-"Last-Translator: Saša Teković <sasa@tekovic.com>\n"
+"PO-Revision-Date: 2013-07-12 18:02+0100\n"
+"Last-Translator: Sasa Tekovic <sasa@tekovic.com>\n"
 "Language-Team: none\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr "Nije moguće zapisati Bango grešku"
 
 #: webpay/bango/views.py:127
 msgid "Price point unavailable for this region or carrier."
-msgstr ""
+msgstr "Cijenovna granica nije dostupna za ovu regiju ili operatera."
 
 #: webpay/bango/views.py:130
 msgid "Received Bango error"
@@ -128,18 +128,18 @@ msgstr "Traženoj simulaciji refundacije nedostaje ključ '{0}'."
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:77
 msgid "No one has been registered for JWT issuer {0}."
-msgstr ""
+msgstr "Nitko se nije registrirao za JWT izdavača {0}."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:83
 msgid "This payment key, {0}, can only be used to simulate purchases."
-msgstr ""
+msgstr "Ovaj ključ plaćanja, {0}, se može koristiti samo za simuliranje kupovina."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is an example of the proper key format.
 #: webpay/pay/forms.py:93
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
-msgstr ""
+msgstr " Ključ \"{0}\" mora biti objekt URL-ova poput {1}"
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:100
@@ -148,39 +148,39 @@ msgstr ""
 
 #: webpay/pay/models.py:28
 msgid "Active"
-msgstr ""
+msgstr "Aktivno"
 
 #: webpay/pay/models.py:29
 msgid "Inactive"
-msgstr ""
+msgstr "Neaktivno"
 
 #: webpay/pay/models.py:30
 msgid "Revoked"
-msgstr ""
+msgstr "Poništeno"
 
 #: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
-msgstr ""
+msgstr "Plaćanja su trenutno onemogućena."
 
 #: webpay/pay/views.py:140 webpay/pin/views.py:71
 msgid "Enter Pin"
-msgstr ""
+msgstr "Upišite PIN"
 
 #: webpay/pay/views.py:206
 msgid "Transaction has already ended."
-msgstr ""
+msgstr "Transakcija je već završila."
 
 #: webpay/pay/templates/pay/lobby.html:10
 msgid "Sign In"
-msgstr ""
+msgstr "Prijava"
 
 #: webpay/pay/templates/pay/lobby.html:11
 msgid "Sign in to continue with the payment"
-msgstr ""
+msgstr "Prijavite se da biste nastavili s plaćanjem"
 
 #: webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in"
-msgstr ""
+msgstr "Prijava"
 
 #: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
@@ -240,7 +240,7 @@ msgstr "Resetiraj PIN"
 
 #: webpay/pin/views.py:128
 msgid "Pin reset"
-msgstr ""
+msgstr "Resetiranje PIN-a"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
