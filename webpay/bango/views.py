@@ -10,12 +10,20 @@ from slumber.exceptions import HttpClientError
 from tower import ugettext as _
 
 from lib.solitude.api import client
-from webpay.bango.auth import basic
+from webpay.bango.auth import basic, NoHeader, WrongHeader
 from webpay.base.logger import getLogger
 from webpay.base.utils import _error
 from webpay.pay import tasks
 
 log = getLogger('w.bango')
+
+
+class HttpResponseNotAuthenticated(HttpResponse):
+    status_code = 401
+
+    def __init__(self, *args):
+        super(HttpResponseNotAuthenticated, self).__init__(*args)
+        self['WWW-Authenticate'] = 'Basic realm="{0}"'.format(settings.DOMAIN)
 
 
 def _record(request):
@@ -134,8 +142,11 @@ def notification(request):
 
     try:
         username, password = basic(request)
-    except ValueError:
-        log.warning('Basic auth failed')
+    except NoHeader:
+        log.info('Header not present')
+        return HttpResponseNotAuthenticated(request)
+    except WrongHeader:
+        log.info('Header given but invalid')
         return HttpResponseForbidden(request)
 
     try:

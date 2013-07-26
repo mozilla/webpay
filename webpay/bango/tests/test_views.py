@@ -107,7 +107,12 @@ class TestNotification(TestCase):
         eq_(self.client.get(self.url).status_code, 405)
 
     def test_post_no_auth(self):
-        eq_(self.client.post(self.url, data={}).status_code, 403)
+        eq_(self.client.post(self.url, data={}).status_code, 401)
+
+    def test_post_incorrect_auth(self):
+        res = self.client.post(self.url, data={},
+                               HTTP_AUTHORIZATION='foopy')
+        eq_(res.status_code, 403)
 
     @mock.patch('webpay.bango.views.client.slumber')
     def test_post_auth(self, slumber):
