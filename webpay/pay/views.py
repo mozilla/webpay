@@ -205,7 +205,7 @@ def wait_to_start(request):
         log.exception('Attempt to restart finished transaction.')
         return _error(request, msg=_('Transaction has already ended.'))
 
-    if trans['status'] == constants.STATUS_PENDING:
+    if trans['status'] == constants.STATUS_RECEIVED:
         # Dump any messages so we don't show them later.
         clear_messages(request)
         # The transaction is ready; no need to wait for it.
@@ -225,7 +225,7 @@ def trans_start_url(request):
     except ObjectDoesNotExist:
         trans = {'status': None}
     data = {'url': None, 'status': trans['status']}
-    if trans['status'] == constants.STATUS_PENDING:
+    if trans['status'] == constants.STATUS_RECEIVED:
         data['url'] = _bango_start_url(trans['uid_pay'])
     return data
 

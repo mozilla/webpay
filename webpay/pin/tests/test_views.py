@@ -389,7 +389,7 @@ class ResetConfirmPinViewTest(ResetPinTest):
     def test_messages_cleared_in_pin_reset(self, _bango_start_url,
                                                  get_transaction):
         _bango_start_url.return_value = self.url
-        get_transaction.return_value = {'status': constants.STATUS_PENDING,
+        get_transaction.return_value = {'status': constants.STATUS_RECEIVED,
                                         'uid_pay': 1}
         self.add_fake_trans_id_to_session()
         res = self.client.post(self.url, data={'pin': '1234'}, follow=True)

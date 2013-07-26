@@ -593,10 +593,10 @@ class TestConfigureTransaction(BaseStartPay):
     @mock.patch('webpay.pay.tasks.client')
     @mock.patch('lib.marketplace.api.client.api')
     @mock.patch('webpay.pay.tasks.start_pay.delay')
-    def test_prevent_restarting_pending(self, start_pay, marketplace,
+    def test_prevent_restarting_received(self, start_pay, marketplace,
                                         solitude):
         solitude.get_transaction.return_value = {
-            'status': constants.STATUS_PENDING,
+            'status': constants.STATUS_RECEIVED,
             'resource_pk': '1'}
         self.start()
         assert not start_pay.called
@@ -619,12 +619,10 @@ class TestConfigureTransaction(BaseStartPay):
     @mock.patch('webpay.pay.tasks.start_pay.delay')
     def test_abort_non_retriable_transactions(self, start_pay, marketplace,
                                               solitude):
-        for st in (constants.STATUS_COMPLETED,
-                   constants.STATUS_RECEIVED):
-            solitude.get_transaction.return_value = {
-                'status': st, 'resource_pk': '1'}
-            with self.assertRaises(tasks.TransactionOutOfSync):
-                self.start()
+        solitude.get_transaction.return_value = {
+            'status': constants.STATUS_COMPLETED, 'resource_pk': '1'}
+        with self.assertRaises(tasks.TransactionOutOfSync):
+            self.start()
 
     @mock.patch('webpay.pay.tasks.client')
     @mock.patch('lib.marketplace.api.client.api')

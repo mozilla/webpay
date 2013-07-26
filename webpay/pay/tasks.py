@@ -46,7 +46,7 @@ def configure_transaction(request):
 
     try:
         trans = client.get_transaction(uuid=request.session['trans_id'])
-        if trans['status'] == constants.STATUS_PENDING:
+        if trans['status'] == constants.STATUS_RECEIVED:
             log.info('trans %s (status=%r) already configured: '
                      'skipping configure payments step'
                      % (request.session['trans_id'], trans['status']))
@@ -194,8 +194,7 @@ def start_pay(transaction_uuid, notes, user_uuid, **kw):
             uuid=transaction_uuid)['resource_pk']
         client.slumber.generic.transaction(trans_pk).patch({
             'notes': json.dumps(notes),
-            'uid_pay': bill_id,
-            'status': constants.STATUS_PENDING
+            'uid_pay': bill_id
         })
     except Exception, exc:
         log.exception('while configuring for payment')
