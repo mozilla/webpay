@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-26 15:06-0700\n"
-"PO-Revision-Date: 2013-06-27 09:49+0200\n"
+"PO-Revision-Date: 2013-07-25 21:01+0200\n"
 "Last-Translator: Toni Hermoso Pulido <toniher@softcatala.org>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
 "Language: ca\n"
@@ -20,7 +20,7 @@ msgstr "No s'ha pogut registrar l'error de Bango"
 
 #: webpay/bango/views.py:127
 msgid "Price point unavailable for this region or carrier."
-msgstr ""
+msgstr "Tarifa no disponible per a aquesta regió o operador."
 
 #: webpay/bango/views.py:130
 msgid "Received Bango error"
@@ -241,7 +241,7 @@ msgstr "Reinicia el PIN"
 
 #: webpay/pin/views.py:128
 msgid "Pin reset"
-msgstr ""
+msgstr "Reinici del PIN"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
