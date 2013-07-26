@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-10 12:19-0700\n"
+"POT-Creation-Date: 2013-07-26 15:06-0700\n"
 "PO-Revision-Date: 2013-07-09 12:07+0400\n"
 "Last-Translator: Alexander Slovesnik <unghost@mozilla-russia.org>\n"
 "Language-Team: none\n"
@@ -13,15 +13,15 @@ msgstr ""
 "X-Generator: Translate Toolkit 1.9.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: webpay/bango/views.py:99
+#: webpay/bango/views.py:120
 msgid "Could not record Bango error"
 msgstr "Не могу записать ошибку Bango"
 
-#: webpay/bango/views.py:106
+#: webpay/bango/views.py:127
 msgid "Price point unavailable for this region or carrier."
 msgstr "Стандартная цена недоступна для этого региона или оператора."
 
-#: webpay/bango/views.py:109
+#: webpay/bango/views.py:130
 msgid "Received Bango error"
 msgstr "Получена ошибка Bango"
 
@@ -141,6 +141,11 @@ msgstr "Этот ключ оплаты, {0}, может быть использ�
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
 msgstr "Ключ \"{0}\" должен быть объектом URL, таким как {1}"
 
+#. L10n: First and second arguements are the names of keys.
+#: webpay/pay/forms.py:100
+msgid "If {0} is defined, then you must also define {1}."
+msgstr ""
+
 #: webpay/pay/models.py:28
 msgid "Active"
 msgstr "Активный"
@@ -161,7 +166,7 @@ msgstr "Платежи временно отключены."
 msgid "Enter Pin"
 msgstr "Введите PIN-код"
 
-#: webpay/pay/views.py:189
+#: webpay/pay/views.py:206
 msgid "Transaction has already ended."
 msgstr "Транзакция уже завершена."
 
@@ -192,6 +197,18 @@ msgstr "результат"
 #: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Продолжить"
+
+#: webpay/pay/templates/pay/super_simulate.html:4
+msgid "You have super powers"
+msgstr ""
+
+#: webpay/pay/templates/pay/super_simulate.html:8
+msgid "Simulate a payment"
+msgstr ""
+
+#: webpay/pay/templates/pay/super_simulate.html:12
+msgid "Make a real payment"
+msgstr ""
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"

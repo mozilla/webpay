@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-10 12:19-0700\n"
+"POT-Creation-Date: 2013-07-26 15:06-0700\n"
 "PO-Revision-Date: 2013-05-29 20:21+0800\n"
 "Last-Translator: Peter Chen < petercpg@gmail.com>\n"
 "Language-Team: MozTW <petercpg@mail.moztw.org>\n"
@@ -14,15 +14,15 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: webpay/bango/views.py:99
+#: webpay/bango/views.py:120
 msgid "Could not record Bango error"
 msgstr "無法記錄 Bango 錯誤"
 
-#: webpay/bango/views.py:106
+#: webpay/bango/views.py:127
 msgid "Price point unavailable for this region or carrier."
 msgstr ""
 
-#: webpay/bango/views.py:109
+#: webpay/bango/views.py:130
 msgid "Received Bango error"
 msgstr "接收到 Bango 錯誤"
 
@@ -142,6 +142,11 @@ msgstr "付款金鑰 {0} 僅能用來模擬購買。"
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
 msgstr "鍵值「{0}」必須是 URL 物件，例如 {1}"
 
+#. L10n: First and second arguements are the names of keys.
+#: webpay/pay/forms.py:100
+msgid "If {0} is defined, then you must also define {1}."
+msgstr ""
+
 #: webpay/pay/models.py:28
 msgid "Active"
 msgstr "啟用"
@@ -162,7 +167,7 @@ msgstr "目前暫時停用付款功能。"
 msgid "Enter Pin"
 msgstr "輸入 Pin 碼"
 
-#: webpay/pay/views.py:189
+#: webpay/pay/views.py:206
 msgid "Transaction has already ended."
 msgstr "交易已經結束。"
 
@@ -193,6 +198,18 @@ msgstr "結果"
 #: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "繼續"
+
+#: webpay/pay/templates/pay/super_simulate.html:4
+msgid "You have super powers"
+msgstr ""
+
+#: webpay/pay/templates/pay/super_simulate.html:8
+msgid "Simulate a payment"
+msgstr ""
+
+#: webpay/pay/templates/pay/super_simulate.html:12
+msgid "Make a real payment"
+msgstr ""
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"

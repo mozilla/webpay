@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-10 12:19-0700\n"
+"POT-Creation-Date: 2013-07-26 15:06-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,15 +12,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.6.0\n"
 
-#: webpay/bango/views.py:99
+#: webpay/bango/views.py:120
 msgid "Could not record Bango error"
 msgstr "Ƈǿŭŀḓ ƞǿŧ řḗƈǿřḓ Ɓȧƞɠǿ ḗřřǿř"
 
-#: webpay/bango/views.py:106
+#: webpay/bango/views.py:127
 msgid "Price point unavailable for this region or carrier."
 msgstr "Ƥřīƈḗ ƥǿīƞŧ ŭƞȧṽȧīŀȧƀŀḗ ƒǿř ŧħīş řḗɠīǿƞ ǿř ƈȧřřīḗř."
 
-#: webpay/bango/views.py:109
+#: webpay/bango/views.py:130
 msgid "Received Bango error"
 msgstr "Řḗƈḗīṽḗḓ Ɓȧƞɠǿ ḗřřǿř"
 
@@ -149,6 +149,11 @@ msgstr "Ŧħīş ƥȧẏḿḗƞŧ ķḗẏ, {0}, ƈȧƞ ǿƞŀẏ ƀḗ ŭşḗ
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
 msgstr "Ŧħḗ \"{0}\" ķḗẏ ḿŭşŧ ƀḗ ȧƞ ǿƀĵḗƈŧ ǿƒ ŬŘĿş şŭƈħ ȧş {1}"
 
+#. L10n: First and second arguements are the names of keys.
+#: webpay/pay/forms.py:100
+msgid "If {0} is defined, then you must also define {1}."
+msgstr "Īƒ {0} īş ḓḗƒīƞḗḓ, ŧħḗƞ ẏǿŭ ḿŭşŧ ȧŀşǿ ḓḗƒīƞḗ {1}."
+
 #: webpay/pay/models.py:28
 msgid "Active"
 msgstr "Ȧƈŧīṽḗ"
@@ -170,7 +175,7 @@ msgstr "Ƥȧẏḿḗƞŧş ȧřḗ ŧḗḿƥǿřȧřīŀẏ ḓīşȧƀŀḗ�
 msgid "Enter Pin"
 msgstr "Ḗƞŧḗř Ƥīƞ"
 
-#: webpay/pay/views.py:189
+#: webpay/pay/views.py:206
 msgid "Transaction has already ended."
 msgstr "Ŧřȧƞşȧƈŧīǿƞ ħȧş ȧŀřḗȧḓẏ ḗƞḓḗḓ."
 
@@ -204,6 +209,18 @@ msgstr "řḗşŭŀŧ"
 #: webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Ƈǿƞŧīƞŭḗ"
+
+#: webpay/pay/templates/pay/super_simulate.html:4
+msgid "You have super powers"
+msgstr "Ẏǿŭ ħȧṽḗ şŭƥḗř ƥǿẇḗřş"
+
+#: webpay/pay/templates/pay/super_simulate.html:8
+msgid "Simulate a payment"
+msgstr "Şīḿŭŀȧŧḗ ȧ ƥȧẏḿḗƞŧ"
+
+#: webpay/pay/templates/pay/super_simulate.html:12
+msgid "Make a real payment"
+msgstr "Ḿȧķḗ ȧ řḗȧŀ ƥȧẏḿḗƞŧ"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"

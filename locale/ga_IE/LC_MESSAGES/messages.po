@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-10 12:19-0700\n"
+"POT-Creation-Date: 2013-07-26 15:06-0700\n"
 "PO-Revision-Date: 2013-04-05 08:50-0500\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -13,15 +13,15 @@ msgstr ""
 "X-Generator: Translate Toolkit 1.9.0\n"
 "Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : (n>2 && n<7) ? 2 :(n>6 && n<11) ? 3 : 4;\n"
 
-#: webpay/bango/views.py:99
+#: webpay/bango/views.py:120
 msgid "Could not record Bango error"
 msgstr "Níorbh fhéidir earráid Bango a thaifeadadh"
 
-#: webpay/bango/views.py:106
+#: webpay/bango/views.py:127
 msgid "Price point unavailable for this region or carrier."
 msgstr ""
 
-#: webpay/bango/views.py:109
+#: webpay/bango/views.py:130
 msgid "Received Bango error"
 msgstr "Fuarthas earráid Bango"
 
@@ -141,6 +141,11 @@ msgstr "Ní féidir an eochair íocaíochta seo, {0}, a úsáid ach chun íoca�
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
 msgstr "Ní mór don eochair \"{0}\" a bheith ina réad URL, mar shampla {1}"
 
+#. L10n: First and second arguements are the names of keys.
+#: webpay/pay/forms.py:100
+msgid "If {0} is defined, then you must also define {1}."
+msgstr ""
+
 #: webpay/pay/models.py:28
 msgid "Active"
 msgstr "Gníomhach"
@@ -161,7 +166,7 @@ msgstr "Tá íocaíochtaí díchumasaithe go sealadach."
 msgid "Enter Pin"
 msgstr "Cuir UAP isteach"
 
-#: webpay/pay/views.py:189
+#: webpay/pay/views.py:206
 msgid "Transaction has already ended."
 msgstr "Tá an beart críochnaithe cheana."
 
@@ -192,6 +197,18 @@ msgstr "toradh"
 #: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Lean ar aghaidh"
+
+#: webpay/pay/templates/pay/super_simulate.html:4
+msgid "You have super powers"
+msgstr ""
+
+#: webpay/pay/templates/pay/super_simulate.html:8
+msgid "Simulate a payment"
+msgstr ""
+
+#: webpay/pay/templates/pay/super_simulate.html:12
+msgid "Make a real payment"
+msgstr ""
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
