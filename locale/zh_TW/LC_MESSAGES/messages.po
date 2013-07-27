@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-26 15:06-0700\n"
-"PO-Revision-Date: 2013-05-29 20:21+0800\n"
+"PO-Revision-Date: 2013-07-27 21:21+0900\n"
 "Last-Translator: Peter Chen < petercpg@gmail.com>\n"
 "Language-Team: MozTW <petercpg@mail.moztw.org>\n"
 "Language: zh_TW\n"
@@ -20,7 +20,7 @@ msgstr "無法記錄 Bango 錯誤"
 
 #: webpay/bango/views.py:127
 msgid "Price point unavailable for this region or carrier."
-msgstr ""
+msgstr "此地區或業者無法使用此價格。"
 
 #: webpay/bango/views.py:130
 msgid "Received Bango error"
@@ -40,11 +40,11 @@ msgstr "處理該請求時發生錯誤。"
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "不允許"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "很抱歉，您不被允許這麼做。"
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
@@ -145,7 +145,7 @@ msgstr "鍵值「{0}」必須是 URL 物件，例如 {1}"
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:100
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
+msgstr "若您定義了 {0]，那麼也必須定義 {1}。"
 
 #: webpay/pay/models.py:28
 msgid "Active"
@@ -201,15 +201,15 @@ msgstr "繼續"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "您有超級權限"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr ""
+msgstr "模擬付款"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr ""
+msgstr "進行真實付款"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
@@ -241,21 +241,20 @@ msgstr "重設 Pin 碼"
 
 #: webpay/pin/views.py:128
 msgid "Pin reset"
-msgstr ""
+msgstr "重設 Pin 碼"
 
-#. This is the same as the standard forgot
-#.                  password that most sites have.
+#. This is the same as the standard forgot password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
 msgstr "忘記您的 Pin 碼？"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr ""
+msgstr "您輸入了錯誤的 Pin 碼太多次，帳號已被鎖定。請等五分鐘後再嘗試購買。"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "確定"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
