@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: AMO Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-26 15:06-0700\n"
-"PO-Revision-Date: 2013-06-28 23:15+0100\n"
-"Last-Translator: Michael Köhler <michael.koehler1@gmx.de>\n"
+"PO-Revision-Date: 2013-07-27 09:58+0100\n"
+"Last-Translator: Michael Köhler <coce@nurfuerspam.de>\n"
 "Language-Team: German (de) <coce@nufuerspam.de>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -31,11 +31,13 @@ msgstr "Bango-Fehler empfangen"
 msgid "Payment cancelled."
 msgstr "Zahlung abgebrochen."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10
+#: webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
 msgstr "Ihre Zahlung ist vollständig"
 
-#: webpay/base/utils.py:32 webpay/base/templates/500.html:5
+#: webpay/base/utils.py:32
+#: webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
 msgstr "Bei der Verarbeitung dieser Anfrage ist ein Fehler aufgetreten."
 
@@ -47,12 +49,17 @@ msgstr "Nicht erlaubt"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Es tut uns Leid, Sie dürfen das nicht tun."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8
+#: webpay/base/templates/error.html:8
+#: webpay/pay/templates/pay/simulate.html:18
+#: webpay/pin/templates/pin/pin_form.html:34
+#: webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
+#: webpay/base/templates/404.html:2
+#: webpay/base/templates/404.html:3
 msgid "Page not found"
 msgstr "Seite nicht gefunden"
 
@@ -60,7 +67,8 @@ msgstr "Seite nicht gefunden"
 msgid "Sorry, but we couldn't find the page you're looking for."
 msgstr "Es tut uns Leid, aber wir konnten die gesuchte Seite nicht finden."
 
-#: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
+#: webpay/base/templates/500.html:2
+#: webpay/base/templates/500.html:3
 msgid "Something went wrong!"
 msgstr "Irgendetwas ist schiefgegangen!"
 
@@ -101,7 +109,8 @@ msgstr "Zahlung vollständig"
 msgid "Payment cancelled"
 msgstr "Zahlung abgebrochen"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:4
+#: webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Fehler"
 
@@ -146,7 +155,7 @@ msgstr "Der Schlüssel „{0}“ muss das Objekt von URLs, wie {1}, sein."
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:100
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
+msgstr "Wenn {0} definiert ist, müssen Sie auch {1} definieren."
 
 #: webpay/pay/models.py:28
 msgid "Active"
@@ -164,7 +173,8 @@ msgstr "Zurückgezogen"
 msgid "Payments are temporarily disabled."
 msgstr "Zahlungen sind zeitweilig deaktiviert."
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:71
+#: webpay/pay/views.py:140
+#: webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "PIN eingeben"
 
@@ -184,7 +194,8 @@ msgstr "Melden Sie sich an, um mit der Zahlung fortzufahren"
 msgid "Sign in"
 msgstr "Anmelden"
 
-#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7
+#: webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Zahlung simulieren"
 
@@ -196,21 +207,23 @@ msgstr "Ihnen wird kein Geld abgebucht."
 msgid "result"
 msgstr "Ergebnis"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20
+#: webpay/pin/templates/pin/pin_form.html:41
+#: webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Fortfahren"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "Sie haben Superkräfte"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr ""
+msgstr "Eine Zahlung simulieren"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr ""
+msgstr "Eine echte Zahlung ausführen"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
@@ -224,7 +237,8 @@ msgstr "Sie haben bereits eine PIN erstellt."
 msgid "Wrong pin"
 msgstr "Falsche PIN"
 
-#: webpay/pin/forms.py:104 webpay/pin/forms.py:126
+#: webpay/pin/forms.py:104
+#: webpay/pin/forms.py:126
 msgid "Pins do not match."
 msgstr "PINs stimmen nicht überein."
 
@@ -232,11 +246,14 @@ msgstr "PINs stimmen nicht überein."
 msgid "Create a Pin"
 msgstr "PIN erstellen"
 
-#: webpay/pin/views.py:53 webpay/pin/views.py:135
+#: webpay/pin/views.py:53
+#: webpay/pin/views.py:135
 msgid "Confirm Pin"
 msgstr "PIN bestätigen"
 
-#: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:95
+#: webpay/pin/views.py:114
+#: webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "PIN zurücksetzen"
 
@@ -245,8 +262,9 @@ msgid "Pin reset"
 msgstr "PIN zurückgesetzt"
 
 #. This is the same as the standard forgot
-#.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
+#. password that most sites have.
+#: webpay/pin/templates/pin/pin_form.html:26
+#: webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
 msgstr "Haben Sie Ihre PIN vergessen?"
 
@@ -273,3 +291,5 @@ msgstr "Möchten Sie Ihre PIN wirklich zurücksetzen? Sie müssen sich mit Perso
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
 msgstr "Zurücksetzen"
+
+
