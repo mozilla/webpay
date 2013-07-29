@@ -96,8 +96,8 @@ def _localize_pay_request(request):
                                  trans_id))
                 loc = locales[fallback]
             else:
-                log.info(('No localization found for {0} (iss: {2}, '
-                          'trans_id: {3})').format(request.locale,
+                log.info(('No localization found for {0} (iss: {1}, '
+                          'trans_id: {2})').format(request.locale,
                                                    pay_req.get('iss'),
                                                    trans_id))
                 return
