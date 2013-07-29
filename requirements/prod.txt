@@ -56,4 +56,4 @@ translate-toolkit==1.9.0
 -e git://github.com/mozilla/nuggets.git@96e80a64aa4bfcfef4f43fc3ab6966450ccd7325#egg=nuggets
 
 # Waiting on 1.1.0 release in PyPI.
--e git://github.com/kumar303/django-encrypted-cookie-session.git@e232551768da96299bb11acbf6fb3918315b19a0#egg=django-encrypted-cookie-session
+-e git://github.com/kumar303/django-encrypted-cookie-session.git@8913844c9cc3554deb3bbdf0fd8c623d1cdb3fa9#egg=django-encrypted-cookie-session

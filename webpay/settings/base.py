@@ -205,6 +205,11 @@ LOGGING = {
             'handlers': ['console', 'unicodesyslog'],
             'formatter': 'webpay',
         },
+        'encrypted_cookies': {
+            'level': logging.INFO,
+            'handlers': ['console', 'unicodesyslog'],
+            'formatter': 'webpay',
+        },
         # This gives us "zamboni" logging such as the celeryutils logger.
         'z': {
             'level': logging.ERROR,
