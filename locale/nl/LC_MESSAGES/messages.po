@@ -73,11 +73,11 @@ msgstr "Webbetaling"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr "PIN-code dient uit vier cijfers te bestaan."
+msgstr "Pincode dient uit vier cijfers te bestaan."
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr "PIN-code mag alleen cijfers bevatten."
+msgstr "Pincode mag alleen cijfers bevatten."
 
 #: webpay/base/templates/base.html:30
 msgid "Loading"
@@ -144,7 +144,7 @@ msgstr "De sleutel “{0}” dient een object van URL’s zoals {1} te zijn"
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:100
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
+msgstr "Als {0} is gedefinieerd, dient u tevens {1} te definiëren."
 
 #: webpay/pay/models.py:28
 msgid "Active"
@@ -164,7 +164,7 @@ msgstr "Betalingen zijn tijdelijk uitgeschakeld."
 
 #: webpay/pay/views.py:140 webpay/pin/views.py:71
 msgid "Enter Pin"
-msgstr "Voer PIN-code in"
+msgstr "Voer pincode in"
 
 #: webpay/pay/views.py:206
 msgid "Transaction has already ended."
@@ -200,15 +200,15 @@ msgstr "Doorgaan"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "U hebt superkrachten"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr ""
+msgstr "Een betaling simuleren"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr ""
+msgstr "Een echte betaling doen"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
@@ -216,41 +216,41 @@ msgstr "Wachten op afronding betaling…"
 
 #: webpay/pin/forms.py:73
 msgid "You have already created a PIN."
-msgstr "U hebt al een PIN-code aangemaakt."
+msgstr "U hebt al een pincode aangemaakt."
 
 #: webpay/pin/forms.py:93
 msgid "Wrong pin"
-msgstr "Foutieve PIN-code"
+msgstr "Foutieve pincode"
 
 #: webpay/pin/forms.py:104 webpay/pin/forms.py:126
 msgid "Pins do not match."
-msgstr "PIN-codes komen niet overeen."
+msgstr "Pincodes komen niet overeen."
 
 #: webpay/pin/views.py:38
 msgid "Create a Pin"
-msgstr "PIN-code aanmaken"
+msgstr "Pincode aanmaken"
 
 #: webpay/pin/views.py:53 webpay/pin/views.py:135
 msgid "Confirm Pin"
-msgstr "PIN-code bevestigen"
+msgstr "Pincode bevestigen"
 
 #: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
-msgstr "PIN-code resetten"
+msgstr "Pincode resetten"
 
 #: webpay/pin/views.py:128
 msgid "Pin reset"
-msgstr "Reset PIN-code"
+msgstr "Reset pincode"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
-msgstr "PIN-code vergeten?"
+msgstr "Pincode vergeten?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr "U hebt te vaak de verkeerde PIN-code ingegeven. Uw account is geblokkeerd. Probeer het opnieuw over vijf minuten."
+msgstr "U hebt te vaak de verkeerde pincode ingegeven. Uw account is vergrendeld. Probeer het opnieuw over vijf minuten."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -258,15 +258,15 @@ msgstr "OK"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
-msgstr "Uw PIN-code is geblokkeerd"
+msgstr "Uw pincode is vergrendeld"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
-msgstr "Uw PIN-code is geblokkeerd omdat u deze te vaak onjuist hebt ingegeven. U kunt doorgaan en proberen uw PIN-code opnieuw in te geven of uw PIN-code resetten."
+msgstr "Uw pincode is vergrendeld omdat u deze te vaak onjuist hebt ingegeven. U kunt doorgaan en proberen uw pincode opnieuw in te geven of uw pincode resetten."
 
 #: webpay/pin/templates/pin/reset_start.html:13
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr "Weet u zeker dat u uw PIN-code wilt resetten? U dient u bij Persona aan te melden om uw PIN-code te resetten."
+msgstr "Weet u zeker dat u uw pincode wilt resetten? U dient u bij Persona aan te melden om uw pincode te resetten."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
