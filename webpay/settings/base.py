@@ -395,3 +395,12 @@ UUID_HMAC_KEY = ''
 # bytes and should be set to a random value. In development (or if you leave
 # this empty), SECRET_KEY is used.
 #ENCRYPTED_COOKIE_KEY = ''
+
+# Maximum length of a product description. This is used to truncate long
+# descriptions so that they do not break things like session cookies.
+PRODUCT_DESCRIPTION_LENGTH = 255
+
+# Maximum value for "short" fields in a product JWT. These are fields (like
+# 'name') that have an implied short length. Values that exceed the maximum will
+# trigger form errors.
+SHORT_FIELD_MAX_LENGTH = 255

@@ -80,6 +80,8 @@ def process_pay_req(request):
         return _error(request, exception=exc,
                       display=form.is_simulation)
 
+    _trim_pay_request(pay_req)
+
     # All validation passed, save state to the session.
     request.session['is_simulation'] = form.is_simulation
     request.session['notes'] = {'pay_request': pay_req,
@@ -234,3 +236,22 @@ def _bango_start_url(bango_trans_id):
     url = settings.BANGO_PAY_URL % bango_trans_id
     log.info('Start Bango pay at: %s' % url)
     return url
+
+
+def _trim_pay_request(req):
+
+    def _trim(st):
+        if len(st) > settings.PRODUCT_DESCRIPTION_LENGTH:
+            elip = '...'
+            cut = settings.PRODUCT_DESCRIPTION_LENGTH - len(elip)
+            st = u'{0}{1}'.format(st[0:cut], elip)
+        return st
+
+    # Trim long descriptions so they don't inflate our session cookie
+    # size unexpectedly.
+    req['request']['description'] = _trim(
+                    req['request']['description'])
+    if req['request'].get('locales'):
+        for k, v in req['request']['locales'].items():
+            d = _trim(v['description'])
+            req['request']['locales'][k]['description'] = d

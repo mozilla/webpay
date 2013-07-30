@@ -152,3 +152,19 @@ class TestVerifyForm(Base):
                            payload=payload)
         form = VerifyForm({'req': req})
         assert form.is_valid(), form.errors
+
+    @mock.patch.object(settings, 'SHORT_FIELD_MAX_LENGTH', 255)
+    def test_short_fields_too_long(self):
+        for fn in ('chargebackURL',
+                   'defaultLocale',
+                   'id',
+                   'name',
+                   'postbackURL',
+                   'productData'):
+            payload = self.payload(extra_req={
+                fn: 'x' * 256
+            })
+            req = self.request(payload=payload)
+            form = VerifyForm({'req': req})
+            assert not form.is_valid(), (
+                    'Field {0} gets too long error'.format(fn))

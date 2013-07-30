@@ -93,6 +93,20 @@ class VerifyForm(ParanoidForm):
                     _('The "{0}" key must be an object of '
                       'URLs such as {1}').format('icons', example))
 
+        max_size = settings.SHORT_FIELD_MAX_LENGTH
+        for fn in ('chargebackURL',
+                   'defaultLocale',
+                   'id',
+                   'name',
+                   'postbackURL',
+                   'productData'):
+            if len(payload['request'].get(fn, '')) > max_size:
+                raise forms.ValidationError(
+                        # L10n: First argument is the name of a key. Second
+                        # argument is a number.
+                        _('The value for key "{0}" exceeds the maximum '
+                          'length of {1}').format(fn, max_size))
+
         if payload['request'].get('locales'):
             if not payload['request'].get('defaultLocale'):
                 raise forms.ValidationError(
