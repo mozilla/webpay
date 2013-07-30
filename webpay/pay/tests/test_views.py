@@ -45,14 +45,16 @@ class TestVerify(Base):
     def test_post(self):
         eq_(self.client.post(self.url).status_code, 405)
 
-    def test_get(self):
+    @mock.patch('webpay.pay.views.solitude')
+    def test_get(self, solitude):
+        solitude.get_transaction.side_effect = ObjectDoesNotExist
         eq_(self.client.get(self.url).status_code, 400)
 
-    def test_get_no_req(self):
+    @mock.patch('webpay.pay.views.solitude')
+    def test_get_no_req(self, solitude):
         # Setting this is the minimum needed to simulate that you've already
         # started a transaction.
-        self.session['notes'] = {}
-        self.save_session()
+        solitude.get_transaction.return_value = {'notes': {}}
         eq_(self.client.get(self.url).status_code, 200)
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
@@ -311,12 +313,6 @@ class TestVerify(Base):
         payload = self.request(iss='third-party-app')
         eq_(self.get(payload).status_code, 400)
 
-    def test_pin_ui(self):
-        with self.settings(TEST_PIN_UI=True):
-            res = self.client.get(self.url)
-        eq_(res.status_code, 200)
-        self.assertTemplateUsed(res, 'pay/lobby.html')
-
     def test_wrong_icons_type(self):
         payjwt = self.payload()
         payjwt['request']['icons'] = '...'  # must be a dict
@@ -473,9 +469,16 @@ class TestSuperSimulate(BasicSessionCase):
     def setUp(self):
         super(TestSuperSimulate, self).setUp()
         self.request = {'request': {}}
-        self.session['notes'] = {'issuer_key': '<issuer_key>',
-                                 'pay_request': self.request}
+        self.session['trans_id'] = '<trans_id>'
         self.save_session()
+
+        p = mock.patch('webpay.pay.views.solitude')
+        self.solitude = p.start()
+        self.addCleanup(p.stop)
+        self.solitude.get_transaction.return_value = {
+            'notes': {'issuer_key': '<issuer_key>',
+                      'pay_request': self.request}
+        }
 
     def set_perms(self, perms):
         self.session['mkt_permissions'] = perms
@@ -485,15 +488,11 @@ class TestSuperSimulate(BasicSessionCase):
         self.set_perms({'admin': False, 'reviewer': True})
         self.client.post(reverse('pay.super_simulate'))
         fake_notify.delay.assert_called_with('<issuer_key>', mock.ANY)
-        eq_(self.client.session['is_simulation'], True)
-        req = self.client.session['notes']['pay_request']['request']
+        req = fake_notify.delay.call_args[0][1]['request']
         eq_(req['simulate'], {'result': 'postback'})
 
     def test_invalid_permissions(self, fake_notify):
         self.set_perms({'admin': False, 'reviewer': False})
         res = self.client.post(reverse('pay.super_simulate'))
         eq_(res.status_code, 403)
-        try:
-            eq_(self.client.session['is_simulation'], False)
-        except KeyError:
-            pass
+        assert not fake_notify.delay.called

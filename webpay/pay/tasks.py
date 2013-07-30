@@ -33,7 +33,7 @@ class TransactionOutOfSync(Exception):
     """The transaction's state is unexpected."""
 
 
-def configure_transaction(request):
+def configure_transaction(request, trans=None):
     """
     Begins a background task to configure a payment transaction.
     """
@@ -45,7 +45,8 @@ def configure_transaction(request):
         return
 
     try:
-        trans = client.get_transaction(uuid=request.session['trans_id'])
+        if not trans:
+            trans = client.get_transaction(request.session['trans_id'])
         if trans['status'] == constants.STATUS_PENDING:
             log.info('trans %s (status=%r) already configured: '
                      'skipping configure payments step'
@@ -57,6 +58,7 @@ def configure_transaction(request):
                      .format(request.session['trans_id'],
                              trans['status'], new_trans_id))
             request.session['trans_id'] = new_trans_id
+            request.session['notes'] = trans['notes']
         else:
             raise TransactionOutOfSync('cannot configure transaction {0}, '
                                        'status={1}'.format(
@@ -73,6 +75,10 @@ def configure_transaction(request):
     start_pay.delay(request.session['trans_id'],
                     request.session['notes'],
                     request.session['uuid'])
+
+    # We passed notes to start_pay (which saves it to the transaction
+    # object), so delete it from the session to save cookie space.
+    del request.session['notes']
 
 
 def _localize_pay_request(request):

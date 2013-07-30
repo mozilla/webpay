@@ -84,6 +84,9 @@ def process_pay_req(request):
 
     # All validation passed, save state to the session.
     request.session['is_simulation'] = form.is_simulation
+    # This is an ephemeral session value, do not rely on it.
+    # It gets saved to the solitude transaction so you can access it there.
+    # Otherwise it is used for simulations and fake payments.
     request.session['notes'] = {'pay_request': pay_req,
                                 'issuer_key': form.key}
     request.session['trans_id'] = trans_id()
@@ -92,22 +95,25 @@ def process_pay_req(request):
 @anonymous_csrf_exempt
 @require_GET
 def lobby(request):
+    sess = request.session
+    trans = None
+
     if request.GET.get('req'):
         # If it returns a response there was likely
         # an error and we should return it.
         res = process_pay_req(request)
         if isinstance(res, http.HttpResponse):
             return res
-    elif settings.TEST_PIN_UI:
-        # This won't get you very far but it lets you create/enter PINs
-        # and stops a traceback after that.
-        request.session['trans_id'] = trans_id()
-    elif not 'notes' in request.session:
-        # A JWT was not passed in and no JWT is in the session.
-        return _error(request, msg='req is required')
+    elif not sess.get('is_simulation', False):
+        try:
+            trans = solitude.get_transaction(request.session.get('trans_id'))
+        except ObjectDoesNotExist:
+            if request.session.get('trans_id'):
+                log.info('Attempted to restart non-existent transaction {0}'
+                         .format(request.session.get('trans_id')))
+            return _error(request, msg='req is required')
 
     pin_form = VerifyPinForm()
-    sess = request.session
 
     if sess.get('uuid'):
         auth_utils.update_session(request, sess.get('uuid'))
@@ -115,7 +121,7 @@ def lobby(request):
         # Before we continue with the buy flow, let's save some
         # time and get the transaction configured via Bango in the
         # background.
-        tasks.configure_transaction(request)
+        tasks.configure_transaction(request, trans=trans)
 
         redirect_url = check_pin_status(request)
         if redirect_url is not None:
@@ -159,12 +165,20 @@ def super_simulate(request):
     if not settings.ALLOW_ADMIN_SIMULATIONS:
         return http.HttpResponseForbidden()
     if request.method == 'POST':
-        request.session['is_simulation'] = True
-        req = request.session['notes']['pay_request']
-        req['request']['simulate'] = {'result': 'postback'}
+        try:
+            trans = solitude.get_transaction(request.session['trans_id'])
+        except ObjectDoesNotExist:
+            # If this happens a lot and the celery task is just slow,
+            # we might need to make a polling loop.
+            raise ValueError('Cannot simulate transaction {0}, not configured'
+                             .format(request.session.get['trans_id']))
+        # TODO: patch solitude to mark this as a super-simulated transaction.
+
+        req = trans['notes']['pay_request']
         # TODO: support simulating refunds.
-        tasks.simulate_notify.delay(request.session['notes']['issuer_key'],
-                                    request.session['notes']['pay_request'])
+        req['request']['simulate'] = {'result': 'postback'}
+        tasks.simulate_notify.delay(trans['notes']['issuer_key'], req)
+
         return render(request, 'pay/simulate_done.html', {})
 
     return render(request, 'pay/super_simulate.html')
