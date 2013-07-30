@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-26 15:06-0700\n"
-"PO-Revision-Date: 2013-06-29 03:23+0900\n"
+"PO-Revision-Date: 2013-07-29 20:12-0400\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -144,7 +144,7 @@ msgstr "{0} キーは {1} のような URL のオブジェクトでなければ�
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:100
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
+msgstr "{0} を定義する場合、{1} も併せて定義する必要があります。"
 
 #: webpay/pay/models.py:28
 msgid "Active"
@@ -200,15 +200,15 @@ msgstr "続ける"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "あなたは特権を持っています"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr ""
+msgstr "支払いをシミュレーションする"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr ""
+msgstr "実際の支払いを行う"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
