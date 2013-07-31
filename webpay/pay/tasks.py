@@ -40,7 +40,7 @@ def configure_transaction(request):
     if settings.FAKE_PAYMENTS:
         log.info('FAKE_PAYMENTS: skipping configure payments step')
         return
-    if request.session['is_simulation']:
+    if request.session.get('is_simulation', False):
         log.info('is_simulation: skipping configure payments step')
         return
 
