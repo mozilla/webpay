@@ -60,9 +60,9 @@ def reverify(request):
 
         log.info('Reverify got result: %s' % result)
         if result:
-            store_mkt_permissions(request, assertion, audience)
-            logged_user = request.session.get('uuid')
             email = result.get('unverified-email', result.get('email'))
+            store_mkt_permissions(request, email, assertion, audience)
+            logged_user = request.session.get('uuid')
             reverified_user = get_uuid(email)
             if logged_user and logged_user != reverified_user:
                 # TODO: Should we try to support this?
@@ -97,9 +97,9 @@ def verify(request):
                                                       extra_params, assertion))
         result = verify_assertion(assertion, audience, extra_params)
         if result:
-            store_mkt_permissions(request, assertion, audience)
             log.info('Persona assertion ok: %s' % result)
             email = result.get('unverified-email', result.get('email'))
+            store_mkt_permissions(request, email, assertion, audience)
             user_uuid = set_user(request, email)
 
             redirect_url = check_pin_status(request)
@@ -133,7 +133,7 @@ def get_audience(request):
         return settings.SITE_URL
 
 
-def store_mkt_permissions(request, assertion, audience):
+def store_mkt_permissions(request, email, assertion, audience):
     """
     After logging into webpay, try logging into Marketplace with the
     same assertion.
@@ -157,10 +157,10 @@ def store_mkt_permissions(request, assertion, audience):
         #       u'webpay': False, u'reviewer': False, u'developer': False}
         permissions = result['permissions']
         log.info('granting mkt permissions: {0} to user {1}'
-                 .format(permissions, result['settings']['email']))
+                 .format(permissions, email))
     except HttpClientError, exc:
         # This would typically be a 401 -- a non-existent user.
-        log.info('Not storing mkt permissions: {0}: {1}'
-                 .format(exc.__class__.__name__, exc))
+        log.info('Not storing mkt permissions for {0}: {1}: {2}'
+                 .format(email, exc.__class__.__name__, exc))
 
     request.session['mkt_permissions'] = permissions
