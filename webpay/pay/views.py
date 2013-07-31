@@ -210,7 +210,8 @@ def wait_to_start(request):
         trans = {'status': None}
 
     if trans['status'] in constants.STATUS_ENDED:
-        log.exception('Attempt to restart finished transaction.')
+        log.exception('Attempt to restart finished transaction {0} '
+                      'with status {1}'.format(trans_id, trans['status']))
         return _error(request, msg=_('Transaction has already ended.'))
 
     if trans['status'] == constants.STATUS_PENDING:
