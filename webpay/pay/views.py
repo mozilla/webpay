@@ -198,8 +198,14 @@ def wait_to_start(request):
     When ready, redirect to the Bango payment URL using
     the generated billing configuration ID.
     """
+    trans_id = request.session.get('trans_id', None)
+    if not trans_id:
+        # This seems like a seriously problem but maybe there is just a race
+        # condition. If we see a lot of these in the logs it means the
+        # payment will never complete so we should keep an eye on it.
+        log.error('wait_to_start() session trans_id was None')
     try:
-        trans = solitude.get_transaction(request.session['trans_id'])
+        trans = solitude.get_transaction(trans_id)
     except ObjectDoesNotExist:
         trans = {'status': None}
 
