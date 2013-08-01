@@ -14,7 +14,7 @@ from requests.exceptions import RequestException
 
 from lib.marketplace.api import client
 
-from .models import NOT_SIMULATED
+from .constants import NOT_SIMULATED
 
 log = logging.getLogger('w.pay.utils')
 

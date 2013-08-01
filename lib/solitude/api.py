@@ -9,7 +9,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from ..utils import SlumberWrapper
 from .constants import ACCESS_PURCHASE
 from .errors import ERROR_STRINGS
-from webpay.pay.models import Issuer
 
 
 log = logging.getLogger('w.solitude')
@@ -273,10 +272,6 @@ class SolitudeAPI(SlumberWrapper):
         notes = transaction['notes']
         if notes:
             transaction['notes'] = json.loads(notes)
-            issuer = transaction['notes'].get('issuer')
-            if issuer:
-                # If there's an issuer there, get it.
-                transaction['notes']['issuer'] = Issuer.objects.get(pk=issuer)
         return transaction
 
 
