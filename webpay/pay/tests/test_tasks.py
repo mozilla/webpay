@@ -537,7 +537,6 @@ class TestStartPay(BaseStartPay):
         eq_(solitude.bango.billing.post.call_args[0][0]['application_size'],
             application_size)
 
-
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
     @mock.patch('lib.solitude.api.client.slumber')
     def test_marketplace_wrong_application_size(self, solitude):
@@ -554,7 +553,6 @@ class TestStartPay(BaseStartPay):
         # Check that the application size fallbacks to None if invalid.
         eq_(solitude.bango.billing.post.call_args[0][0]['application_size'],
             None)
-
 
     @raises(ValueError)
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
@@ -608,7 +606,9 @@ class TestConfigureTransaction(BaseStartPay):
                                           solitude):
         for st in constants.STATUS_RETRY_OK:
             solitude.get_transaction.return_value = {
-                'status': st, 'resource_pk': '1'}
+                'status': st, 'resource_pk': '1',
+                'notes': {}
+            }
             self.start()
             assert start_pay.called, 'Expected start_pay for status %s' % st
             assert start_pay.call_args[0][0] != self.transaction_uuid, (
@@ -622,7 +622,9 @@ class TestConfigureTransaction(BaseStartPay):
         for st in (constants.STATUS_COMPLETED,
                    constants.STATUS_RECEIVED):
             solitude.get_transaction.return_value = {
-                'status': st, 'resource_pk': '1'}
+                'status': st, 'resource_pk': '1',
+                'notes': {}
+            }
             with self.assertRaises(tasks.TransactionOutOfSync):
                 self.start()
 
@@ -630,8 +632,6 @@ class TestConfigureTransaction(BaseStartPay):
     @mock.patch('lib.marketplace.api.client.api')
     @mock.patch('webpay.pay.tasks.start_pay.delay')
     def test_use_locale_name(self, start_pay, marketplace, solitude):
-        solitude.get_transaction.return_value = {
-            'status': constants.STATUS_CANCELLED, 'resource_pk': '1'}
         name = 'Die App Հ'
         description = 'Die beste Beschreibung.'
         self.notes['pay_request']['request']['locales'] = {
@@ -640,12 +640,17 @@ class TestConfigureTransaction(BaseStartPay):
                 'description': description
             }
         }
+        solitude.get_transaction.return_value = {
+            'status': constants.STATUS_CANCELLED, 'resource_pk': '1',
+            'notes': self.notes
+        }
         self.start(locale='de')
         assert start_pay.called
         eq_(start_pay.call_args[0][1]['pay_request']['request']['name'],
             name)
         eq_(start_pay.call_args[0][1]['pay_request']['request']['description'],
             description)
+
 
 class TestLocalizePayRequest(test_utils.TestCase):
 
@@ -780,15 +785,14 @@ class TestConfigureTrans(test.TestCase):
         sess['uuid'] = 'some-email-token'
         patch = mock.patch('webpay.pay.tasks.start_pay')
         self.start_pay = patch.start()
-        self.patches = [patch]
-
-    def tearDown(self):
-        for p in self.patches:
-            p.stop()
+        self.addCleanup(patch.stop)
 
     def test_configure(self):
         self.configure()
         assert self.start_pay.delay.called
+        assert 'notes' not in self.request.session, (
+                'notes should be deleted from session after '
+                'passing it to start_pay')
 
     def test_skip_when_fake(self):
         with self.settings(FAKE_PAYMENTS=True):
