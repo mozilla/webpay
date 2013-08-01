@@ -566,9 +566,27 @@ class TestStartPay(BaseStartPay):
 
 class TestConfigureTransaction(BaseStartPay):
 
+    def setUp(self):
+        super(TestConfigureTransaction, self).setUp()
+
+        p = mock.patch('webpay.pay.tasks.client')
+        self.solitude = p.start()
+        self.addCleanup(p.stop)
+
+        p = mock.patch('lib.marketplace.api.client.api')
+        self.mkt = p.start()
+        self.addCleanup(p.stop)
+
+        p = mock.patch('webpay.pay.tasks.start_pay.delay')
+        self.start_pay = p.start()
+        self.addCleanup(p.stop)
+
     @mock.patch('lib.solitude.api.client')
     @mock.patch('lib.marketplace.api.client.api')
-    def start(self, marketplace, solitude, locale=None):
+    def start(self, marketplace, solitude, locale=None,
+              session=None):
+        if session is None:
+            session = {}
         prices = mock.Mock()
         prices.get_object.return_value = self.prices
         marketplace.webpay.prices.return_value = prices
@@ -581,57 +599,44 @@ class TestConfigureTransaction(BaseStartPay):
         request = RequestFactory().get('/')
         if locale:
             request.locale = locale
-        request.session = {}
+        request.session = session
         request.session['trans_id'] = self.transaction_uuid
         request.session['notes'] = self.notes
         request.session['is_simulation'] = False
         request.session['uuid'] = self.user_uuid
         tasks.configure_transaction(request)
 
-    @mock.patch('webpay.pay.tasks.client')
-    @mock.patch('lib.marketplace.api.client.api')
-    @mock.patch('webpay.pay.tasks.start_pay.delay')
-    def test_prevent_restarting_pending(self, start_pay, marketplace,
-                                        solitude):
-        solitude.get_transaction.return_value = {
-            'status': constants.STATUS_PENDING,
-            'resource_pk': '1'}
-        self.start()
-        assert not start_pay.called
+    def test_prevent_reconfiguring_transaction(self):
+        self.solitude.side_effect = ObjectDoesNotExist
+        session = {}
+        self.start(session=session)
+        self.start(session=session)  # Second call should do nothing.
+        eq_(self.start_pay.call_count, 1)
 
-    @mock.patch('webpay.pay.tasks.client')
-    @mock.patch('lib.marketplace.api.client.api')
-    @mock.patch('webpay.pay.tasks.start_pay.delay')
-    def test_restart_certain_transactions(self, start_pay, marketplace,
-                                          solitude):
+    def test_restart_certain_transactions(self):
         for st in constants.STATUS_RETRY_OK:
-            solitude.get_transaction.return_value = {
+            self.solitude.get_transaction.return_value = {
                 'status': st, 'resource_pk': '1',
                 'notes': {}
             }
             self.start()
-            assert start_pay.called, 'Expected start_pay for status %s' % st
-            assert start_pay.call_args[0][0] != self.transaction_uuid, (
+            assert self.start_pay.called, (
+                'Expected start_pay for status %s' % st)
+            assert self.start_pay.call_args[0][0] != self.transaction_uuid, (
                 'Expected a new transaction ID')
 
-    @mock.patch('webpay.pay.tasks.client')
-    @mock.patch('lib.marketplace.api.client.api')
-    @mock.patch('webpay.pay.tasks.start_pay.delay')
-    def test_abort_non_retriable_transactions(self, start_pay, marketplace,
-                                              solitude):
-        for st in (constants.STATUS_COMPLETED,
-                   constants.STATUS_RECEIVED):
-            solitude.get_transaction.return_value = {
-                'status': st, 'resource_pk': '1',
-                'notes': {}
-            }
-            with self.assertRaises(tasks.TransactionOutOfSync):
-                self.start()
+    def test_retry_trans_even_when_configured(self):
+        self.solitude.get_transaction.return_value = {
+            # Failed transactions are ok to retry.
+            'status': constants.STATUS_FAILED, 'resource_pk': '1',
+            'notest': {}
+        }
+        session = {}
+        self.start(session=session)
+        self.start(session=session)  # Second call should still configure.
+        eq_(self.start_pay.call_count, 2)
 
-    @mock.patch('webpay.pay.tasks.client')
-    @mock.patch('lib.marketplace.api.client.api')
-    @mock.patch('webpay.pay.tasks.start_pay.delay')
-    def test_use_locale_name(self, start_pay, marketplace, solitude):
+    def test_use_locale_name(self):
         name = 'Die App Հ'
         description = 'Die beste Beschreibung.'
         self.notes['pay_request']['request']['locales'] = {
@@ -640,11 +645,12 @@ class TestConfigureTransaction(BaseStartPay):
                 'description': description
             }
         }
-        solitude.get_transaction.return_value = {
+        self.solitude.get_transaction.return_value = {
             'status': constants.STATUS_CANCELLED, 'resource_pk': '1',
             'notes': self.notes
         }
         self.start(locale='de')
+        start_pay = self.start_pay
         assert start_pay.called
         eq_(start_pay.call_args[0][1]['pay_request']['request']['name'],
             name)

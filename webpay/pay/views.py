@@ -121,6 +121,8 @@ def lobby(request):
         # Before we continue with the buy flow, let's save some
         # time and get the transaction configured via Bango in the
         # background.
+        log.info('configuring transaction {0} from lobby'
+                 .format(request.session.get('trans_id')))
         tasks.configure_transaction(request, trans=trans)
 
         redirect_url = check_pin_status(request)
