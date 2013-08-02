@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 
 import mock
-from nose.tools import eq_
+from nose.tools import eq_, ok_
 
 from lib.marketplace.api import UnknownPricePoint
 from lib.solitude import constants
@@ -318,6 +318,11 @@ class TestVerify(Base):
             res = self.client.get(self.url)
         eq_(res.status_code, 200)
         self.assertTemplateUsed(res, 'pay/lobby.html')
+
+    def test_logout_timeout_data_attr(self):
+        with self.settings(LOGOUT_TIMEOUT=300, TEST_PIN_UI=True):
+            res = self.client.get(self.url)
+        ok_('data-logout-timeout="300"' in res.content)
 
     def test_wrong_icons_type(self):
         payjwt = self.payload()

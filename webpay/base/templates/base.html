@@ -32,6 +32,7 @@
     data-persona-msg="{{ _('Connecting to Persona') }}"
     data-complete-msg="{{ _('Payment complete') }}"
     data-cancelled-msg="{{ _('Payment cancelled') }}"
+    data-logout-timeout="{{ settings.LOGOUT_TIMEOUT }}"
     >
     <section class="pay">
       <div id="content">
@@ -43,9 +44,22 @@
            {% endfor %}
         </ul>
         {% endif %}
+
+        {# Full screen error html #}
+        <div id="full-screen-error" class="hidden">
+          <div class="msg">
+            <h2 class="heading">{{ _('Oops&hellip;') }}</h2>
+            <p class="detail">{{ _('An unexpected error occurred. Please try again.') }}</p>
+          </div>
+          <footer>
+            <a href="#" class="button">{{ _('OK') }}</a>
+          </footer>
+        </div>
+
       </div>
     </section>
 
+    {# Progress indicator html #}
     <div id="progress" class="progress hidden">
       <div class="throbber"></div>
       <span class="txt"></span>
