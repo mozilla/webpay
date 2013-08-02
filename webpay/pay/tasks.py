@@ -46,32 +46,33 @@ def configure_transaction(request, trans=None):
 
     try:
         if not trans:
-            trans = client.get_transaction(request.session['trans_id'])
-        if trans['status'] == constants.STATUS_PENDING:
-            log.info('trans %s (status=%r) already configured: '
-                     'skipping configure payments step'
-                     % (request.session['trans_id'], trans['status']))
-            return
-        elif trans['status'] in constants.STATUS_RETRY_OK:
-            new_trans_id = trans_id()
-            log.info('retrying trans {0} (status={1}) as {2}'
-                     .format(request.session['trans_id'],
-                             trans['status'], new_trans_id))
-            request.session['trans_id'] = new_trans_id
-            request.session['notes'] = trans['notes']
-        else:
-            raise TransactionOutOfSync('cannot configure transaction {0}, '
-                                       'status={1}'.format(
-                                           request.session['trans_id'],
-                                           trans['status']))
+            trans = client.get_transaction(uuid=request.session['trans_id'])
+        log.info('attempt to reconfigure trans {0} (status={1})'
+                 .format(request.session['trans_id'], trans['status']))
     except ObjectDoesNotExist:
-        pass
+        trans = {}
+
+    if trans.get('status') in constants.STATUS_RETRY_OK:
+        new_trans_id = trans_id()
+        log.info('retrying trans {0} (status={1}) as {2}'
+                 .format(request.session['trans_id'],
+                         trans['status'], new_trans_id))
+        request.session['trans_id'] = new_trans_id
+
+    if request.session.get('configured_trans') == request.session['trans_id']:
+        log.info('trans %s (status=%r) already configured: '
+                 'skipping configure payments step'
+                 % (request.session['trans_id'], trans.get('status')))
+        return
+
+    # Prevent configuration from running twice.
+    request.session['configured_trans'] = request.session['trans_id']
 
     # Localize the product before sending it off to solitude/bango.
     _localize_pay_request(request)
 
-    log.info('configuring payment in background for trans {0}'
-             .format(request.session['trans_id']))
+    log.info('configuring payment in background for trans {0} (status={1})'
+             .format(request.session['trans_id'], trans.get('trans_id')))
     start_pay.delay(request.session['trans_id'],
                     request.session['notes'],
                     request.session['uuid'])

@@ -107,6 +107,8 @@ def verify(request):
             # Before we verify the user's PIN let's save some
             # time and get the transaction configured via Bango in the
             # background.
+            log.info('configuring transaction {0} from auth'
+                     .format(request.session.get('trans_id')))
             pay_tasks.configure_transaction(request)
 
             return {
