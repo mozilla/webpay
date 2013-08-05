@@ -25,7 +25,6 @@ from lib.solitude import api
 from lib.solitude import constants
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from webpay.pay import tasks
-from webpay.pay.models import Notice, SIMULATED_POSTBACK, SIMULATED_CHARGEBACK
 from webpay.pay.samples import JWTtester
 
 from .test_views import sample
@@ -90,10 +89,6 @@ class TestNotifyApp(NotifyTest):
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
         self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.transaction_uuid, self.trans_uuid)
-        eq_(notice.success, True)
-        eq_(notice.url, url)
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -117,10 +112,6 @@ class TestNotifyApp(NotifyTest):
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
         self.do_chargeback('refund')
-        notice = Notice.objects.get()
-        eq_(notice.transaction_uuid, self.trans_uuid)
-        eq_(notice.success, True)
-        eq_(notice.url, url)
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -139,10 +130,6 @@ class TestNotifyApp(NotifyTest):
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
         self.do_chargeback('reversal')
-        notice = Notice.objects.get()
-        eq_(notice.transaction_uuid, self.trans_uuid)
-        eq_(notice.last_error, '')
-        eq_(notice.success, True)
 
     @mock.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -160,10 +147,6 @@ class TestNotifyApp(NotifyTest):
         self.set_secret_mock(solitude, 'f')
         requests.post.side_effect = Timeout('Timeout')
         self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.success, False)
-        er = notice.last_error
-        assert 'Timeout' in er, 'Unexpected: %s' % er
 
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.payment_notify.retry')
@@ -182,10 +165,6 @@ class TestNotifyApp(NotifyTest):
         self.set_secret_mock(solitude, 'f')
         fake_req.expects('post').raises(RequestException('some http error'))
         self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.success, False)
-        er = notice.last_error
-        assert 'some http error' in er, 'Unexpected: %s' % er
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -198,10 +177,6 @@ class TestNotifyApp(NotifyTest):
                                  .raises(urllib2.HTTPError('url', 500, 'Error',
                                                            [], None)))
         self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.success, False)
-        er = notice.last_error
-        assert 'HTTP Error' in er, 'Unexpected: %s' % er
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -211,8 +186,6 @@ class TestNotifyApp(NotifyTest):
                                  .provides('raise_for_status')
                                  .has_attr(text='<not a valid response>'))
         self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.success, False)
 
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.utils.requests')
@@ -298,11 +271,6 @@ class TestSimulatedNotifications(NotifyTest):
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
         self.notify(payload)
-        notice = Notice.objects.get()
-        assert notice.transaction_uuid, notice
-        eq_(notice.success, True)
-        eq_(notice.url, url)
-        eq_(notice.simulated, SIMULATED_POSTBACK)
 
     @fudge.patch('webpay.pay.utils.requests')
     def test_chargeback(self, slumber, fake_req):
@@ -325,11 +293,6 @@ class TestSimulatedNotifications(NotifyTest):
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
         self.notify(payload)
-        notice = Notice.objects.get()
-        assert notice.transaction_uuid, notice
-        eq_(notice.success, True)
-        eq_(notice.url, url)
-        eq_(notice.simulated, SIMULATED_CHARGEBACK)
 
     @fudge.patch('webpay.pay.utils.requests')
     def test_chargeback_reason(self, slumber, fake_req):

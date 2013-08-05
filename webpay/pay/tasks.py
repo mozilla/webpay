@@ -20,8 +20,7 @@ from multidb.pinning import use_master
 
 from webpay.base.helpers import absolutify
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
-from .models import (Notice, NOT_SIMULATED, SIMULATED_POSTBACK,
-                     SIMULATED_CHARGEBACK)
+from .constants import NOT_SIMULATED, SIMULATED_POSTBACK, SIMULATED_CHARGEBACK
 from .utils import send_pay_notice, trans_id
 
 log = logging.getLogger('w.pay.tasks')
@@ -361,13 +360,6 @@ def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED,
     success, last_error = send_pay_notice(url, trans['type'], signed_notice,
                                           trans['uuid'], notifier_task,
                                           task_args, simulated=simulated)
-    s = Notice._meta.get_field_by_name('last_error')[0].max_length
-    last_error = last_error[:s]  # truncate to fit
-    Notice.objects.create(transaction_uuid=trans['uuid'],
-                          success=success,
-                          url=url,
-                          simulated=simulated,
-                          last_error=last_error)
 
 
 def _prepare_notice(trans):

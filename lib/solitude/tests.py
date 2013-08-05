@@ -10,7 +10,6 @@ from nose.tools import eq_
 
 from lib.solitude.api import client, SellerNotConfigured
 from lib.solitude.errors import ERROR_STRINGS
-from webpay.pay.models import Issuer
 
 
 class SolitudeAPITest(TestCase):
@@ -234,11 +233,3 @@ class TransactionTest(TestCase):
         }
         trans = client.get_transaction('x')
         eq_(trans['notes'], {'foo': 'bar'})
-
-    def test_notes_issuer_transactions(self, slumber):
-        iss = Issuer.objects.create()
-        slumber.generic.transaction.get_object.return_value = {
-                'notes': json.dumps({'issuer': iss.pk})
-        }
-        trans = client.get_transaction('x')
-        eq_(trans['notes']['issuer'], iss)
