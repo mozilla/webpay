@@ -376,6 +376,11 @@ ONLY_SIMULATIONS = False
 # if needed.
 ALLOW_ADMIN_SIMULATIONS = False
 
+# Special just for front-end folks! When True, it lets you hit the main page
+# without a JWT. You can create/enter PINs but it won't let you get very far
+# beyond that.
+TEST_PIN_UI = False
+
 # If empty, all users will be allowed through.
 # If not empty, each string will be compiled as a regular expression
 # and the email from persona checked using match, not search. If any of the

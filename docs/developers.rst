@@ -101,6 +101,18 @@ do this from your webpay root::
 
 Then open ``docs/_build/html/index.html`` in a browser.
 
+Working on the UI
+~~~~~~~~~~~~~~~~~
+
+The webpay server has a very minimal UI. It lets you log in and
+create/enter/reset a PIN but after that it redirects you to a
+payment processor. You can work on the login and PIN by setting this
+in your ``webpay/settings/local.py``::
+
+    TEST_PIN_UI = True
+
+Then load the front page: http://localhost:8001/mozpay/
+
 Using JWTs for development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
