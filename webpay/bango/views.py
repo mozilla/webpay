@@ -1,3 +1,4 @@
+import urllib
 import uuid
 
 from django.conf import settings
@@ -149,11 +150,17 @@ def notification(request):
         log.info('Header given but invalid')
         return HttpResponseForbidden(request)
 
+    # For some reason Bango's event arrives to us in an encoded form.
+    notice = urllib.unquote_plus(request.raw_post_data)
+    # This should help figure out why.
+    log.info('Bango notification encoding={0.encoding} '
+             'content_type={0.META[CONTENT_TYPE]}'.format(request))
+
     try:
         # Just take the whole request and stuff into JSON for passing down
         # the pipe.
         client.slumber.bango.event.post({
-            'notification': request.raw_post_data,
+            'notification': notice,
             'password': password,
             'username': username
         })

@@ -1,4 +1,5 @@
 import base64
+import urllib
 
 from django.core.urlresolvers import reverse
 
@@ -116,6 +117,21 @@ class TestNotification(TestCase):
 
     @mock.patch('webpay.bango.views.client.slumber')
     def test_post_auth(self, slumber):
-        res = self.client.post(self.url, data={},
+        res = self.client.post(self.url, data='<xml>',
+                               content_type='text/xml',
                                HTTP_AUTHORIZATION=self.auth)
+        eq_(slumber.bango.event.post.call_args[0][0]['notification'],
+            '<xml>')
+        eq_(res.status_code, 200)
+
+    @mock.patch('webpay.bango.views.client.slumber')
+    def test_post_encoded_auth(self, slumber):
+        # This is the first part of a real Bango XML event.
+        raw = '\xef\xbb\xbf<?xml version="1.0" encoding="utf-8"?>'
+        # For some unknown reason it is arriving to us encoded.
+        res = self.client.post(self.url, data=urllib.quote_plus(raw),
+                               content_type='text/plain',
+                               HTTP_AUTHORIZATION=self.auth)
+        eq_(slumber.bango.event.post.call_args[0][0]['notification'],
+            raw)
         eq_(res.status_code, 200)
