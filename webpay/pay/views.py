@@ -104,6 +104,10 @@ def lobby(request):
         res = process_pay_req(request)
         if isinstance(res, http.HttpResponse):
             return res
+    elif settings.TEST_PIN_UI:
+        # This won't get you very far but it lets you create/enter PINs
+        # and stops a traceback after that.
+        request.session['trans_id'] = trans_id()
     elif not sess.get('is_simulation', False):
         try:
             trans = solitude.get_transaction(request.session.get('trans_id'))

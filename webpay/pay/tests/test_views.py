@@ -313,6 +313,12 @@ class TestVerify(Base):
         payload = self.request(iss='third-party-app')
         eq_(self.get(payload).status_code, 400)
 
+    def test_pin_ui(self):
+        with self.settings(TEST_PIN_UI=True):
+            res = self.client.get(self.url)
+        eq_(res.status_code, 200)
+        self.assertTemplateUsed(res, 'pay/lobby.html')
+
     def test_wrong_icons_type(self):
         payjwt = self.payload()
         payjwt['request']['icons'] = '...'  # must be a dict
