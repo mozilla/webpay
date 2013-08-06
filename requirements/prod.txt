@@ -5,7 +5,7 @@ anyjson==0.3.3
 billiard==2.7.3.28
 cef==0.5
 celery==3.0.19
-curling==0.2.8
+curling==0.3.0
 dj-database-url==0.2.1
 django_csp==2.0.2
 django-celery==3.0.17

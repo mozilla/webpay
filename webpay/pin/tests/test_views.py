@@ -48,6 +48,18 @@ class CreatePinViewTest(PinViewTestCase):
         assert res['Location'].endswith(reverse('pin.confirm'))
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
+    @patch('lib.solitude.api.client.change_pin')
+    @patch.object(client, 'get_buyer', lambda x: {
+        'uuid': 'some:uuid', 'etag': 'etag'})
+    def test_buyer_does_exist_with_no_pin_and_etag(self, change_pin,
+                                                   create_buyer):
+        res = self.client.post(self.url, data={'pin': '1234'})
+        assert not create_buyer.called
+        assert change_pin.called
+        change_pin.assert_called_with('a:b', '1234', etag='etag')
+        assert res['Location'].endswith(reverse('pin.confirm'))
+
+    @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': 'some:uuid',
                                                   'pin': 'fake'})
@@ -60,9 +72,10 @@ class CreatePinViewTest(PinViewTestCase):
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': 'some:uuid'})
     @patch.object(client, 'change_pin',
-                  lambda x, y: {'errors':
-                                {'pin':
-                                 ['PIN must be exactly 4 numbers long']}})
+                  lambda *args, **kwargs: {
+                    'errors':
+                        {'pin':
+                            ['PIN must be exactly 4 numbers long']}})
     def test_buyer_does_exist_with_short_pin(self, create_buyer):
         res = self.client.post(self.url, data={'pin': '123'})
         assert not create_buyer.called
@@ -73,8 +86,10 @@ class CreatePinViewTest(PinViewTestCase):
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': 'some:uuid'})
     @patch.object(client, 'change_pin',
-                  lambda x, y: {'errors':
-                                {'pin': ['PIN may only consists of numbers']}})
+                  lambda *args, **kwargs: {
+                    'errors':
+                        {'pin':
+                            ['PIN may only consists of numbers']}})
     def test_buyer_does_exist_with_alpha_pin(self, create_buyer):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not create_buyer.called

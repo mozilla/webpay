@@ -27,7 +27,8 @@ def create(request):
         form = forms.CreatePinForm(uuid=get_user(request), data=request.POST)
         if form.is_valid():
             if getattr(form, 'buyer_exists', False):
-                res = client.change_pin(form.uuid, form.cleaned_data['pin'])
+                res = client.change_pin(form.uuid, form.cleaned_data['pin'],
+                                        etag=form.buyer_etag)
             else:
                 res = client.create_buyer(form.uuid, form.cleaned_data['pin'])
             if form.handle_client_errors(res):

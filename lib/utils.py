@@ -3,7 +3,11 @@ import json
 from curling.lib import API
 from slumber.exceptions import HttpClientError
 
-from webpay.base.logger import get_transaction_id
+from lib.solitude.errors import ERROR_STRINGS
+from solitude.exceptions import ResourceNotModified
+from webpay.base.logger import getLogger, get_transaction_id
+
+log = getLogger('lib.utils')
 
 
 def add_transaction_id(slumber, headers=None, **kwargs):
@@ -31,9 +35,18 @@ class SlumberWrapper(object):
     def safe_run(self, command, *args, **kwargs):
         try:
             res = command(*args, **kwargs)
+            if getattr(res, 'status_code', None) == 304:
+                raise ResourceNotModified()
         except HttpClientError as e:
-            res = self.parse_res(e.response.content)
-            for key, value in res.iteritems():
-                res[key] = [self.errors[v] for v in value if v in self.errors]
+            if e.response.status_code == 412:
+                log.error('An attempt to update an already modified resource '
+                          'has been made.')
+                res = [ERROR_STRINGS[('The resource has been modified, '
+                                      'please re-fetch it.')]]
+            else:
+                res = self.parse_res(e.response.content)
+                for key, value in res.iteritems():
+                    res[key] = [self.errors[v] for v in value
+                                                    if v in self.errors]
             return {'errors': res}
         return res
