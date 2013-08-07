@@ -334,6 +334,15 @@ class TestVerify(Base):
         payload = self.request(payload=payjwt)
         eq_(self.get(payload).status_code, 400)
 
+    @mock.patch.object(settings, 'ALLOWED_CALLBACK_SCHEMES', ['https'])
+    def test_http_icon_url_ok(self):
+        payjwt = self.payload()
+        payjwt['request']['icons'] = {'64': 'http://foo.com/icon.png'}
+        payjwt['request']['postbackURL'] = 'https://foo.com/postback'
+        payjwt['request']['chargebackURL'] = 'https://foo.com/chargeback'
+        payload = self.request(payload=payjwt)
+        eq_(self.get(payload).status_code, 200)
+
     def test_invalid_price_point(self):
         price = self.mkt.get_price
         price.side_effect = UnknownPricePoint

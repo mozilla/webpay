@@ -65,8 +65,10 @@ def process_pay_req(request):
     try:
         verify_urls(pay_req['request']['postbackURL'],
                     pay_req['request']['chargebackURL'],
-                    *icon_urls,
                     is_simulation=form.is_simulation)
+        verify_urls(*icon_urls,
+                    is_simulation=form.is_simulation,
+                    check_postbacks=False)
     except ValueError, exc:
         log.exception('invalid URLs')
         return _error(request, exception=exc,
