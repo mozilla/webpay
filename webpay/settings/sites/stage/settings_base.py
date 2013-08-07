@@ -82,8 +82,6 @@ SOLITUDE_OAUTH = {'key': private.SOLITUDE_OAUTH_KEY,
 
 SENTRY_DSN = private.SENTRY_DSN
 
-ALLOWED_CALLBACK_SCHEMES = ['http', 'https']
-
 # Hook into the production web flow.
 BANGO_BASE_URL = 'https://mozilla.bango.net'
 BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'

@@ -350,6 +350,8 @@ USE_PRODUCT_ICONS = True
 PIN_UNLOCK_LENGTH = 300
 
 # The schemes that are allowed in callbacks.
+# Historically, app postbacks were required to be HTTPS in prod but we reversed
+# that decision. See bug 862588.
 ALLOWED_CALLBACK_SCHEMES = ['http', 'https']
 
 # When we are ready to having curling format lists for us, flip this to True.
