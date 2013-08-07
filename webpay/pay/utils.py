@@ -116,12 +116,15 @@ def notify_failure(url, trans_id):
 
 def verify_urls(*urls, **kw):
     is_simulation = kw.pop('is_simulation', False)
+    check_postbacks = kw.pop('check_postbacks', True)
     for url in urls:
         parsed = urlparse(url)
         if not parsed.scheme or not parsed.netloc:
             raise ValueError('Invalid URL: %s' % url)
-        # If this is not a simulation, enforce URL schemes.
-        if (not is_simulation and
+        # If this is not a simulation, enforce URL schemes on
+        # postbacks/chargebacks.
+        if (check_postbacks and
+            not is_simulation and
             parsed.scheme not in settings.ALLOWED_CALLBACK_SCHEMES):
             raise ValueError('Schema must be one of: %s not %s' %
                              (settings.ALLOWED_CALLBACK_SCHEMES, url))
