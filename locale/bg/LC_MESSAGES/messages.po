@@ -111,7 +111,7 @@ msgstr "Грешка при зареждането на JWT: {0}"
 #. L10n: first argument is a data type, such as <unicode>
 #: webpay/pay/forms.py:42
 msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr ""
+msgstr "JWT не се декодира до JSON обект. Типът му беше {0}."
 
 #: webpay/pay/forms.py:52
 msgid "Payment simulations are disabled at this time."
@@ -144,7 +144,7 @@ msgstr "Ключът \"{0}\" трябва да е обект от URL, напр�
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:100
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
+msgstr "Ако {0} е дефиниран, трябва да дефинирате и {1}."
 
 #: webpay/pay/models.py:28
 msgid "Active"
@@ -200,15 +200,15 @@ msgstr "Продължи"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "Имате супер сили"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr ""
+msgstr "Симулирай плащане"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr ""
+msgstr "Направи истинско плащане"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
