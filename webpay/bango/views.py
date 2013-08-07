@@ -155,6 +155,7 @@ def notification(request):
     # This should help figure out why.
     log.info('Bango notification encoding={0.encoding} '
              'content_type={0.META[CONTENT_TYPE]}'.format(request))
+    log.debug('Bango notice: {0}'.format(repr(notice)))
 
     try:
         # Just take the whole request and stuff into JSON for passing down
