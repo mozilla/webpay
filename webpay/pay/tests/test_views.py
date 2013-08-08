@@ -76,7 +76,9 @@ class TestVerify(Base):
         payload = self.request(iss=self.key, app_secret=self.secret)
         res = self.get(payload)
         eq_(res.status_code, 302)
-        assert res['Location'].endswith(get_payment_url(mock.Mock()))
+        assert res['Location'].endswith(
+            '?next={0}'.format(get_payment_url(mock.Mock()))
+        ), res['Location']
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')

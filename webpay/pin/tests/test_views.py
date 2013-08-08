@@ -223,6 +223,7 @@ class WasLockedPinViewTest(PinViewTestCase):
         self.unverify()
         eq_(self.client.post(self.url, data={'pin': '1234'}).status_code, 403)
 
+    @patch.object(client, 'unset_was_locked', lambda uuid: {})
     def test_get(self):
         res = self.client.get(self.url)
         eq_(res.status_code, 200)

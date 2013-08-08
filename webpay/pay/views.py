@@ -10,7 +10,7 @@ from mozpay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
-from webpay.auth.decorators import user_verified, user_can_simulate
+from webpay.auth.decorators import user_can_simulate, user_verified
 from webpay.auth import utils as auth_utils
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
@@ -133,7 +133,9 @@ def lobby(request):
 
         redirect_url = check_pin_status(request)
         if redirect_url is not None:
-            return http.HttpResponseRedirect(redirect_url)
+            return http.HttpResponseRedirect(
+                '{0}?next={1}'.format(reverse('pay.bounce'), redirect_url)
+            )
 
     # If the buyer closed the trusted UI during reset flow, we want to unset
     # the reset pin flag. They can hit the forgot pin button if they still
@@ -154,6 +156,13 @@ def lobby(request):
         'action': reverse('pin.verify'),
         'form': pin_form,
         'title': _('Enter Pin')
+    })
+
+
+@require_GET
+def bounce(request):
+    return render(request, 'pay/bounce.html', {
+        'next': request.GET.get('next')
     })
 
 

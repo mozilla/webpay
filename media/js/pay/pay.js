@@ -18,15 +18,10 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
     // Currently we just default false, once loggedInUser is used properly we
     // can (and will have to) put a better value here. (bug 843192)
     var loggedIn = false;
-
-    var onLogout = function() {
-        // This is the default onLogout but might be replaced by other handlers.
-        console.log('[pay] default onLogout');
-        auth.resetUser();
-        cli.hideProgress();
-        $pinEntry.hide();
-        $('#login').fadeIn();
-    };
+    // whether a persona callback has been called.
+    var calledBack = false;
+    // url to verify a persona assertion
+    var verifyUrl = bodyData.verifyUrl || null;
 
     // Setup debounced resize custom event.
     cli.win.on('resize', _.debounce(function() { $doc.trigger('saferesize');}, 200));
@@ -41,50 +36,85 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
     // Transition in all footers to hide longtext changes.
     $('footer').addClass('visible');
 
+    function makeOnLogin(callback) {
+        function _onlogin(assertion) {
+            calledBack = true;
+            console.log('[pay] nav.id onlogin');
+            loggedIn = true;
+            cli.showProgress(bodyData.personaMsg);
+            $.post(verifyUrl, {assertion: assertion})
+                .success(function(data, textStatus, jqXHR) {
+                    bango.prepareUser(data.user_hash).done(function _onDone() {
+                        callback(data);
+                    });
+                })
+                .error(function(xhr) {
+                    if (xhr.status === 403) {
+                        console.log('[pay] permission denied after auth');
+                        window.location.href = bodyData.deniedUrl;
+                    }
+                    console.log('[pay] login error');
+                });
+        }
+        return _onlogin;
+    }
+
+    var activeOnLogout = function() {
+        // This is the default onLogout but might be replaced by other handlers.
+        console.log('[pay] default onLogout');
+        auth.resetUser();
+        cli.hideProgress();
+        $pinEntry.hide();
+        $('#login').fadeIn();
+    };
+
+    function onlogout() {
+        calledBack = true;
+        loggedIn = false;
+        console.log('[pay] nav.id onlogout from ' + bodyData.flow);
+        activeOnLogout();
+    }
+
     if (bodyData.flow === 'lobby') {
-        var verifyUrl = bodyData.verifyUrl;
-        var calledBack = false;
         cli.showProgress(bodyData.beginMsg);
         id.watch({
-            onlogin: function(assertion) {
+            onlogin: makeOnLogin(function _lobbyOnLogin(data) {
                 calledBack = true;
-                console.log('[pay] nav.id onlogin');
-                loggedIn = true;
-                cli.showProgress(bodyData.personaMsg);
-                $.post(verifyUrl, {assertion: assertion})
-                    .success(function(data, textStatus, jqXHR) {
-                        console.log('[pay] login success');
-                        bango.prepareUser(data.user_hash).done(function() {
-                            if (data.needs_redirect) {
-                                window.location = data.redirect_url;
-                            } else {
-                                console.log('[pay] requesting focus on pin (login success)');
-                                cli.focusOnPin({ $toHide: $('#login'), $toShow: $('#enter-pin') });
-                            }
-                        });
-                    })
-                    .error(function(xhr) {
-                        if (xhr.status === 403) {
-                            console.log('[pay] permission denied after auth');
-                            window.location.href = bodyData.deniedUrl;
-                        }
-                        console.log('[pay] login error');
-                    });
-            },
-            onlogout: function() {
-                calledBack = true;
-                loggedIn = false;
-                console.log('[pay] nav.id onlogout');
-                onLogout();
-            },
+                if (data.needs_redirect) {
+                    console.log('[pay] user is not at pin entry step, redirecting to: ' + data.redirect_url);
+                    window.location = data.redirect_url;
+                } else {
+                    console.log('[pay] requesting focus on pin (login success)');
+                    cli.focusOnPin({ $toHide: $('#login'), $toShow: $('#enter-pin') });
+                }
+            }),
+            onlogout: onlogout,
             // This can become onmatch() soon.
             // See this issue for the order of when onready is called:
             // https://github.com/mozilla/browserid/issues/2648
-            onready: function() {
+            onready: function _lobbyOnReady() {
                 if (!calledBack && cli.bodyData.loggedInUser) {
                     console.log('[pay] Probably logged in, Persona never called back');
                     console.log('[pay] Requesting focus on pin');
                     cli.focusOnPin({ $toHide: $('#login'), $toShow: $('#enter-pin') });
+                }
+            }
+        });
+
+    } else if (bodyData.flow === 'bounce') {
+        var next = bodyData.nextUrl;
+        cli.showProgress(bodyData.beginMsg);
+        id.watch({
+            onlogin: makeOnLogin(function _bounceOnLogin(data) {
+                console.log('[pay] bounce login called.');
+                window.location = bodyData.lobbyUrl;
+            }),
+            onlogout: onlogout,
+            onready: function _bounceOnReady() {
+                if(!calledBack && cli.bodyData.loggedInUser) {
+                    console.log('[pay] Probably logged in, Persona never called back');
+                    console.log('[pay] Forwarding the user to ' + next);
+                    window.location = next;
                 }
             }
         });
@@ -101,7 +131,7 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
         callPaySuccess();
     }
 
-    $('#signin').click(function(ev) {
+    $('#signin').click(function _signInOnClick(ev) {
         console.log('[pay] signing in manually');
         ev.preventDefault();
         cli.showProgress(bodyData.personaMsg);
@@ -141,11 +171,11 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
             var personaLoggedOut = $.Deferred();
 
             // Define a new logout handler.
-            onLogout = function() {
+            activeOnLogout = function() {
                 console.log('[pay] forgot-pin onLogout');
                 // It seems necessary to nullify the logout handler because
                 // otherwise it is held in memory and called on the next page.
-                onLogout = function() {
+                activeOnLogout = function() {
                     console.log('[pay] null onLogout');
                 };
                 personaLoggedOut.resolve();
@@ -199,8 +229,8 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
                 console.log('[pay] Logging out of Persona');
                 navigator.id.logout();
             } else {
-                console.log('[pay] Already logged out of Persona, calling onLogout ourself.');
-                onLogout();
+                console.log('[pay] Already logged out of Persona, calling activeOnLogout ourself.');
+                activeOnLogout();
             }
         }
         runForgotPinLogout();

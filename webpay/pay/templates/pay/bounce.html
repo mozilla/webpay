@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block body_attrs -%}
+  data-flow="bounce"
+  data-verify-url="{{ url('auth.verify') }}"
+  data-next-url="{{ next }}"
+  data-lobby-url="{{ url('pay.lobby') }}"
+{%- endblock %}
+
+{% block extra_content %}
+  <div id="login" class="message hidden">
+    <h2>{{ _('Sign In') }}</h2>
+    <p>{{ _('Sign in to continue with the payment') }}</p>
+    <a id="signin" class="sign-in" href="#">{{ _('Sign in') }}</a>
+  </div>
+{% endblock %}
