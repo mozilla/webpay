@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-26 15:06-0700\n"
-"PO-Revision-Date: 2013-06-01 17:20+0100\n"
+"PO-Revision-Date: 2013-08-08 23:28+0100\n"
 "Last-Translator: Jørgen Rasmussen <joergenr@stofanet.dk>\n"
 "Language-Team: MozillaDanmark\n"
 "Language: da\n"
@@ -19,7 +19,7 @@ msgstr "Kunne ikke registrere Bango-fejl"
 
 #: webpay/bango/views.py:127
 msgid "Price point unavailable for this region or carrier."
-msgstr ""
+msgstr "Prisniveau ikke tilgængelig for denne region eller operatør."
 
 #: webpay/bango/views.py:130
 msgid "Received Bango error"
@@ -29,7 +29,8 @@ msgstr "Modtog Bango-fejl"
 msgid "Payment cancelled."
 msgstr "Betaling annulleret."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10
+#: webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
 msgstr "Din betaling er gennemført."
 
@@ -39,13 +40,16 @@ msgstr "Der opstod en fejl under behandlingen af den forespørgsel."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "Ikke tilladt"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "Beklager, men du har ikke tilladelse til at gøre det."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8
+#: webpay/pay/templates/pay/simulate.html:18
+#: webpay/pin/templates/pin/pin_form.html:34
+#: webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Annuller"
@@ -73,11 +77,11 @@ msgstr "Web Pay"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr "Pin-koden skal bestå af 4 tal."
+msgstr "Pinkoden skal bestå af 4 tal."
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr "Pin-koden kan kun indholde tal."
+msgstr "Pinkoden kan kun indholde tal."
 
 #: webpay/base/templates/base.html:30
 msgid "Loading"
@@ -99,7 +103,8 @@ msgstr "Betaling gennemført"
 msgid "Payment cancelled"
 msgstr "Betaling annulleret"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:4
+#: webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Fejl"
 
@@ -144,7 +149,7 @@ msgstr "Nøglen \"{0}\" skal indeholde et objekt med URL'er som fx {1}"
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:100
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
+msgstr "Hvis {0} er angivet, skal du også angive {1}."
 
 #: webpay/pay/models.py:28
 msgid "Active"
@@ -164,7 +169,7 @@ msgstr "Betalinger er midlertidigt deaktiverede."
 
 #: webpay/pay/views.py:140 webpay/pin/views.py:71
 msgid "Enter Pin"
-msgstr "Indtast Pin-kode"
+msgstr "Indtast pinkode"
 
 #: webpay/pay/views.py:206
 msgid "Transaction has already ended."
@@ -182,7 +187,8 @@ msgstr "Log ind for at fortsætte med betalingen"
 msgid "Sign in"
 msgstr "Log ind"
 
-#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7
+#: webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Simuler betaling"
 
@@ -194,21 +200,23 @@ msgstr "Du vil ikke blive opkrævet."
 msgid "result"
 msgstr "resultat"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20
+#: webpay/pin/templates/pin/pin_form.html:41
+#: webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Fortsæt"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "Du har superkræfter"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr ""
+msgstr "Simuler en betaling"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr ""
+msgstr "Foretag en rigtig betaling"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
@@ -216,57 +224,72 @@ msgstr "Venter på at betalingen gennemføres&hellip;"
 
 #: webpay/pin/forms.py:73
 msgid "You have already created a PIN."
-msgstr "Du har allerede oprettet en PIN-kode."
+msgstr "Du har allerede oprettet en pinkode."
 
 #: webpay/pin/forms.py:93
 msgid "Wrong pin"
-msgstr "Forkert Pin-kode"
+msgstr "Forkert pinkode"
 
 #: webpay/pin/forms.py:104 webpay/pin/forms.py:126
 msgid "Pins do not match."
-msgstr "Pin-koder matcher ikke."
+msgstr "Pinkoder matcher ikke."
 
 #: webpay/pin/views.py:38
 msgid "Create a Pin"
-msgstr "Opret en Pin-kode"
+msgstr "Opret en pinkode"
 
 #: webpay/pin/views.py:53 webpay/pin/views.py:135
 msgid "Confirm Pin"
-msgstr "Bekræft Pin-kode"
+msgstr "Bekræft pinkode"
 
-#: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:95 webpay/pin/views.py:114
+#: webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
-msgstr "Nulstil Pin-kode"
+msgstr "Nulstil pinkode"
 
 #: webpay/pin/views.py:128
 msgid "Pin reset"
-msgstr ""
+msgstr "Pinkode nulstillet"
 
 #. This is the same as the standard forgot
-#.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
+#. password that most sites have.
+#: webpay/pin/templates/pin/pin_form.html:26
+#: webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
-msgstr "Glemt din pin-kode?"
+msgstr "Glemt din pinkode?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
-msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
+msgid ""
+"You entered the wrong pin too many times. Your account is locked. Please try "
+"your purchase again in 5 minutes."
 msgstr ""
+"Du indtastede den forkerte pinkode for mange gange. Din konto er spærret. "
+"Prøv at foretage dit køb igen om 5 minutter."
 
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
-msgstr "Din Pin-kode er blevet spærret"
+msgstr "Din pinkode er blevet spærret"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
-msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
-msgstr "Din pin-kode blev spærret fordi du indtastede den forkert for mange gange. Du kan fortsætte og prøve at indtaste din pin-kode igen eller nulstille din pin-kode."
+msgid ""
+"Your pin was locked because you entered it incorrectly too many times. You "
+"can continue and try entering your pin again or reset your pin."
+msgstr ""
+"Din pinkode blev spærret fordi du indtastede den forkert for mange gange. Du "
+"kan fortsætte og prøve at indtaste din pinkode igen eller nulstille din "
+"pinkode."
 
 #: webpay/pin/templates/pin/reset_start.html:13
-msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr "Er du sikker på, at du vil nulstille din pin-kode? Du skal logge ind med Persona for at nulstille din pin-kode."
+msgid ""
+"Are you sure you want to reset your pin? You must sign in to Persona to "
+"reset your pin."
+msgstr ""
+"Er du sikker på, at du vil nulstille din pinkode? Du skal logge ind med "
+"Persona for at nulstille din pinkode."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
