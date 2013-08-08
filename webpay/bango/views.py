@@ -150,11 +150,13 @@ def notification(request):
         log.info('Header given but invalid')
         return HttpResponseForbidden(request)
 
-    # For some reason Bango's event arrives to us in an encoded form.
-    notice = urllib.unquote_plus(request.raw_post_data)
     # This should help figure out why.
     log.info('Bango notification encoding={0.encoding} '
-             'content_type={0.META[CONTENT_TYPE]}'.format(request))
+             'content_type={0.META[CONTENT_TYPE]} POST keys={1}'
+             .format(request, request.POST.keys()))
+
+    # We want to send XML as bytes to Solitude.
+    notice = request.POST['XML'].encode('utf8')
     log.debug('Bango notice: {0}'.format(repr(notice)))
 
     try:
