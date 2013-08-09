@@ -406,3 +406,6 @@ PRODUCT_DESCRIPTION_LENGTH = 255
 # 'name') that have an implied short length. Values that exceed the maximum will
 # trigger form errors.
 SHORT_FIELD_MAX_LENGTH = 255
+
+# The timeout for the client-side logout in pay.js in millseconds.
+LOGOUT_TIMEOUT = 30000
