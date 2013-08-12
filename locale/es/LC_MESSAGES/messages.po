@@ -144,7 +144,7 @@ msgstr "La clave \"{0}\" debe ser un objeto de URL como {1}"
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:100
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
+msgstr "Si se define {0}, entonces debe definirse {1} también."
 
 #: webpay/pay/models.py:28
 msgid "Active"
@@ -200,15 +200,15 @@ msgstr "Continuar"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "Tienes superpoderes"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr ""
+msgstr "Simular un pago"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr ""
+msgstr "Efecutar un pago real"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
