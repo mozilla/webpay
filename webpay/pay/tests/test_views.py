@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+import json
 from collections import defaultdict
 from datetime import datetime
-import json
 
 from django.conf import settings
 from django.core.urlresolvers import reverse

@@ -57,7 +57,6 @@ class SolitudeAPI(SlumberWrapper):
         :param pin: Optional PIN that will be hashed.
         :rtype: dictionary
         """
-
         res = self.safe_run(self.slumber.generic.buyer.post, {'uuid': uuid,
                                                               'pin': pin})
         return self._buyer_from_response(res)
@@ -187,21 +186,21 @@ class SolitudeAPI(SlumberWrapper):
                                                  seller_id))
 
         try:
-            bango_product_uri = self.slumber.bango.product.get_object(
+            bango_product = self.slumber.bango.product.get_object(
                     seller_product__seller=seller_id,
-                    seller_product__external_id=product_id)['resource_uri']
+                    seller_product__external_id=product_id)
         except ObjectDoesNotExist:
-            bango_product_uri = self.create_product(product_id, product_name,
-                                                    seller)
+            bango_product = self.create_product(product_id, product_name,
+                                                seller)
 
         log.info('transaction %s: bango product: %s'
-                 % (transaction_uuid, bango_product_uri))
+                 % (transaction_uuid, bango_product['resource_uri']))
 
         res = self.slumber.bango.billing.post({
             'pageTitle': product_name,
             'prices': prices,
             'transaction_uuid': transaction_uuid,
-            'seller_product_bango': bango_product_uri,
+            'seller_product_bango': bango_product['resource_uri'],
             'redirect_url_onsuccess': redirect_url_onsuccess,
             'redirect_url_onerror': redirect_url_onerror,
             'icon_url': icon_url,
@@ -264,7 +263,7 @@ class SolitudeAPI(SlumberWrapper):
             'seller_product_bango': bango['resource_uri']
         })
 
-        return bango['resource_uri']
+        return bango
 
     def get_transaction(self, uuid):
         transaction = self.slumber.generic.transaction.get_object(uuid=uuid)
