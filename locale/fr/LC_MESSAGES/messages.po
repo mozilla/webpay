@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-26 15:06-0700\n"
+"POT-Creation-Date: 2013-08-13 10:12-0700\n"
 "PO-Revision-Date: 2013-06-30 10:51+0200\n"
 "Last-Translator: Alexandre Lissy <lissyx@mozfr.org>\n"
 "Language-Team: français <>\n"
@@ -16,15 +16,15 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.6\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: webpay/bango/views.py:120
+#: webpay/bango/views.py:121
 msgid "Could not record Bango error"
 msgstr "Impossible d'enregistrer l'erreur Bango"
 
-#: webpay/bango/views.py:127
+#: webpay/bango/views.py:128
 msgid "Price point unavailable for this region or carrier."
 msgstr "Tarif indisponible pour cette région ou cet opérateur."
 
-#: webpay/bango/views.py:130
+#: webpay/bango/views.py:131
 msgid "Received Bango error"
 msgstr "Une erreur Bango est survenue"
 
@@ -102,6 +102,18 @@ msgstr "Paiement complété"
 msgid "Payment cancelled"
 msgstr "Paiement annulé"
 
+#: webpay/base/templates/base.html:51
+msgid "Oops&hellip;"
+msgstr ""
+
+#: webpay/base/templates/base.html:52
+msgid "An unexpected error occurred. Please try again."
+msgstr ""
+
+#: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
+msgid "OK"
+msgstr "Ok"
+
 #: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Erreur"
@@ -144,32 +156,26 @@ msgstr "La clef de paiement, {0}, ne peut être utilisée que pour simuler des a
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
 msgstr "La clef « {0} » doit être un objet des URLs parmi {1}"
 
-#. L10n: First and second arguements are the names of keys.
-#: webpay/pay/forms.py:100
-msgid "If {0} is defined, then you must also define {1}."
+#. L10n: First argument is the name of a key. Second
+#. argument is a number.
+#: webpay/pay/forms.py:107
+msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr ""
 
-#: webpay/pay/models.py:28
-msgid "Active"
-msgstr "Actif"
-
-#: webpay/pay/models.py:29
-msgid "Inactive"
-msgstr "Inactif"
-
-#: webpay/pay/models.py:30
-msgid "Revoked"
-msgstr "Révoqué"
+#. L10n: First and second arguements are the names of keys.
+#: webpay/pay/forms.py:114
+msgid "If {0} is defined, then you must also define {1}."
+msgstr ""
 
 #: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
 msgstr "Les paiements sont temporairement désactivés."
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:71
+#: webpay/pay/views.py:156 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Entrez le code PIN"
 
-#: webpay/pay/views.py:206
+#: webpay/pay/views.py:237
 msgid "Transaction has already ended."
 msgstr "La transaction est déjà terminée."
 
@@ -254,10 +260,6 @@ msgstr "Code PIN oublié ?"
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
 msgstr "Vous avez entré le mauvais code PIN trop de fois de suite. Votre compte est verrouillé. Merci de réessayer votre achat dans 5 minutes."
-
-#: webpay/pin/templates/pin/pin_is_locked.html:17
-msgid "OK"
-msgstr "Ok"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"

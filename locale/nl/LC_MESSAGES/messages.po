@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-26 15:06-0700\n"
+"POT-Creation-Date: 2013-08-13 10:12-0700\n"
 "PO-Revision-Date: 2013-01-08 08:50-0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -13,15 +13,15 @@ msgstr ""
 "X-Generator: Translate Toolkit 1.9.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: webpay/bango/views.py:120
+#: webpay/bango/views.py:121
 msgid "Could not record Bango error"
 msgstr "Kan Bango-fout niet vastleggen"
 
-#: webpay/bango/views.py:127
+#: webpay/bango/views.py:128
 msgid "Price point unavailable for this region or carrier."
 msgstr "Prijspunt niet beschikbaar voor deze regio of provider."
 
-#: webpay/bango/views.py:130
+#: webpay/bango/views.py:131
 msgid "Received Bango error"
 msgstr "Bango-fout ontvangen"
 
@@ -99,6 +99,18 @@ msgstr "betaling voltooid"
 msgid "Payment cancelled"
 msgstr "Betaling geannuleerd"
 
+#: webpay/base/templates/base.html:51
+msgid "Oops&hellip;"
+msgstr ""
+
+#: webpay/base/templates/base.html:52
+msgid "An unexpected error occurred. Please try again."
+msgstr ""
+
+#: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
+msgid "OK"
+msgstr "OK"
+
 #: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Fout"
@@ -141,32 +153,26 @@ msgstr "Deze betalingssleutel, {0}, kan alleen worden gebruikt om aankopen te si
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
 msgstr "De sleutel “{0}” dient een object van URL’s zoals {1} te zijn"
 
+#. L10n: First argument is the name of a key. Second
+#. argument is a number.
+#: webpay/pay/forms.py:107
+msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
+msgstr ""
+
 #. L10n: First and second arguements are the names of keys.
-#: webpay/pay/forms.py:100
+#: webpay/pay/forms.py:114
 msgid "If {0} is defined, then you must also define {1}."
 msgstr "Als {0} is gedefinieerd, dient u tevens {1} te definiëren."
-
-#: webpay/pay/models.py:28
-msgid "Active"
-msgstr "Actief"
-
-#: webpay/pay/models.py:29
-msgid "Inactive"
-msgstr "Inactief"
-
-#: webpay/pay/models.py:30
-msgid "Revoked"
-msgstr "Herroepen"
 
 #: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
 msgstr "Betalingen zijn tijdelijk uitgeschakeld."
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:71
+#: webpay/pay/views.py:156 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Voer pincode in"
 
-#: webpay/pay/views.py:206
+#: webpay/pay/views.py:237
 msgid "Transaction has already ended."
 msgstr "Transactie is al voltooid."
 
@@ -251,10 +257,6 @@ msgstr "Pincode vergeten?"
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
 msgstr "U hebt te vaak de verkeerde pincode ingegeven. Uw account is vergrendeld. Probeer het opnieuw over vijf minuten."
-
-#: webpay/pin/templates/pin/pin_is_locked.html:17
-msgid "OK"
-msgstr "OK"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
