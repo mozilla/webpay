@@ -54,6 +54,9 @@ MARKETPLACE_URL = SITE_URL
 MARKETPLACE_OAUTH = {'key': private.MARKETPLACE_OAUTH_KEY,
                      'secret': private.MARKETPLACE_OAUTH_SECRET}
 
+STATIC_URL = getattr(private, 'STATIC_URL', 'https://marketplace-dev-cdn.allizom.org/')
+MEDIA_URL = STATIC_URL + 'mozpay/media/'
+
 #LOGIN_URL = '/mozpay'
 
 # Playdoh ships with Bcrypt+HMAC by default because it's the most secure.

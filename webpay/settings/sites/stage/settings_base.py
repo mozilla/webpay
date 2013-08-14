@@ -45,6 +45,9 @@ MARKETPLACE_URL = SITE_URL
 MARKETPLACE_OAUTH = {'key': private.MARKETPLACE_OAUTH_KEY,
                      'secret': private.MARKETPLACE_OAUTH_SECRET}
 
+STATIC_URL = getattr(private, 'STATIC_URL', 'https://marketplace-cdn.allizom.org/')
+MEDIA_URL = STATIC_URL + 'mozpay/media/'
+
 HMAC_KEYS = private.HMAC_KEYS
 
 from django_sha2 import get_password_hashers
