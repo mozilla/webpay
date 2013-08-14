@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-08-13 10:12-0700\n"
-"PO-Revision-Date: 2013-07-29 20:12-0400\n"
+"PO-Revision-Date: 2013-08-14 17:46-0400\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -101,11 +101,11 @@ msgstr "支払いがキャンセルされました"
 
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
-msgstr ""
+msgstr "おっと..."
 
 #: webpay/base/templates/base.html:52
 msgid "An unexpected error occurred. Please try again."
-msgstr ""
+msgstr "予期せぬ問題が発生しました。また後で試してください。"
 
 #: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -157,7 +157,7 @@ msgstr "{0} キーは {1} のような URL のオブジェクトでなければ�
 #. argument is a number.
 #: webpay/pay/forms.py:107
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
+msgstr "キー「{0}」の値が最大文字数 {1} を超えています"
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:114
