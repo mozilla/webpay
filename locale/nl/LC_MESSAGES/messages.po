@@ -101,11 +101,11 @@ msgstr "Betaling geannuleerd"
 
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
-msgstr ""
+msgstr "Oeps…"
 
 #: webpay/base/templates/base.html:52
 msgid "An unexpected error occurred. Please try again."
-msgstr ""
+msgstr "Er is een onverwachte fout opgetreden. Probeer het opnieuw."
 
 #: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -157,7 +157,7 @@ msgstr "De sleutel “{0}” dient een object van URL’s zoals {1} te zijn"
 #. argument is a number.
 #: webpay/pay/forms.py:107
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
+msgstr "De waarde voor sleutel “{0}” is langer dan het maximum van {1}"
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:114
