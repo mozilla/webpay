@@ -24,6 +24,7 @@ jingo==0.4
 kombu==2.5.10
 m2secret==0.1.1
 mock==1.0b1
+mozilla-logger==0.1
 mozpay==2.0.0
 nose==1.2.1
 oauth2==1.5.211

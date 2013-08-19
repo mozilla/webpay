@@ -230,7 +230,7 @@ LOGGING = {
     },
     'handlers': {
         'unicodesyslog': {
-            'class': 'webpay.unicode_log.UnicodeHandler',
+            'class': 'mozilla_logger.log.UnicodeHandler',
             'facility': logging.handlers.SysLogHandler.LOG_LOCAL7,
             'formatter': 'prod',
         },
