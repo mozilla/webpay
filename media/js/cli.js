@@ -5,13 +5,14 @@ define('cli', [], function() {
     var $doc = $(document);
     var $win = $(window);
 
-    return {
+    var cli = {
         win: $win,
         doc: $doc,
         hasTouch: ('ontouchstart' in window) ||
                    window.DocumentTouch &&
                    document instanceof DocumentTouch,
         bodyData: $('body').data(),
+        mozPaymentProvider: window.mozPaymentProvider || {},
         showProgress: function(msg) {
             if ($progress.length) {
                 msg = msg || this.bodyData.loadingMsg;
@@ -52,4 +53,11 @@ define('cli', [], function() {
             }
         }
     };
+
+    console.log('[cli] mozPaymentProvider.iccIds?', cli.mozPaymentProvider.iccIds);
+    console.log('[cli] mozPaymentProvider.mcc?', cli.mozPaymentProvider.mcc);
+    console.log('[cli] mozPaymentProvider.mnc?', cli.mozPaymentProvider.mnc);
+    console.log('[cli] mozPaymentProvider.sendSilentSms?', cli.mozPaymentProvider.sendSilentSms);
+
+    return cli;
 });

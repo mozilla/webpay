@@ -113,9 +113,8 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
         // "paymentFailed" functions within a "mozPaymentProvider" object
         // instead of injecting them in the global scope. So we need to support
         // both APIs.
-        var paymentSuccess = ((window.mozPaymentProvider &&
-                               window.mozPaymentProvider.paymentSuccess) ||
-                               window.paymentSuccess);
+        var paymentSuccess = (cli.mozPaymentProvider.paymentSuccess ||
+                              window.paymentSuccess);
         // After Bug 843309 landed, there should not be any delay before the
         // mozPaymentProvider API is injected into scope, but we keep the
         // polling loop as a safe guard.
