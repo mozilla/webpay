@@ -15,261 +15,273 @@ msgstr ""
 
 #: webpay/bango/views.py:121
 msgid "Could not record Bango error"
-msgstr ""
+msgstr "Δεν ήταν δυνατή η καταγραφή του σφάλματος Bango"
 
 #: webpay/bango/views.py:128
 msgid "Price point unavailable for this region or carrier."
-msgstr ""
+msgstr "Το σημείο τιμών δεν είναι διαθέσιμο για αυτή την περιοχή ή τον πάροχο."
 
 #: webpay/bango/views.py:131
 msgid "Received Bango error"
-msgstr ""
+msgstr "Ελήφθη σφάλμα Bango"
 
 #: webpay/bango/templates/bango/cancel.html:10
 msgid "Payment cancelled."
-msgstr ""
+msgstr "Η πληρωμή ακυρώθηκε."
 
 #: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
-msgstr ""
+msgstr "Η πληρωμή ολοκληρώθηκε."
 
 #: webpay/base/utils.py:32 webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
-msgstr ""
+msgstr "Υπήρξε κάποιο σφάλμα κατά την επεξεργασία της αίτησης."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "Μη επιτρεπτό"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "Συγγνώμη, δεν επιτρέπεται η ενέργεια αυτή από μέρους σας."
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
-msgstr ""
+msgstr "Ακύρωση"
 
 #: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
 msgid "Page not found"
-msgstr ""
+msgstr "Η σελίδα δε βρέθηκε"
 
 #: webpay/base/templates/404.html:5
 msgid "Sorry, but we couldn't find the page you're looking for."
-msgstr ""
+msgstr "Συγγνώμη, δε μπορούσαμε να βρούμε τη σελίδα που ζητήσατε."
 
 #: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
-msgstr ""
+msgstr "Συνέβη κάποιο σφάλμα!"
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
-msgstr ""
+msgstr "Παρακαλώ δοκιμάστε ξανά σε μερικά λεπτά."
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9
 msgid "Web Pay"
-msgstr ""
+msgstr "Ηλεκτρονική πληρωμή"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr ""
+msgstr "Το Pin πρέπει να έχει 4 ψηφία."
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr ""
+msgstr "Το Pin μπορεί να περιέχει μόνο ψηφία."
 
 #: webpay/base/templates/base.html:30
 msgid "Loading"
-msgstr ""
+msgstr "Φόρτωση"
 
 #: webpay/base/templates/base.html:31
 msgid "Beginning payment&hellip;"
-msgstr ""
+msgstr "Εκκίνηση πληρωμής&hellip;"
 
 #: webpay/base/templates/base.html:32
 msgid "Connecting to Persona"
-msgstr ""
+msgstr "Σύνδεση στο Persona"
 
 #: webpay/base/templates/base.html:33
 msgid "Payment complete"
-msgstr ""
+msgstr "Η πληρωμή ολοκληρώθηκε"
 
 #: webpay/base/templates/base.html:34
 msgid "Payment cancelled"
-msgstr ""
+msgstr "Η πληρωμή ακυρώθηκε"
 
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
-msgstr ""
+msgstr "Ωχ&hellip;"
 
 #: webpay/base/templates/base.html:52
 msgid "An unexpected error occurred. Please try again."
-msgstr ""
+msgstr "Συνέβη ένα απρόσμενο σφάλμα. Παρακαλώ προσπαθήστε ξανά."
 
 #: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "ΟΚ"
 
 #: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
-msgstr ""
+msgstr "Σφάλμα"
 
 #. L10n: first argument is a detailed error message.
 #: webpay/pay/forms.py:31
 msgid "Error decoding JWT: {0}"
-msgstr ""
+msgstr "Σφάλμα αποκωδικοποίησης JWT: {0}"
 
 #. L10n: first argument is a data type, such as <unicode>
 #: webpay/pay/forms.py:42
 msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr ""
+msgstr "Το JWT δεν αποκωδικοποιήθηκε σε αντικείμενο JSON. Ο τύπος του ήταν {0}."
 
 #: webpay/pay/forms.py:52
 msgid "Payment simulations are disabled at this time."
-msgstr ""
+msgstr "Οι προσομοιώσεις πληρωμών είναι απενεργοποιημένες αυτή τη στιγμή."
 
 #: webpay/pay/forms.py:58
 msgid "The requested simulation result is not supported."
-msgstr ""
+msgstr "Το αιτηθέν αποτέλεσμα προσομοίωσης δεν υποστηρίζεται."
 
 #: webpay/pay/forms.py:61
 msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr ""
+msgstr "Η αιτηθείσα προσομοίωση χρέωσης υπολείπεται του κλειδιού '{0}'."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:77
 msgid "No one has been registered for JWT issuer {0}."
-msgstr ""
+msgstr "Κανείς δεν έχει εγγραφεί εκδότης JWT {0}."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:83
 msgid "This payment key, {0}, can only be used to simulate purchases."
-msgstr ""
+msgstr "Αυτό το κλειδί πληρωμής, {0}, μπορεί να χρησιμοποιηθεί για προσομοίωση αγορών."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is an example of the proper key format.
 #: webpay/pay/forms.py:93
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
-msgstr ""
+msgstr "Το κλειδί \"{0}\" πρέπει να είναι αντικείμενο από URLs όπως το {1}"
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
 #: webpay/pay/forms.py:107
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
+msgstr "Η τιμή για το κλειδί \"{0}\" υπερβαίνει το μέγιστο μήκος του {1}"
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:114
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
+msgstr "Αν έχει οριστεί το {0}, τότε πρέπει να ορίσετε και το {1}."
+
+#: webpay/pay/models.py:28
+msgid "Active"
+msgstr "Ενεργό"
+
+#: webpay/pay/models.py:29
+msgid "Inactive"
+msgstr "Ανενεργό"
+
+#: webpay/pay/models.py:30
+msgid "Revoked"
+msgstr "Ανακληθέν"
 
 #: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
-msgstr ""
+msgstr "Οι πληρωμές έχουν απενεργοποιηθεί προσωρινά"
 
 #: webpay/pay/views.py:156 webpay/pin/views.py:71
 msgid "Enter Pin"
-msgstr ""
+msgstr "Εισάγετε Pin"
 
 #: webpay/pay/views.py:237
 msgid "Transaction has already ended."
-msgstr ""
+msgstr "Η συναλλαγή έχει ήδη τελειώσει."
 
 #: webpay/pay/templates/pay/lobby.html:10
 msgid "Sign In"
-msgstr ""
+msgstr "Σύνδεση"
 
 #: webpay/pay/templates/pay/lobby.html:11
 msgid "Sign in to continue with the payment"
-msgstr ""
+msgstr "Συνδεθείτε για να συνεχίσετε με την πληρωμή"
 
 #: webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in"
-msgstr ""
+msgstr "Σύνδεση"
 
 #: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
-msgstr ""
+msgstr "Προσομοίωση πληρωμής"
 
 #: webpay/pay/templates/pay/simulate.html:8
 msgid "You will not be charged."
-msgstr ""
+msgstr "Δε θα χρεωθείτε."
 
 #: webpay/pay/templates/pay/simulate.html:10
 msgid "result"
-msgstr ""
+msgstr "αποτέλεσμα"
 
 #: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
-msgstr ""
+msgstr "Συνέχεια"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "Έχετε υπερδυνάμεις"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr ""
+msgstr "Προσομοίωση πληρωμής"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr ""
+msgstr "Κάντε μια πραγματική πληρωμή"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
-msgstr ""
+msgstr "Αναμονή ολοκλήρωσης της πληρωμής&hellip;"
 
 #: webpay/pin/forms.py:73
 msgid "You have already created a PIN."
-msgstr ""
+msgstr "Έχετε ήδη δημιουργήσει ένα PIN."
 
 #: webpay/pin/forms.py:93
 msgid "Wrong pin"
-msgstr ""
+msgstr "Λάθος pin"
 
 #: webpay/pin/forms.py:104 webpay/pin/forms.py:126
 msgid "Pins do not match."
-msgstr ""
+msgstr "Τα pins δεν ταιριάζουν."
 
 #: webpay/pin/views.py:38
 msgid "Create a Pin"
-msgstr ""
+msgstr "Δημιουργήστε ένα Pin"
 
 #: webpay/pin/views.py:53 webpay/pin/views.py:135
 msgid "Confirm Pin"
-msgstr ""
+msgstr "Επιβεβαίωση Pin"
 
 #: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
-msgstr ""
+msgstr "Επαναφορά Pin"
 
 #: webpay/pin/views.py:128
 msgid "Pin reset"
-msgstr ""
+msgstr "Έγινε επαναφορά του pin"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
-msgstr ""
+msgstr "Ξεχάσατε το pin σας;"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr ""
+msgstr "Εισάγατε λάθος pin πάρα πολλές φορές. Ο λογαριασμός σας κλειδώθηκε. Παρακαλώ δοκιμάστε την αγορά ξανά σε 5 λεπτά."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
-msgstr ""
+msgstr "Το Pin σας κλειδώθηκε"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
-msgstr ""
+msgstr "Το pin σας κλειδώθηκε επειδή το εισάγατε λάθος πολλές φορές. Μπορείτε να συνεχίσετε και να δοκιμάσετε ξανά να είσάγετε το pin ή να το επαναφέρετε."
 
 #: webpay/pin/templates/pin/reset_start.html:13
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr ""
+msgstr "Είστε σίγουροι πως θέλετε να επαναφέρετε το pin σας; Πρέπει να συνδεθείτε στο Persona για να επαναφέρετε το pin."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
-msgstr ""
+msgstr "Επαναφορά"
