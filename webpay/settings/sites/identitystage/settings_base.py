@@ -7,7 +7,7 @@ from webpay.settings import base
 
 from .. import splitstrip
 
-DOMAIN = 'marketplace.firefox.com'
+DOMAIN = 'identity-stage-marketplace.allizom.org'
 ALLOWED_HOSTS = [DOMAIN]
 
 DATABASES = {}
@@ -45,9 +45,6 @@ MARKETPLACE_URL = SITE_URL
 MARKETPLACE_OAUTH = {'key': private.MARKETPLACE_OAUTH_KEY,
                      'secret': private.MARKETPLACE_OAUTH_SECRET}
 
-STATIC_URL = getattr(private, 'STATIC_URL', 'https://marketplace.cdn.mozilla.net/')
-MEDIA_URL = STATIC_URL + 'mozpay/media/'
-
 HMAC_KEYS = private.HMAC_KEYS
 
 from django_sha2 import get_password_hashers
@@ -55,7 +52,7 @@ PASSWORD_HASHERS = get_password_hashers(base.BASE_PASSWORD_HASHERS, HMAC_KEYS)
 
 SECRET_KEY = private.SECRET_KEY
 
-ENGAGE_ROBOTS = True
+ENGAGE_ROBOTS = False
 
 ## Celery
 BROKER_URL = private.BROKER_URL
@@ -71,15 +68,15 @@ SYSLOG_TAG = private.SYSLOG_TAG
 # HTTPS to disable HTTPS-only cookies.
 SESSION_COOKIE_SECURE = True
 
+DOMAIN = 'identity-stage-marketplace.allizom.org'
 ISSUER = DOMAIN
 NOTIFY_ISSUER = DOMAIN
-VERBOSE_LOGGING = False
 
 KEY = DOMAIN
 # This must match private_mkt.APP_PURCHASE_SECRET in marketplace settings.
 SECRET = private.SECRET
 
-SOLITUDE_URL = 'https://payments.firefox.com'
+SOLITUDE_URL = 'https://payments.allizom.org'
 SOLITUDE_OAUTH = {'key': private.SOLITUDE_OAUTH_KEY,
                   'secret': private.SOLITUDE_OAUTH_SECRET}
 
@@ -90,9 +87,21 @@ BANGO_BASE_URL = 'https://mozilla.bango.net'
 BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'
 BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
 
+VERBOSE_LOGGING = True
+
 STATSD_HOST = private.STATSD_HOST
 STATSD_PORT = private.STATSD_PORT
 STATSD_PREFIX = private.STATSD_PREFIX
 UUID_HMAC_KEY = private.UUID_HMAC_KEY
 
 ENCRYPTED_COOKIE_KEY = private.ENCRYPTED_COOKIE_KEY
+
+ALLOW_ADMIN_SIMULATIONS = True
+
+BROWSERID_DOMAIN = 'firefoxos.anosrep.org'
+# We only trust one issuer to grant us unverified emails.
+# If UNVERIFIED_ISSUER is set to None, forceIssuer will not
+# be sent to the client or the verifier.
+BROWSERID_UNVERIFIED_ISSUER = BROWSERID_DOMAIN
+BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
+BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN

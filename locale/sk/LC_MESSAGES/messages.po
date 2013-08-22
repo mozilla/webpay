@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-26 15:06-0700\n"
+"POT-Creation-Date: 2013-08-13 10:12-0700\n"
 "PO-Revision-Date: 2013-07-08 23:42+0100\n"
 "Last-Translator: wladow <info@wladow.sk>\n"
 "Language-Team: Mozilla.sk <l10n@mozilla.sk>\n"
@@ -13,15 +13,15 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: webpay/bango/views.py:120
+#: webpay/bango/views.py:121
 msgid "Could not record Bango error"
 msgstr "Nebolo možné zachytiť chybu systému Bango"
 
-#: webpay/bango/views.py:127
+#: webpay/bango/views.py:128
 msgid "Price point unavailable for this region or carrier."
 msgstr "Cenová hladina nie je pre tento región alebo operátora dostupná."
 
-#: webpay/bango/views.py:130
+#: webpay/bango/views.py:131
 msgid "Received Bango error"
 msgstr "Objavila sa chyba systému Bango"
 
@@ -99,6 +99,18 @@ msgstr "Platba dokončená"
 msgid "Payment cancelled"
 msgstr "Platba zrušená"
 
+#: webpay/base/templates/base.html:51
+msgid "Oops&hellip;"
+msgstr ""
+
+#: webpay/base/templates/base.html:52
+msgid "An unexpected error occurred. Please try again."
+msgstr ""
+
+#: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
+msgid "OK"
+msgstr "OK"
+
 #: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Chyba"
@@ -141,32 +153,26 @@ msgstr "Tento kľúč platby, {0}, je možné použiť len na simuláciu platieb
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
 msgstr "Kľúč \"{0}\" musí byť objekt adresy URL ako {1}"
 
-#. L10n: First and second arguements are the names of keys.
-#: webpay/pay/forms.py:100
-msgid "If {0} is defined, then you must also define {1}."
+#. L10n: First argument is the name of a key. Second
+#. argument is a number.
+#: webpay/pay/forms.py:107
+msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr ""
 
-#: webpay/pay/models.py:28
-msgid "Active"
-msgstr "Aktívny"
-
-#: webpay/pay/models.py:29
-msgid "Inactive"
-msgstr "Neaktívny"
-
-#: webpay/pay/models.py:30
-msgid "Revoked"
-msgstr "Zrušená"
+#. L10n: First and second arguements are the names of keys.
+#: webpay/pay/forms.py:114
+msgid "If {0} is defined, then you must also define {1}."
+msgstr ""
 
 #: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
 msgstr "Platby sú dočasne nedostupné."
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:71
+#: webpay/pay/views.py:156 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Zadajte PIN"
 
-#: webpay/pay/views.py:206
+#: webpay/pay/views.py:237
 msgid "Transaction has already ended."
 msgstr "Transakcia už skončila."
 
@@ -251,10 +257,6 @@ msgstr "Zabudli ste svoj PIN?"
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
 msgstr "Zadali ste príliš veľa krát nesprávny kód PIN. Váš účet je zablokovaný. Objednávku zopakujte o 5 minút."
-
-#: webpay/pin/templates/pin/pin_is_locked.html:17
-msgid "OK"
-msgstr "OK"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"

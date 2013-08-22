@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-26 15:06-0700\n"
+"POT-Creation-Date: 2013-08-13 10:12-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,15 +12,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.6.0\n"
 
-#: webpay/bango/views.py:120
+#: webpay/bango/views.py:121
 msgid "Could not record Bango error"
 msgstr "Ƈǿŭŀḓ ƞǿŧ řḗƈǿřḓ Ɓȧƞɠǿ ḗřřǿř"
 
-#: webpay/bango/views.py:127
+#: webpay/bango/views.py:128
 msgid "Price point unavailable for this region or carrier."
 msgstr "Ƥřīƈḗ ƥǿīƞŧ ŭƞȧṽȧīŀȧƀŀḗ ƒǿř ŧħīş řḗɠīǿƞ ǿř ƈȧřřīḗř."
 
-#: webpay/bango/views.py:130
+#: webpay/bango/views.py:131
 msgid "Received Bango error"
 msgstr "Řḗƈḗīṽḗḓ Ɓȧƞɠǿ ḗřřǿř"
 
@@ -106,6 +106,19 @@ msgstr "Ƥȧẏḿḗƞŧ ƈǿḿƥŀḗŧḗ"
 msgid "Payment cancelled"
 msgstr "Ƥȧẏḿḗƞŧ ƈȧƞƈḗŀŀḗḓ"
 
+#: webpay/base/templates/base.html:51
+msgid "Oops&hellip;"
+msgstr "Ǿǿƥş&hellip;"
+
+#: webpay/base/templates/base.html:52
+msgid "An unexpected error occurred. Please try again."
+msgstr "Ȧƞ ŭƞḗẋƥḗƈŧḗḓ ḗřřǿř ǿƈƈŭřřḗḓ. Ƥŀḗȧşḗ ŧřẏ ȧɠȧīƞ."
+
+#: webpay/base/templates/base.html:55
+#: webpay/pin/templates/pin/pin_is_locked.html:17
+msgid "OK"
+msgstr "ǾĶ"
+
 #: webpay/base/templates/error.html:4
 #: webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
@@ -149,33 +162,27 @@ msgstr "Ŧħīş ƥȧẏḿḗƞŧ ķḗẏ, {0}, ƈȧƞ ǿƞŀẏ ƀḗ ŭşḗ
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
 msgstr "Ŧħḗ \"{0}\" ķḗẏ ḿŭşŧ ƀḗ ȧƞ ǿƀĵḗƈŧ ǿƒ ŬŘĿş şŭƈħ ȧş {1}"
 
+#. L10n: First argument is the name of a key. Second
+#. argument is a number.
+#: webpay/pay/forms.py:107
+msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
+msgstr "Ŧħḗ ṽȧŀŭḗ ƒǿř ķḗẏ \"{0}\" ḗẋƈḗḗḓş ŧħḗ ḿȧẋīḿŭḿ ŀḗƞɠŧħ ǿƒ {1}"
+
 #. L10n: First and second arguements are the names of keys.
-#: webpay/pay/forms.py:100
+#: webpay/pay/forms.py:114
 msgid "If {0} is defined, then you must also define {1}."
 msgstr "Īƒ {0} īş ḓḗƒīƞḗḓ, ŧħḗƞ ẏǿŭ ḿŭşŧ ȧŀşǿ ḓḗƒīƞḗ {1}."
-
-#: webpay/pay/models.py:28
-msgid "Active"
-msgstr "Ȧƈŧīṽḗ"
-
-#: webpay/pay/models.py:29
-msgid "Inactive"
-msgstr "Īƞȧƈŧīṽḗ"
-
-#: webpay/pay/models.py:30
-msgid "Revoked"
-msgstr "Řḗṽǿķḗḓ"
 
 #: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
 msgstr "Ƥȧẏḿḗƞŧş ȧřḗ ŧḗḿƥǿřȧřīŀẏ ḓīşȧƀŀḗḓ."
 
-#: webpay/pay/views.py:140
+#: webpay/pay/views.py:156
 #: webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Ḗƞŧḗř Ƥīƞ"
 
-#: webpay/pay/views.py:206
+#: webpay/pay/views.py:237
 msgid "Transaction has already ended."
 msgstr "Ŧřȧƞşȧƈŧīǿƞ ħȧş ȧŀřḗȧḓẏ ḗƞḓḗḓ."
 
@@ -272,10 +279,6 @@ msgid ""
 msgstr ""
 "Ẏǿŭ ḗƞŧḗřḗḓ ŧħḗ ẇřǿƞɠ ƥīƞ ŧǿǿ ḿȧƞẏ ŧīḿḗş. Ẏǿŭř ȧƈƈǿŭƞŧ īş ŀǿƈķḗḓ. Ƥŀḗȧşḗ ŧřẏ "
 "ẏǿŭř ƥŭřƈħȧşḗ ȧɠȧīƞ īƞ 5 ḿīƞŭŧḗş."
-
-#: webpay/pin/templates/pin/pin_is_locked.html:17
-msgid "OK"
-msgstr "ǾĶ"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"

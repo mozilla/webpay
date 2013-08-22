@@ -45,6 +45,9 @@ MARKETPLACE_URL = SITE_URL
 MARKETPLACE_OAUTH = {'key': private.MARKETPLACE_OAUTH_KEY,
                      'secret': private.MARKETPLACE_OAUTH_SECRET}
 
+STATIC_URL = getattr(private, 'STATIC_URL', 'https://marketplace-cdn.allizom.org/')
+MEDIA_URL = STATIC_URL + 'mozpay/media/'
+
 HMAC_KEYS = private.HMAC_KEYS
 
 from django_sha2 import get_password_hashers
@@ -81,8 +84,6 @@ SOLITUDE_OAUTH = {'key': private.SOLITUDE_OAUTH_KEY,
                   'secret': private.SOLITUDE_OAUTH_SECRET}
 
 SENTRY_DSN = private.SENTRY_DSN
-
-ALLOWED_CALLBACK_SCHEMES = ['http', 'https']
 
 # Hook into the production web flow.
 BANGO_BASE_URL = 'https://mozilla.bango.net'

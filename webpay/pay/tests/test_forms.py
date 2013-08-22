@@ -9,7 +9,6 @@ from nose import SkipTest
 from nose.tools import eq_
 
 from webpay.pay.forms import VerifyForm
-from webpay.pay.models import ISSUER_INACTIVE
 
 from . import Base, sample
 
@@ -89,8 +88,6 @@ class TestVerifyForm(Base):
         # an active status in solitude.
         raise SkipTest
 
-        self.iss.status = ISSUER_INACTIVE
-        self.iss.save()
         payload = self.request(iss=self.key, app_secret=self.secret)
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             form = VerifyForm({'req': payload})

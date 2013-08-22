@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-26 15:06-0700\n"
+"POT-Creation-Date: 2013-08-13 10:12-0700\n"
 "PO-Revision-Date: 2013-07-27 21:21+0900\n"
 "Last-Translator: Peter Chen < petercpg@gmail.com>\n"
 "Language-Team: MozTW <petercpg@mail.moztw.org>\n"
@@ -14,15 +14,15 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: webpay/bango/views.py:120
+#: webpay/bango/views.py:121
 msgid "Could not record Bango error"
 msgstr "無法記錄 Bango 錯誤"
 
-#: webpay/bango/views.py:127
+#: webpay/bango/views.py:128
 msgid "Price point unavailable for this region or carrier."
 msgstr "此地區或業者無法使用此價格。"
 
-#: webpay/bango/views.py:130
+#: webpay/bango/views.py:131
 msgid "Received Bango error"
 msgstr "接收到 Bango 錯誤"
 
@@ -100,6 +100,18 @@ msgstr "付款完成"
 msgid "Payment cancelled"
 msgstr "已取消付款"
 
+#: webpay/base/templates/base.html:51
+msgid "Oops&hellip;"
+msgstr ""
+
+#: webpay/base/templates/base.html:52
+msgid "An unexpected error occurred. Please try again."
+msgstr ""
+
+#: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
+msgid "OK"
+msgstr "確定"
+
 #: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "錯誤"
@@ -142,32 +154,26 @@ msgstr "付款金鑰 {0} 僅能用來模擬購買。"
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
 msgstr "鍵值「{0}」必須是 URL 物件，例如 {1}"
 
+#. L10n: First argument is the name of a key. Second
+#. argument is a number.
+#: webpay/pay/forms.py:107
+msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
+msgstr ""
+
 #. L10n: First and second arguements are the names of keys.
-#: webpay/pay/forms.py:100
+#: webpay/pay/forms.py:114
 msgid "If {0} is defined, then you must also define {1}."
 msgstr "若您定義了 {0]，那麼也必須定義 {1}。"
-
-#: webpay/pay/models.py:28
-msgid "Active"
-msgstr "啟用"
-
-#: webpay/pay/models.py:29
-msgid "Inactive"
-msgstr "停用"
-
-#: webpay/pay/models.py:30
-msgid "Revoked"
-msgstr "已註銷"
 
 #: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
 msgstr "目前暫時停用付款功能。"
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:71
+#: webpay/pay/views.py:156 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "輸入 Pin 碼"
 
-#: webpay/pay/views.py:206
+#: webpay/pay/views.py:237
 msgid "Transaction has already ended."
 msgstr "交易已經結束。"
 
@@ -243,7 +249,8 @@ msgstr "重設 Pin 碼"
 msgid "Pin reset"
 msgstr "重設 Pin 碼"
 
-#. This is the same as the standard forgot password that most sites have.
+#. This is the same as the standard forgot
+#.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
 msgstr "忘記您的 Pin 碼？"
@@ -251,10 +258,6 @@ msgstr "忘記您的 Pin 碼？"
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
 msgstr "您輸入了錯誤的 Pin 碼太多次，帳號已被鎖定。請等五分鐘後再嘗試購買。"
-
-#: webpay/pin/templates/pin/pin_is_locked.html:17
-msgid "OK"
-msgstr "確定"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"

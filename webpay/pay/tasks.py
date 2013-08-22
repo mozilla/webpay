@@ -20,8 +20,7 @@ from multidb.pinning import use_master
 
 from webpay.base.helpers import absolutify
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
-from .models import (Notice, NOT_SIMULATED, SIMULATED_POSTBACK,
-                     SIMULATED_CHARGEBACK)
+from .constants import NOT_SIMULATED, SIMULATED_POSTBACK, SIMULATED_CHARGEBACK
 from .utils import send_pay_notice, trans_id
 
 log = logging.getLogger('w.pay.tasks')
@@ -33,46 +32,53 @@ class TransactionOutOfSync(Exception):
     """The transaction's state is unexpected."""
 
 
-def configure_transaction(request):
+def configure_transaction(request, trans=None):
     """
     Begins a background task to configure a payment transaction.
     """
     if settings.FAKE_PAYMENTS:
         log.info('FAKE_PAYMENTS: skipping configure payments step')
         return
-    if request.session['is_simulation']:
+    if request.session.get('is_simulation', False):
         log.info('is_simulation: skipping configure payments step')
         return
 
     try:
-        trans = client.get_transaction(uuid=request.session['trans_id'])
-        if trans['status'] == constants.STATUS_PENDING:
-            log.info('trans %s (status=%r) already configured: '
-                     'skipping configure payments step'
-                     % (request.session['trans_id'], trans['status']))
-            return
-        elif trans['status'] in constants.STATUS_RETRY_OK:
-            new_trans_id = trans_id()
-            log.info('retrying trans {0} (status={1}) as {2}'
-                     .format(request.session['trans_id'],
-                             trans['status'], new_trans_id))
-            request.session['trans_id'] = new_trans_id
-        else:
-            raise TransactionOutOfSync('cannot configure transaction {0}, '
-                                       'status={1}'.format(
-                                           request.session['trans_id'],
-                                           trans['status']))
+        if not trans:
+            trans = client.get_transaction(uuid=request.session['trans_id'])
+        log.info('attempt to reconfigure trans {0} (status={1})'
+                 .format(request.session['trans_id'], trans['status']))
     except ObjectDoesNotExist:
-        pass
+        trans = {}
+
+    if trans.get('status') in constants.STATUS_RETRY_OK:
+        new_trans_id = trans_id()
+        log.info('retrying trans {0} (status={1}) as {2}'
+                 .format(request.session['trans_id'],
+                         trans['status'], new_trans_id))
+        request.session['trans_id'] = new_trans_id
+
+    if request.session.get('configured_trans') == request.session['trans_id']:
+        log.info('trans %s (status=%r) already configured: '
+                 'skipping configure payments step'
+                 % (request.session['trans_id'], trans.get('status')))
+        return
+
+    # Prevent configuration from running twice.
+    request.session['configured_trans'] = request.session['trans_id']
 
     # Localize the product before sending it off to solitude/bango.
     _localize_pay_request(request)
 
-    log.info('configuring payment in background for trans {0}'
-             .format(request.session['trans_id']))
+    log.info('configuring payment in background for trans {0} (status={1})'
+             .format(request.session['trans_id'], trans.get('trans_id')))
     start_pay.delay(request.session['trans_id'],
                     request.session['notes'],
                     request.session['uuid'])
+
+    # We passed notes to start_pay (which saves it to the transaction
+    # object), so delete it from the session to save cookie space.
+    del request.session['notes']
 
 
 def _localize_pay_request(request):
@@ -354,13 +360,6 @@ def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED,
     success, last_error = send_pay_notice(url, trans['type'], signed_notice,
                                           trans['uuid'], notifier_task,
                                           task_args, simulated=simulated)
-    s = Notice._meta.get_field_by_name('last_error')[0].max_length
-    last_error = last_error[:s]  # truncate to fit
-    Notice.objects.create(transaction_uuid=trans['uuid'],
-                          success=success,
-                          url=url,
-                          simulated=simulated,
-                          last_error=last_error)
 
 
 def _prepare_notice(trans):

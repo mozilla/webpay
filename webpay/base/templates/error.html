@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 
+{% block body_attrs -%}
+  class="full-error"
+{%- endblock %}
+
 {% block content %}
-  <h2>{{ _('Error') }}</h2>
-  <p class="centered">{{ error }}</p>
-  <p class="centered">
+  <div class="msg">
+    <h2>{{ _('Error') }}</h2>
+    <p>{{ error }}</p>
+  </div>
+  <footer>
     <a class="button cancel-button" href="#">
       {{ _('Cancel') }}
     </a>
-  </p>
+  </footer>
 {% endblock %}

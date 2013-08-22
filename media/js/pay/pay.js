@@ -2,7 +2,14 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
     "use strict";
 
     var bodyData = cli.bodyData;
+
+    var LOGOUTTIMEOUT = parseInt(bodyData.logoutTimeout, 10);
+
     var $doc = cli.doc;
+    var $body = $doc.find('body');
+    var $pinEntry = $('#enter-pin');
+    var $errorScreen = $('#full-screen-error');
+
     // Elements to be labelled if longtext is detected.
     var $longTextElms = $('footer, body');
     // Elements to be checked for overflowing text.
@@ -17,6 +24,7 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
         console.log('[pay] default onLogout');
         auth.resetUser();
         cli.hideProgress();
+        $pinEntry.hide();
         $('#login').fadeIn();
     };
 
@@ -105,9 +113,8 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
         // "paymentFailed" functions within a "mozPaymentProvider" object
         // instead of injecting them in the global scope. So we need to support
         // both APIs.
-        var paymentSuccess = ((window.mozPaymentProvider &&
-                               window.mozPaymentProvider.paymentSuccess) ||
-                               window.paymentSuccess);
+        var paymentSuccess = (cli.mozPaymentProvider.paymentSuccess ||
+                              window.paymentSuccess);
         // After Bug 843309 landed, there should not be any delay before the
         // mozPaymentProvider API is injected into scope, but we keep the
         // polling loop as a safe guard.
@@ -122,42 +129,81 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
     }
 
     $('#forgot-pin').click(function(evt) {
-        var anchor = $(this);
-        var bangoReq;
-        var personaLoggedOut = $.Deferred();
 
+        var anchor = $(this);
         evt.stopPropagation();
         evt.preventDefault();
+
         cli.showProgress();
 
-        // Define a new logout handler.
-        onLogout = function() {
-            console.log('[pay] forgot-pin onLogout');
-            // It seems necessary to nullify the logout handler because
-            // otherwise it is held in memory and called on the next page.
+        function runForgotPinLogout() {
+            var bangoReq;
+            var personaLoggedOut = $.Deferred();
+
+            // Define a new logout handler.
             onLogout = function() {
-                console.log('[pay] null onLogout');
+                console.log('[pay] forgot-pin onLogout');
+                // It seems necessary to nullify the logout handler because
+                // otherwise it is held in memory and called on the next page.
+                onLogout = function() {
+                    console.log('[pay] null onLogout');
+                };
+                personaLoggedOut.resolve();
             };
-            personaLoggedOut.resolve();
-        };
 
-        $.when(auth.resetUser(), bango.logout(), personaLoggedOut)
-            .done(function _allLoggedOut() {
-                // Redirect to the original destination.
-                var dest = anchor.attr('href');
-                console.log('[pay] forgot-pin logout done; redirect to', dest);
-                window.location.href = dest;
-            });
+            // Logout promises.
+            var authResetUser = auth.resetUser();
+            var bangoLogout = bango.logout();
 
-        // Finally, log out of Persona so that the user has to
-        // re-authenticate before resetting a PIN.
-        if (loggedIn) {
-            console.log('[pay] Logging out of Persona');
-            navigator.id.logout();
-        } else {
-            console.log('[pay] Already logged out of Persona, calling onLogout ourself.');
-            onLogout();
+            var resetLogoutTimeout = window.setTimeout(function() {
+                // If the log-out times-out then abort/reject the requests/deferred.
+                console.log('[pay] logout timed-out');
+                authResetUser.abort();
+                bangoLogout.abort();
+                personaLoggedOut.reject();
+            }, LOGOUTTIMEOUT);
+
+            $.when(authResetUser, bangoLogout,  personaLoggedOut)
+                .done(function _allLoggedOut() {
+                    window.clearTimeout(resetLogoutTimeout);
+                    // Redirect to the original destination.
+                    var dest = anchor.attr('href');
+                    console.log('[pay] forgot-pin logout done; redirect to', dest);
+                    window.location.href = dest;
+                })
+                .fail(function _failedLogout() {
+                    // Called when we manually abort everything
+                    // or if something fails.
+                    window.clearTimeout(resetLogoutTimeout);
+                    cli.hideProgress();
+                    $pinEntry.hide();
+                    $body.addClass('full-error');
+                    $errorScreen.show();
+
+                    // Setup click handler for one time use.
+                    $errorScreen.find('.button').one('click', function(e){
+                        e.stopPropagation();
+                        e.preventDefault();
+
+                        cli.showProgress();
+                        $errorScreen.hide();
+                        $body.removeClass('full-error');
+                        $pinEntry.show();
+                        runForgotPinLogout();
+                    });
+                });
+
+            // Finally, log out of Persona so that the user has to
+            // re-authenticate before resetting a PIN.
+            if (loggedIn) {
+                console.log('[pay] Logging out of Persona');
+                navigator.id.logout();
+            } else {
+                console.log('[pay] Already logged out of Persona, calling onLogout ourself.');
+                onLogout();
+            }
         }
+        runForgotPinLogout();
     });
 
 });

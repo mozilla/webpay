@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-26 15:06-0700\n"
+"POT-Creation-Date: 2013-08-13 10:12-0700\n"
 "PO-Revision-Date: 2013-01-08 08:50-0700\n"
 "Last-Translator: Mihail Chilyashev\n"
 "Language-Team: Bulgarian (bg)\n"
@@ -13,15 +13,15 @@ msgstr ""
 "X-Generator: Translate Toolkit 1.9.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: webpay/bango/views.py:120
+#: webpay/bango/views.py:121
 msgid "Could not record Bango error"
 msgstr "Bango грешката не можа да бъде записана"
 
-#: webpay/bango/views.py:127
+#: webpay/bango/views.py:128
 msgid "Price point unavailable for this region or carrier."
 msgstr "Ценова точка не е налична за този регион или доставчик."
 
-#: webpay/bango/views.py:130
+#: webpay/bango/views.py:131
 msgid "Received Bango error"
 msgstr "Получена грешка от Bango"
 
@@ -99,6 +99,18 @@ msgstr "Плащането завършено"
 msgid "Payment cancelled"
 msgstr "Плащането отказано"
 
+#: webpay/base/templates/base.html:51
+msgid "Oops&hellip;"
+msgstr ""
+
+#: webpay/base/templates/base.html:52
+msgid "An unexpected error occurred. Please try again."
+msgstr ""
+
+#: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
+msgid "OK"
+msgstr "ОК"
+
 #: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Грешка"
@@ -111,7 +123,7 @@ msgstr "Грешка при зареждането на JWT: {0}"
 #. L10n: first argument is a data type, such as <unicode>
 #: webpay/pay/forms.py:42
 msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr ""
+msgstr "JWT не се декодира до JSON обект. Типът му беше {0}."
 
 #: webpay/pay/forms.py:52
 msgid "Payment simulations are disabled at this time."
@@ -141,32 +153,26 @@ msgstr "Ключът {0} може да се използва само за си�
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
 msgstr "Ключът \"{0}\" трябва да е обект от URL, например {1}"
 
-#. L10n: First and second arguements are the names of keys.
-#: webpay/pay/forms.py:100
-msgid "If {0} is defined, then you must also define {1}."
+#. L10n: First argument is the name of a key. Second
+#. argument is a number.
+#: webpay/pay/forms.py:107
+msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr ""
 
-#: webpay/pay/models.py:28
-msgid "Active"
-msgstr "Активен"
-
-#: webpay/pay/models.py:29
-msgid "Inactive"
-msgstr "Неактивен"
-
-#: webpay/pay/models.py:30
-msgid "Revoked"
-msgstr "Отнет"
+#. L10n: First and second arguements are the names of keys.
+#: webpay/pay/forms.py:114
+msgid "If {0} is defined, then you must also define {1}."
+msgstr "Ако {0} е дефиниран, трябва да дефинирате и {1}."
 
 #: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
 msgstr "Плащанията са временно спрени"
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:71
+#: webpay/pay/views.py:156 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Въведете ПИН"
 
-#: webpay/pay/views.py:206
+#: webpay/pay/views.py:237
 msgid "Transaction has already ended."
 msgstr "Транзакцията вече е приключила"
 
@@ -200,15 +206,15 @@ msgstr "Продължи"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "Имате супер сили"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr ""
+msgstr "Симулирай плащане"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr ""
+msgstr "Направи истинско плащане"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
@@ -251,10 +257,6 @@ msgstr "Забравили сте вашия ПИН?"
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
 msgstr "Въвели сте грешен ПИН прекалено много пъти. Акаунтът ви е заключен. Моля, опитайте покупката си отново след 5 минути."
-
-#: webpay/pin/templates/pin/pin_is_locked.html:17
-msgid "OK"
-msgstr "ОК"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"

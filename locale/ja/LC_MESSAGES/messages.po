@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-26 15:06-0700\n"
-"PO-Revision-Date: 2013-06-29 03:23+0900\n"
+"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"PO-Revision-Date: 2013-08-14 17:46-0400\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -13,15 +13,15 @@ msgstr ""
 "X-Generator: Translate Toolkit 1.9.0\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: webpay/bango/views.py:120
+#: webpay/bango/views.py:121
 msgid "Could not record Bango error"
 msgstr "Bango のエラーを記録できませんでした"
 
-#: webpay/bango/views.py:127
+#: webpay/bango/views.py:128
 msgid "Price point unavailable for this region or carrier."
 msgstr "この地域もしくはこのキャリア向けの価格は設定されていません"
 
-#: webpay/bango/views.py:130
+#: webpay/bango/views.py:131
 msgid "Received Bango error"
 msgstr "Bango のエラーを受信しました"
 
@@ -99,6 +99,18 @@ msgstr "支払いが完了しました"
 msgid "Payment cancelled"
 msgstr "支払いがキャンセルされました"
 
+#: webpay/base/templates/base.html:51
+msgid "Oops&hellip;"
+msgstr "おっと..."
+
+#: webpay/base/templates/base.html:52
+msgid "An unexpected error occurred. Please try again."
+msgstr "予期せぬ問題が発生しました。また後で試してください。"
+
+#: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
+msgid "OK"
+msgstr "OK"
+
 #: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "エラー"
@@ -141,32 +153,26 @@ msgstr "この支払いキー {0} はシミュレーション目的にしか使�
 msgid "The \"{0}\" key must be an object of URLs such as {1}"
 msgstr "{0} キーは {1} のような URL のオブジェクトでなければなりません"
 
+#. L10n: First argument is the name of a key. Second
+#. argument is a number.
+#: webpay/pay/forms.py:107
+msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
+msgstr "キー「{0}」の値が最大文字数 {1} を超えています"
+
 #. L10n: First and second arguements are the names of keys.
-#: webpay/pay/forms.py:100
+#: webpay/pay/forms.py:114
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
-
-#: webpay/pay/models.py:28
-msgid "Active"
-msgstr "有効"
-
-#: webpay/pay/models.py:29
-msgid "Inactive"
-msgstr "無効"
-
-#: webpay/pay/models.py:30
-msgid "Revoked"
-msgstr "キャンセル"
+msgstr "{0} を定義する場合、{1} も併せて定義する必要があります。"
 
 #: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
 msgstr "支払いは一時的に無効化されています。"
 
-#: webpay/pay/views.py:140 webpay/pin/views.py:71
+#: webpay/pay/views.py:156 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "暗証番号を入力"
 
-#: webpay/pay/views.py:206
+#: webpay/pay/views.py:237
 msgid "Transaction has already ended."
 msgstr "トランザクションは既に終了しています。"
 
@@ -200,15 +206,15 @@ msgstr "続ける"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "あなたは特権を持っています"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr ""
+msgstr "支払いをシミュレーションする"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr ""
+msgstr "実際の支払いを行う"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
@@ -251,10 +257,6 @@ msgstr "暗証番号を忘れた場合"
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
 msgstr "間違った暗証番号が何度も入力されたため、あなたのアカウントはロックされました。5 分後にまた試してください。"
-
-#: webpay/pin/templates/pin/pin_is_locked.html:17
-msgid "OK"
-msgstr "OK"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"

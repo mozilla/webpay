@@ -230,7 +230,7 @@ LOGGING = {
     },
     'handlers': {
         'unicodesyslog': {
-            'class': 'webpay.unicode_log.UnicodeHandler',
+            'class': 'mozilla_logger.log.UnicodeHandler',
             'facility': logging.handlers.SysLogHandler.LOG_LOCAL7,
             'formatter': 'prod',
         },
@@ -350,6 +350,8 @@ USE_PRODUCT_ICONS = True
 PIN_UNLOCK_LENGTH = 300
 
 # The schemes that are allowed in callbacks.
+# Historically, app postbacks were required to be HTTPS in prod but we reversed
+# that decision. See bug 862588.
 ALLOWED_CALLBACK_SCHEMES = ['http', 'https']
 
 # When we are ready to having curling format lists for us, flip this to True.
@@ -368,11 +370,6 @@ ALLOW_SIMULATE = True
 # When passing a simulate request, the result must match one of these.
 ALLOWED_SIMULATIONS = ('postback', 'chargeback')
 
-# Special just for potch! When True, it lets you hit the main page without
-# a JWT. You can create/enter PINs but it won't let you get very far beyond
-# that.
-TEST_PIN_UI = False
-
 # If True, only simulated payments can be processed. All other requests will
 # result in an error.
 ONLY_SIMULATIONS = False
@@ -380,6 +377,11 @@ ONLY_SIMULATIONS = False
 # When True, allow Marketplace admins and reviewers to force a simulated payment
 # if needed.
 ALLOW_ADMIN_SIMULATIONS = False
+
+# Special just for front-end folks! When True, it lets you hit the main page
+# without a JWT. You can create/enter PINs but it won't let you get very far
+# beyond that.
+TEST_PIN_UI = False
 
 # If empty, all users will be allowed through.
 # If not empty, each string will be compiled as a regular expression
@@ -404,3 +406,6 @@ PRODUCT_DESCRIPTION_LENGTH = 255
 # 'name') that have an implied short length. Values that exceed the maximum will
 # trigger form errors.
 SHORT_FIELD_MAX_LENGTH = 255
+
+# The timeout for the client-side logout in pay.js in millseconds.
+LOGOUT_TIMEOUT = 30000

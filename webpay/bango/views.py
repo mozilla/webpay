@@ -1,3 +1,4 @@
+import urllib
 import uuid
 
 from django.conf import settings
@@ -149,11 +150,20 @@ def notification(request):
         log.info('Header given but invalid')
         return HttpResponseForbidden(request)
 
+    # This should help figure out why.
+    log.info('Bango notification encoding={0.encoding} '
+             'content_type={0.META[CONTENT_TYPE]} POST keys={1}'
+             .format(request, request.POST.keys()))
+
+    # We want to send XML as bytes to Solitude.
+    notice = request.POST['XML'].encode('utf8')
+    log.debug('Bango notice: {0}'.format(repr(notice)))
+
     try:
         # Just take the whole request and stuff into JSON for passing down
         # the pipe.
         client.slumber.bango.event.post({
-            'notification': request.raw_post_data,
+            'notification': notice,
             'password': password,
             'username': username
         })

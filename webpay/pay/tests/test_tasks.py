@@ -25,7 +25,6 @@ from lib.solitude import api
 from lib.solitude import constants
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from webpay.pay import tasks
-from webpay.pay.models import Notice, SIMULATED_POSTBACK, SIMULATED_CHARGEBACK
 from webpay.pay.samples import JWTtester
 
 from .test_views import sample
@@ -90,10 +89,6 @@ class TestNotifyApp(NotifyTest):
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
         self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.transaction_uuid, self.trans_uuid)
-        eq_(notice.success, True)
-        eq_(notice.url, url)
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -117,10 +112,6 @@ class TestNotifyApp(NotifyTest):
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
         self.do_chargeback('refund')
-        notice = Notice.objects.get()
-        eq_(notice.transaction_uuid, self.trans_uuid)
-        eq_(notice.success, True)
-        eq_(notice.url, url)
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -139,10 +130,6 @@ class TestNotifyApp(NotifyTest):
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
         self.do_chargeback('reversal')
-        notice = Notice.objects.get()
-        eq_(notice.transaction_uuid, self.trans_uuid)
-        eq_(notice.last_error, '')
-        eq_(notice.success, True)
 
     @mock.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -160,10 +147,6 @@ class TestNotifyApp(NotifyTest):
         self.set_secret_mock(solitude, 'f')
         requests.post.side_effect = Timeout('Timeout')
         self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.success, False)
-        er = notice.last_error
-        assert 'Timeout' in er, 'Unexpected: %s' % er
 
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.payment_notify.retry')
@@ -182,10 +165,6 @@ class TestNotifyApp(NotifyTest):
         self.set_secret_mock(solitude, 'f')
         fake_req.expects('post').raises(RequestException('some http error'))
         self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.success, False)
-        er = notice.last_error
-        assert 'some http error' in er, 'Unexpected: %s' % er
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -198,10 +177,6 @@ class TestNotifyApp(NotifyTest):
                                  .raises(urllib2.HTTPError('url', 500, 'Error',
                                                            [], None)))
         self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.success, False)
-        er = notice.last_error
-        assert 'HTTP Error' in er, 'Unexpected: %s' % er
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -211,8 +186,6 @@ class TestNotifyApp(NotifyTest):
                                  .provides('raise_for_status')
                                  .has_attr(text='<not a valid response>'))
         self.notify()
-        notice = Notice.objects.get()
-        eq_(notice.success, False)
 
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.utils.requests')
@@ -298,11 +271,6 @@ class TestSimulatedNotifications(NotifyTest):
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
         self.notify(payload)
-        notice = Notice.objects.get()
-        assert notice.transaction_uuid, notice
-        eq_(notice.success, True)
-        eq_(notice.url, url)
-        eq_(notice.simulated, SIMULATED_POSTBACK)
 
     @fudge.patch('webpay.pay.utils.requests')
     def test_chargeback(self, slumber, fake_req):
@@ -325,11 +293,6 @@ class TestSimulatedNotifications(NotifyTest):
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
         self.notify(payload)
-        notice = Notice.objects.get()
-        assert notice.transaction_uuid, notice
-        eq_(notice.success, True)
-        eq_(notice.url, url)
-        eq_(notice.simulated, SIMULATED_CHARGEBACK)
 
     @fudge.patch('webpay.pay.utils.requests')
     def test_chargeback_reason(self, slumber, fake_req):
@@ -537,7 +500,6 @@ class TestStartPay(BaseStartPay):
         eq_(solitude.bango.billing.post.call_args[0][0]['application_size'],
             application_size)
 
-
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
     @mock.patch('lib.solitude.api.client.slumber')
     def test_marketplace_wrong_application_size(self, solitude):
@@ -555,7 +517,6 @@ class TestStartPay(BaseStartPay):
         eq_(solitude.bango.billing.post.call_args[0][0]['application_size'],
             None)
 
-
     @raises(ValueError)
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
     @mock.patch('lib.solitude.api.client.api')
@@ -568,9 +529,27 @@ class TestStartPay(BaseStartPay):
 
 class TestConfigureTransaction(BaseStartPay):
 
+    def setUp(self):
+        super(TestConfigureTransaction, self).setUp()
+
+        p = mock.patch('webpay.pay.tasks.client')
+        self.solitude = p.start()
+        self.addCleanup(p.stop)
+
+        p = mock.patch('lib.marketplace.api.client.api')
+        self.mkt = p.start()
+        self.addCleanup(p.stop)
+
+        p = mock.patch('webpay.pay.tasks.start_pay.delay')
+        self.start_pay = p.start()
+        self.addCleanup(p.stop)
+
     @mock.patch('lib.solitude.api.client')
     @mock.patch('lib.marketplace.api.client.api')
-    def start(self, marketplace, solitude, locale=None):
+    def start(self, marketplace, solitude, locale=None,
+              session=None):
+        if session is None:
+            session = {}
         prices = mock.Mock()
         prices.get_object.return_value = self.prices
         marketplace.webpay.prices.return_value = prices
@@ -583,55 +562,44 @@ class TestConfigureTransaction(BaseStartPay):
         request = RequestFactory().get('/')
         if locale:
             request.locale = locale
-        request.session = {}
+        request.session = session
         request.session['trans_id'] = self.transaction_uuid
         request.session['notes'] = self.notes
         request.session['is_simulation'] = False
         request.session['uuid'] = self.user_uuid
         tasks.configure_transaction(request)
 
-    @mock.patch('webpay.pay.tasks.client')
-    @mock.patch('lib.marketplace.api.client.api')
-    @mock.patch('webpay.pay.tasks.start_pay.delay')
-    def test_prevent_restarting_pending(self, start_pay, marketplace,
-                                        solitude):
-        solitude.get_transaction.return_value = {
-            'status': constants.STATUS_PENDING,
-            'resource_pk': '1'}
-        self.start()
-        assert not start_pay.called
+    def test_prevent_reconfiguring_transaction(self):
+        self.solitude.side_effect = ObjectDoesNotExist
+        session = {}
+        self.start(session=session)
+        self.start(session=session)  # Second call should do nothing.
+        eq_(self.start_pay.call_count, 1)
 
-    @mock.patch('webpay.pay.tasks.client')
-    @mock.patch('lib.marketplace.api.client.api')
-    @mock.patch('webpay.pay.tasks.start_pay.delay')
-    def test_restart_certain_transactions(self, start_pay, marketplace,
-                                          solitude):
+    def test_restart_certain_transactions(self):
         for st in constants.STATUS_RETRY_OK:
-            solitude.get_transaction.return_value = {
-                'status': st, 'resource_pk': '1'}
+            self.solitude.get_transaction.return_value = {
+                'status': st, 'resource_pk': '1',
+                'notes': {}
+            }
             self.start()
-            assert start_pay.called, 'Expected start_pay for status %s' % st
-            assert start_pay.call_args[0][0] != self.transaction_uuid, (
+            assert self.start_pay.called, (
+                'Expected start_pay for status %s' % st)
+            assert self.start_pay.call_args[0][0] != self.transaction_uuid, (
                 'Expected a new transaction ID')
 
-    @mock.patch('webpay.pay.tasks.client')
-    @mock.patch('lib.marketplace.api.client.api')
-    @mock.patch('webpay.pay.tasks.start_pay.delay')
-    def test_abort_non_retriable_transactions(self, start_pay, marketplace,
-                                              solitude):
-        for st in (constants.STATUS_COMPLETED,
-                   constants.STATUS_RECEIVED):
-            solitude.get_transaction.return_value = {
-                'status': st, 'resource_pk': '1'}
-            with self.assertRaises(tasks.TransactionOutOfSync):
-                self.start()
+    def test_retry_trans_even_when_configured(self):
+        self.solitude.get_transaction.return_value = {
+            # Failed transactions are ok to retry.
+            'status': constants.STATUS_FAILED, 'resource_pk': '1',
+            'notest': {}
+        }
+        session = {}
+        self.start(session=session)
+        self.start(session=session)  # Second call should still configure.
+        eq_(self.start_pay.call_count, 2)
 
-    @mock.patch('webpay.pay.tasks.client')
-    @mock.patch('lib.marketplace.api.client.api')
-    @mock.patch('webpay.pay.tasks.start_pay.delay')
-    def test_use_locale_name(self, start_pay, marketplace, solitude):
-        solitude.get_transaction.return_value = {
-            'status': constants.STATUS_CANCELLED, 'resource_pk': '1'}
+    def test_use_locale_name(self):
         name = 'Die App Հ'
         description = 'Die beste Beschreibung.'
         self.notes['pay_request']['request']['locales'] = {
@@ -640,12 +608,18 @@ class TestConfigureTransaction(BaseStartPay):
                 'description': description
             }
         }
+        self.solitude.get_transaction.return_value = {
+            'status': constants.STATUS_CANCELLED, 'resource_pk': '1',
+            'notes': self.notes
+        }
         self.start(locale='de')
+        start_pay = self.start_pay
         assert start_pay.called
         eq_(start_pay.call_args[0][1]['pay_request']['request']['name'],
             name)
         eq_(start_pay.call_args[0][1]['pay_request']['request']['description'],
             description)
+
 
 class TestLocalizePayRequest(test_utils.TestCase):
 
@@ -780,15 +754,14 @@ class TestConfigureTrans(test.TestCase):
         sess['uuid'] = 'some-email-token'
         patch = mock.patch('webpay.pay.tasks.start_pay')
         self.start_pay = patch.start()
-        self.patches = [patch]
-
-    def tearDown(self):
-        for p in self.patches:
-            p.stop()
+        self.addCleanup(patch.stop)
 
     def test_configure(self):
         self.configure()
         assert self.start_pay.delay.called
+        assert 'notes' not in self.request.session, (
+                'notes should be deleted from session after '
+                'passing it to start_pay')
 
     def test_skip_when_fake(self):
         with self.settings(FAKE_PAYMENTS=True):
