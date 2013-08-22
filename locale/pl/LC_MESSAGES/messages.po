@@ -102,11 +102,11 @@ msgstr "Anulowano płatność"
 
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
-msgstr ""
+msgstr "Ups&hellip;"
 
 #: webpay/base/templates/base.html:52
 msgid "An unexpected error occurred. Please try again."
-msgstr ""
+msgstr "Wystąpił niespodziewany błąd. Spróbuj ponownie później."
 
 #: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -158,7 +158,7 @@ msgstr "Klucz „{0}” musi być obiektem URL, takim jak {1}"
 #. argument is a number.
 #: webpay/pay/forms.py:107
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
+msgstr "Wartość klucza „{0}” przekracza maksymalną długość {1}"
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:114
