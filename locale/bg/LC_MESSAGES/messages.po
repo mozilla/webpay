@@ -101,11 +101,11 @@ msgstr "Плащането отказано"
 
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
-msgstr ""
+msgstr "Опа...&hellip;"
 
 #: webpay/base/templates/base.html:52
 msgid "An unexpected error occurred. Please try again."
-msgstr ""
+msgstr "Възникна неочаквана грешка. Моля, опитайте отново."
 
 #: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -157,7 +157,7 @@ msgstr "Ключът \"{0}\" трябва да е обект от URL, напр�
 #. argument is a number.
 #: webpay/pay/forms.py:107
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
+msgstr "Стойността за ключ \"{0}\" превишава максималната дължина на {1}"
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/pay/forms.py:114
