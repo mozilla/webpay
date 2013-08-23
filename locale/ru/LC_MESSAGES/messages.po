@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"POT-Creation-Date: 2013-08-23 10:01-0700\n"
 "PO-Revision-Date: 2013-07-29 23:37+0400\n"
 "Last-Translator: Alexander L. Slovesnik <unghost@mozilla-russia.org>\n"
 "Language-Team: none\n"
@@ -25,7 +25,7 @@ msgstr "Стандартная цена недоступна для этого �
 msgid "Received Bango error"
 msgstr "Получена ошибка Bango"
 
-#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "Платёж отменён."
 
@@ -45,7 +45,7 @@ msgstr "Не разрешено"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Извините, вам не разрешено это делать."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:14 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Отмена"
@@ -95,10 +95,6 @@ msgstr "Соединение с Persona"
 msgid "Payment complete"
 msgstr "Платёж завершён"
 
-#: webpay/base/templates/base.html:34
-msgid "Payment cancelled"
-msgstr "Платёж отменён"
-
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
 msgstr ""
@@ -111,7 +107,7 @@ msgstr ""
 msgid "OK"
 msgstr "OK"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Ошибка"
 

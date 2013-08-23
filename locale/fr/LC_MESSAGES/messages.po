@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"POT-Creation-Date: 2013-08-23 10:01-0700\n"
 "PO-Revision-Date: 2013-08-18 18:04+0200\n"
 "Last-Translator: Alexandre Lissy <lissyx@mozfr.org>\n"
 "Language-Team: français <>\n"
@@ -28,12 +28,11 @@ msgstr "Tarif indisponible pour cette région ou cet opérateur."
 msgid "Received Bango error"
 msgstr "Une erreur Bango est survenue"
 
-#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "Paiement annulé."
 
-#: webpay/bango/templates/bango/success.html:10
-#: webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
 msgstr "Votre paiement est complet."
 
@@ -49,10 +48,7 @@ msgstr "Non autorisé"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Désolé, vous n'êtes pas autorisé à faire ceci."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8
-#: webpay/pay/templates/pay/simulate.html:18
-#: webpay/pin/templates/pin/pin_form.html:34
-#: webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:14 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Annuler"
@@ -102,10 +98,6 @@ msgstr "Connection à Persona"
 msgid "Payment complete"
 msgstr "Paiement complété"
 
-#: webpay/base/templates/base.html:34
-msgid "Payment cancelled"
-msgstr "Paiement annulé"
-
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
 msgstr "Oops &hellip;"
@@ -114,13 +106,11 @@ msgstr "Oops &hellip;"
 msgid "An unexpected error occurred. Please try again."
 msgstr "Une erreur inattendue s'est produite. Merci de réessayer."
 
-#: webpay/base/templates/base.html:55
-#: webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "Ok"
 
-#: webpay/base/templates/error.html:4
-#: webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Erreur"
 
@@ -154,8 +144,7 @@ msgstr "Personne n'a été enregistré pour gérer JWT {0}."
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:83
 msgid "This payment key, {0}, can only be used to simulate purchases."
-msgstr ""
-"La clef de paiement, {0}, ne peut être utilisée que pour simuler des achats."
+msgstr "La clef de paiement, {0}, ne peut être utilisée que pour simuler des achats."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is an example of the proper key format.
@@ -198,8 +187,7 @@ msgstr "Connectez-vous pour continuer le paiement"
 msgid "Sign in"
 msgstr "Connexion"
 
-#: webpay/pay/templates/pay/simulate.html:7
-#: webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Simuler le paiement"
 
@@ -211,9 +199,7 @@ msgstr "Aucun prélèvement ne sera effectué."
 msgid "result"
 msgstr "résultat"
 
-#: webpay/pay/templates/pay/simulate.html:20
-#: webpay/pin/templates/pin/pin_form.html:41
-#: webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Continuer"
 
@@ -253,8 +239,7 @@ msgstr "Créer un code PIN"
 msgid "Confirm Pin"
 msgstr "Confirmer le code PIN"
 
-#: webpay/pin/views.py:95 webpay/pin/views.py:114
-#: webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Remise à zéro du code PIN"
 
@@ -264,39 +249,25 @@ msgstr "Remise à zéro du code PIN"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:26
-#: webpay/pin/templates/pin/reset_start.html:12
+#: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
 msgstr "Code PIN oublié ?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
-msgid ""
-"You entered the wrong pin too many times. Your account is locked. Please try "
-"your purchase again in 5 minutes."
-msgstr ""
-"Vous avez entré le mauvais code PIN trop de fois de suite. Votre compte est "
-"verrouillé. Merci de réessayer votre achat dans 5 minutes."
+msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
+msgstr "Vous avez entré le mauvais code PIN trop de fois de suite. Votre compte est verrouillé. Merci de réessayer votre achat dans 5 minutes."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
 msgstr "Votre code PIN était verrouillé"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
-msgid ""
-"Your pin was locked because you entered it incorrectly too many times. You "
-"can continue and try entering your pin again or reset your pin."
-msgstr ""
-"Votre code PIN était bloqué suite à trop de tentatives erronées. Vous pouvez "
-"continuer et essayer d'entrer votre code PIN encore, ou bien le remettre à "
-"zéro."
+msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
+msgstr "Votre code PIN était bloqué suite à trop de tentatives erronées. Vous pouvez continuer et essayer d'entrer votre code PIN encore, ou bien le remettre à zéro."
 
 #: webpay/pin/templates/pin/reset_start.html:13
-msgid ""
-"Are you sure you want to reset your pin? You must sign in to Persona to "
-"reset your pin."
-msgstr ""
-"Êtes-vous sûr de vouloir remettre à zéro votre code PIN ? Vous devez vous "
-"connecter avec Persona pour la remise à zéro."
+msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
+msgstr "Êtes-vous sûr de vouloir remettre à zéro votre code PIN ? Vous devez vous connecter avec Persona pour la remise à zéro."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"POT-Creation-Date: 2013-08-23 10:01-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,6 +25,7 @@ msgid "Received Bango error"
 msgstr "Řḗƈḗīṽḗḓ Ɓȧƞɠǿ ḗřřǿř"
 
 #: webpay/bango/templates/bango/cancel.html:10
+#: webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "Ƥȧẏḿḗƞŧ ƈȧƞƈḗŀŀḗḓ."
 
@@ -47,7 +48,7 @@ msgid "Sorry, you are not allowed to do that."
 msgstr "Şǿřřẏ, ẏǿŭ ȧřḗ ƞǿŧ ȧŀŀǿẇḗḓ ŧǿ ḓǿ ŧħȧŧ."
 
 #: webpay/base/templates/403.html:8
-#: webpay/base/templates/error.html:8
+#: webpay/base/templates/error.html:14
 #: webpay/pay/templates/pay/simulate.html:18
 #: webpay/pin/templates/pin/pin_form.html:34
 #: webpay/pin/templates/pin/pin_form.html:38
@@ -102,10 +103,6 @@ msgstr "Ƈǿƞƞḗƈŧīƞɠ ŧǿ Ƥḗřşǿƞȧ"
 msgid "Payment complete"
 msgstr "Ƥȧẏḿḗƞŧ ƈǿḿƥŀḗŧḗ"
 
-#: webpay/base/templates/base.html:34
-msgid "Payment cancelled"
-msgstr "Ƥȧẏḿḗƞŧ ƈȧƞƈḗŀŀḗḓ"
-
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
 msgstr "Ǿǿƥş&hellip;"
@@ -119,7 +116,7 @@ msgstr "Ȧƞ ŭƞḗẋƥḗƈŧḗḓ ḗřřǿř ǿƈƈŭřřḗḓ. Ƥŀḗȧ
 msgid "OK"
 msgstr "ǾĶ"
 
-#: webpay/base/templates/error.html:4
+#: webpay/base/templates/error.html:9
 #: webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Ḗřřǿř"

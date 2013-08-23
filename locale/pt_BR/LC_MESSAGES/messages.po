@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: marketplace-webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"POT-Creation-Date: 2013-08-23 10:01-0700\n"
 "PO-Revision-Date: 2013-07-19 12:28-0300\n"
 "Last-Translator: Fernando Pereira Silveira <fernandopsilveira@yahoo.com.br>\n"
 "Language-Team: Português (Brasil) <dev-l10n-pt-br@lists.mozilla.org>\n"
@@ -28,7 +28,7 @@ msgstr "O preço está indisponível para esta região ou operadora."
 msgid "Received Bango error"
 msgstr "Erro do Bango recebido"
 
-#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "Pagamento cancelado."
 
@@ -48,7 +48,7 @@ msgstr "Não permitido"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Desculpe, mas você não tem permissão para fazer isso."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:14 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Cancelar"
@@ -98,10 +98,6 @@ msgstr "Conectando-se ao Persona"
 msgid "Payment complete"
 msgstr "Pagamento concluído"
 
-#: webpay/base/templates/base.html:34
-msgid "Payment cancelled"
-msgstr "Pagamento cancelado"
-
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
 msgstr ""
@@ -114,7 +110,7 @@ msgstr ""
 msgid "OK"
 msgstr "OK"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Erro"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"POT-Creation-Date: 2013-08-23 10:01-0700\n"
 "PO-Revision-Date: 2013-01-08 08:50-0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -25,7 +25,7 @@ msgstr "Το σημείο τιμών δεν είναι διαθέσιμο για
 msgid "Received Bango error"
 msgstr "Ελήφθη σφάλμα Bango"
 
-#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "Η πληρωμή ακυρώθηκε."
 
@@ -45,7 +45,7 @@ msgstr "Μη επιτρεπτό"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Συγγνώμη, δεν επιτρέπεται η ενέργεια αυτή από μέρους σας."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:14 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Ακύρωση"
@@ -95,10 +95,6 @@ msgstr "Σύνδεση στο Persona"
 msgid "Payment complete"
 msgstr "Η πληρωμή ολοκληρώθηκε"
 
-#: webpay/base/templates/base.html:34
-msgid "Payment cancelled"
-msgstr "Η πληρωμή ακυρώθηκε"
-
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
 msgstr "Ωχ&hellip;"
@@ -111,7 +107,7 @@ msgstr "Συνέβη ένα απρόσμενο σφάλμα. Παρακαλώ π
 msgid "OK"
 msgstr "ΟΚ"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Σφάλμα"
 
@@ -163,18 +159,6 @@ msgstr "Η τιμή για το κλειδί \"{0}\" υπερβαίνει το �
 #: webpay/pay/forms.py:114
 msgid "If {0} is defined, then you must also define {1}."
 msgstr "Αν έχει οριστεί το {0}, τότε πρέπει να ορίσετε και το {1}."
-
-#: webpay/pay/models.py:28
-msgid "Active"
-msgstr "Ενεργό"
-
-#: webpay/pay/models.py:29
-msgid "Inactive"
-msgstr "Ανενεργό"
-
-#: webpay/pay/models.py:30
-msgid "Revoked"
-msgstr "Ανακληθέν"
 
 #: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."

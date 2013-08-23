@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"POT-Creation-Date: 2013-08-23 10:01-0700\n"
 "PO-Revision-Date: 2013-06-30 19:54+0200\n"
 "Last-Translator: Wojciech Szczęsny\n"
 "Language-Team: Polish <>\n"
@@ -26,7 +26,7 @@ msgstr "Cena bazowa jest niedostępna dla tego regionu lub operatora."
 msgid "Received Bango error"
 msgstr "Otrzymano błąd Bango"
 
-#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "Anulowano płatność."
 
@@ -46,7 +46,7 @@ msgstr "Brak uprawnień"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Przepraszamy, nie masz uprawnień do tej czynności."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:14 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Anuluj"
@@ -96,10 +96,6 @@ msgstr "Łączenie z usługą Persona"
 msgid "Payment complete"
 msgstr "Zakończenie płatności"
 
-#: webpay/base/templates/base.html:34
-msgid "Payment cancelled"
-msgstr "Anulowano płatność"
-
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
 msgstr "Ups&hellip;"
@@ -112,7 +108,7 @@ msgstr "Wystąpił niespodziewany błąd. Spróbuj ponownie później."
 msgid "OK"
 msgstr "OK"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Błąd"
 

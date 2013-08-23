@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"POT-Creation-Date: 2013-08-23 10:01-0700\n"
 "PO-Revision-Date: 2013-07-25 21:01+0200\n"
 "Last-Translator: Toni Hermoso Pulido <toniher@softcatala.org>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -26,7 +26,7 @@ msgstr "Tarifa no disponible per a aquesta regió o operador."
 msgid "Received Bango error"
 msgstr "S'ha rebut un error de Bango"
 
-#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "S'ha cancel·lat el pagament."
 
@@ -46,7 +46,7 @@ msgstr "No és permès"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Ho sentim, no podeu fer-ho."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:14 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Cancel·la"
@@ -96,10 +96,6 @@ msgstr "S'està connectant a Persona"
 msgid "Payment complete"
 msgstr "Pagament completat"
 
-#: webpay/base/templates/base.html:34
-msgid "Payment cancelled"
-msgstr "Pagament cancel·lat"
-
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
 msgstr ""
@@ -112,7 +108,7 @@ msgstr ""
 msgid "OK"
 msgstr "D'acord"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Error"
 

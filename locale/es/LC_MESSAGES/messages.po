@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"POT-Creation-Date: 2013-08-23 10:01-0700\n"
 "PO-Revision-Date: 2013-01-08 07:44-0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -25,7 +25,7 @@ msgstr "El rango de precio no está disponible para esta región o este operador
 msgid "Received Bango error"
 msgstr "Error de Bango recibido"
 
-#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "Pago cancelado."
 
@@ -45,7 +45,7 @@ msgstr "No permitido"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Discúlpanos, pero no tienes permisos para hacerlo."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:14 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Cancelar"
@@ -95,10 +95,6 @@ msgstr "Conectando con Mozilla Persona"
 msgid "Payment complete"
 msgstr "Pago completo"
 
-#: webpay/base/templates/base.html:34
-msgid "Payment cancelled"
-msgstr "Pago cancelado"
-
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
 msgstr "Uy&hellip;"
@@ -111,7 +107,7 @@ msgstr "Se ha producido un error inesperado. Inténtalo de nuevo."
 msgid "OK"
 msgstr "Aceptar"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Error"
 

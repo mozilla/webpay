@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"POT-Creation-Date: 2013-08-23 10:01-0700\n"
 "PO-Revision-Date: 2013-08-14 17:46-0400\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -25,7 +25,7 @@ msgstr "この地域もしくはこのキャリア向けの価格は設定され
 msgid "Received Bango error"
 msgstr "Bango のエラーを受信しました"
 
-#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "支払いはキャンセルされました。"
 
@@ -45,7 +45,7 @@ msgstr "許可されていません"
 msgid "Sorry, you are not allowed to do that."
 msgstr "申し訳ありませんが、この操作は許可されていません。"
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:14 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "キャンセル"
@@ -95,10 +95,6 @@ msgstr "Persona に接続しています"
 msgid "Payment complete"
 msgstr "支払いが完了しました"
 
-#: webpay/base/templates/base.html:34
-msgid "Payment cancelled"
-msgstr "支払いがキャンセルされました"
-
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
 msgstr "おっと..."
@@ -111,7 +107,7 @@ msgstr "予期せぬ問題が発生しました。また後で試してくださ
 msgid "OK"
 msgstr "OK"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "エラー"
 

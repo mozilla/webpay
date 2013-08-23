@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"POT-Creation-Date: 2013-08-23 10:01-0700\n"
 "PO-Revision-Date: 2013-07-06 14:53+0200\n"
 "Last-Translator: Kalman Kemenczy <kkemenczy@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -26,7 +26,7 @@ msgstr "Ebben a régióban vagy szolgáltatónál nincsenek pontok."
 msgid "Received Bango error"
 msgstr "Bango hiba történt"
 
-#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "Fizetés törölve."
 
@@ -46,7 +46,7 @@ msgstr "Nem engedélyezett"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Nincs jogosultsága ehhez a művelethez."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:14 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Mégse"
@@ -96,10 +96,6 @@ msgstr "Kapcsolódás a Personahoz"
 msgid "Payment complete"
 msgstr "A fizetés megtörtént"
 
-#: webpay/base/templates/base.html:34
-msgid "Payment cancelled"
-msgstr "Fizetés törölve"
-
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
 msgstr ""
@@ -112,7 +108,7 @@ msgstr ""
 msgid "OK"
 msgstr "OK"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Hiba"
 
