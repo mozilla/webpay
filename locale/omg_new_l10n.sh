@@ -79,7 +79,7 @@ Hi,
 
 I am an automated script letting you know the Marketplace Webpay .po files have
 just been updated.  Unless something unusual is happening, we do weekly pushes
-on Thursdays so any strings committed by then will go live.  To give you an idea
+on Tuesdays so any strings committed by then will go live.  To give you an idea
 of the number of new strings I will calculate untranslated strings.
 
 `./stats-po.sh`
