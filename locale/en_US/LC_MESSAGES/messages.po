@@ -34,9 +34,8 @@ msgid "Your payment is complete."
 msgstr "Your payment is complete."
 
 #: webpay/base/utils.py:32 webpay/base/templates/500.html:5
-#, fuzzy
 msgid "There was an error processing that request."
-msgstr "Error processing that request."
+msgstr "There was an error processing that request."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -214,14 +213,12 @@ msgid "Make a real payment"
 msgstr "Make a real payment"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
-#, fuzzy
 msgid "Waiting for payment to complete&hellip;"
-msgstr "Waiting for payment to complete ..."
+msgstr "Waiting for payment to complete&hellip;"
 
 #: webpay/pin/forms.py:73
-#, fuzzy
 msgid "You have already created a PIN."
-msgstr "Buyer already has a PIN."
+msgstr "You have already created a PIN."
 
 #: webpay/pin/forms.py:93
 msgid "Wrong pin"
