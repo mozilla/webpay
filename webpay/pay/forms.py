@@ -1,15 +1,15 @@
 from django import forms
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
 
 from django_paranoia.forms import ParanoidForm
 import jwt
 from tower import ugettext as _
 
-from lib.solitude.api import client
 from lib.solitude.constants import ACCESS_SIMULATE
 
 from webpay.base.logger import getLogger
+
+from .utils import lookup_issuer, UnknownIssuer
 
 log = getLogger('w.pay')
 
@@ -61,28 +61,21 @@ class VerifyForm(ParanoidForm):
                     _("The requested chargeback simulation is missing the "
                       "key '{0}'.").format('reason'))
 
-        app_id = payload.get('iss', '')
-        if app_id == settings.KEY:
-            # This is an app purchase because it matches the settings.
-            self.key, self.secret = app_id, settings.SECRET
-        else:
-            try:
-                # Assuming that the app_id is also going to be the public_id.
-                prod = client.get_active_product(app_id)
-            except ObjectDoesNotExist, err:
-                log.info('client.get_active_product(%r) raised %s: %s' %
-                         (app_id, err.__class__.__name__, err))
-                raise forms.ValidationError(
-                    # L10n: the first argument is a key to identify an issuer.
-                    _('No one has been registered for JWT issuer {0}.')
-                    .format(repr(app_id)))
+        self.key = payload.get('iss', '')
+        try:
+            self.secret, active_product = lookup_issuer(self.key)
+        except UnknownIssuer, err:
+            raise forms.ValidationError(
+                # L10n: the first argument is a key to identify an issuer.
+                _('No one has been registered for JWT issuer {0}.')
+                .format(repr(self.key)))
 
-            if prod['access'] == ACCESS_SIMULATE and not self.is_simulation:
-                raise forms.ValidationError(
-                    # L10n: the first argument is a key to identify an issuer.
-                    _('This payment key, {0}, can only be used to simulate '
-                      'purchases.').format(repr(app_id)))
-            self.key, self.secret = app_id, prod['secret']
+        if (active_product and active_product['access'] == ACCESS_SIMULATE
+            and not self.is_simulation):
+            raise forms.ValidationError(
+                # L10n: the first argument is a key to identify an issuer.
+                _('This payment key, {0}, can only be used to simulate '
+                  'purchases.').format(repr(self.key)))
 
         icons = payload['request'].get('icons', None)
         if icons and type(icons) != dict:

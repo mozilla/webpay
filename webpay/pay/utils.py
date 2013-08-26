@@ -6,6 +6,7 @@ import uuid
 
 from django.conf import settings
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 
 from celery.exceptions import RetryTaskError
 from django_statsd.clients import statsd
@@ -13,6 +14,7 @@ import requests
 from requests.exceptions import RequestException
 
 from lib.marketplace.api import client
+from lib.solitude.api import client as solitude
 
 from .constants import NOT_SIMULATED
 
@@ -140,3 +142,31 @@ def trans_id():
 def clear_messages(request):
     """Dump messages by iterating over them."""
     list(messages.get_messages(request))
+
+
+class UnknownIssuer(Exception):
+    """The JWT issuer is unknown."""
+
+
+def lookup_issuer(issuer):
+    """
+    Lookup a JWT issuer and return the secret and associated product object.
+
+    Returns a tuple of (issuer_secret, product_object)
+    """
+    if issuer == settings.KEY:
+        # This is a Marketplace app purchase because it matches the settings.
+        active_product = None
+        secret = settings.SECRET
+    else:
+        try:
+            # Assuming that the issuer is also going to be the public_id.
+            active_product = solitude.get_active_product(issuer)
+        except ObjectDoesNotExist, err:
+            log.info('get_active_product({0}) '
+                     'raised {1.__class__.__name__}: {1}'.format(issuer, err))
+            raise UnknownIssuer('{0.__class__.__name__}: {0}'.format(err))
+
+        secret = active_product['secret']
+
+    return secret, active_product

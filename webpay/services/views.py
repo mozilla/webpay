@@ -1,11 +1,15 @@
 import json
 
 from django import http
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 from curling.lib import HttpClientError
 
 from lib.marketplace.api import client as marketplace
 from lib.solitude.api import client as solitude
+
+from .forms import SigCheckForm
 
 
 def monitor(request):
@@ -44,3 +48,18 @@ def monitor(request):
     return http.HttpResponse(content=json.dumps(content),
                              content_type='application/json',
                              status=200 if all_good else 500)
+
+
+@require_POST
+@csrf_exempt
+def sig_check(request):
+    form = SigCheckForm(request.POST)
+    result = 'ok'
+    errors = {}
+    if not form.is_valid():
+        result = 'error'
+        errors = form.errors
+    res = {'result': result, 'errors': errors}
+    return http.HttpResponse(content=json.dumps(res),
+                             content_type='application/json',
+                             status=200 if res['result'] == 'ok' else 400)

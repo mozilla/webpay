@@ -26,6 +26,7 @@ Contents
    developers
    solitude_api
    localization_testing
+   services
 
 Indices and tables
 ------------------

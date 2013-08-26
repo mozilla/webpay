@@ -409,3 +409,7 @@ SHORT_FIELD_MAX_LENGTH = 255
 
 # The timeout for the client-side logout in pay.js in millseconds.
 LOGOUT_TIMEOUT = 30000
+
+# This is the typ for signature checking JWTs.
+# This is used to integrate with Marketplace and other apps.
+SIG_CHECK_TYP = 'mozilla/payments/sigcheck/v1'
