@@ -1,4 +1,5 @@
 -r compiled.txt
 Pygments==1.5
 Sphinx==1.1.3
+sphinxcontrib-httpdomain==1.1.7
 docutils==0.9.1
