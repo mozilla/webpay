@@ -34,6 +34,6 @@ class SlumberWrapper(object):
         except HttpClientError as e:
             res = self.parse_res(e.response.content)
             for key, value in res.iteritems():
-                res[key] = [self.errors[v] for v in value]
+                res[key] = [self.errors[v] for v in value if v in self.errors]
             return {'errors': res}
         return res

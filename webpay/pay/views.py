@@ -109,14 +109,14 @@ def lobby(request):
     elif settings.TEST_PIN_UI:
         # This won't get you very far but it lets you create/enter PINs
         # and stops a traceback after that.
-        request.session['trans_id'] = trans_id()
+        sess['trans_id'] = trans_id()
     elif not sess.get('is_simulation', False):
         try:
-            trans = solitude.get_transaction(request.session.get('trans_id'))
+            trans = solitude.get_transaction(sess.get('trans_id'))
         except ObjectDoesNotExist:
-            if request.session.get('trans_id'):
+            if sess.get('trans_id'):
                 log.info('Attempted to restart non-existent transaction {0}'
-                         .format(request.session.get('trans_id')))
+                         .format(sess.get('trans_id')))
             return _error(request, msg='req is required')
 
     pin_form = VerifyPinForm()
@@ -128,7 +128,7 @@ def lobby(request):
         # time and get the transaction configured via Bango in the
         # background.
         log.info('configuring transaction {0} from lobby'
-                 .format(request.session.get('trans_id')))
+                 .format(sess.get('trans_id')))
         tasks.configure_transaction(request, trans=trans)
 
         redirect_url = check_pin_status(request)

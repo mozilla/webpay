@@ -359,7 +359,7 @@ class BaseStartPay(test_utils.TestCase):
                                         'icons': {'64': 'http://app/i.png'},
                                         'name': 'Virtual Sword',
                                         'description': 'A fancy sword'}}}
-        self.prices = {'prices': [{'amount': 1, 'currency': 'EUR'}]}
+        self.prices = {'prices': [{'price': 1, 'currency': 'EUR'}]}
 
 
 class TestStartPay(BaseStartPay):

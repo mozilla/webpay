@@ -184,7 +184,7 @@ def start_pay(transaction_uuid, notes, user_uuid, **kw):
             icon_url = None
         log.info('icon URL for %s: %s' % (transaction_uuid, icon_url))
         # Set up the product for sale.
-        bill_id, seller_product = client.configure_product_for_billing(
+        bill_id, seller_id = client.configure_product_for_billing(
             transaction_uuid,
             seller_uuid,
             pay['request']['id'],

@@ -1,5 +1,4 @@
 import base64
-import urllib
 
 from django.core.urlresolvers import reverse
 
