@@ -136,12 +136,12 @@ msgstr "Η αιτηθείσα προσομοίωση χρέωσης υπολεί
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:77
 msgid "No one has been registered for JWT issuer {0}."
-msgstr "Κανείς δεν έχει εγγραφεί εκδότης JWT {0}."
+msgstr "Κανείς δεν έχει εγγραφεί ως εκδότης JWT {0}."
 
 #. L10n: the first argument is a key to identify an issuer.
 #: webpay/pay/forms.py:83
 msgid "This payment key, {0}, can only be used to simulate purchases."
-msgstr "Αυτό το κλειδί πληρωμής, {0}, μπορεί να χρησιμοποιηθεί για προσομοίωση αγορών."
+msgstr "Αυτό το κλειδί πληρωμής, {0}, μπορεί να χρησιμοποιηθεί μόνο για προσομοίωση αγορών."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is an example of the proper key format.
@@ -162,7 +162,7 @@ msgstr "Αν έχει οριστεί το {0}, τότε πρέπει να ορί
 
 #: webpay/pay/views.py:42
 msgid "Payments are temporarily disabled."
-msgstr "Οι πληρωμές έχουν απενεργοποιηθεί προσωρινά"
+msgstr "Οι πληρωμές έχουν απενεργοποιηθεί προσωρινά."
 
 #: webpay/pay/views.py:156 webpay/pin/views.py:71
 msgid "Enter Pin"
