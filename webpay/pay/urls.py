@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     # coded into settings. See BANGO_PAY_URL.
     url(r'^fake-bango-url$', views.fake_bango_url,
         name='pay.fake_bango_url'),
+    url(r'^bounce$', views.bounce, name='pay.bounce'),
     url(r'^simulate$', views.simulate, name='pay.simulate'),
     url(r'^super_simulate$', views.super_simulate, name='pay.super_simulate'),
     url(r'^wait_to_start$', views.wait_to_start, name='pay.wait_to_start'),

@@ -77,6 +77,19 @@ class SolitudeAPI(SlumberWrapper):
             return res
         return {}
 
+    def unset_was_locked(self, uuid):
+        """Unsets the flag to view the was_locked screen.
+
+        :param uuid: String to identify the buyer by.
+        :rtype: dictionary
+        """
+        buyer = self.get_buyer(uuid)
+        res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
+                            {'pin_was_locked_out': False})
+        if 'errors' in res:
+            return res
+        return {}
+
     def change_pin(self, uuid, pin):
         """Changes the pin of a buyer, for use with buyers who exist without
         pins.
