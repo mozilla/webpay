@@ -8,11 +8,13 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 
 import mock
+from mozpay.exc import RequestExpired
 from nose.tools import eq_, ok_
 
 from lib.marketplace.api import UnknownPricePoint
 from lib.solitude import constants
 
+from webpay.base import dev_messages as msg
 from webpay.base.tests import BasicSessionCase
 from webpay.pay import get_payment_url
 from webpay.pay.samples import JWTtester
@@ -175,9 +177,8 @@ class TestVerify(Base):
 
     @mock.patch.object(settings, 'ALLOWED_CALLBACK_SCHEMES', ['https'])
     def test_non_https_url(self):
-        with self.settings(VERBOSE_LOGGING=True):
-            res = self.get(self.request())
-            self.assertContains(res, 'Schema must be', status_code=400)
+        res = self.get(self.request())
+        self.assertContains(res, msg.MALFORMED_URL, status_code=400)
 
     @mock.patch.object(settings, 'ALLOWED_CALLBACK_SCHEMES', ['https'])
     def test_non_https_url_ok_for_simulation(self):
@@ -192,23 +193,15 @@ class TestVerify(Base):
         payload = self.request(payload=payjwt)
         eq_(self.get(payload).status_code, 400)
 
-    def test_debug(self):
-        with self.settings(VERBOSE_LOGGING=True):
-            payload = self.request(app_secret=self.secret + '.nope')
-            res = self.get(payload)
-            eq_(res.status_code, 400)
-            # Output should show exception message.
-            self.assertContains(res,
-                                'InvalidJWT: Signature verification failed',
-                                status_code=400)
-
-    def test_not_debug(self):
-        with self.settings(VERBOSE_LOGGING=False):
-            payload = self.request(app_secret=self.secret + '.nope')
-            res = self.get(payload)
-            eq_(res.status_code, 400)
-            # Output should show a generic error message without details.
-            self.assertContains(res, 'There was an error', status_code=400)
+    @mock.patch('webpay.pay.views.verify_jwt')
+    def test_request_expired(self, verify):
+        verify.side_effect = RequestExpired({})
+        payload = self.request(app_secret=self.secret)
+        res = self.get(payload)
+        eq_(res.status_code, 400)
+        # Output should show exception message.
+        self.assertContains(res, msg.EXPIRED_JWT,
+                            status_code=400)
 
     def test_only_simulations(self):
         with self.settings(ONLY_SIMULATIONS=True):
@@ -256,8 +249,7 @@ class TestVerify(Base):
         payjwt['request']['simulate'] = {'result': '<script>alert()</script>'}
         payload = self.request(payload=payjwt)
         res = self.get(payload)
-        self.assertContains(res,
-                            'simulation result is not supported',
+        self.assertContains(res, msg.BAD_SIM_RESULT,
                             status_code=400)
 
     def test_empty_simulation(self):
@@ -272,7 +264,7 @@ class TestVerify(Base):
         payjwt['request']['simulate'] = {'result': 'chargeback'}
         payload = self.request(payload=payjwt)
         res = self.get(payload)
-        self.assertContains(res, 'simulation is missing the key',
+        self.assertContains(res, msg.NO_SIM_REASON,
                             status_code=400)
 
     def test_bad_signature_does_not_store_simulation(self):
@@ -284,27 +276,13 @@ class TestVerify(Base):
         keys = self.client.session.keys()
         assert 'is_simulation' not in keys, keys
 
-    def test_debug_when_simulating(self):
-        with self.settings(VERBOSE_LOGGING=False):
-            payjwt = self.payload()
-            payjwt['request']['simulate'] = {'result': 'postback'}
-            payload = self.request(payload=payjwt,
-                                   app_secret=self.secret + '.nope')
-            res = self.get(payload)
-            eq_(res.status_code, 400)
-            # Output should show exception message.
-            self.assertContains(res,
-                                'InvalidJWT: Signature verification failed',
-                                status_code=400)
-
     def test_simulate_disabled_in_settings(self):
         payjwt = self.payload()
         payjwt['request']['simulate'] = {'result': 'postback'}
         payload = self.request(payload=payjwt)
         with self.settings(ALLOW_SIMULATE=False):
             res = self.get(payload)
-        self.assertContains(res,
-                            'simulations are disabled',
+        self.assertContains(res, msg.SIM_DISABLED,
                             status_code=400)
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
@@ -330,9 +308,8 @@ class TestVerify(Base):
         payjwt = self.payload()
         payjwt['request']['icons'] = '...'  # must be a dict
         payload = self.request(payload=payjwt)
-        with self.settings(VERBOSE_LOGGING=True):
-            res = self.get(payload)
-        self.assertContains(res, 'must be an object of URLs',
+        res = self.get(payload)
+        self.assertContains(res, msg.BAD_ICON_KEY,
                             status_code=400)
 
     def test_bad_icon_url(self):

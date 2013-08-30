@@ -8,6 +8,9 @@
   <div class="msg">
     <h2>{{ _('Error') }}</h2>
     <p>{{ error }}</p>
+    {% if code %}
+      <p>{{ code }}</p>
+    {% endif %}
   </div>
   <footer>
     <a class="button cancel-button" href="#">

@@ -12,6 +12,7 @@ from tower import ugettext as _
 
 from webpay.auth.decorators import user_can_simulate, user_verified
 from webpay.auth import utils as auth_utils
+from webpay.base import dev_messages as msg
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
 from webpay.base.utils import _error
@@ -32,8 +33,11 @@ log = getLogger('w.pay')
 def process_pay_req(request):
     form = VerifyForm(request.GET)
     if not form.is_valid():
-        return _error(request, msg=form.errors.as_text(),
-                      display=form.is_simulation)
+        codes = []
+        for erlist in form.errors.values():
+            codes.extend(erlist)
+        codes = ', '.join(codes)
+        return _error(request, code=codes)
 
     if settings.ONLY_SIMULATIONS and not form.is_simulation:
         # Real payments are currently disabled.
@@ -42,6 +46,7 @@ def process_pay_req(request):
                       {'error': _('Payments are temporarily disabled.')},
                       status=503)
 
+    exc = er = None
     try:
         pay_req = verify_jwt(
             form.cleaned_data['req'],
@@ -53,9 +58,14 @@ def process_pay_req(request):
                            'request.description',
                            'request.postbackURL',
                            'request.chargebackURL'))
-    except (TypeError, InvalidJWT, RequestExpired), exc:
+    except RequestExpired, exc:
+        er = msg.EXPIRED_JWT
+    except InvalidJWT, exc:
+        er = msg.INVALID_JWT
+
+    if exc:
         log.exception('calling verify_jwt')
-        return _error(request, exception=exc,
+        return _error(request, code=er,
                       display=form.is_simulation)
 
     icon_urls = []
@@ -71,8 +81,7 @@ def process_pay_req(request):
                     check_postbacks=False)
     except ValueError, exc:
         log.exception('invalid URLs')
-        return _error(request, exception=exc,
-                      display=form.is_simulation)
+        return _error(request, code=msg.MALFORMED_URL)
 
     # Assert pricePoint is valid.
     try:

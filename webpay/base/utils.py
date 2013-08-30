@@ -28,11 +28,16 @@ def log_cef(msg, request, **kw):
     _log_cef(msg, severity, request.META.copy(), **cef_kw)
 
 
-def _error(request, msg='', exception=None, display=False):
-    external = _('There was an error processing that request.')
+def _error(request, msg='', exception=None, display=False,
+           code=None):
+    external = _('There was an error setting up the payment. '
+                 'Try again or contact the app if it persists.')
     if msg:
         log.error('Error handler: %s' % msg)
-    if settings.VERBOSE_LOGGING or display:
+
+    # Checking code here is is a short-term hack until all things send
+    # error codes.
+    if not code and (settings.VERBOSE_LOGGING or display):
         if exception:
             msg = u'%s: %s' % (exception.__class__.__name__, exception)
         if msg:
@@ -41,4 +46,6 @@ def _error(request, msg='', exception=None, display=False):
             # This should never happen but it might be happening.
             # See bug 864306
             log.error('No detailed error message/exception in handler')
-    return render(request, 'error.html', {'error': external}, status=400)
+
+    return render(request, 'error.html',
+                  {'error': external, 'code': code}, status=400)
