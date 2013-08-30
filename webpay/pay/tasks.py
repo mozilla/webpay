@@ -220,6 +220,7 @@ def fake_payment_notify(transaction_uuid, pay_request, issuer_key, **kw):
              'type': constants.TYPE_PAYMENT,
              'notes': {'pay_request': pay_request,
                        'issuer_key': issuer_key}}
+    trans.update(_fake_amount(pay_request['request']['pricePoint']))
     _notify(fake_payment_notify, trans)
 
 
@@ -258,6 +259,24 @@ def chargeback_notify(transaction_uuid, **kw):
             extra_response={'reason': kw.get('reason', '')})
 
 
+def _fake_amount(price_point):
+    """
+    For fake and simulated transactions we don't know the amount a customer
+    paid. So we'll just pick the first random price from the tiers to make it
+    realistic.
+    """
+    try:
+        price = mkt_client.get_price(price_point)['prices'][0]
+    except IndexError:
+        # No prices were returned.
+        raise IndexError('No prices for pricePoint: {0}'.format(price_point))
+    except UnknownPricePoint:
+        # This price point wasn't even valid.
+        raise UnknownPricePoint('No pricePoint: {0}'.format(price_point))
+
+    return {'amount': price['price'], 'currency': price['currency']}
+
+
 @task(**notify_kw)
 @use_master
 def simulate_notify(issuer_key, pay_request, trans_uuid=None, **kw):
@@ -273,19 +292,7 @@ def simulate_notify(issuer_key, pay_request, trans_uuid=None, **kw):
              'notes': {'pay_request': pay_request,
                        'issuer_key': issuer_key}}
 
-    price_point = pay_request['request']['pricePoint']
-    try:
-        # Just pick the first random price from the tiers to make it realistic.
-        price = mkt_client.get_price(price_point)['prices'][0]
-    except IndexError:
-        # No prices were returned.
-        raise IndexError('No prices for pricePoint: {0}'.format(price_point))
-    except UnknownPricePoint:
-        # This price point wasn't even valid.
-        raise UnknownPricePoint('No pricePoint: {0}'.format(price_point))
-
-    trans['amount'] = price['price']
-    trans['currency'] = price['currency']
+    trans.update(_fake_amount(pay_request['request']['pricePoint']))
 
     extra_response = None
     sim = pay_request['request']['simulate']
