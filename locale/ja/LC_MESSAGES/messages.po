@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-23 10:01-0700\n"
+"POT-Creation-Date: 2013-08-30 15:54-0700\n"
 "PO-Revision-Date: 2013-08-14 17:46-0400\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -13,15 +13,15 @@ msgstr ""
 "X-Generator: Translate Toolkit 1.9.0\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: webpay/bango/views.py:121
+#: webpay/bango/views.py:120
 msgid "Could not record Bango error"
 msgstr "Bango のエラーを記録できませんでした"
 
-#: webpay/bango/views.py:128
+#: webpay/bango/views.py:127
 msgid "Price point unavailable for this region or carrier."
 msgstr "この地域もしくはこのキャリア向けの価格は設定されていません"
 
-#: webpay/bango/views.py:131
+#: webpay/bango/views.py:130
 msgid "Received Bango error"
 msgstr "Bango のエラーを受信しました"
 
@@ -33,9 +33,77 @@ msgstr "支払いはキャンセルされました。"
 msgid "Your payment is complete."
 msgstr "支払いが完了しました。"
 
-#: webpay/base/utils.py:32 webpay/base/templates/500.html:5
-msgid "There was an error processing that request."
-msgstr "リクエストの処理中に問題が発生しました。"
+#. L10n: First argument is an example of the proper key format.
+#: webpay/base/dev_messages.py:47
+msgid "An image icon key was not an object. Correct example: {0}"
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:51
+msgid "No one has been registered for this JWT issuer."
+msgstr ""
+
+#: webpay/base/dev_messages.py:53
+msgid "The requested payment simulation result is not supported."
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:56
+msgid "The JWT has expired."
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:60
+msgid "The JWT signature is invalid or the JWT is malformed."
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:63
+msgid "The JWT did not decode to a JSON object."
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:66
+msgid "Error decoding JWT."
+msgstr ""
+
+#. L10n: 'postback' is a term that means a URL accepting HTTP posts.
+#: webpay/base/dev_messages.py:68
+msgid "A URL is malformed. This could be a postback URL or an icon URL."
+msgstr ""
+
+#. L10n: First and second arguements are the names of keys.
+#: webpay/base/dev_messages.py:72
+msgid "If {0} is defined, then you must also define {1}."
+msgstr "{0} を定義する場合、{1} も併せて定義する必要があります。"
+
+#. L10n: First argument is the name of the key, 'reason'.
+#: webpay/base/dev_messages.py:76
+msgid "The requested chargeback simulation is missing the key '{0}'."
+msgstr "リクエストされたチャージバックシミュレーションには {0} キーが不足しています。"
+
+#: webpay/base/dev_messages.py:78
+msgid "Payment simulations are disabled at this time."
+msgstr "現時点で支払いシミュレーションは無効化されています。"
+
+#: webpay/base/dev_messages.py:80
+msgid "This payment key can only be used to simulate purchases."
+msgstr ""
+
+#. L10n: First argument is the name of a key. Second
+#. argument is a number.
+#: webpay/base/dev_messages.py:87
+msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
+msgstr "キー「{0}」の値が最大文字数 {1} を超えています"
+
+#: webpay/base/utils.py:33
+msgid "There was an error setting up the payment. Try again or contact the app if it persists."
+msgstr ""
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -45,7 +113,7 @@ msgstr "許可されていません"
 msgid "Sorry, you are not allowed to do that."
 msgstr "申し訳ありませんが、この操作は許可されていません。"
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:14 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "キャンセル"
@@ -61,6 +129,10 @@ msgstr "申し訳ありませんが、お探しのページは見つかりませ
 #: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
 msgstr "何か問題が発生しました。"
+
+#: webpay/base/templates/500.html:5
+msgid "There was an error processing that request."
+msgstr "リクエストの処理中に問題が発生しました。"
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
@@ -111,76 +183,27 @@ msgstr "OK"
 msgid "Error"
 msgstr "エラー"
 
-#. L10n: first argument is a detailed error message.
-#: webpay/pay/forms.py:31
-msgid "Error decoding JWT: {0}"
-msgstr "JWT デコードエラー: {0}"
-
-#. L10n: first argument is a data type, such as <unicode>
-#: webpay/pay/forms.py:42
-msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr "JWT が JSON オブジェクトをデコードできませんでした。タイプが {0} でした。"
-
-#: webpay/pay/forms.py:52
-msgid "Payment simulations are disabled at this time."
-msgstr "現時点で支払いシミュレーションは無効化されています。"
-
-#: webpay/pay/forms.py:58
-msgid "The requested simulation result is not supported."
-msgstr "リクエストされたシミュレーション結果はサポートされていません。"
-
-#: webpay/pay/forms.py:61
-msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr "リクエストされたチャージバックシミュレーションには {0} キーが不足しています。"
-
-#. L10n: the first argument is a key to identify an issuer.
-#: webpay/pay/forms.py:77
-msgid "No one has been registered for JWT issuer {0}."
-msgstr "JWT 発行者 {0} には誰も登録されていません。"
-
-#. L10n: the first argument is a key to identify an issuer.
-#: webpay/pay/forms.py:83
-msgid "This payment key, {0}, can only be used to simulate purchases."
-msgstr "この支払いキー {0} はシミュレーション目的にしか使用できません。"
-
-#. L10n: First argument is the name of a key. Second
-#. argument is an example of the proper key format.
-#: webpay/pay/forms.py:93
-msgid "The \"{0}\" key must be an object of URLs such as {1}"
-msgstr "{0} キーは {1} のような URL のオブジェクトでなければなりません"
-
-#. L10n: First argument is the name of a key. Second
-#. argument is a number.
-#: webpay/pay/forms.py:107
-msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr "キー「{0}」の値が最大文字数 {1} を超えています"
-
-#. L10n: First and second arguements are the names of keys.
-#: webpay/pay/forms.py:114
-msgid "If {0} is defined, then you must also define {1}."
-msgstr "{0} を定義する場合、{1} も併せて定義する必要があります。"
-
-#: webpay/pay/views.py:42
+#: webpay/pay/views.py:46
 msgid "Payments are temporarily disabled."
 msgstr "支払いは一時的に無効化されています。"
 
-#: webpay/pay/views.py:156 webpay/pin/views.py:71
+#: webpay/pay/views.py:167 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "暗証番号を入力"
 
-#: webpay/pay/views.py:237
+#: webpay/pay/views.py:255
 msgid "Transaction has already ended."
 msgstr "トランザクションは既に終了しています。"
 
-#: webpay/pay/templates/pay/lobby.html:10
+#: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:10
 msgid "Sign In"
 msgstr "ログイン"
 
-#: webpay/pay/templates/pay/lobby.html:11
+#: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign in to continue with the payment"
 msgstr "支払いを続けるにはログインしてください"
 
-#: webpay/pay/templates/pay/lobby.html:12
+#: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in"
 msgstr "ログイン"
 
@@ -232,15 +255,15 @@ msgstr "暗証番号が一致しません。"
 msgid "Create a Pin"
 msgstr "暗証番号を登録"
 
-#: webpay/pin/views.py:53 webpay/pin/views.py:135
+#: webpay/pin/views.py:53 webpay/pin/views.py:136
 msgid "Confirm Pin"
 msgstr "暗証番号を確認"
 
-#: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:96 webpay/pin/views.py:115 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "暗証番号をリセット"
 
-#: webpay/pin/views.py:128
+#: webpay/pin/views.py:129
 msgid "Pin reset"
 msgstr "暗証番号のリセット"
 
