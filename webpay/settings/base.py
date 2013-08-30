@@ -243,6 +243,7 @@ LOGGING = {
 
 
 MIDDLEWARE_CLASSES = (
+    'csp.middleware.CSPMiddleware',
     'django_statsd.middleware.GraphiteRequestTimingMiddleware',
     'django_statsd.middleware.GraphiteMiddleware',
     'webpay.base.middleware.LocaleMiddleware',
@@ -413,3 +414,28 @@ LOGOUT_TIMEOUT = 30000
 # This is the typ for signature checking JWTs.
 # This is used to integrate with Marketplace and other apps.
 SIG_CHECK_TYP = 'mozilla/payments/sigcheck/v1'
+
+# CSP Settings
+CSP_REPORT_URI = '/mozpay/services/csp/report'
+CSP_POLICY_URI = '/mozpay/services/csp/policy'
+CSP_REPORT_ONLY = True
+
+CSP_ALLOW = ("'self'",)
+CSP_IMG_SRC = ("'self'", STATIC_URL,
+               "https://ssl.google-analytics.com",
+               "data:"
+              )
+CSP_SCRIPT_SRC = ("'self'", STATIC_URL,
+                  "https://%s" % BROWSERID_DOMAIN,
+                  "https://ssl.google-analytics.com",
+                  )
+CSP_STYLE_SRC = ("'self'", STATIC_URL,
+                 # Because CSRF and persona both use style="".
+                 "'unsafe-inline'",
+                 "https://static.login.persona.org")
+CSP_OBJECT_SRC = ("'none'",)
+CSP_MEDIA_SRC = ("'none'",)
+CSP_FRAME_SRC = ("https://ssl.google-analytics.com",
+                 "https://%s" % BROWSERID_DOMAIN,
+                )
+CSP_FONT_SRC = ("'self'", STATIC_URL)
