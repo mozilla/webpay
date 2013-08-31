@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-08-30 15:54-0700\n"
-"PO-Revision-Date: 2013-08-14 17:46-0400\n"
+"PO-Revision-Date: 2013-08-31 17:00-0400\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -36,46 +36,46 @@ msgstr "支払いが完了しました。"
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:47
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr ""
+msgstr "画像アイコンのキーがオブジェクトではありませんでした。正しい例: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:51
 msgid "No one has been registered for this JWT issuer."
-msgstr ""
+msgstr "この JWT 発行者には誰も登録されていません。"
 
 #: webpay/base/dev_messages.py:53
 msgid "The requested payment simulation result is not supported."
-msgstr ""
+msgstr "リクエストされた支払いシミュレーション結果には対応していません。"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:56
 msgid "The JWT has expired."
-msgstr ""
+msgstr "JWT が期限切れです。"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:60
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr ""
+msgstr "JWT の署名が不正か、JWT の形式が間違っています。"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:63
 msgid "The JWT did not decode to a JSON object."
-msgstr ""
+msgstr "JWT を JSON オブジェクトへデコードできませんでした。"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:66
 msgid "Error decoding JWT."
-msgstr ""
+msgstr "JWT のデコード中に問題が発生しました。"
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:68
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr ""
+msgstr "URL の形式が間違っています。これはポストバック URL かアイコン URL のはずです。"
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:72
@@ -93,7 +93,7 @@ msgstr "現時点で支払いシミュレーションは無効化されていま
 
 #: webpay/base/dev_messages.py:80
 msgid "This payment key can only be used to simulate purchases."
-msgstr ""
+msgstr "この支払いキーはシミュレーション購入専用です。"
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -103,7 +103,7 @@ msgstr "キー「{0}」の値が最大文字数 {1} を超えています"
 
 #: webpay/base/utils.py:33
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr ""
+msgstr "支払いの設定中に問題が発生しました。また後で試し、もし問題が続くようならアプリ作者に連絡を取ってください。"
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
