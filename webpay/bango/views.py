@@ -1,4 +1,3 @@
-import urllib
 import uuid
 
 from django.conf import settings

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"POT-Creation-Date: 2013-08-30 15:54-0700\n"
 "PO-Revision-Date: 2013-07-12 18:02+0100\n"
 "Last-Translator: Sasa Tekovic <sasa@tekovic.com>\n"
 "Language-Team: none\n"
@@ -13,19 +13,19 @@ msgstr ""
 "X-Generator: Translate Toolkit 1.9.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: webpay/bango/views.py:121
+#: webpay/bango/views.py:120
 msgid "Could not record Bango error"
 msgstr "Nije moguće zapisati Bango grešku"
 
-#: webpay/bango/views.py:128
+#: webpay/bango/views.py:127
 msgid "Price point unavailable for this region or carrier."
 msgstr "Cijenovna granica nije dostupna za ovu regiju ili operatera."
 
-#: webpay/bango/views.py:131
+#: webpay/bango/views.py:130
 msgid "Received Bango error"
 msgstr "Dobivena je Bango greška"
 
-#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "Plaćanje otkazano."
 
@@ -33,9 +33,77 @@ msgstr "Plaćanje otkazano."
 msgid "Your payment is complete."
 msgstr "Plaćanje dovršeno."
 
-#: webpay/base/utils.py:32 webpay/base/templates/500.html:5
-msgid "There was an error processing that request."
-msgstr "Došlo je do greške pri obradi tog zahtjeva."
+#. L10n: First argument is an example of the proper key format.
+#: webpay/base/dev_messages.py:47
+msgid "An image icon key was not an object. Correct example: {0}"
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:51
+msgid "No one has been registered for this JWT issuer."
+msgstr ""
+
+#: webpay/base/dev_messages.py:53
+msgid "The requested payment simulation result is not supported."
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:56
+msgid "The JWT has expired."
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:60
+msgid "The JWT signature is invalid or the JWT is malformed."
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:63
+msgid "The JWT did not decode to a JSON object."
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:66
+msgid "Error decoding JWT."
+msgstr ""
+
+#. L10n: 'postback' is a term that means a URL accepting HTTP posts.
+#: webpay/base/dev_messages.py:68
+msgid "A URL is malformed. This could be a postback URL or an icon URL."
+msgstr ""
+
+#. L10n: First and second arguements are the names of keys.
+#: webpay/base/dev_messages.py:72
+msgid "If {0} is defined, then you must also define {1}."
+msgstr ""
+
+#. L10n: First argument is the name of the key, 'reason'.
+#: webpay/base/dev_messages.py:76
+msgid "The requested chargeback simulation is missing the key '{0}'."
+msgstr "Traženoj simulaciji refundacije nedostaje ključ '{0}'."
+
+#: webpay/base/dev_messages.py:78
+msgid "Payment simulations are disabled at this time."
+msgstr "SImulacije plaćanja su trenutno onemogućene."
+
+#: webpay/base/dev_messages.py:80
+msgid "This payment key can only be used to simulate purchases."
+msgstr ""
+
+#. L10n: First argument is the name of a key. Second
+#. argument is a number.
+#: webpay/base/dev_messages.py:87
+msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
+msgstr ""
+
+#: webpay/base/utils.py:33
+msgid "There was an error setting up the payment. Try again or contact the app if it persists."
+msgstr ""
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -45,7 +113,7 @@ msgstr "Nije dopušteno"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Žalim, to vam nije dopušteno."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Otkaži"
@@ -61,6 +129,10 @@ msgstr "Žao nam je, ali nismo mogli pronaći stranicu koju tražite."
 #: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
 msgstr "Nešto je pošlo po zlu!"
+
+#: webpay/base/templates/500.html:5
+msgid "There was an error processing that request."
+msgstr "Došlo je do greške pri obradi tog zahtjeva."
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
@@ -95,10 +167,6 @@ msgstr "Povezivanje na Personu"
 msgid "Payment complete"
 msgstr "Plaćanje dovršeno"
 
-#: webpay/base/templates/base.html:34
-msgid "Payment cancelled"
-msgstr "Plaćanje otkazano"
-
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
 msgstr ""
@@ -111,80 +179,31 @@ msgstr ""
 msgid "OK"
 msgstr "U redu"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Greška"
 
-#. L10n: first argument is a detailed error message.
-#: webpay/pay/forms.py:31
-msgid "Error decoding JWT: {0}"
-msgstr "Greška pri dekodiranju JWT: {0}"
-
-#. L10n: first argument is a data type, such as <unicode>
-#: webpay/pay/forms.py:42
-msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr "JWT nije dekodiran u JSON objekt. Njegova vrsta je bila {0}."
-
-#: webpay/pay/forms.py:52
-msgid "Payment simulations are disabled at this time."
-msgstr "SImulacije plaćanja su trenutno onemogućene."
-
-#: webpay/pay/forms.py:58
-msgid "The requested simulation result is not supported."
-msgstr "Rezultat tražene simulacije nije podržan."
-
-#: webpay/pay/forms.py:61
-msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr "Traženoj simulaciji refundacije nedostaje ključ '{0}'."
-
-#. L10n: the first argument is a key to identify an issuer.
-#: webpay/pay/forms.py:77
-msgid "No one has been registered for JWT issuer {0}."
-msgstr "Nitko se nije registrirao za JWT izdavača {0}."
-
-#. L10n: the first argument is a key to identify an issuer.
-#: webpay/pay/forms.py:83
-msgid "This payment key, {0}, can only be used to simulate purchases."
-msgstr "Ovaj ključ plaćanja, {0}, se može koristiti samo za simuliranje kupovina."
-
-#. L10n: First argument is the name of a key. Second
-#. argument is an example of the proper key format.
-#: webpay/pay/forms.py:93
-msgid "The \"{0}\" key must be an object of URLs such as {1}"
-msgstr " Ključ \"{0}\" mora biti objekt URL-ova poput {1}"
-
-#. L10n: First argument is the name of a key. Second
-#. argument is a number.
-#: webpay/pay/forms.py:107
-msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
-
-#. L10n: First and second arguements are the names of keys.
-#: webpay/pay/forms.py:114
-msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
-
-#: webpay/pay/views.py:42
+#: webpay/pay/views.py:46
 msgid "Payments are temporarily disabled."
 msgstr "Plaćanja su trenutno onemogućena."
 
-#: webpay/pay/views.py:156 webpay/pin/views.py:71
+#: webpay/pay/views.py:167 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Upišite PIN"
 
-#: webpay/pay/views.py:237
+#: webpay/pay/views.py:255
 msgid "Transaction has already ended."
 msgstr "Transakcija je već završila."
 
-#: webpay/pay/templates/pay/lobby.html:10
+#: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:10
 msgid "Sign In"
 msgstr "Prijava"
 
-#: webpay/pay/templates/pay/lobby.html:11
+#: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign in to continue with the payment"
 msgstr "Prijavite se da biste nastavili s plaćanjem"
 
-#: webpay/pay/templates/pay/lobby.html:12
+#: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in"
 msgstr "Prijava"
 
@@ -236,15 +255,15 @@ msgstr "PIN-ovi se ne podudaraju."
 msgid "Create a Pin"
 msgstr "Stvorite PIN"
 
-#: webpay/pin/views.py:53 webpay/pin/views.py:135
+#: webpay/pin/views.py:53 webpay/pin/views.py:136
 msgid "Confirm Pin"
 msgstr "Potvrdite PIN"
 
-#: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:96 webpay/pin/views.py:115 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Resetiraj PIN"
 
-#: webpay/pin/views.py:128
+#: webpay/pin/views.py:129
 msgid "Pin reset"
 msgstr "Resetiranje PIN-a"
 

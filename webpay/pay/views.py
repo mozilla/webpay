@@ -10,8 +10,9 @@ from mozpay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
-from webpay.auth.decorators import user_verified, user_can_simulate
+from webpay.auth.decorators import user_can_simulate, user_verified
 from webpay.auth import utils as auth_utils
+from webpay.base import dev_messages as msg
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
 from webpay.base.utils import _error
@@ -32,8 +33,11 @@ log = getLogger('w.pay')
 def process_pay_req(request):
     form = VerifyForm(request.GET)
     if not form.is_valid():
-        return _error(request, msg=form.errors.as_text(),
-                      display=form.is_simulation)
+        codes = []
+        for erlist in form.errors.values():
+            codes.extend(erlist)
+        codes = ', '.join(codes)
+        return _error(request, code=codes)
 
     if settings.ONLY_SIMULATIONS and not form.is_simulation:
         # Real payments are currently disabled.
@@ -42,6 +46,7 @@ def process_pay_req(request):
                       {'error': _('Payments are temporarily disabled.')},
                       status=503)
 
+    exc = er = None
     try:
         pay_req = verify_jwt(
             form.cleaned_data['req'],
@@ -53,9 +58,14 @@ def process_pay_req(request):
                            'request.description',
                            'request.postbackURL',
                            'request.chargebackURL'))
-    except (TypeError, InvalidJWT, RequestExpired), exc:
+    except RequestExpired, exc:
+        er = msg.EXPIRED_JWT
+    except InvalidJWT, exc:
+        er = msg.INVALID_JWT
+
+    if exc:
         log.exception('calling verify_jwt')
-        return _error(request, exception=exc,
+        return _error(request, code=er,
                       display=form.is_simulation)
 
     icon_urls = []
@@ -71,8 +81,7 @@ def process_pay_req(request):
                     check_postbacks=False)
     except ValueError, exc:
         log.exception('invalid URLs')
-        return _error(request, exception=exc,
-                      display=form.is_simulation)
+        return _error(request, code=msg.MALFORMED_URL)
 
     # Assert pricePoint is valid.
     try:
@@ -109,14 +118,14 @@ def lobby(request):
     elif settings.TEST_PIN_UI:
         # This won't get you very far but it lets you create/enter PINs
         # and stops a traceback after that.
-        request.session['trans_id'] = trans_id()
+        sess['trans_id'] = trans_id()
     elif not sess.get('is_simulation', False):
         try:
-            trans = solitude.get_transaction(request.session.get('trans_id'))
+            trans = solitude.get_transaction(sess.get('trans_id'))
         except ObjectDoesNotExist:
-            if request.session.get('trans_id'):
+            if sess.get('trans_id'):
                 log.info('Attempted to restart non-existent transaction {0}'
-                         .format(request.session.get('trans_id')))
+                         .format(sess.get('trans_id')))
             return _error(request, msg='req is required')
 
     pin_form = VerifyPinForm()
@@ -128,12 +137,14 @@ def lobby(request):
         # time and get the transaction configured via Bango in the
         # background.
         log.info('configuring transaction {0} from lobby'
-                 .format(request.session.get('trans_id')))
+                 .format(sess.get('trans_id')))
         tasks.configure_transaction(request, trans=trans)
 
         redirect_url = check_pin_status(request)
         if redirect_url is not None:
-            return http.HttpResponseRedirect(redirect_url)
+            return http.HttpResponseRedirect(
+                '{0}?next={1}'.format(reverse('pay.bounce'), redirect_url)
+            )
 
     # If the buyer closed the trusted UI during reset flow, we want to unset
     # the reset pin flag. They can hit the forgot pin button if they still
@@ -154,6 +165,13 @@ def lobby(request):
         'action': reverse('pin.verify'),
         'form': pin_form,
         'title': _('Enter Pin')
+    })
+
+
+@require_GET
+def bounce(request):
+    return render(request, 'pay/bounce.html', {
+        'next': request.GET.get('next')
     })
 
 

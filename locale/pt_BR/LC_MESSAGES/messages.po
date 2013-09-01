@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: marketplace-webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
+"POT-Creation-Date: 2013-08-30 15:54-0700\n"
 "PO-Revision-Date: 2013-07-19 12:28-0300\n"
 "Last-Translator: Fernando Pereira Silveira <fernandopsilveira@yahoo.com.br>\n"
 "Language-Team: Português (Brasil) <dev-l10n-pt-br@lists.mozilla.org>\n"
@@ -16,19 +16,19 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: webpay/bango/views.py:121
+#: webpay/bango/views.py:120
 msgid "Could not record Bango error"
 msgstr "Não foi possível registrar o erro do Bango"
 
-#: webpay/bango/views.py:128
+#: webpay/bango/views.py:127
 msgid "Price point unavailable for this region or carrier."
 msgstr "O preço está indisponível para esta região ou operadora."
 
-#: webpay/bango/views.py:131
+#: webpay/bango/views.py:130
 msgid "Received Bango error"
 msgstr "Erro do Bango recebido"
 
-#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "Pagamento cancelado."
 
@@ -36,9 +36,77 @@ msgstr "Pagamento cancelado."
 msgid "Your payment is complete."
 msgstr "Seu pagamento foi concluído."
 
-#: webpay/base/utils.py:32 webpay/base/templates/500.html:5
-msgid "There was an error processing that request."
-msgstr "Ocorreu um erro ao processar a solicitação."
+#. L10n: First argument is an example of the proper key format.
+#: webpay/base/dev_messages.py:47
+msgid "An image icon key was not an object. Correct example: {0}"
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:51
+msgid "No one has been registered for this JWT issuer."
+msgstr ""
+
+#: webpay/base/dev_messages.py:53
+msgid "The requested payment simulation result is not supported."
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:56
+msgid "The JWT has expired."
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:60
+msgid "The JWT signature is invalid or the JWT is malformed."
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:63
+msgid "The JWT did not decode to a JSON object."
+msgstr ""
+
+#. L10n: JWT stands for JSON Web Token and does not need to be
+#. localized.
+#: webpay/base/dev_messages.py:66
+msgid "Error decoding JWT."
+msgstr ""
+
+#. L10n: 'postback' is a term that means a URL accepting HTTP posts.
+#: webpay/base/dev_messages.py:68
+msgid "A URL is malformed. This could be a postback URL or an icon URL."
+msgstr ""
+
+#. L10n: First and second arguements are the names of keys.
+#: webpay/base/dev_messages.py:72
+msgid "If {0} is defined, then you must also define {1}."
+msgstr ""
+
+#. L10n: First argument is the name of the key, 'reason'.
+#: webpay/base/dev_messages.py:76
+msgid "The requested chargeback simulation is missing the key '{0}'."
+msgstr "A simulação de cancelamento solicitada está incompleta; a chave \"{0}\" está faltando."
+
+#: webpay/base/dev_messages.py:78
+msgid "Payment simulations are disabled at this time."
+msgstr "Simulações de pagamentos estão desativadas no momento."
+
+#: webpay/base/dev_messages.py:80
+msgid "This payment key can only be used to simulate purchases."
+msgstr ""
+
+#. L10n: First argument is the name of a key. Second
+#. argument is a number.
+#: webpay/base/dev_messages.py:87
+msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
+msgstr ""
+
+#: webpay/base/utils.py:33
+msgid "There was an error setting up the payment. Try again or contact the app if it persists."
+msgstr ""
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -48,7 +116,7 @@ msgstr "Não permitido"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Desculpe, mas você não tem permissão para fazer isso."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:8 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Cancelar"
@@ -64,6 +132,10 @@ msgstr "Lamentamos, mas não pudemos encontrar a página que você está procura
 #: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
 msgstr "Algo deu errado!"
+
+#: webpay/base/templates/500.html:5
+msgid "There was an error processing that request."
+msgstr "Ocorreu um erro ao processar a solicitação."
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
@@ -98,10 +170,6 @@ msgstr "Conectando-se ao Persona"
 msgid "Payment complete"
 msgstr "Pagamento concluído"
 
-#: webpay/base/templates/base.html:34
-msgid "Payment cancelled"
-msgstr "Pagamento cancelado"
-
 #: webpay/base/templates/base.html:51
 msgid "Oops&hellip;"
 msgstr ""
@@ -114,80 +182,31 @@ msgstr ""
 msgid "OK"
 msgstr "OK"
 
-#: webpay/base/templates/error.html:4 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Erro"
 
-#. L10n: first argument is a detailed error message.
-#: webpay/pay/forms.py:31
-msgid "Error decoding JWT: {0}"
-msgstr "Erro ao decodificar o JWT: {0}"
-
-#. L10n: first argument is a data type, such as <unicode>
-#: webpay/pay/forms.py:42
-msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr "O JWT não foi decodificado para um objeto JSON. Seu tipo era {0}."
-
-#: webpay/pay/forms.py:52
-msgid "Payment simulations are disabled at this time."
-msgstr "Simulações de pagamentos estão desativadas no momento."
-
-#: webpay/pay/forms.py:58
-msgid "The requested simulation result is not supported."
-msgstr "O resultado da simulação solicitada não é suportado."
-
-#: webpay/pay/forms.py:61
-msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr "A simulação de cancelamento solicitada está incompleta; a chave \"{0}\" está faltando."
-
-#. L10n: the first argument is a key to identify an issuer.
-#: webpay/pay/forms.py:77
-msgid "No one has been registered for JWT issuer {0}."
-msgstr "Ninguém foi registrado para o emissor JWT {0}."
-
-#. L10n: the first argument is a key to identify an issuer.
-#: webpay/pay/forms.py:83
-msgid "This payment key, {0}, can only be used to simulate purchases."
-msgstr "A chave deste pagamento, {0}, pode ser usada somente em aquisições simuladas."
-
-#. L10n: First argument is the name of a key. Second
-#. argument is an example of the proper key format.
-#: webpay/pay/forms.py:93
-msgid "The \"{0}\" key must be an object of URLs such as {1}"
-msgstr "A chave \"{0}\" deve ser um objeto de URLs, como {1}"
-
-#. L10n: First argument is the name of a key. Second
-#. argument is a number.
-#: webpay/pay/forms.py:107
-msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
-
-#. L10n: First and second arguements are the names of keys.
-#: webpay/pay/forms.py:114
-msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
-
-#: webpay/pay/views.py:42
+#: webpay/pay/views.py:46
 msgid "Payments are temporarily disabled."
 msgstr "Os pagamentos foram desativados temporariamente."
 
-#: webpay/pay/views.py:156 webpay/pin/views.py:71
+#: webpay/pay/views.py:167 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Inserir PIN"
 
-#: webpay/pay/views.py:237
+#: webpay/pay/views.py:255
 msgid "Transaction has already ended."
 msgstr "A transação já foi finalizada."
 
-#: webpay/pay/templates/pay/lobby.html:10
+#: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:10
 msgid "Sign In"
 msgstr "Identificar-me"
 
-#: webpay/pay/templates/pay/lobby.html:11
+#: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign in to continue with the payment"
 msgstr "Identifique-se para continuar o pagamento"
 
-#: webpay/pay/templates/pay/lobby.html:12
+#: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in"
 msgstr "Identificar-me"
 
@@ -239,15 +258,15 @@ msgstr "Os PINs inseridos não correspondem."
 msgid "Create a Pin"
 msgstr "Criar um PIN"
 
-#: webpay/pin/views.py:53 webpay/pin/views.py:135
+#: webpay/pin/views.py:53 webpay/pin/views.py:136
 msgid "Confirm Pin"
 msgstr "Confirmar PIN"
 
-#: webpay/pin/views.py:95 webpay/pin/views.py:114 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:96 webpay/pin/views.py:115 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Redefinir PIN"
 
-#: webpay/pin/views.py:128
+#: webpay/pin/views.py:129
 msgid "Pin reset"
 msgstr "Redefinir PIN"
 

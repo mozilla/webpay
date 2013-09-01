@@ -13,7 +13,7 @@ from django.db import transaction
 
 from celeryutils import task
 import jwt
-from lib.marketplace.api import client as mkt_client
+from lib.marketplace.api import client as mkt_client, UnknownPricePoint
 from lib.solitude import constants
 from lib.solitude.api import client
 from multidb.pinning import use_master
@@ -184,7 +184,7 @@ def start_pay(transaction_uuid, notes, user_uuid, **kw):
             icon_url = None
         log.info('icon URL for %s: %s' % (transaction_uuid, icon_url))
         # Set up the product for sale.
-        bill_id, seller_product = client.configure_product_for_billing(
+        bill_id, seller_id = client.configure_product_for_billing(
             transaction_uuid,
             seller_uuid,
             pay['request']['id'],
@@ -220,6 +220,7 @@ def fake_payment_notify(transaction_uuid, pay_request, issuer_key, **kw):
              'type': constants.TYPE_PAYMENT,
              'notes': {'pay_request': pay_request,
                        'issuer_key': issuer_key}}
+    trans.update(_fake_amount(pay_request['request']['pricePoint']))
     _notify(fake_payment_notify, trans)
 
 
@@ -232,12 +233,10 @@ def payment_notify(transaction_uuid, **kw):
     The JWT sent is a mirror of the JWT used by the app to request payment
     except that it includes the following:
 
-    - A response.transactionID which is the Marketplace transaction ID
-    - The price array only includes one entry, the actual price / currency
-      that the customer paid in. The original request would include all
-      possible prices / currencies.
-
-    trans_id: pk of Transaction
+    :param response.transactionID: which is the Marketplace transaction ID.
+    :param response.price: object that contains the amount and currency the
+      customer actually paid in.
+    :param trans_id: pk of transaction.
     """
     transaction = client.get_transaction(transaction_uuid)
     _notify(payment_notify, transaction)
@@ -260,6 +259,24 @@ def chargeback_notify(transaction_uuid, **kw):
             extra_response={'reason': kw.get('reason', '')})
 
 
+def _fake_amount(price_point):
+    """
+    For fake and simulated transactions we don't know the amount a customer
+    paid. So we'll just pick the first random price from the tiers to make it
+    realistic.
+    """
+    try:
+        price = mkt_client.get_price(price_point)['prices'][0]
+    except IndexError:
+        # No prices were returned.
+        raise IndexError('No prices for pricePoint: {0}'.format(price_point))
+    except UnknownPricePoint:
+        # This price point wasn't even valid.
+        raise UnknownPricePoint('No pricePoint: {0}'.format(price_point))
+
+    return {'amount': price['price'], 'currency': price['currency']}
+
+
 @task(**notify_kw)
 @use_master
 def simulate_notify(issuer_key, pay_request, trans_uuid=None, **kw):
@@ -274,6 +291,9 @@ def simulate_notify(issuer_key, pay_request, trans_uuid=None, **kw):
     trans = {'uuid': trans_uuid,
              'notes': {'pay_request': pay_request,
                        'issuer_key': issuer_key}}
+
+    trans.update(_fake_amount(pay_request['request']['pricePoint']))
+
     extra_response = None
     sim = pay_request['request']['simulate']
     if sim.get('reason'):
@@ -345,6 +365,8 @@ def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED,
     if extra_response:
         response.update(extra_response)
 
+    response['price'] = {'amount': trans['amount'],
+                         'currency': trans['currency']}
     issued_at = calendar.timegm(time.gmtime())
     notice = {'iss': settings.NOTIFY_ISSUER,
               'aud': notes['issuer_key'],

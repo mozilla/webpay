@@ -20,7 +20,7 @@ from requests.exceptions import RequestException, Timeout
 import test_utils
 
 
-from lib.marketplace.api import UnknownPricePoint
+from lib.marketplace.api import client, UnknownPricePoint
 from lib.solitude import api
 from lib.solitude import constants
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
@@ -48,6 +48,8 @@ class TestNotifyApp(NotifyTest):
     @mock.patch('lib.solitude.api.client.get_transaction')
     def do_chargeback(self, reason, get_transaction):
         get_transaction.return_value = {
+                'amount': 1,
+                'currency': 'USD',
                 'status': constants.STATUS_COMPLETED,
                 'notes': {'pay_request': self.payload(),
                           'issuer_key': 'k'},
@@ -60,11 +62,13 @@ class TestNotifyApp(NotifyTest):
     @mock.patch('lib.solitude.api.client.get_transaction')
     def notify(self, get_transaction):
         get_transaction.return_value = {
+                'amount': 1,
+                'currency': 'USD',
                 'status': constants.STATUS_COMPLETED,
                 'notes': {'pay_request': self.payload(),
                           'issuer_key': 'k'},
                 'type': constants.TYPE_PAYMENT,
-                'uuid': self.trans_uuid
+                'uuid': self.trans_uuid,
         }
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             tasks.payment_notify('some:uuid')
@@ -80,6 +84,8 @@ class TestNotifyApp(NotifyTest):
             dd = jwt.decode(req['notice'], verify=False)
             eq_(dd['request'], payload['request'])
             eq_(dd['typ'], payload['typ'])
+            eq_(dd['response']['price']['amount'], 1)
+            eq_(dd['response']['price']['currency'], u'USD')
             jwt.decode(req['notice'], 'f', verify=True)
             return True
 
@@ -247,7 +253,10 @@ class TestNotifyApp(NotifyTest):
 @mock.patch('lib.solitude.api.client.slumber')
 class TestSimulatedNotifications(NotifyTest):
 
-    def notify(self, payload):
+    @mock.patch.object(client, 'get_price')
+    def notify(self, payload, get_price, prices=None):
+        get_price.return_value = (prices or
+            {'prices': [{'price': '0.99', 'currency': 'USD'}]})
         tasks.simulate_notify('issuer-key', payload,
                               trans_uuid=self.trans_uuid)
 
@@ -344,6 +353,18 @@ class TestSimulatedNotifications(NotifyTest):
         self.notify(payload)
         assert not notify_failure.called, 'Notification should not be sent'
 
+    @raises(IndexError)
+    @fudge.patch('webpay.pay.utils.requests')
+    def test_no_tier(self, slumber, fake_req):
+        self.set_secret_mock(slumber, 'f')
+        payload = self.payload(typ=TYP_POSTBACK,
+                               extra_req={'simulate': {'result': 'postback'}})
+
+        (fake_req.expects('post').returns_fake()
+                                 .has_attr(text=self.trans_uuid)
+                                 .expects('raise_for_status'))
+        self.notify(payload, prices={'prices': []})
+
 
 class BaseStartPay(test_utils.TestCase):
 
@@ -359,7 +380,7 @@ class BaseStartPay(test_utils.TestCase):
                                         'icons': {'64': 'http://app/i.png'},
                                         'name': 'Virtual Sword',
                                         'description': 'A fancy sword'}}}
-        self.prices = {'prices': [{'amount': 1, 'currency': 'EUR'}]}
+        self.prices = {'prices': [{'price': 1, 'currency': 'EUR'}]}
 
 
 class TestStartPay(BaseStartPay):
