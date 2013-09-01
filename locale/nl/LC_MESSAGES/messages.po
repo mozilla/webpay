@@ -36,46 +36,46 @@ msgstr "Uw betaling is voltooid."
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:47
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr ""
+msgstr "Een afbeeldingspictorgamsleutel was geen object. Correct voorbeeld: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:51
 msgid "No one has been registered for this JWT issuer."
-msgstr ""
+msgstr "Voor deze JWT-uitgever is niemand geregistreerd."
 
 #: webpay/base/dev_messages.py:53
 msgid "The requested payment simulation result is not supported."
-msgstr ""
+msgstr "Het gevraagde betalingssimulatieresultaat wordt niet ondersteund."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:56
 msgid "The JWT has expired."
-msgstr ""
+msgstr "De JWT is verlopen."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:60
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr ""
+msgstr "De JWT-handtekening is ongeldig of de JWT is beschadigd."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:63
 msgid "The JWT did not decode to a JSON object."
-msgstr ""
+msgstr "De JWT is niet gedecodeerd naar een JSON-object."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:66
 msgid "Error decoding JWT."
-msgstr ""
+msgstr "Fout bij decoderen JWT."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:68
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr ""
+msgstr "Een URL is beschadigd. Dit is mogelijk een postback-URL of een URL van een pictogram."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:72
@@ -93,7 +93,7 @@ msgstr "Momenteel zijn betalingssimulaties uitgeschakeld."
 
 #: webpay/base/dev_messages.py:80
 msgid "This payment key can only be used to simulate purchases."
-msgstr ""
+msgstr "Deze betalingssleutel kan alleen maar worden gebruikt voor aankoopsimulaties."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -103,7 +103,7 @@ msgstr "De waarde voor sleutel “{0}” is langer dan het maximum van {1}"
 
 #: webpay/base/utils.py:33
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr ""
+msgstr "Er is een fout opgetreden bij het instellen van de betaling. Probeer het opnieuw of neem contact op met de app als het probleem aanhoudt."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
