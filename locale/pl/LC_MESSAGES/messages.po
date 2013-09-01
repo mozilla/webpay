@@ -3,13 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2013-08-13 10:12-0700\n"
-"PO-Revision-Date: 2013-08-22 16:09+0200\n"
-=======
 "POT-Creation-Date: 2013-08-30 15:54-0700\n"
-"PO-Revision-Date: 2013-06-30 19:54+0200\n"
->>>>>>> upstream/master
+"PO-Revision-Date: 2013-09-01 17:06+0200\n"
 "Last-Translator: Wojciech Szczęsny\n"
 "Language-Team: Polish <>\n"
 "Language: pl\n"
@@ -42,46 +37,47 @@ msgstr "Twoja płatność jest zakończona."
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:47
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr ""
+msgstr "Klucz obrazka ikony nie jest obiektem. Prawidłowy przykład: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:51
 msgid "No one has been registered for this JWT issuer."
-msgstr ""
+msgstr "Nikt nie został zarejestrowany dla tego emitenta JWT."
 
 #: webpay/base/dev_messages.py:53
 msgid "The requested payment simulation result is not supported."
-msgstr ""
+msgstr "Żądany wynik symulacji płatności nie jest obsługiwany."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:56
 msgid "The JWT has expired."
-msgstr ""
+msgstr "JWT wygasło."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:60
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr ""
+msgstr "Podpis JWT jest nieprawidłowy lub JWT jest zniekształcone."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:63
 msgid "The JWT did not decode to a JSON object."
-msgstr ""
+msgstr "JWT nie zostało zdekodowane do obiektu JSON."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:66
 msgid "Error decoding JWT."
-msgstr ""
+msgstr "Błąd dekodowania JWT."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:68
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
 msgstr ""
+"Adres URL jest zniekształcony. Może to być URL typu postback lub ikony."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:72
@@ -100,6 +96,7 @@ msgstr "Symulacje płatności są w tej chwili niedostępne."
 #: webpay/base/dev_messages.py:80
 msgid "This payment key can only be used to simulate purchases."
 msgstr ""
+"Ten klucz płatności może być wykorzystywany tylko do symulacji zakupów."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -108,8 +105,12 @@ msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Wartość klucza „{0}” przekracza maksymalną długość {1}"
 
 #: webpay/base/utils.py:33
-msgid "There was an error setting up the payment. Try again or contact the app if it persists."
+msgid ""
+"There was an error setting up the payment. Try again or contact the app if it "
+"persists."
 msgstr ""
+"Wystąpił błąd podczas konfigurowania płatności. Spróbuj ponownie lub "
+"skontaktuj się z autorem aplikacji, jeśli błąd się powtarza."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -189,61 +190,7 @@ msgstr "OK"
 msgid "Error"
 msgstr "Błąd"
 
-<<<<<<< HEAD
-#. L10n: first argument is a detailed error message.
-#: webpay/pay/forms.py:31
-msgid "Error decoding JWT: {0}"
-msgstr "Błąd dekodowania JWT: {0}"
-
-#. L10n: first argument is a data type, such as <unicode>
-#: webpay/pay/forms.py:42
-msgid "The JWT did not decode to a JSON object. Its type was {0}."
-msgstr "JWT nie zostało zdekodowane do obiektu JSON. Jego typ to: {0}."
-
-#: webpay/pay/forms.py:52
-msgid "Payment simulations are disabled at this time."
-msgstr "Symulacje płatności są w tej chwili niedostępne."
-
-#: webpay/pay/forms.py:58
-msgid "The requested simulation result is not supported."
-msgstr "Żądany wynik symulacji nie jest obsługiwany."
-
-#: webpay/pay/forms.py:61
-msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr "W żądanej symulacji obciążenia zwrotnego brakuje klucza '{0}'."
-
-#. L10n: the first argument is a key to identify an issuer.
-#: webpay/pay/forms.py:77
-msgid "No one has been registered for JWT issuer {0}."
-msgstr "Nikt nie został zarejestrowany dla emitenta JWT {0}."
-
-#. L10n: the first argument is a key to identify an issuer.
-#: webpay/pay/forms.py:83
-msgid "This payment key, {0}, can only be used to simulate purchases."
-msgstr ""
-"Ten klucz płatności, {0}, może być używany jedynie do symulowania zakupów."
-
-#. L10n: First argument is the name of a key. Second
-#. argument is an example of the proper key format.
-#: webpay/pay/forms.py:93
-msgid "The \"{0}\" key must be an object of URLs such as {1}"
-msgstr "Klucz „{0}” musi być obiektem URL, takim jak {1}"
-
-#. L10n: First argument is the name of a key. Second
-#. argument is a number.
-#: webpay/pay/forms.py:107
-msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr "Wartość klucza „{0}” przekracza maksymalną długość {1}"
-
-#. L10n: First and second arguements are the names of keys.
-#: webpay/pay/forms.py:114
-msgid "If {0} is defined, then you must also define {1}."
-msgstr "Jeśli zdefiniowano {0}, należy również zdefiniować {1}."
-
-#: webpay/pay/views.py:42
-=======
 #: webpay/pay/views.py:46
->>>>>>> upstream/master
 msgid "Payments are temporarily disabled."
 msgstr "Płatności są czasowo niedostępne."
 
@@ -365,4 +312,5 @@ msgstr ""
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
 msgstr "Resetuj"
+
 
