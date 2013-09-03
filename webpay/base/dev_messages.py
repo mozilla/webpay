@@ -5,6 +5,7 @@ from tower import ugettext as _
 
 BAD_JWT_ISSUER = 'BAD_JWT_ISSUER'
 BAD_ICON_KEY = 'BAD_ICON_KEY'
+BAD_PRICE_POINT = 'BAD_PRICE_POINT'
 BAD_SIM_RESULT = 'BAD_SIM_RESULT'
 EXPIRED_JWT = 'EXPIRED_JWT'
 INVALID_JWT = 'INVALID_JWT'
@@ -49,6 +50,7 @@ def legend():
         # L10n: JWT stands for JSON Web Token and does not need to be
         # localized.
         BAD_JWT_ISSUER: _('No one has been registered for this JWT issuer.'),
+        BAD_PRICE_POINT: _('The price point is unknown or invalid.'),
         BAD_SIM_RESULT:
             _('The requested payment simulation result is not supported.'),
         # L10n: JWT stands for JSON Web Token and does not need to be

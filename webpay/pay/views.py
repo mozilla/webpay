@@ -65,8 +65,7 @@ def process_pay_req(request):
 
     if exc:
         log.exception('calling verify_jwt')
-        return _error(request, code=er,
-                      display=form.is_simulation)
+        return _error(request, code=er)
 
     icon_urls = []
     if pay_req['request'].get('icons'):
@@ -88,8 +87,7 @@ def process_pay_req(request):
         marketplace.get_price(pay_req['request']['pricePoint'])
     except UnknownPricePoint, exc:
         log.exception('calling get price_price()')
-        return _error(request, exception=exc,
-                      display=form.is_simulation)
+        return _error(request, code=msg.BAD_PRICE_POINT)
 
     _trim_pay_request(pay_req)
 

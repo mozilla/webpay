@@ -333,7 +333,8 @@ class TestVerify(Base):
         payload = self.request(payload=self.payload())
         res = self.get(payload)
         assert price.called
-        eq_(res.status_code, 400)
+        self.assertContains(res, msg.BAD_PRICE_POINT,
+                            status_code=400)
 
 
 @mock.patch('lib.solitude.api.client.get_transaction')
