@@ -131,7 +131,7 @@ def lobby(request):
     pin_form = VerifyPinForm()
 
     if sess.get('uuid'):
-        auth_utils.update_session(request, sess.get('uuid'))
+        auth_utils.update_session(request, sess.get('uuid'), False)
 
         # Before we continue with the buy flow, let's save some
         # time and get the transaction configured via Bango in the
@@ -296,8 +296,7 @@ def _trim_pay_request(req):
 
     # Trim long descriptions so they don't inflate our session cookie
     # size unexpectedly.
-    req['request']['description'] = _trim(
-                    req['request']['description'])
+    req['request']['description'] = _trim(req['request']['description'])
     if req['request'].get('locales'):
         for k, v in req['request']['locales'].items():
             d = _trim(v['description'])

@@ -1,4 +1,6 @@
-from django import test
+from datetime import datetime
+
+from django import http, test
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 
@@ -30,6 +32,17 @@ class TestUUID(test.TestCase):
         eq_(set_user(req, email), user)
         assert client.get_buyer.called
         assert req.session.__setitem__.called
+
+    @mock.patch('webpay.auth.utils.client')
+    def test_update_user_pin_unlock(self, client):
+        email = 'f@f.com'
+        req = http.HttpRequest()
+        req.session = {
+            'last_pin_success': datetime.now()
+        }
+        user = get_uuid(email)
+        eq_(set_user(req, email), user)
+        assert req.session['last_pin_success'] is None
 
     def test_set_with_wildcard(self):
         with self.settings(USER_WHITELIST=['.*?@mozilla.com']):
