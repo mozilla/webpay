@@ -8,7 +8,7 @@ from django.core.exceptions import PermissionDenied
 from lib.solitude.api import client
 from webpay.base.logger import getLogger
 
-log  = getLogger('w.auth')
+log = getLogger('w.auth')
 
 
 def check_whitelist(email):
@@ -59,13 +59,14 @@ def set_user(request, email):
         raise PermissionDenied
 
     uuid = get_uuid(email)
+    new_uuid = request.session.get('uuid') != uuid
     request.session['uuid'] = uuid
     # This is only used by navigator.id.watch()
     request.session['logged_in_user'] = email
-    return update_session(request, uuid)
+    return update_session(request, uuid, new_uuid)
 
 
-def update_session(request, uuid):
+def update_session(request, uuid, new_uuid):
     buyer = client.get_buyer(uuid)
     set_user_has_pin(request, buyer.get('pin', False))
     set_user_has_confirmed_pin(request, buyer.get('pin_confirmed', False))
@@ -75,6 +76,8 @@ def update_session(request, uuid):
                                                        False)
     request.session['uuid_pin_is_locked'] = buyer.get('pin_is_locked_out',
                                                       False)
+    if new_uuid:
+        request.session['last_pin_success'] = None
     return uuid
 
 
