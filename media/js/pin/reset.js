@@ -3,15 +3,15 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
     var bodyData = cli.bodyData,
         on_success;
 
-    function watchForceAuth(on_success) {
+    function watchForceAuth(_onSuccess) {
         id.watch({
             onlogin: function _resetLogin(assertion) {
                 console.log('[reset] nav.id onlogin');
                 $.post(bodyData.verifyUrl, {assertion: assertion})
                     .success(function _resetLoginSuccess(data, textStatus, jqXHR) {
                         console.log('[reset] login success');
-                        bango.prepareUser(data.user_hash).done(function() {
-                            on_success.apply(this);
+                        bango.prepareAll(data.user_hash).done(function _forceAuthReady() {
+                            _onSuccess.apply(this);
                         });
                     })
                     .error(function _resetLoginError() {
@@ -44,15 +44,16 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
             return;
         }
         if (bodyData.forceAuthResult !== 'show-pin') {
-            on_success = function() {
+            on_success = function _resetBounceSuccess() {
                 /* We are going to bounce you to the reset-step after login,
                  * but you've already entered your login, so we'll store that.
                  */
+                console.log('[reset] logged in, bouncing to', bodyData.resetUrl);
                 window.localStorage.setItem('reset-step', 'pin');
                 window.location.href = bodyData.resetUrl;
             };
         } else {
-            on_success = function() {
+            on_success = function _resetLoginSuccess() {
                 /* You are in the reset step and you've logged in,
                  * let's show you a pin.
                  */

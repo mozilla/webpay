@@ -18,7 +18,7 @@ define('id', ['cli'], function(cli) {
         },
         watch: function _watch() {
             var user = cli.bodyData.loggedInUser;
-            console.log('loggedInUser', typeof user, user);
+            console.log('[id] watch: loggedInUser', typeof user, user);
             var defaults = {
                 // When we get a falsey user, set an undefined state
                 // which will trigger onlogout(),

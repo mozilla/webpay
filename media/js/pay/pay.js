@@ -44,7 +44,7 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
             cli.showProgress(bodyData.personaMsg);
             $.post(verifyUrl, {assertion: assertion})
                 .success(function(data, textStatus, jqXHR) {
-                    bango.prepareUser(data.user_hash).done(function _onDone() {
+                    bango.prepareAll(data.user_hash).done(function _onDone() {
                         callback(data);
                     });
                 })
@@ -75,6 +75,7 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
         activeOnLogout();
     }
 
+    console.log('[pay] flow=', bodyData.flow);
     if (bodyData.flow === 'lobby') {
         cli.showProgress(bodyData.beginMsg);
         id.watch({
@@ -95,8 +96,10 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
             onready: function _lobbyOnReady() {
                 if (!calledBack && cli.bodyData.loggedInUser) {
                     console.log('[pay] Probably logged in, Persona never called back');
-                    console.log('[pay] Requesting focus on pin');
-                    cli.focusOnPin({ $toHide: $('#login'), $toShow: $('#enter-pin') });
+                    bango.prepareSim().done(function _simDoneReady() {
+                        console.log('[pay] Requesting focus on pin');
+                        cli.focusOnPin({ $toHide: $('#login'), $toShow: $('#enter-pin') });
+                    });
                 }
             }
         });
@@ -111,20 +114,25 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, au
             }),
             onlogout: onlogout,
             onready: function _bounceOnReady() {
-                if(!calledBack && cli.bodyData.loggedInUser) {
+                if (!calledBack && cli.bodyData.loggedInUser) {
                     console.log('[pay] Probably logged in, Persona never called back');
-                    console.log('[pay] Forwarding the user to ' + next);
-                    window.location = next;
+                    bango.prepareSim().done(function _bounceAfterSim() {
+                        console.log('[pay] Forwarding the user to ' + next);
+                        window.location = next;
+                    });
                 }
             }
         });
 
     } else {
-        var $entry = $('#enter-pin');
-        if ($entry.length && !$entry.hasClass('hidden')) {
-            console.log('[pay] Requesting focus on pin');
-            cli.focusOnPin({ $toShow: $entry });
-        }
+        // A specific flow was not forced. For example, the user may be creating a PIN.
+        bango.prepareSim().done(function _defaultReady() {
+            var $entry = $('#enter-pin');
+            if ($entry.length && !$entry.hasClass('hidden')) {
+                console.log('[pay] Requesting focus on pin');
+                cli.focusOnPin({ $toShow: $entry });
+            }
+        });
     }
 
     if (bodyData.docomplete) {
