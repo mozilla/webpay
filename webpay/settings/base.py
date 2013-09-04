@@ -22,6 +22,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'webpay.services',
     'tower',
     'raven.contrib.django',
+    'jingo_minify',
 ]
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
