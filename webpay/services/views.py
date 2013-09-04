@@ -8,8 +8,12 @@ from curling.lib import HttpClientError
 
 from lib.marketplace.api import client as marketplace
 from lib.solitude.api import client as solitude
+from webpay.base.logger import getLogger
+from webpay.base.utils import log_cef_meta
 
 from .forms import SigCheckForm
+
+log = getLogger('z.services')
 
 
 def monitor(request):
@@ -63,3 +67,26 @@ def sig_check(request):
     return http.HttpResponse(content=json.dumps(res),
                              content_type='application/json',
                              status=200 if res['result'] == 'ok' else 400)
+
+
+@csrf_exempt
+@require_POST
+def csp_report(request):
+    """Accept CSP reports and log them."""
+    whitelist = ('blocked-uri', 'violated-directive', 'original-policy')
+
+    try:
+        report = json.loads(request.raw_post_data)['csp-report']
+        # If possible, alter the PATH_INFO to contain the request of the page
+        # the error occurred on, spec: http://mzl.la/P82R5y
+        meta = request.META.copy()
+        meta['PATH_INFO'] = report.get('document-uri', meta['PATH_INFO'])
+        incoming = [(k, report[k]) for k in whitelist if k in report]
+        log.info('CSP reported for {0}: {1}'
+                 .format(meta['PATH_INFO'], incoming))
+        log_cef_meta('CSP Violation', meta, request.get_full_path(),
+                     cs6=incoming, cs6Label='ContentPolicy')
+    except (KeyError, ValueError):
+        return http.HttpResponseBadRequest()
+
+    return http.HttpResponse()

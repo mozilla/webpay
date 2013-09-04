@@ -12,11 +12,15 @@ log = getLogger('w.pay')
 
 
 def log_cef(msg, request, **kw):
+    log_cef_meta(msg, request.META.copy(), request.get_full_path(), **kw)
+
+
+def log_cef_meta(msg, meta, full_path, **kw):
     g = functools.partial(getattr, settings)
     severity = kw.get('severity', g('CEF_DEFAULT_SEVERITY', 5))
     cef_kw = {
         'msg': msg,
-        'signature': request.get_full_path(),
+        'signature': full_path,
         'config': {
             'cef.product': 'WebPay',
             'cef.vendor': g('CEF_VENDOR', 'Mozilla'),
@@ -25,7 +29,7 @@ def log_cef(msg, request, **kw):
             'cef.file': g('CEF_FILE', 'syslog'),
         },
     }
-    _log_cef(msg, severity, request.META.copy(), **cef_kw)
+    _log_cef(msg, severity, meta, **cef_kw)
 
 
 def _error(request, msg='', exception=None, display=False,

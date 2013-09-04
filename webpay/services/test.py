@@ -150,3 +150,30 @@ class TestSigCheck(TestCase):
     def test_require_post(self):
         res = self.client.get(reverse('services.sig_check'))
         eq_(res.status_code, 405)
+
+
+@mock.patch('webpay.base.utils._log_cef')
+class TestCSP(TestCase):
+
+    def setUp(self):
+        self.url = reverse('csp.report')
+
+    def test_get_document(self, log_cef):
+        eq_(self.client.get(self.url).status_code, 405)
+
+    def test_malformed(self, log_cef):
+        res = self.client.post(self.url, 'f', content_type='application/json')
+        eq_(res.status_code, 400)
+
+    def test_document_uri(self, log_cef):
+        url = 'http://foo.com'
+        self.client.post(self.url,
+                         json.dumps({'csp-report': {'document-uri': url}}),
+                         content_type='application/json')
+        eq_(log_cef.call_args[0][2]['PATH_INFO'], url)
+
+    def test_no_document_uri(self, log_cef):
+        self.client.post(self.url, json.dumps({'csp-report': {}}),
+                         content_type='application/json')
+        eq_(log_cef.call_args[0][2]['PATH_INFO'],
+            '/mozpay/services/csp/report')
