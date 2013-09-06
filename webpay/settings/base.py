@@ -13,14 +13,36 @@ PROJECT_MODULE = 'webpay'
 # Defines the views served for root URLs.
 ROOT_URLCONF = '%s.urls' % PROJECT_MODULE
 
-INSTALLED_APPS = list(INSTALLED_APPS) + [
+INSTALLED_APPS = [
+
+    # Local apps
+    'funfactory',  # Content common to most playdoh-based apps.
+
+    'tower',  # for ./manage.py extract (L10n)
+    'django_browserid',
+
+    # Django contrib apps
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.staticfiles',
+
+    # Third-party apps, patches, fixes
+    'commonware.response.cookies',
+    'djcelery',
+    'django_nose',
+    'session_csrf',
+
+    # L10n
+    'product_details',
+
+    # Webpay apps.
     'webpay.auth',
     'webpay.base',  # Needed for global templates, etc.
     'webpay.bango',
     'webpay.pay',
     'webpay.pin',
     'webpay.services',
-    'tower',
     'raven.contrib.django',
     'jingo_minify',
 ]
