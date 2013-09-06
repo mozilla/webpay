@@ -2,41 +2,80 @@ define('pay/bango', ['cli'], function(cli) {
     'use strict';
 
     var bango = {
-        prepareUser: function(userHash) {
-            if (!userHash) {
-                throw new Error('userHash was empty');
-            }
-            var existingUser = window.localStorage.getItem('userHash');
-            // Save it for next time.
-            window.localStorage.setItem('userHash', userHash);
+        _simChanged: function _simChanged() {
+            var changed = false;
+            var iccKey;
+            var lastIcc;
 
-            // Temporary logging for bug 850899
-            console.log('bango.prepareUser()', userHash, existingUser);
-            if (existingUser && existingUser !== userHash) {
-                // Make sure the old user is logged out of Bango.
+            // Compare the last used SIM(s) to the current SIM(s).
+            // TODO: when we have multiple SIMs, how do we know which one is active?
+            if (cli.mozPaymentProvider.iccIds) {
+                iccKey = cli.mozPaymentProvider.iccIds.join(';');
+                lastIcc = window.localStorage.getItem('lastIcc');
+                window.localStorage.setItem('lastIcc', iccKey);
+                if (lastIcc && lastIcc !== iccKey) {
+                    console.log('[bango] new icc', iccKey, '!== saved icc', lastIcc);
+                    changed = true;
+                    console.log('[bango] sim changed');
+                } else {
+                    console.log('[bango] sim did not change');
+                }
+            } else {
+                console.log('[bango] iccIds unavailable');
+            }
+
+            return changed;
+        },
+        prepareSim: function _prepareSim() {
+            if (bango._simChanged()) {
+                // Log out if a new SIM is used.
                 return bango.logout();
             } else {
                 // Nothing to do so return a resolved deferred.
                 return $.Deferred().resolve();
             }
         },
-        logout: function() {
+        prepareAll: function _prepareAll(userHash) {
+            var doLogout = false;
+            if (!userHash) {
+                throw new Error('userHash was empty');
+            }
+            var existingUser = window.localStorage.getItem('userHash');
+            window.localStorage.setItem('userHash', userHash);
+
+            if (existingUser && existingUser !== userHash) {
+                console.log('[bango] logout: new user hash', userHash, '!== saved hash', existingUser);
+                doLogout = true;
+            }
+
+            if (bango._simChanged()) {
+                // Log out if a new SIM is used.
+                doLogout = true;
+            }
+
+            if (doLogout) {
+                // Clear Bango cookies.
+                return bango.logout();
+            } else {
+                // Nothing to do so return a resolved deferred.
+                return $.Deferred().resolve();
+            }
+        },
+        logout: function _bangoLogout() {
             var bangoReq;
 
-            // Temporary logging for bug 850899
-            console.log('do bango.logout()');
             // Log out of Bango so that cookies are cleared.
-            console.log('Logging out of Bango');
+            console.log('[bango] Logging out of Bango');
             bangoReq = $.ajax({url: cli.bodyData.bangoLogoutUrl, dataType: 'script'})
                 .done(function(data, textStatus, jqXHR) {
-                    console.log('Bango logout responded: ' + jqXHR.status);
+                    console.log('[bango] logout responded: ' + jqXHR.status);
                     if (jqXHR.status.toString()[0] !== '2') {  // 2xx status
                         bangoReq.reject();
                         return;
                     }
                 })
                 .fail(function(jqXHR, textStatus, errorThrown) {
-                    console.log('Bango logout failed with status=' + jqXHR.status +
+                    console.log('[bango] logout failed with status=' + jqXHR.status +
                                 '; resp=' + textStatus + '; error=' + errorThrown);
                 });
 
