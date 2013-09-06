@@ -20,10 +20,6 @@ FAKE_PAYMENTS = False
 # persona throws.
 SITE_URL = 'http://testserver'
 
-# These were needed after upgrading funfactory.
-STATIC_URL = SITE_URL + '/media/'
-COMPRESS_URL = STATIC_URL
-
 ALLOW_SIMULATE = True
 TEST_PIN_UI = False
 
