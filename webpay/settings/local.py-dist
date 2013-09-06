@@ -89,9 +89,9 @@ CELERY_ALWAYS_EAGER = True
 #CEF_PRODUCT = 'Playdoh'
 #CEF_VENDOR = 'Mozilla'
 
-# Uncomment this line if you are running a local development install without
+# Set this to False if you are running a local development install without
 # HTTPS to disable HTTPS-only cookies.
-#SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 
 # Uncomment this to see descriptive errors on the JWT verification screen.
 #VERBOSE_LOGGING = True
