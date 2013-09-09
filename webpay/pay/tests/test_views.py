@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import time
 from collections import defaultdict
 from datetime import datetime
 
@@ -79,7 +80,7 @@ class TestVerify(Base):
         res = self.get(payload)
         eq_(res.status_code, 302)
         assert res['Location'].endswith(
-            '?next={0}'.format(get_payment_url(mock.Mock()))
+            '?next={0}'.format(get_payment_url(mock.Mock(session={})))
         ), res['Location']
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
@@ -357,6 +358,8 @@ class TestWaitToStart(Base):
             'status': constants.STATUS_PENDING,
             'uid_pay': 123,
         }
+        self.session['payment_start'] = time.time()
+        self.save_session()
         res = self.client.get(self.wait)
         eq_(res['Location'], settings.BANGO_PAY_URL % 123)
 
@@ -366,6 +369,8 @@ class TestWaitToStart(Base):
             'status': constants.STATUS_PENDING,
             'uid_pay': 123,
         }
+        self.session['payment_start'] = time.time()
+        self.save_session()
         res = self.client.get(self.start)
         eq_(res.status_code, 200, res.content)
         data = json.loads(res.content)
