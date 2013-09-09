@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: AMO Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-08-30 15:54-0700\n"
-"PO-Revision-Date: 2013-09-01 21:21+0100\n"
+"PO-Revision-Date: 2013-09-09 10:54+0100\n"
 "Last-Translator: Michael Köhler <coce@nurfuerspam.de>\n"
 "Language-Team: German (de) <coce@nufuerspam.de>\n"
 "Language: de\n"
@@ -107,7 +107,7 @@ msgstr "Der Wert für den Schlüssel „{0}“ überschreitet die maximale Läng
 
 #: webpay/base/utils.py:33
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr "Bei der Einrichtung der Zahlung ist ein Fehler aufgetreten. Versuchen Sie es erneut, oder kontaktieren Sie die Anwendung, wenn der Fehler weiter besteht."
+msgstr "Bei der Einrichtung der Zahlung ist ein Fehler aufgetreten. Versuchen Sie es erneut, oder kontaktieren Sie die App, wenn der Fehler weiter besteht."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -316,3 +316,4 @@ msgstr "Möchten Sie Ihre PIN wirklich zurücksetzen? Sie müssen sich mit Perso
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
 msgstr "Zurücksetzen"
+
