@@ -113,6 +113,17 @@ in your ``webpay/settings/local.py``::
 
 Then load the front page: http://localhost:8001/mozpay/
 
+Overriding JS settings from Django settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+JS settings are overridden from  the `webpay.settings.base.JS_SETTINGS` dict.
+
+Here's an example to override a setting `foo` with the value `True`:
+
+.. code-block:: python
+
+    base.JS_SETTINGS['foo'] = True
+
 Using JWTs for development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 

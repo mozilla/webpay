@@ -1,4 +1,4 @@
-require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext'], function(cli, id, auth, bango, checkLongText) {
+require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], function(cli, id, auth, bango, checkLongText, tracking) {
     "use strict";
 
     var bodyData = cli.bodyData;

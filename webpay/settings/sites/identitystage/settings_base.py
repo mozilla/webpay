@@ -105,3 +105,5 @@ BROWSERID_DOMAIN = 'firefoxos.anosrep.org'
 BROWSERID_UNVERIFIED_ISSUER = BROWSERID_DOMAIN
 BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
 BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN
+
+base.JS_SETTINGS['tracking_enabled'] = True
