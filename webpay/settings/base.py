@@ -422,6 +422,13 @@ UUID_HMAC_KEY = ''
 # this empty), SECRET_KEY is used.
 #ENCRYPTED_COOKIE_KEY = ''
 
+# When True, compress session cookie data with zlib to improve network
+# performance and avoid maxing out HTTP header length.
+COMPRESS_ENCRYPTED_COOKIE = True
+
+# Set the zlib level for compression.
+ENCRYPTED_COOKIE_COMPRESSION_LEVEL = 6
+
 # Maximum length of a product description. This is used to truncate long
 # descriptions so that they do not break things like session cookies.
 PRODUCT_DESCRIPTION_LENGTH = 255
