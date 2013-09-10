@@ -1,3 +1,5 @@
+import time
+
 from django import http
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -5,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 
+from django_statsd.clients import statsd
 from mozpay.exc import InvalidJWT, RequestExpired
 from mozpay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
@@ -243,16 +246,24 @@ def wait_to_start(request):
         # payment will never complete so we should keep an eye on it.
         log.error('wait_to_start() session trans_id was None')
     try:
-        trans = solitude.get_transaction(trans_id)
+        statsd.incr('purchase.payment_time.retry')
+        with statsd.timer('purchase.payment_time.get_transation'):
+            trans = solitude.get_transaction(trans_id)
     except ObjectDoesNotExist:
         trans = {'status': None}
 
     if trans['status'] in constants.STATUS_ENDED:
+        statsd.incr('purchase.payment_time.failure')
         log.exception('Attempt to restart finished transaction {0} '
                       'with status {1}'.format(trans_id, trans['status']))
         return _error(request, msg=_('Transaction has already ended.'))
 
     if trans['status'] == constants.STATUS_PENDING:
+        statsd.incr('purchase.payment_time.success')
+        payment_start = request.session.get('payment_start', False)
+        if payment_start:
+            delta = int((time.time() - float(payment_start)) * 1000)
+            statsd.timing('purchase.payment_time.duration', delta)
         # Dump any messages so we don't show them later.
         clear_messages(request)
         # The transaction is ready; no need to wait for it.
@@ -268,11 +279,18 @@ def trans_start_url(request):
     JSON handler to get the Bango payment URL to start a transaction.
     """
     try:
-        trans = solitude.get_transaction(request.session['trans_id'])
+        statsd.incr('purchase.payment_time.retry')
+        with statsd.timer('purchase.payment_time.get_transation'):
+            trans = solitude.get_transaction(request.session['trans_id'])
     except ObjectDoesNotExist:
         trans = {'status': None}
     data = {'url': None, 'status': trans['status']}
     if trans['status'] == constants.STATUS_PENDING:
+        statsd.incr('purchase.payment_time.success')
+        payment_start = request.session.get('payment_start', False)
+        if payment_start:
+            delta = int((time.time() - float(payment_start)) * 1000)
+            statsd.timing('purchase.payment_time.duration', delta)
         data['url'] = _bango_start_url(trans['uid_pay'])
     return data
 

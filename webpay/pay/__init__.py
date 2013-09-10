@@ -1,3 +1,5 @@
+import time
+
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.conf import settings
@@ -24,4 +26,5 @@ def get_payment_url(request):
     elif can_simulate:
         return reverse('pay.super_simulate')
     else:
+        request.session['payment_start'] = time.time()
         return reverse('pay.wait_to_start')

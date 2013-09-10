@@ -100,7 +100,7 @@ class VerifyPinViewTest(PinViewTestCase):
                                                       'valid': True})
     def test_good_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        assert res['Location'].endswith(get_payment_url(Mock()))
+        assert res['Location'].endswith(get_payment_url(Mock(session={})))
 
     @patch.object(client, 'verify_pin', lambda x, y: {'locked': False,
                                                       'valid': False})
@@ -161,7 +161,7 @@ class ConfirmPinViewTest(PinViewTestCase):
     def test_good_pin(self, set_user_has_confirmed_pin):
         res = self.client.post(self.url, data={'pin': '1234'})
         set_user_has_confirmed_pin.assert_called_with(ANY, True)
-        assert res['Location'].endswith(get_payment_url(Mock()))
+        assert res['Location'].endswith(get_payment_url(Mock(session={})))
 
     @patch.object(client, 'confirm_pin', lambda x, y: False)
     @patch('webpay.pin.views.set_user_has_confirmed_pin', auto_spec=True)
@@ -364,7 +364,7 @@ class ResetConfirmPinViewTest(ResetPinTest):
     @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
     def test_good_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        assert res['Location'].endswith(get_payment_url(Mock()))
+        assert res['Location'].endswith(get_payment_url(Mock(session={})))
         # Make sure the reverification flag was cleared out.
         eq_(res.client.session['was_reverified'], False)
 
