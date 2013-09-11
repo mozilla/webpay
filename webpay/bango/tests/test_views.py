@@ -34,7 +34,8 @@ class TestBangoReturn(BasicSessionCase):
               'ResponseCode': 'OK',
               'Price': '0.99',
               'Currency': 'EUR',
-              'BangoTransactionId': '456'}
+              'BangoTransactionId': '456',
+              'Token': '<bango-guid>'}
         if overrides:
             qs.update(overrides)
         res = self.client.get(reverse(url), qs)

@@ -52,6 +52,7 @@ def _record(request):
             'bango_response_code': qs.get('ResponseCode'),
             'bango_response_message': qs.get('ResponseMessage'),
             'bango_trans_id': qs.get('BangoTransactionId'),
+            'bango_token': qs.get('Token'),
             'amount': qs.get('Price'),
             'currency': qs.get('Currency'),
         })
