@@ -36,46 +36,46 @@ msgstr "Η πληρωμή ολοκληρώθηκε."
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:47
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr ""
+msgstr "Ένα κλειδί εικόνας δεν ήταν αντικείμενο. Ορθό παράδειγμα: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:51
 msgid "No one has been registered for this JWT issuer."
-msgstr ""
+msgstr "Κανείς δεν έχει εγγραφεί ως ο συγκεκριμένος εκδότης JWT."
 
 #: webpay/base/dev_messages.py:53
 msgid "The requested payment simulation result is not supported."
-msgstr ""
+msgstr "Το αιτηθέν αποτέλεσμα προσομοίωσης πληρωμής δεν υποστηρίζεται."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:56
 msgid "The JWT has expired."
-msgstr ""
+msgstr "Το JWT έχει λήξει."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:60
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr ""
+msgstr "H υπογραφή JWT δεν είναι έγκυρη ή το JWT είναι κατεστραμμένο."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:63
 msgid "The JWT did not decode to a JSON object."
-msgstr ""
+msgstr "Το JWT δεν αποκωδικοποιήθηκε σε αντικείμενο JSON."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:66
 msgid "Error decoding JWT."
-msgstr ""
+msgstr "Σφάλμα κατά την αποκοδικωποίηση του JWT."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:68
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr ""
+msgstr "Κάποιο URL είναι λάθος. Αυτό θα μπορούσε να είναι ένα URL εικονιδίου."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:72
@@ -93,7 +93,7 @@ msgstr "Οι προσομοιώσεις πληρωμών είναι απενερ
 
 #: webpay/base/dev_messages.py:80
 msgid "This payment key can only be used to simulate purchases."
-msgstr ""
+msgstr "Αυτό το κλειδί πληρωμής μπορεί να χρησιμοποιηθεί μόνο για προσομοίωση πληρωμών."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -103,7 +103,7 @@ msgstr "Η τιμή για το κλειδί \"{0}\" υπερβαίνει το �
 
 #: webpay/base/utils.py:33
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr ""
+msgstr "Υπήρξε κάποιο σφάλμα κατά τη ρύθμιση της πληρωμής. Προσπαθήστε ξανά ή επικοινωνήστε με την εφαρμογή αν αυτό επιμείνει."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
