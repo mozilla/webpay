@@ -414,7 +414,7 @@ class TestWaitToStart(Base):
     def test_wait(self, get_transaction):
         res = self.client.get(self.wait)
         eq_(res.status_code, 200)
-        self.assertContains(res, 'Waiting')
+        self.assertContains(res, 'Setting up payment')
 
 
 class TestSimulate(BasicSessionCase, JWTtester):
