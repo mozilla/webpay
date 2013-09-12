@@ -184,21 +184,21 @@ class TestNotifyApp(NotifyTest):
                                                            [], None)))
         self.notify()
 
-    @fudge.patch('webpay.pay.utils.requests')
-    @mock.patch('lib.solitude.api.client.slumber')
-    def test_invalid_app_response(self, fake_req, slumber):
-        self.set_secret_mock(slumber, 'f')
-        (fake_req.expects('post').returns_fake()
-                                 .provides('raise_for_status')
-                                 .has_attr(text='<not a valid response>'))
-        self.notify()
-
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.utils.requests')
     @mock.patch('webpay.pay.tasks.payment_notify.retry')
     def test_notify_retries(self, retry, requests, slumber):
         self.set_secret_mock(slumber, 'f')
         requests.post.side_effect = RequestException('some http error')
+        self.notify()
+        assert retry.called, 'task was not retried after error'
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('webpay.pay.utils.requests')
+    @mock.patch('webpay.pay.tasks.payment_notify.retry')
+    def test_notify_wrong(self, retry, requests, slumber):
+        self.set_secret_mock(slumber, 'f')
+        requests.post.return_value.content = '<not a valid response>'
         self.notify()
         assert retry.called, 'task was not retried after error'
 
@@ -245,7 +245,7 @@ class TestNotifyApp(NotifyTest):
                                             arg.passes_test(is_valid),
                                             timeout=arg.any())
                                  .returns_fake()
-                                 .has_attr(text='<not a valid response>')
+                                 .has_attr(text='some:uuid')
                                  .provides('raise_for_status'))
         self.notify()
 
