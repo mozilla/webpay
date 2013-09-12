@@ -1,7 +1,9 @@
 from django.core.urlresolvers import reverse
 
+import json
 from mock import ANY, Mock, patch
 from nose.tools import eq_
+from pyquery import PyQuery as pq
 
 from lib.solitude import constants
 from lib.solitude.api import client
@@ -68,6 +70,10 @@ class CreatePinViewTest(PinViewTestCase):
         assert not create_buyer.called
         assert not change_pin.called
         eq_(res.status_code, 200)
+        doc = pq(res.content)
+        form_tracking_data = json.loads(doc('#pin').attr('data-tracking'))
+        eq_(form_tracking_data['pin_error_codes'],
+            ['PIN_ALREADY_CREATED'])
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': 'some:uuid'})
@@ -122,6 +128,10 @@ class VerifyPinViewTest(PinViewTestCase):
     def test_bad_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
         eq_(res.status_code, 200)
+        doc = pq(res.content)
+        form_tracking_data = json.loads(doc('#pin').attr('data-tracking'))
+        eq_(form_tracking_data['pin_error_codes'],
+            ['WRONG_PIN'])
 
     @patch.object(client, 'verify_pin', lambda x, y: {'locked': True,
                                                       'valid': False})
@@ -184,6 +194,11 @@ class ConfirmPinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not set_user_has_confirmed_pin.called
         eq_(res.status_code, 200)
+        doc = pq(res.content)
+        form_tracking_data = json.loads(doc('#pin').attr('data-tracking'))
+        eq_(form_tracking_data['pin_error_codes'],
+            ['PINS_DONT_MATCH'])
+
 
     @patch.object(client, 'confirm_pin')
     def test_uuid_used(self, confirm_pin):
@@ -424,6 +439,10 @@ class ResetConfirmPinViewTest(ResetPinTest):
     def test_bad_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
         eq_(res.status_code, 200)
+        doc = pq(res.content)
+        form_tracking_data = json.loads(doc('#pin').attr('data-tracking'))
+        eq_(form_tracking_data['pin_error_codes'],
+            ['PINS_DONT_MATCH'])
 
     @patch.object(client, 'reset_confirm_pin')
     def test_uuid_used(self, confirm_pin):

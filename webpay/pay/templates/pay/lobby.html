@@ -3,6 +3,7 @@
 {% block body_attrs -%}
   data-flow="lobby"
   data-verify-url="{{ url('auth.verify') }}"
+  data-pin-error-codes="{{ PIN_ERROR_CODES|json }}"
 {%- endblock %}
 
 {% block extra_content %}

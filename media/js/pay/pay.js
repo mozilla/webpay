@@ -44,11 +44,15 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
             cli.showProgress(bodyData.personaMsg);
             $.post(verifyUrl, {assertion: assertion})
                 .success(function(data, textStatus, jqXHR) {
+                    cli.trackWebpayEvent({'action': 'persona login',
+                                          'label': 'Login Success'});
                     bango.prepareAll(data.user_hash).done(function _onDone() {
                         callback(data);
                     });
                 })
                 .error(function(xhr) {
+                    cli.trackWebpayEvent({'action': 'persona login',
+                                          'label': 'Login Failed'});
                     if (xhr.status === 403) {
                         console.log('[pay] permission denied after auth');
                         window.location.href = bodyData.deniedUrl;
@@ -141,6 +145,8 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
 
     $('#signin').click(function _signInOnClick(ev) {
         console.log('[pay] signing in manually');
+        cli.trackWebpayEvent({'action': 'sign in',
+                              'label': 'Lobby Page'});
         ev.preventDefault();
         cli.showProgress(bodyData.personaMsg);
         id.request();
@@ -162,6 +168,8 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
             window.setTimeout(callPaySuccess, 500);
         } else {
             console.log('[pay] payment complete, closing window');
+            cli.trackWebpayEvent({'action': 'payment',
+                                  'label': 'Bango Success'});
             paymentSuccess();
         }
     }
@@ -207,6 +215,8 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
                     // Redirect to the original destination.
                     var dest = anchor.attr('href');
                     console.log('[pay] forgot-pin logout done; redirect to', dest);
+                    cli.trackWebpayEvent({'action': 'forgot pin',
+                                          'label': 'Logout Success'});
                     window.location.href = dest;
                 })
                 .fail(function _failedLogout() {
@@ -217,6 +227,9 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
                     $pinEntry.hide();
                     $body.addClass('full-error');
                     $errorScreen.show();
+
+                    cli.trackWebpayEvent({'action': 'forgot pin',
+                                          'label': 'Logout Error'});
 
                     // Setup click handler for one time use.
                     $errorScreen.find('.button').one('click', function(e){
@@ -243,5 +256,19 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
         }
         runForgotPinLogout();
     });
+
+    var pinFormTrackingData = $('#pin').data('tracking');
+    if (pinFormTrackingData && pinFormTrackingData.pin_error_codes) {
+        // Object containing mapping from error code to nice error message string.
+        var pinErrorCodesMapping = $body.data('pinErrorCodes');
+        // The pin error codes output on the form.
+        var pinErrorCodes = pinFormTrackingData.pin_error_codes;
+        if (pinErrorCodesMapping) {
+            for (var i=0, j=pinErrorCodes.length; i<j; i++) {
+                cli.trackWebpayEvent({'action': 'pin error',
+                                      'label': pinErrorCodesMapping[pinErrorCodes[i]]});
+            }
+        }
+    }
 
 });

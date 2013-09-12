@@ -5,6 +5,7 @@
   data-cancel-url="{{ url('pin.reset_cancel') }}"
   data-reset-url="{{ url('pin.reset_start') }}"
   data-force-auth-result="redirect"
+  data-pin-error-codes="{{ PIN_ERROR_CODES|json }}"
 {%- endblock %}
 
 {% block content %}
@@ -14,7 +15,11 @@
 
     <h2>{{ title }}</h2>
 
-    <form id="pin" class="pin-form" action="{{ action }}" method="post">
+    <form id="pin" class="pin-form" action="{{ action }}" method="post"
+      {% if pin_form_tracking %}
+        data-tracking="{{ pin_form_tracking|json }}"
+      {% endif %}
+      >
       {{ csrf() }}
       <div class="pinbox{% if form.pin.errors %} error{% endif %}">
         {{ form.pin }}
@@ -30,11 +35,11 @@
 
       <footer>
         {% if form.reset_flow  %}
-          <a class="button ltchk sec" href="{{ url('pin.reset_cancel') }}">
+          <a class="button ltchk sec" href="{{ url('pin.reset_cancel') }}" data-track-event="{{ track_cancel|json }}">
             {{ _('Cancel') }}
           </a>
         {% else %}
-          <a class="button cancel-button ltchk sec" href="#">
+          <a class="button cancel-button ltchk sec" href="#" data-track-event="{{ track_cancel|json }}">
             {{ _('Cancel') }}
           </a>
         {% endif %}

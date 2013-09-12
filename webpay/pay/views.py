@@ -165,7 +165,11 @@ def lobby(request):
     return render(request, 'pay/lobby.html', {
         'action': reverse('pin.verify'),
         'form': pin_form,
-        'title': _('Enter Pin')
+        'title': _('Enter Pin'),
+        'track_cancel': {
+            'action': 'pin cancel',
+            'label': 'Pin Entry Page',
+        },
     })
 
 
