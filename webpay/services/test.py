@@ -14,6 +14,7 @@ from nose.tools import eq_
 
 from lib.marketplace.api import client as marketplace
 from lib.solitude.api import client as solitude
+from webpay.base.dev_messages import BAD_ICON_KEY
 from webpay.pay.utils import UnknownIssuer
 
 
@@ -177,3 +178,26 @@ class TestCSP(TestCase):
                          content_type='application/json')
         eq_(log_cef.call_args[0][2]['PATH_INFO'],
             '/mozpay/services/csp/report')
+
+
+class TestErrorLegend(TestCase):
+
+    def test_default(self):
+        res = self.client.get(reverse('services.error_legend'))
+        eq_(res.status_code, 200, res)
+        data = json.loads(res.content)
+        assert BAD_ICON_KEY in data['legend']
+
+    def test_custom_locale(self):
+        res = self.client.get(reverse('services.error_legend'),
+                              data=dict(locale='pl'))
+        eq_(res.status_code, 200, res)
+        data = json.loads(res.content)
+        eq_(data['locale'], 'pl')
+
+    def test_unknown_locale(self):
+        res = self.client.get(reverse('services.error_legend'),
+                              data=dict(locale='xyz'))
+        eq_(res.status_code, 400, res)
+        data = json.loads(res.content)
+        assert data['errors'], data

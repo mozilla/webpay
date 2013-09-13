@@ -3,15 +3,18 @@ import json
 from django import http
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django.utils import translation
 
 from curling.lib import HttpClientError
 
 from lib.marketplace.api import client as marketplace
 from lib.solitude.api import client as solitude
+from webpay.base.decorators import json_view
+from webpay.base.dev_messages import legend
 from webpay.base.logger import getLogger
 from webpay.base.utils import log_cef_meta
 
-from .forms import SigCheckForm
+from .forms import ErrorLegendForm, SigCheckForm
 
 log = getLogger('z.services')
 
@@ -90,3 +93,19 @@ def csp_report(request):
         return http.HttpResponseBadRequest()
 
     return http.HttpResponse()
+
+
+@csrf_exempt
+@json_view
+def error_legend(request):
+    data = {'legend': {},
+            'errors': None,
+            'locale': translation.get_language()}
+    form = ErrorLegendForm(request.GET)
+    if not form.is_valid():
+        data['errors'] = form.errors
+        return http.HttpResponse(content=json.dumps(data), status=400)
+
+    data['locale'] = form.cleaned_data['locale'] or data['locale']
+    data['legend'] = legend(locale=data['locale'])
+    return data

@@ -1,5 +1,7 @@
 from django.conf import settings
+from django.utils import translation
 
+import tower
 from tower import ugettext as _
 
 
@@ -34,7 +36,7 @@ for fn in SHORT_FIELDS:
     SHORT_FIELD_TOO_LONG_CODE[fn] = cd
 
 
-def legend():
+def legend(locale=None):
     """
     Legend of error message codes for developers.
 
@@ -42,6 +44,16 @@ def legend():
     so as not to cause confusion. The legend is a reference for
     developers.
     """
+    old_locale = translation.get_language()
+    if locale:
+        tower.activate(locale)
+    try:
+        return _build_legend()
+    finally:
+        tower.activate(old_locale)
+
+
+def _build_legend():
     _legend = {
         BAD_ICON_KEY:
             # L10n: First argument is an example of the proper key format.
