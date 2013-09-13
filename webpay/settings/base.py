@@ -340,7 +340,7 @@ FAKE_PAYMENTS = False
 # Control which Persona server you use for logins.
 # This is useful for switching to a development Persona server.
 
-BROWSERID_DOMAIN = 'firefoxos.persona.org'
+BROWSERID_DOMAIN = 'login.persona.org'
 # We only trust one issuer to grant us unverified emails.
 # If UNVERIFIED_ISSUER is set to None, forceIssuer will not
 # be sent to the client or the verifier.
