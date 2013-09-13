@@ -65,8 +65,11 @@ def get_reset_step(request, step):
 
     # If they have not reverified, send them to start to reverification.
     if not request.session.get('was_reverified'):
-        log_redirect(request, step, 'reset_start')
-        return http.HttpResponseRedirect(reverse('pin.reset_start'))
+        if step != 'reset_start':
+            log_redirect(request, step, 'reset_start')
+            return http.HttpResponseRedirect(reverse('pin.reset_start'))
+        else:
+            return None
 
     # If they have a new pin already, make sure they are headed to confirm or
     # cancel.
@@ -77,7 +80,7 @@ def get_reset_step(request, step):
 
     # If they haven't set their new pin yet, make sure they are headed to do
     # that.
-    elif step_index != flow['reset'].index('reset_new_pin'):
+    elif step != 'reset_new_pin':
         log_redirect(request, step, 'reset_new_pin')
         return http.HttpResponseRedirect(reverse('pin.reset_new_pin'))
 
@@ -104,7 +107,7 @@ def get_standard_step(request, step):
     # Buyer hasn't confirmed pin, check that they have a pin, if they are
     # trying to hit a step that isn't confirming their pin, redirect them.
     elif request.session.get('uuid_has_pin'):
-        if step_index != flow['standard'].index('confirm'):
+        if step != 'confirm':
             log_redirect(request, step, 'confirm')
             return http.HttpResponseRedirect(reverse('pin.confirm'))
 
@@ -128,12 +131,12 @@ def get_locked_step(request, step):
         step_index = -1
 
     if request.session.get('uuid_pin_is_locked'):
-        if step_index != flow['locked'].index('is_locked'):
+        if step != 'is_locked':
             log_redirect(request, step, 'is_locked')
             return http.HttpResponseRedirect(reverse('pin.is_locked'))
         return None
     elif request.session.get('uuid_pin_was_locked'):
-        if step_index != flow['locked'].index('was_locked'):
+        if step != 'was_locked':
             log_redirect(request, step, 'was_locked')
             return http.HttpResponseRedirect(reverse('pin.was_locked'))
         return None

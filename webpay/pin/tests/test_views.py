@@ -265,6 +265,15 @@ class ResetStartViewTest(PinViewTestCase):
         res = self.client.get(self.url)
         assert res['Location'].endswith(reverse('pin.is_locked'))
 
+    @patch('lib.solitude.api.client.set_needs_pin_reset', auto_spec=True)
+    @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
+    def test_refresh_view(self, set_needs_pin_reset):
+        res = self.client.get(self.url)
+        eq_(res.status_code, 200)
+        form = res.context['form']
+        eq_(form.reset_flow, True)
+        assert set_needs_pin_reset.called
+
 
 class ResetPinTest(PinViewTestCase):
 
