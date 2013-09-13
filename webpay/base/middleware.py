@@ -1,12 +1,14 @@
 import json
 import sys
 import traceback
+import urlparse
 
 from django.conf import settings
 from django.utils.cache import patch_vary_headers
 from django.utils.translation.trans_real import parse_accept_lang_header
 
 import tower
+from csp.middleware import CSPMiddleware as BaseCSPMiddleware
 
 from webpay.base.logger import getLogger
 from webpay.base.utils import log_cef
@@ -133,3 +135,19 @@ class CEFMiddleware(object):
     def process_exception(self, request, exception):
         # We'll log the exceptions too with more severity.
         log_cef(exception.__class__.__name__, request, severity=8)
+
+
+class CSPMiddleware(BaseCSPMiddleware):
+
+    def process_response(self, request, response):
+        # STATIC_URL often ends in a /, but this will ensure if gets changed
+        # then it shouldn't break CSP.
+        parsed = urlparse.urlparse(settings.STATIC_URL)
+        static = '{0}://{1}'.format(parsed.scheme, parsed.netloc)
+        # Add these in at the last minute so that we get the correct
+        # STATIC_URL from the settings files.
+        response._csp_update = {
+            'font-src': (static,), 'img-src': (static,),
+            'script-src': (static,), 'style-src': (static,),
+        }
+        return super(CSPMiddleware, self).process_response(request, response)

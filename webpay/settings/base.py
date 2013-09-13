@@ -266,7 +266,7 @@ LOGGING = {
 
 
 MIDDLEWARE_CLASSES = (
-    'csp.middleware.CSPMiddleware',
+    'webpay.base.middleware.CSPMiddleware',
     'django_statsd.middleware.GraphiteRequestTimingMiddleware',
     'django_statsd.middleware.GraphiteMiddleware',
     'webpay.base.middleware.LocaleMiddleware',
@@ -451,15 +451,17 @@ CSP_POLICY_URI = '/mozpay/services/csp/policy'
 CSP_REPORT_ONLY = True
 
 CSP_ALLOW = ("'self'",)
-CSP_IMG_SRC = ("'self'", STATIC_URL,
+
+# Note: STATIC_URL will be added to these in the middleware.
+CSP_IMG_SRC = ("'self'",
                "https://ssl.google-analytics.com",
                "data:"
               )
-CSP_SCRIPT_SRC = ("'self'", STATIC_URL,
+CSP_SCRIPT_SRC = ("'self'",
                   "https://%s" % BROWSERID_DOMAIN,
                   "https://ssl.google-analytics.com",
                   )
-CSP_STYLE_SRC = ("'self'", STATIC_URL,
+CSP_STYLE_SRC = ("'self'",
                  # Because CSRF and persona both use style="".
                  "'unsafe-inline'",
                  "https://static.login.persona.org")
@@ -468,4 +470,4 @@ CSP_MEDIA_SRC = ("'none'",)
 CSP_FRAME_SRC = ("https://ssl.google-analytics.com",
                  "https://%s" % BROWSERID_DOMAIN,
                 )
-CSP_FONT_SRC = ("'self'", STATIC_URL)
+CSP_FONT_SRC = ("'self'",)
