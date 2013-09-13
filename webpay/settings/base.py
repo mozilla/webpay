@@ -266,7 +266,7 @@ LOGGING = {
 
 
 MIDDLEWARE_CLASSES = (
-    'csp.middleware.CSPMiddleware',
+    #'csp.middleware.CSPMiddleware',
     'django_statsd.middleware.GraphiteRequestTimingMiddleware',
     'django_statsd.middleware.GraphiteMiddleware',
     'webpay.base.middleware.LocaleMiddleware',
