@@ -456,7 +456,7 @@ CSP_IMG_SRC = ("'self'", STATIC_URL,
                "data:"
               )
 CSP_SCRIPT_SRC = ("'self'", STATIC_URL,
-                  "https://login.persona.org",
+                  "https://%s" % BROWSERID_DOMAIN,
                   "https://ssl.google-analytics.com",
                   )
 CSP_STYLE_SRC = ("'self'", STATIC_URL,
@@ -466,6 +466,6 @@ CSP_STYLE_SRC = ("'self'", STATIC_URL,
 CSP_OBJECT_SRC = ("'none'",)
 CSP_MEDIA_SRC = ("'none'",)
 CSP_FRAME_SRC = ("https://ssl.google-analytics.com",
-                 "https://login.persona.org"
+                 "https://%s" % BROWSERID_DOMAIN,
                 )
 CSP_FONT_SRC = ("'self'", STATIC_URL)
