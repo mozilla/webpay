@@ -60,13 +60,20 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
     log.info('about to notify %s of notice type %s' % (url, notice_type))
     exception = None
     success = False
-
     try:
         with statsd.timer('purchase.send_pay_notice'):
             res = requests.post(url, {'notice': signed_notice}, timeout=5)
         res.raise_for_status()  # raise exception for non-200s
         res_content = res.text
-    except (HTTPError, RequestException), exception:
+
+        # Raise an exception if the content didn't match.
+        if res_content != str(trans_id):
+            log.error('URL {0} did not respond with transaction {1} '
+                      'for notification'.format(url, trans_id))
+            raise ValueError('Incorrect notification response '
+                             'from: {0}'.format(url))
+
+    except (HTTPError, RequestException, ValueError), exception:
         log.error('Notice for transaction %s raised exception in URL %s'
                   % (trans_id, url), exc_info=True)
         try:
@@ -92,13 +99,9 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
             return False, format_exception(final_exception)
 
     else:
-        if res_content == str(trans_id):
-            success = True
-            log.debug('URL %s responded OK for transaction %s '
-                      'notification' % (url, trans_id))
-        else:
-            log.error('URL %s did not respond with transaction %s '
-                      'for notification' % (url, trans_id))
+        success = True
+        log.debug('URL %s responded OK for transaction %s '
+                  'notification' % (url, trans_id))
 
     if exception:
         last_error = format_exception(exception)
