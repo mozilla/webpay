@@ -45,7 +45,9 @@ MARKETPLACE_URL = SITE_URL
 MARKETPLACE_OAUTH = {'key': private.MARKETPLACE_OAUTH_KEY,
                      'secret': private.MARKETPLACE_OAUTH_SECRET}
 
-STATIC_URL = getattr(private, 'STATIC_URL', 'https://marketplace.cdn.mozilla.net/')
+
+STATIC_URL_DOMAIN = 'marketplace.cdn.mozilla.net'
+STATIC_URL = 'https://%s/' % STATIC_URL_DOMAIN
 MEDIA_URL = STATIC_URL + 'mozpay/media/'
 
 HMAC_KEYS = private.HMAC_KEYS
