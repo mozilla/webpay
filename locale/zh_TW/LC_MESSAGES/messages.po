@@ -79,7 +79,7 @@ msgstr "網址已變形，這可能是 postback URL 或圖示 URL。"
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:72
 msgid "If {0} is defined, then you must also define {1}."
-msgstr "若您定義了 {0]，那麼也必須定義 {1}。"
+msgstr "若您定義了 {0}，那麼也必須定義 {1}。"
 
 #. L10n: First argument is the name of the key, 'reason'.
 #: webpay/base/dev_messages.py:76
@@ -266,7 +266,7 @@ msgstr "重設 Pin 碼"
 msgid "Pin reset"
 msgstr "重設 Pin 碼"
 
-#. This is the same as the standard forgot 
+#. This is the same as the standard forgot
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"

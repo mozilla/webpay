@@ -99,7 +99,7 @@ msgstr "Esta clave de pago solo puede usarse para simular compras."
 #. argument is a number.
 #: webpay/base/dev_messages.py:87
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr "El valor para la clave \"{0}\" excede el tamaño máximo de {1]"
+msgstr "El valor para la clave \"{0}\" excede el tamaño máximo de {1}"
 
 #: webpay/base/utils.py:33
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
