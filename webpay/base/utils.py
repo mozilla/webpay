@@ -33,9 +33,11 @@ def log_cef_meta(msg, meta, full_path, **kw):
 
 
 def _error(request, msg='', exception=None, display=False,
-           code=None):
-    external = _('There was an error setting up the payment. '
-                 'Try again or contact the app if it persists.')
+           code=None, external=None):
+    if not external:
+        # This is the default catch-all user error message.
+        external = _('There was an error setting up the payment. '
+                     'Try again or contact the app if it persists.')
     if msg:
         log.error('Error handler: %s' % msg)
 

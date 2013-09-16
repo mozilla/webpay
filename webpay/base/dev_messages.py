@@ -5,17 +5,22 @@ import tower
 from tower import ugettext as _
 
 
+BAD_BANGO_CODE = 'BAD_BANGO_CODE'
 BAD_JWT_ISSUER = 'BAD_JWT_ISSUER'
 BAD_ICON_KEY = 'BAD_ICON_KEY'
 BAD_PRICE_POINT = 'BAD_PRICE_POINT'
 BAD_SIM_RESULT = 'BAD_SIM_RESULT'
+BANGO_ERROR = 'BANGO_ERROR'
 EXPIRED_JWT = 'EXPIRED_JWT'
 INVALID_JWT = 'INVALID_JWT'
 INVALID_JWT_OBJ = 'INVALID_JWT_OBJ'
 JWT_DECODE_ERR = 'JWT_DECODE_ERR'
 MALFORMED_URL = 'MALFORMED_URL'
+NO_ACTIVE_TRANS = 'NO_ACTIVE_TRANS'
 NO_DEFAULT_LOC = 'NO_DEFAULT_LOC'
 NO_SIM_REASON = 'NO_SIM_REASON'
+NOTICE_ERROR = 'NOTICE_ERROR'
+UNSUPPORTED_PAY = 'UNSUPPORTED_PAY'
 SIM_DISABLED = 'SIM_DISABLED'
 SIM_ONLY_KEY = 'SIM_ONLY_KEY'
 
@@ -55,6 +60,9 @@ def legend(locale=None):
 
 def _build_legend():
     _legend = {
+        BAD_BANGO_CODE:
+            _('Mozilla received an invalid Bango code when '
+              'processing the payment'),
         BAD_ICON_KEY:
             # L10n: First argument is an example of the proper key format.
             _('An image icon key was not an object. Correct example: {0}')
@@ -65,6 +73,8 @@ def _build_legend():
         BAD_PRICE_POINT: _('The price point is unknown or invalid.'),
         BAD_SIM_RESULT:
             _('The requested payment simulation result is not supported.'),
+        BANGO_ERROR:
+            _('Bango returned an error while processing the payment'),
         # L10n: JWT stands for JSON Web Token and does not need to be
         # localized.
         EXPIRED_JWT: _('The JWT has expired.'),
@@ -81,6 +91,8 @@ def _build_legend():
         # L10n: 'postback' is a term that means a URL accepting HTTP posts.
         MALFORMED_URL: _('A URL is malformed. This could be a postback '
                          'URL or an icon URL.'),
+        NO_ACTIVE_TRANS: _('The transaction ID was missing from the session '
+                           'when processing a payment return.'),
         NO_DEFAULT_LOC:
             # L10n: First and second arguements are the names of keys.
             _('If {0} is defined, then you must also define {1}.')
@@ -89,9 +101,14 @@ def _build_legend():
             # L10n: First argument is the name of the key, 'reason'.
             _("The requested chargeback simulation is missing "
               "the key '{0}'.").format('reason'),
+        NOTICE_ERROR: _('The notification service responded with an '
+                        'error while verifying the payment notice'),
         SIM_DISABLED: _('Payment simulations are disabled at this time.'),
         SIM_ONLY_KEY:
             _('This payment key can only be used to simulate purchases.'),
+        UNSUPPORTED_PAY:
+            _('The payment method or price point is not supported for this '
+              'region or operator.'),
     }
 
     # Define all short field too long errors.
