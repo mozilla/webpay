@@ -3,6 +3,45 @@ Services
 ========
 
 Here are some web API services offered by WebPay.
+The production API domain is: https://marketplace.firefox.com/
+
+Error Legend
+============
+
+When a user experiences a payment error triggered by your app, they see a
+message to help them figure out what to do. The error does not help you figure
+out what to do as the app developer. Instead the error contains a readable
+code at the bottom to indicate the cause of the error.
+You can use the legend API to get detailed info in your locale about
+what each error code means.
+
+.. http:get:: /mozpay/services/error_legend
+
+    **Request**
+
+    :param locale:
+        An optional language code for which to localize the legend.
+        Example: ``en-us`` or ``pl``. Take a look at our
+        `PROD_LANGUAGES <https://github.com/mozilla/webpay/blob/master/webpay/settings/base.py#L113>`_
+        setting for all possible codes.
+
+    **Response**
+
+    Example:
+
+    .. code-block:: json
+
+        {
+          "locale": "en-us",
+          "errors": null,
+          "legend": {
+            "SOME_ERROR_CODE": "Detailed error explanation.",
+            ...
+          }
+        }
+
+    :status 200: success.
+    :status 400: request was invalid.
 
 Signature Check
 ===============
