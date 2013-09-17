@@ -7,15 +7,20 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django_paranoia.decorators import require_GET, require_POST
 from slumber.exceptions import HttpClientError
-from tower import ugettext as _
+from tower import ugettext_lazy
 
 from lib.solitude.api import client
 from webpay.bango.auth import basic, NoHeader, WrongHeader
+from webpay.base import dev_messages as msg
 from webpay.base.logger import getLogger
 from webpay.base.utils import _error
 from webpay.pay import tasks
 
+user_error_msg = ugettext_lazy(
+    u'There was an internal error processing the payment. '
+    u'Try again or contact Mozilla if it persists.')
 log = getLogger('w.bango')
+RECORDED_OK = 'RECORDED_OK'
 
 
 class HttpResponseNotAuthenticated(HttpResponse):
@@ -28,8 +33,10 @@ class HttpResponseNotAuthenticated(HttpResponse):
 
 def _record(request):
     """
-    Records the request into solitude. If something went wrong it will
-    return False.
+    Records the request into solitude.
+
+    If something goes wrong, the return value is a developer error code.
+    If nothing went wrong, RECORDED_OK is returned.
     """
     qs = request.GET
     session_uuid = request.session.get('trans_id')
@@ -38,11 +45,11 @@ def _record(request):
     if session_uuid and trans_uuid != session_uuid:
         log.info('Bango query string transaction %r is not in the '
                  'active session' % trans_uuid)
-        return False
+        return msg.NO_ACTIVE_TRANS
     elif not trans_uuid:
         log.info('No uuid in the session or query string: %s' %
                  request.session.session_key)
-        return False
+        return msg.NO_ACTIVE_TRANS
 
     try:
         client.slumber.bango.notification.post({
@@ -59,9 +66,9 @@ def _record(request):
     except HttpClientError, err:
         log.info('Bango payment notice for transaction uuid %r '
                  'failed: %s' % (trans_uuid, err))
-        return False
+        return msg.NOTICE_ERROR
 
-    return True
+    return RECORDED_OK
 
 
 @require_GET
@@ -95,12 +102,14 @@ def success(request):
 
     # We should only have OK's coming from Bango, presumably.
     if request.GET.get('ResponseCode') != 'OK':
-        return _error(request,
-                      msg=('in success(): Invalid Bango response code: %s' %
-                           request.GET.get('ResponseCode')))
+        log.error('in success(): Invalid Bango response code: {code}'
+                  .format(code=request.GET.get('ResponseCode')))
+        return _error(request, external=user_error_msg,
+                      code=msg.BAD_BANGO_CODE)
 
-    if not _record(request):
-        return _error(request, msg='Could not record Bango success')
+    result = _record(request)
+    if result is not RECORDED_OK:
+        return _error(request, external=user_error_msg, code=result)
 
     # Signature verification was successful; fulfill the payment.
     tasks.payment_notify.delay(request.GET.get('MerchantTransactionId'))
@@ -113,22 +122,25 @@ def error(request):
 
     # We should NOT have OK's coming from Bango, presumably.
     if request.GET.get('ResponseCode') == 'OK':
-        return _error(request,
-                      msg=('in error(): Invalid Bango response code: %s' %
-                           request.GET.get('ResponseCode')))
+        log.error('in error(): Invalid Bango response code: {code}'
+                  .format(code=request.GET.get('ResponseCode')))
+        return _error(request, external=user_error_msg,
+                      code=msg.BAD_BANGO_CODE)
 
-    if not _record(request):
-        return _error(request, msg=_('Could not record Bango error'))
+    result = _record(request)
+    if result is not RECORDED_OK:
+        return _error(request, external=user_error_msg, code=result)
 
     if request.GET.get('ResponseCode') == 'CANCEL':
         return render(request, 'bango/cancel.html')
 
     if request.GET.get('ResponseCode') == 'NOT_SUPPORTED':
-        return _error(request, display=True,
-                      msg=_('Price point unavailable for this region or '
-                            'carrier.'))
+        # This is a credit card or price point / region mismatch.
+        # In theory users should never trigger this.
+        return _error(request, external=user_error_msg,
+                      code=msg.UNSUPPORTED_PAY)
 
-    return _error(request, msg=_('Received Bango error'))
+    return _error(request, external=user_error_msg, code=msg.BANGO_ERROR)
 
 
 @csrf_exempt
