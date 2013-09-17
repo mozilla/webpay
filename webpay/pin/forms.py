@@ -68,6 +68,10 @@ class CreatePinForm(BasePinForm):
         buyer = client.get_buyer(self.uuid)
         if buyer and self.handle_client_errors(buyer):
             self.buyer_exists = True
+            try:
+                self.buyer_etag = buyer['etag']
+            except KeyError:
+                self.buyer_etag = ''
             if buyer.get('pin'):
                 raise forms.ValidationError(
                     _('You have already created a PIN.')

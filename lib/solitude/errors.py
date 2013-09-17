@@ -9,4 +9,6 @@ ERROR_STRINGS = {
      _('This field is required.'),
     'Buyer with this Uuid already exists.':
     _('Buyer with this UUID already exists.'),
+    'The resource has been modified, please re-fetch it.':
+    _('The resource has been modified, please re-fetch it.'),
 }

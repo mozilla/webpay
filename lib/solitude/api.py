@@ -4,11 +4,13 @@ import uuid
 import warnings
 
 from django.conf import settings
+from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 
 from ..utils import SlumberWrapper
 from .constants import ACCESS_PURCHASE
 from .errors import ERROR_STRINGS
+from .exceptions import ResourceNotModified
 
 
 log = logging.getLogger('w.solitude')
@@ -26,29 +28,22 @@ class SolitudeAPI(SlumberWrapper):
     """
     errors = ERROR_STRINGS
 
-    def _buyer_from_response(self, res):
-        buyer = {}
+    def _object_from_response(self, res):
+        obj = {}
         if res.get('errors'):
             return res
         elif res.get('objects'):
-            buyer = res['objects'][0]
-            buyer['id'] = res['objects'][0].get('resource_pk')
+            obj = res['objects'][0]
+            obj['id'] = res['objects'][0].get('resource_pk')
         elif res.get('resource_pk'):
-            buyer = res
-            buyer['id'] = res.get('resource_pk')
-        return buyer
-
-    def buyer_has_pin(self, uuid):
-        """Returns True if the existing buyer has a PIN.
-
-        :param uuid: String to identify the buyer by.
-        :rtype: boolean
-        """
-        res = self.safe_run(self.slumber.generic.buyer.get, **{'uuid': uuid})
-        if res['meta']['total_count'] == 0:
-            return False
-        else:
-            return res['objects'][0]['pin']
+            obj = res
+            obj['id'] = res.get('resource_pk')
+        try:
+            if obj:
+                obj['etag'] = res['meta']['headers'].get('etag', '')
+        except KeyError:
+            pass
+        return obj
 
     def create_buyer(self, uuid, pin=None):
         """Creates a buyer with an optional PIN in solitude.
@@ -57,11 +52,38 @@ class SolitudeAPI(SlumberWrapper):
         :param pin: Optional PIN that will be hashed.
         :rtype: dictionary
         """
-        res = self.safe_run(self.slumber.generic.buyer.post, {'uuid': uuid,
-                                                              'pin': pin})
-        return self._buyer_from_response(res)
+        res = self.safe_run(self.slumber.generic.buyer.post,
+                            {'uuid': uuid, 'pin': pin})
+        obj = self._object_from_response(res)
+        if 'etag' in obj:
+            etag = obj['etag']
+            cache.set('etag:%s' % uuid, etag)
+            cache.set('buyer:%s' % etag, obj)
+        return obj
 
-    def set_needs_pin_reset(self, uuid, value=True):
+    def get_buyer(self, uuid, use_etags=True):
+        """Retrieves a buyer by their uuid.
+
+        :param uuid: String to identify the buyer by.
+        :rtype: dictionary
+        """
+        cache_key = 'etag:%s' % uuid
+        etag = cache.get(cache_key) if use_etags else None
+        headers = {'If-None-Match': etag} if etag else {}
+        try:
+            res = self.safe_run(self.slumber.generic.buyer.get,
+                                headers=headers, uuid=uuid)
+        except ResourceNotModified:
+            return (cache.get('buyer:%s' % etag)
+                    or self.get_buyer(uuid, use_etags=False))
+        obj = self._object_from_response(res)
+        if 'etag' in obj:
+            etag = obj['etag']
+            cache.set(cache_key, etag)
+            cache.set('buyer:%s' % etag, obj)
+        return obj
+
+    def set_needs_pin_reset(self, uuid, value=True, etag=''):
         """Set flag for user to go through reset flow or not on next log in.
 
         :param uuid: String to identify the buyer by.
@@ -71,13 +93,13 @@ class SolitudeAPI(SlumberWrapper):
         """
         buyer = self.get_buyer(uuid)
         res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
-                            {'needs_pin_reset': value,
-                             'new_pin': None})
+                            {'needs_pin_reset': value, 'new_pin': None},
+                            headers={'If-Match': etag})
         if 'errors' in res:
             return res
         return {}
 
-    def unset_was_locked(self, uuid):
+    def unset_was_locked(self, uuid, etag=''):
         """Unsets the flag to view the was_locked screen.
 
         :param uuid: String to identify the buyer by.
@@ -85,12 +107,13 @@ class SolitudeAPI(SlumberWrapper):
         """
         buyer = self.get_buyer(uuid)
         res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
-                            {'pin_was_locked_out': False})
+                            {'pin_was_locked_out': False},
+                            headers={'If-Match': etag})
         if 'errors' in res:
             return res
         return {}
 
-    def change_pin(self, uuid, pin):
+    def change_pin(self, uuid, pin, etag=''):
         """Changes the pin of a buyer, for use with buyers who exist without
         pins.
 
@@ -101,13 +124,14 @@ class SolitudeAPI(SlumberWrapper):
         """
         buyer = self.get_buyer(uuid)
         res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
-                            {'pin': pin})
+                            {'pin': pin},
+                            headers={'If-Match': etag})
         # Empty string is a good thing from tastypie for a PATCH.
         if 'errors' in res:
             return res
         return {}
 
-    def set_new_pin(self, uuid, new_pin):
+    def set_new_pin(self, uuid, new_pin, etag=''):
         """Sets the new_pin for use with a buyer that is resetting their pin.
 
         :param buyer_id integer: ID of the buyer you'd like to change the PIN
@@ -117,21 +141,12 @@ class SolitudeAPI(SlumberWrapper):
         """
         buyer = self.get_buyer(uuid)
         res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
-                            {'new_pin': new_pin})
+                            {'new_pin': new_pin},
+                            headers={'If-Match': etag})
         # Empty string is a good thing from tastypie for a PATCH.
         if 'errors' in res:
             return res
         return {}
-
-    def get_buyer(self, uuid):
-        """Retrieves a buyer by the their uuid.
-
-        :param uuid: String to identify the buyer by.
-        :rtype: dictionary
-        """
-
-        res = self.safe_run(self.slumber.generic.buyer.get, uuid=uuid)
-        return self._buyer_from_response(res)
 
     def get_active_product(self, public_id):
         """
