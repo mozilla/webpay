@@ -1,3 +1,4 @@
 M2Crypto>=0.20.0
 Jinja2==2.6
 MySQL-python==1.2.4b2
+lxml==3.2.3

@@ -1,4 +1,5 @@
 from urllib import urlencode
+import json as jsonlib
 import urlparse
 
 from django.conf import settings
@@ -59,3 +60,8 @@ def absolutify(url, site=None):
         if site:
             return site + url
         return settings.SITE_URL + url
+
+
+@register.filter
+def json(s):
+    return jsonlib.dumps(s)

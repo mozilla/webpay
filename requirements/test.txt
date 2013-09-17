@@ -1,4 +1,5 @@
 -r prod.txt
--r compiled.txt
 
 nose-blockage==0.1.2
+pyquery==1.2.4
+cssselect==0.8

@@ -68,9 +68,11 @@ MINIFY_BUNDLES = {
         'pay': (
             'js/lib/jquery-1.8.js',
             'js/lib/require.js',
+            'js/settings.js',
             'js/lib/underscore.js',
             'js/lib/format.js',
             'js/lib/longtext.js',
+            'js/lib/tracking.js',
 
             # These are modules used by others.
             # The order is important, do not alphabetize.
@@ -471,3 +473,14 @@ CSP_FRAME_SRC = ("https://ssl.google-analytics.com",
                  "https://%s" % BROWSERID_DOMAIN,
                 )
 CSP_FONT_SRC = ("'self'",)
+
+JS_SETTINGS = {
+    # Allow tracking of events.
+    "action_tracking_enabled": True,
+    # Whether to ignore the users 'Do Not Track' settings.
+    "dnt_override": False,
+    # The Google Analytics tracking ID for this app.
+    "ga_tracking_id": 'UA-36116321-6',
+    # Turn GA tracking on/off wholesale.
+    "tracking_enabled": False,
+}
