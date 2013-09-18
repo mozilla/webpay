@@ -1,3 +1,6 @@
+// Note: if updating this code be aware that currently webpay is not tracking
+// the query string. See: get_url().
+
 define('lib/tracking', ['settings'], function(settings) {
 
     var enabled = settings.tracking_enabled;
