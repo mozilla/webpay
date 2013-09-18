@@ -41,7 +41,7 @@ define('lib/tracking', ['settings'], function(settings) {
     }
 
     function get_url() {
-        return window.location.pathname + window.location.search;
+        return window.location.pathname;
     }
 
     function actionWrap(func) {
