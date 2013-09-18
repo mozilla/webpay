@@ -18,7 +18,7 @@ from webpay.auth import utils as auth_utils
 from webpay.base import dev_messages as msg
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
-from webpay.base.utils import _error
+from webpay.base.utils import app_error, custom_error, system_error
 from webpay.pin.forms import VerifyPinForm
 from webpay.pin.utils import check_pin_status
 
@@ -39,15 +39,17 @@ def process_pay_req(request):
         codes = []
         for erlist in form.errors.values():
             codes.extend(erlist)
+        if len(codes) > 1:
+            # This will probably break something, like maybe paymentFailed().
+            log.error('multiple error codes: {codes}'.format(codes=codes))
         codes = ', '.join(codes)
-        return _error(request, code=codes)
+        return app_error(request, code=codes)
 
     if settings.ONLY_SIMULATIONS and not form.is_simulation:
         # Real payments are currently disabled.
         # Only simulated payments are allowed.
-        return render(request, 'error.html',
-                      {'error': _('Payments are temporarily disabled.')},
-                      status=503)
+        return custom_error(request, _('Payments are temporarily disabled.'),
+                            code=msg.PAY_DISABLED, status=503)
 
     exc = er = None
     try:
@@ -68,7 +70,7 @@ def process_pay_req(request):
 
     if exc:
         log.exception('calling verify_jwt')
-        return _error(request, code=er)
+        return app_error(request, code=er)
 
     icon_urls = []
     if pay_req['request'].get('icons'):
@@ -83,14 +85,14 @@ def process_pay_req(request):
                     check_postbacks=False)
     except ValueError, exc:
         log.exception('invalid URLs')
-        return _error(request, code=msg.MALFORMED_URL)
+        return app_error(request, code=msg.MALFORMED_URL)
 
     # Assert pricePoint is valid.
     try:
         marketplace.get_price(pay_req['request']['pricePoint'])
     except UnknownPricePoint, exc:
         log.exception('calling get price_price()')
-        return _error(request, code=msg.BAD_PRICE_POINT)
+        return app_error(request, code=msg.BAD_PRICE_POINT)
 
     _trim_pay_request(pay_req)
 
@@ -127,7 +129,7 @@ def lobby(request):
             if sess.get('trans_id'):
                 log.info('Attempted to restart non-existent transaction {0}'
                          .format(sess.get('trans_id')))
-            return _error(request, msg='req is required')
+            return system_error(request, code=msg.BAD_REQUEST)
 
     pin_form = VerifyPinForm()
 
@@ -260,7 +262,7 @@ def wait_to_start(request):
         statsd.incr('purchase.payment_time.failure')
         log.exception('Attempt to restart finished transaction {0} '
                       'with status {1}'.format(trans_id, trans['status']))
-        return _error(request, msg=_('Transaction has already ended.'))
+        return system_error(request, code=msg.TRANS_ENDED)
 
     if trans['status'] == constants.STATUS_PENDING:
         statsd.incr('purchase.payment_time.success')

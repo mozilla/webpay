@@ -17,13 +17,13 @@ require(['cli'], function(cli) {
             window.setTimeout(callPayFailure, 500);
         } else {
             console.log('[pay] payment failed, closing window');
-            // This string is used to determine the message on the marketplace
-            // change it at your peril.
-            paymentFailed('cancelled');
+            paymentFailed(cli.bodyData.errorCode || cli.bodyData.cancelCode);
         }
     }
 
     if (cli.bodyData.cancelflow === true) {
+        // Automatically cancel (close the window) for cases like when a user
+        // clicks the cancel button on Bango's hosted flow.
         callPayFailure();
     }
 

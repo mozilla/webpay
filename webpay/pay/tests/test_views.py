@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import mock
 from mozpay.exc import RequestExpired
 from nose.tools import eq_, ok_
+from pyquery import PyQuery as pq
 
 from lib.marketplace.api import UnknownPricePoint
 from lib.solitude import constants
@@ -180,6 +181,8 @@ class TestVerify(Base):
     def test_non_https_url(self):
         res = self.get(self.request())
         self.assertContains(res, msg.MALFORMED_URL, status_code=400)
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-error-code'), msg.MALFORMED_URL)
 
     @mock.patch.object(settings, 'ALLOWED_CALLBACK_SCHEMES', ['https'])
     def test_non_https_url_ok_for_simulation(self):
@@ -403,8 +406,7 @@ class TestWaitToStart(Base):
                 'uid_pay': 123,
             }
             res = self.client.get(self.wait)
-            self.assertContains(res,
-                                'Transaction has already ended.',
+            self.assertContains(res, msg.TRANS_ENDED,
                                 status_code=400)
 
     def test_wait_ended_transaction(self, get_transaction):

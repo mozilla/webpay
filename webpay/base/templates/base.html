@@ -34,6 +34,8 @@
     data-cancelled-msg="{{ _('Payment cancelled.') }}"
     data-logout-timeout="{{ settings.LOGOUT_TIMEOUT }}"
     data-settings="{{ settings.JS_SETTINGS|json }}"
+    data-error-code="{{ error_code }}"
+    data-cancel-code="{{ dev_messages.USER_CANCELLED }}"
     >
     <section class="pay">
       <div id="content">

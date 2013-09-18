@@ -9,6 +9,7 @@ BAD_BANGO_CODE = 'BAD_BANGO_CODE'
 BAD_JWT_ISSUER = 'BAD_JWT_ISSUER'
 BAD_ICON_KEY = 'BAD_ICON_KEY'
 BAD_PRICE_POINT = 'BAD_PRICE_POINT'
+BAD_REQUEST = 'BAD_REQUEST'
 BAD_SIM_RESULT = 'BAD_SIM_RESULT'
 BANGO_ERROR = 'BANGO_ERROR'
 EXPIRED_JWT = 'EXPIRED_JWT'
@@ -20,9 +21,14 @@ NO_ACTIVE_TRANS = 'NO_ACTIVE_TRANS'
 NO_DEFAULT_LOC = 'NO_DEFAULT_LOC'
 NO_SIM_REASON = 'NO_SIM_REASON'
 NOTICE_ERROR = 'NOTICE_ERROR'
+PAY_DISABLED = 'PAY_DISABLED'
 UNSUPPORTED_PAY = 'UNSUPPORTED_PAY'
 SIM_DISABLED = 'SIM_DISABLED'
 SIM_ONLY_KEY = 'SIM_ONLY_KEY'
+TRANS_ENDED = 'TRANS_ENDED'
+# This string is used to determine the message on Marketplace;
+# change it at your peril.
+USER_CANCELLED = 'USER_CANCELLED'
 
 SHORT_FIELDS = ('chargebackURL',
                 'defaultLocale',
@@ -71,6 +77,7 @@ def _build_legend():
         # localized.
         BAD_JWT_ISSUER: _('No one has been registered for this JWT issuer.'),
         BAD_PRICE_POINT: _('The price point is unknown or invalid.'),
+        BAD_REQUEST: _('The request to begin payment was invalid.'),
         BAD_SIM_RESULT:
             _('The requested payment simulation result is not supported.'),
         BANGO_ERROR:
@@ -103,12 +110,17 @@ def _build_legend():
               "the key '{0}'.").format('reason'),
         NOTICE_ERROR: _('The notification service responded with an '
                         'error while verifying the payment notice'),
+        PAY_DISABLED: _('Payments are temporarily disabled'),
         SIM_DISABLED: _('Payment simulations are disabled at this time.'),
         SIM_ONLY_KEY:
             _('This payment key can only be used to simulate purchases.'),
+        TRANS_ENDED:
+            _('The purchase cannot be completed because the current '
+              'transaction has already ended.'),
         UNSUPPORTED_PAY:
             _('The payment method or price point is not supported for this '
               'region or operator.'),
+        USER_CANCELLED: _('The user cancelled the payment.'),
     }
 
     # Define all short field too long errors.

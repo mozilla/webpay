@@ -32,26 +32,19 @@ def log_cef_meta(msg, meta, full_path, **kw):
     _log_cef(msg, severity, meta, **cef_kw)
 
 
-def _error(request, msg='', exception=None, display=False,
-           code=None, external=None):
-    if not external:
-        # This is the default catch-all user error message.
-        external = _('There was an error setting up the payment. '
+def app_error(request, **kw):
+    user_message = _('There was an error setting up the payment. '
                      'Try again or contact the app if it persists.')
-    if msg:
-        log.error('Error handler: %s' % msg)
+    return custom_error(request, user_message, **kw)
 
-    # Checking code here is is a short-term hack until all things send
-    # error codes.
-    if not code and (settings.VERBOSE_LOGGING or display):
-        if exception:
-            msg = u'%s: %s' % (exception.__class__.__name__, exception)
-        if msg:
-            external = msg
-        if not exception and not msg:
-            # This should never happen but it might be happening.
-            # See bug 864306
-            log.error('No detailed error message/exception in handler')
 
+def system_error(request, **kw):
+    user_message = _('There was an internal error processing the '
+                     'payment. Try again or contact Mozilla if it '
+                     'persists.')
+    return custom_error(request, user_message, **kw)
+
+
+def custom_error(request, user_message, code=None, status=400):
     return render(request, 'error.html',
-                  {'error': external, 'code': code}, status=400)
+                  {'error': user_message, 'error_code': code}, status=status)
