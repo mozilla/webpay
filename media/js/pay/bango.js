@@ -17,6 +17,8 @@ define('pay/bango', ['cli'], function(cli) {
                     console.log('[bango] new icc', iccKey, '!== saved icc', lastIcc);
                     changed = true;
                     console.log('[bango] sim changed');
+                    cli.trackWebpayEvent({'action': 'sim change detection',
+                                          'label': 'Sim Changed'});
                 } else {
                     console.log('[bango] sim did not change');
                 }
@@ -45,6 +47,8 @@ define('pay/bango', ['cli'], function(cli) {
 
             if (existingUser && existingUser !== userHash) {
                 console.log('[bango] logout: new user hash', userHash, '!== saved hash', existingUser);
+                cli.trackWebpayEvent({'action': 'user change detection',
+                                      'label': 'User Changed'});
                 doLogout = true;
             }
 
@@ -73,10 +77,14 @@ define('pay/bango', ['cli'], function(cli) {
                         bangoReq.reject();
                         return;
                     }
+                    cli.trackWebpayEvent({'action': 'bango logout',
+                                          'label': 'Bango Logout Success'});
                 })
                 .fail(function(jqXHR, textStatus, errorThrown) {
                     console.log('[bango] logout failed with status=' + jqXHR.status +
                                 '; resp=' + textStatus + '; error=' + errorThrown);
+                    cli.trackWebpayEvent({'action': 'bango logout',
+                                          'label': 'Bango Logout Failure'});
                 });
 
             return bangoReq;

@@ -2,6 +2,7 @@ from django.test import TestCase
 
 from django_paranoia.signals import finished
 from mock import patch
+from nose.tools import eq_
 
 from lib.solitude.api import client
 from webpay.pin import forms
@@ -47,6 +48,8 @@ class CreatePinFormTest(BasePinFormTestCase):
         assert not form.is_valid()
         assert getattr(form, 'buyer_exists', False)
         assert 'You have already created a PIN.' in str(form.errors)
+        eq_(len(form.pin_error_codes), 1)
+        eq_(form.pin_error_codes, ['PIN_ALREADY_CREATED'])
 
     def test_too_long_pin(self):
         self.data.update({'pin': 'way too long pin'})
@@ -82,6 +85,8 @@ class VerifyPinFormTest(BasePinFormTestCase):
         assert not form.is_valid()
         assert 'Wrong pin' in str(form.errors['pin'])
         assert not form.pin_is_locked
+        eq_(len(form.pin_error_codes), 1)
+        eq_(form.pin_error_codes, ['WRONG_PIN'])
 
     def test_too_long_pin(self):
         self.data.update({'pin': 'way too long pin'})
@@ -109,6 +114,8 @@ class ConfirmPinFormTest(BasePinFormTestCase):
         form = forms.ConfirmPinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
         assert "Pins do not match." in form.errors['pin']
+        eq_(len(form.pin_error_codes), 1)
+        eq_(form.pin_error_codes, ['PINS_DONT_MATCH'])
 
     def test_too_long_pin(self):
         self.data.update({'pin': 'way too long pin'})
@@ -129,6 +136,8 @@ class ResetConfirmPinFormTest(BasePinFormTestCase):
         form = forms.ResetConfirmPinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
         assert "Pins do not match." in form.errors['pin']
+        eq_(len(form.pin_error_codes), 1)
+        eq_(form.pin_error_codes, ['PINS_DONT_MATCH'])
 
     def test_too_long_pin(self):
         self.data.update({'pin': 'way too long pin'})

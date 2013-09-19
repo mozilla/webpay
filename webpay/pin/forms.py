@@ -8,6 +8,8 @@ from tower import ugettext_lazy as _
 
 from lib.solitude.api import client
 
+from webpay.pay.constants import PIN_ERROR_CODES
+
 
 class HTML5NumberWidget(TextInput):
     """An HTML5 number input widget."""
@@ -19,6 +21,8 @@ class BasePinForm(ParanoidForm):
                           widget=HTML5NumberWidget)
 
     def __init__(self, uuid=None, *args, **kwargs):
+        # Error codes for tracking see pay/constants.py.
+        self._pin_error_codes = set()
         self.uuid = uuid
         super(BasePinForm, self).__init__(*args, **kwargs)
         self.fields['pin'].widget.attrs.update({
@@ -28,6 +32,14 @@ class BasePinForm(ParanoidForm):
             # Digit only keyboard for B2G (bug 820268).
             'x-inputmode': 'digits',
         })
+
+    @property
+    def pin_error_codes(self):
+        return list(self._pin_error_codes)
+
+    def add_error_code(self, key):
+        if key in PIN_ERROR_CODES:
+            self._pin_error_codes.add(key)
 
     def append_to_errors(self, field, error):
         if field in self._errors:
@@ -73,6 +85,7 @@ class CreatePinForm(BasePinForm):
             except KeyError:
                 self.buyer_etag = ''
             if buyer.get('pin'):
+                self.add_error_code('PIN_ALREADY_CREATED')
                 raise forms.ValidationError(
                     _('You have already created a PIN.')
                 )
@@ -94,6 +107,7 @@ class VerifyPinForm(BasePinForm):
             elif res.get('valid'):
                 return pin
 
+        self.add_error_code('WRONG_PIN')
         raise forms.ValidationError(_('Wrong pin'))
 
 
@@ -105,6 +119,7 @@ class ConfirmPinForm(BasePinForm):
         if self.handle_client_errors(client.confirm_pin(self.uuid, pin)):
             return pin
 
+        self.add_error_code('PINS_DONT_MATCH')
         raise forms.ValidationError(_("Pins do not match."))
 
 
@@ -127,4 +142,5 @@ class ResetConfirmPinForm(BasePinForm):
         if self.handle_client_errors(client.reset_confirm_pin(self.uuid, pin)):
             return pin
 
+        self.add_error_code('PINS_DONT_MATCH')
         raise forms.ValidationError(_("Pins do not match."))

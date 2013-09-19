@@ -476,11 +476,13 @@ CSP_FONT_SRC = ("'self'",)
 
 JS_SETTINGS = {
     # Allow tracking of events.
-    "action_tracking_enabled": True,
+    'action_tracking_enabled': True,
     # Whether to ignore the users 'Do Not Track' settings.
-    "dnt_override": False,
+    'dnt_override': False,
+    # The category used in all event tracking.
+    'ga_tracking_category': 'Consumer Payment Flow',
     # The Google Analytics tracking ID for this app.
-    "ga_tracking_id": 'UA-36116321-6',
+    'ga_tracking_id': 'UA-36116321-6',
     # Turn GA tracking on/off wholesale.
-    "tracking_enabled": False,
+    'tracking_enabled': False,
 }

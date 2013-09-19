@@ -11,15 +11,21 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
                     .success(function _resetLoginSuccess(data, textStatus, jqXHR) {
                         console.log('[reset] login success');
                         bango.prepareAll(data.user_hash).done(function _forceAuthReady() {
+                            cli.trackWebpayEvent({'action': 'reset force auth',
+                                                  'label': 'Login Success'});
                             _onSuccess.apply(this);
                         });
                     })
                     .error(function _resetLoginError() {
                         console.log('[reset] login error');
+                        cli.trackWebpayEvent({'action': 'reset force auth',
+                                              'label': 'Login Failure'});
                     });
             },
             onlogout: function _resetLogout() {
                 console.log('[reset] nav.id onlogout');
+                cli.trackWebpayEvent({'action': 'reset force auth',
+                                      'label': 'Logged Out'});
             }
         });
     }
@@ -28,6 +34,8 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
         id.request({
             experimental_forceAuthentication: true,
             oncancel: function() {
+                cli.trackWebpayEvent({'action': 'reset force auth',
+                                      'label': 'Cancelled'});
                 window.location.href = bodyData.cancelUrl;
             }
         });

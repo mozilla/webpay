@@ -16,11 +16,15 @@ define('auth', ['cli'], function(cli) {
                 .done(function _resetSuccess(data, textStatus, jqXHR) {
                     console.log('reset webpay user');
                     window.localStorage.clear();
+                    cli.trackWebpayEvent({'action': 'webpay user reset',
+                                          'label': 'Reset User Success'});
                 })
                 .fail(function _resetFail(jqXHR, textStatus, errorThrown) {
                     console.log('error resetting user:', textStatus, errorThrown);
+                    cli.trackWebpayEvent({'action': 'webpay user reset',
+                                          'label': 'Reset User Error'});
                 });
             return result;
         }
-    }
+    };
 });

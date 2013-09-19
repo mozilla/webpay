@@ -37,7 +37,14 @@ def create(request):
     form.no_pin = True
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Create a Pin'),
-                  'action': reverse('pin.create')})
+                  'action': reverse('pin.create'),
+                  'pin_form_tracking' : {
+                      'pin_error_codes': form.pin_error_codes,
+                  },
+                  'track_cancel': {
+                      'action': 'pin cancel',
+                      'label': 'Create Pin Page',
+                  }})
 
 
 @enforce_sequence
@@ -52,7 +59,14 @@ def confirm(request):
     form.no_pin = True
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Confirm Pin'),
-                  'action': reverse('pin.confirm')})
+                  'action': reverse('pin.confirm'),
+                  'pin_form_tracking' : {
+                    'pin_error_codes': form.pin_error_codes,
+                  },
+                  'track_cancel': {
+                      'action': 'pin cancel',
+                      'label': 'Confirm Pin Page',
+                  }})
 
 
 @enforce_sequence
@@ -70,7 +84,14 @@ def verify(request):
             return http.HttpResponseRedirect(reverse('pin.is_locked'))
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Enter Pin'),
-                  'action': reverse('pin.verify')})
+                  'action': reverse('pin.verify'),
+                  'pin_form_tracking' : {
+                    'pin_error_codes': form.pin_error_codes,
+                  },
+                  'track_cancel': {
+                      'action': 'pin cancel',
+                      'label': 'Verify Pin Page',
+                  }})
 
 
 @enforce_sequence
@@ -96,7 +117,11 @@ def reset_start(request):
     return render(request, 'pin/reset_start.html',
                   {'title': _('Reset Pin'),
                    'action': reverse('pin.reset_new_pin'),
-                   'form': form})
+                   'form': form,
+                   'track_cancel': {
+                       'action': 'pin cancel',
+                       'label': 'Reset Start Page',
+                   }})
 
 
 @enforce_sequence
@@ -114,7 +139,14 @@ def reset_new_pin(request):
     form.reset_flow = True
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Reset Pin'),
-                  'action': reverse('pin.reset_new_pin')})
+                  'action': reverse('pin.reset_new_pin'),
+                  'pin_form_tracking' : {
+                    'pin_error_codes': form.pin_error_codes,
+                  },
+                  'track_cancel': {
+                      'action': 'pin cancel',
+                      'label': 'Reset Pin page',
+                  }})
 
 
 @enforce_sequence
@@ -135,7 +167,14 @@ def reset_confirm(request):
     form.reset_flow = True
     return render(request, 'pin/pin_form.html', {'form': form,
                   'title': _('Confirm Pin'),
-                  'action': reverse('pin.reset_confirm')})
+                  'action': reverse('pin.reset_confirm'),
+                  'pin_form_tracking' : {
+                      'pin_error_codes': form.pin_error_codes,
+                  },
+                  'track_cancel': {
+                      'action': 'pin cancel',
+                      'label': 'Reset Pin page',
+                  }})
 
 
 @user_verified

@@ -5,6 +5,7 @@
   data-verify-url="{{ url('auth.reverify') }}"
   data-cancel-url="{{ url('pin.reset_cancel') }}"
   data-force-auth-result="show-pin"
+  data-pin-error-codes="{{ PIN_ERROR_CODES|json }}"
 {%- endblock %}
 
 {% block extra_content %}

@@ -1,9 +1,10 @@
-define('cli', [], function() {
+define('cli', ['settings', 'lib/tracking'], function(settings, tracking) {
     'use strict';
 
     var $progress = $('#progress');
     var $doc = $(document);
     var $win = $(window);
+    var gaTrackingCategory = settings.ga_tracking_category;
 
     var cli = {
         win: $win,
@@ -51,6 +52,18 @@ define('cli', [], function() {
                 console.log('[cli] Focusing pin');
                 $input.focus();
             }
+        },
+        trackWebpayClick: function(e) {
+            if (e && e.target) {
+                var trackEventData = $(e.target).data('trackEvent');
+                if (trackEventData) {
+                    this.trackWebpayEvent(trackEventData);
+                }
+            }
+        },
+        trackWebpayEvent: function(options) {
+            options = options || {};
+            tracking.trackEvent(gaTrackingCategory, options.action, options.label, options.value, options.nonInteraction);
         }
     };
 

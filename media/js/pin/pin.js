@@ -59,6 +59,8 @@ require(['cli'], function(cli) {
         $forgotPin.hide();
         $submitButton.prop('disabled', true);
         repaintButtons();
+        cli.trackWebpayEvent({'action': 'pin form',
+                              'label': 'Pin Error Displayed'});
     }
 
     function clearError() {
