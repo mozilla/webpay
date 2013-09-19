@@ -67,8 +67,8 @@ def legend(locale=None):
 def _build_legend():
     _legend = {
         BAD_BANGO_CODE:
-            _('Mozilla received an invalid Bango code when '
-              'processing the payment'),
+            _('Mozilla received an invalid code from the payment '
+              'provider (Bango) when processing the payment'),
         BAD_ICON_KEY:
             # L10n: First argument is an example of the proper key format.
             _('An image icon key was not an object. Correct example: {0}')
@@ -81,7 +81,8 @@ def _build_legend():
         BAD_SIM_RESULT:
             _('The requested payment simulation result is not supported.'),
         BANGO_ERROR:
-            _('Bango returned an error while processing the payment'),
+            _('The payment provider (Bango) returned an error while '
+              'processing the payment'),
         # L10n: JWT stands for JSON Web Token and does not need to be
         # localized.
         EXPIRED_JWT: _('The JWT has expired.'),
