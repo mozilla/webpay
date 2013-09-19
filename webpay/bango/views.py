@@ -7,18 +7,14 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django_paranoia.decorators import require_GET, require_POST
 from slumber.exceptions import HttpClientError
-from tower import ugettext_lazy
 
 from lib.solitude.api import client
 from webpay.bango.auth import basic, NoHeader, WrongHeader
 from webpay.base import dev_messages as msg
 from webpay.base.logger import getLogger
-from webpay.base.utils import _error
+from webpay.base.utils import system_error
 from webpay.pay import tasks
 
-user_error_msg = ugettext_lazy(
-    u'There was an internal error processing the payment. '
-    u'Try again or contact Mozilla if it persists.')
 log = getLogger('w.bango')
 RECORDED_OK = 'RECORDED_OK'
 
@@ -104,12 +100,11 @@ def success(request):
     if request.GET.get('ResponseCode') != 'OK':
         log.error('in success(): Invalid Bango response code: {code}'
                   .format(code=request.GET.get('ResponseCode')))
-        return _error(request, external=user_error_msg,
-                      code=msg.BAD_BANGO_CODE)
+        return system_error(request, code=msg.BAD_BANGO_CODE)
 
     result = _record(request)
     if result is not RECORDED_OK:
-        return _error(request, external=user_error_msg, code=result)
+        return system_error(request, code=result)
 
     # Signature verification was successful; fulfill the payment.
     tasks.payment_notify.delay(request.GET.get('MerchantTransactionId'))
@@ -124,23 +119,22 @@ def error(request):
     if request.GET.get('ResponseCode') == 'OK':
         log.error('in error(): Invalid Bango response code: {code}'
                   .format(code=request.GET.get('ResponseCode')))
-        return _error(request, external=user_error_msg,
-                      code=msg.BAD_BANGO_CODE)
+        return system_error(request, code=msg.BAD_BANGO_CODE)
 
     result = _record(request)
     if result is not RECORDED_OK:
-        return _error(request, external=user_error_msg, code=result)
+        return system_error(request, code=result)
 
     if request.GET.get('ResponseCode') == 'CANCEL':
-        return render(request, 'bango/cancel.html')
+        return render(request, 'bango/cancel.html',
+                      {'error_code': msg.USER_CANCELLED})
 
     if request.GET.get('ResponseCode') == 'NOT_SUPPORTED':
         # This is a credit card or price point / region mismatch.
         # In theory users should never trigger this.
-        return _error(request, external=user_error_msg,
-                      code=msg.UNSUPPORTED_PAY)
+        return system_error(request, code=msg.UNSUPPORTED_PAY)
 
-    return _error(request, external=user_error_msg, code=msg.BANGO_ERROR)
+    return system_error(request, code=msg.BANGO_ERROR)
 
 
 @csrf_exempt
