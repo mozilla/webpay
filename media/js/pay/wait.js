@@ -12,8 +12,6 @@ require(['cli'], function(cli) {
     }
 
     function poll() {
-        cli.trackWebpayEvent({'action': 'payment',
-                              'label': 'Polling For Transaction'});
         $.get(startUrl)
         .success(function(data, textStatus, jqXHR) {
             if (data.url) {
