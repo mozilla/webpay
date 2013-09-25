@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from celery.exceptions import RetryTaskError
 from django_statsd.clients import statsd
 import requests
-from requests.exceptions import RequestException
+from requests.exceptions import ConnectionError, RequestException
 
 from lib.marketplace.api import client
 from lib.solitude.api import client as solitude
@@ -73,7 +73,8 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
             raise ValueError('Incorrect notification response '
                              'from: {0}'.format(url))
 
-    except (HTTPError, RequestException, ValueError), exception:
+    except (ConnectionError, HTTPError,
+            RequestException, ValueError), exception:
         log.error('Notice for transaction %s raised exception in URL %s'
                   % (trans_id, url), exc_info=True)
         try:
