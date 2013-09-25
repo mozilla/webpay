@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils import translation
 
-from curling.lib import HttpClientError
+from curling.lib import HttpClientError, HttpServerError
 
 from lib.marketplace.api import client as marketplace
 from lib.solitude.api import client as solitude
@@ -27,7 +27,7 @@ def monitor(request):
     msg = 'ok'
     try:
         perms = marketplace.api.account.permissions.mine.get()
-    except HttpClientError, err:
+    except (HttpServerError, HttpClientError), err:
         all_good = False
         msg = ('Server error: status %s, content: %s' %
                (err.response.status_code, err.response.content or 'empty'))

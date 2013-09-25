@@ -13,6 +13,8 @@ from mozpay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
+from curling.lib import HttpServerError
+
 from webpay.auth.decorators import user_can_simulate, user_verified
 from webpay.auth import utils as auth_utils
 from webpay.base import dev_messages as msg
@@ -90,7 +92,7 @@ def process_pay_req(request):
     # Assert pricePoint is valid.
     try:
         marketplace.get_price(pay_req['request']['pricePoint'])
-    except UnknownPricePoint, exc:
+    except (HttpServerError, UnknownPricePoint), exc:
         log.exception('calling get price_price()')
         return app_error(request, code=msg.BAD_PRICE_POINT)
 
