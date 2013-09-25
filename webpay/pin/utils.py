@@ -3,6 +3,9 @@ from datetime import datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
+from lib.solitude.exceptions import ResourceModified
+from webpay.base import dev_messages as msg
+from webpay.base.utils import system_error
 from webpay.pay import get_payment_url
 
 from lib.solitude.api import client
@@ -24,6 +27,9 @@ def check_pin_status(request):
         if request.session.get('uuid_has_confirmed_pin'):
             return None
         else:
-            client.change_pin(request.session['uuid'], None)
+            try:
+                client.change_pin(request.session['uuid'], None)
+            except ResourceModified:
+                return system_error(request, code=msg.RESOURCE_MODIFIED)
             request.session['uuid_has_pin'] = False
     return reverse('pin.create')

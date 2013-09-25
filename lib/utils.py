@@ -3,8 +3,7 @@ import json
 from curling.lib import API
 from slumber.exceptions import HttpClientError
 
-from lib.solitude.errors import ERROR_STRINGS
-from solitude.exceptions import ResourceNotModified
+from solitude.exceptions import ResourceModified, ResourceNotModified
 from webpay.base.logger import getLogger, get_transaction_id
 
 log = getLogger('lib.utils')
@@ -41,8 +40,7 @@ class SlumberWrapper(object):
             if e.response.status_code == 412:
                 log.error('An attempt to update an already modified resource '
                           'has been made.')
-                res = [ERROR_STRINGS[('The resource has been modified, '
-                                      'please re-fetch it.')]]
+                raise ResourceModified()
             else:
                 res = self.parse_res(e.response.content)
                 for key, value in res.iteritems():

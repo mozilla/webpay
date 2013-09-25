@@ -22,10 +22,11 @@ NO_DEFAULT_LOC = 'NO_DEFAULT_LOC'
 NO_SIM_REASON = 'NO_SIM_REASON'
 NOTICE_ERROR = 'NOTICE_ERROR'
 PAY_DISABLED = 'PAY_DISABLED'
-UNSUPPORTED_PAY = 'UNSUPPORTED_PAY'
+RESOURCE_MODIFIED = 'RESOURCE_MODIFIED'
 SIM_DISABLED = 'SIM_DISABLED'
 SIM_ONLY_KEY = 'SIM_ONLY_KEY'
 TRANS_ENDED = 'TRANS_ENDED'
+UNSUPPORTED_PAY = 'UNSUPPORTED_PAY'
 # This string is used to determine the message on Marketplace;
 # change it at your peril.
 USER_CANCELLED = 'USER_CANCELLED'
@@ -112,6 +113,9 @@ def _build_legend():
         NOTICE_ERROR: _('The notification service responded with an '
                         'error while verifying the payment notice'),
         PAY_DISABLED: _('Payments are temporarily disabled'),
+        RESOURCE_MODIFIED:
+            _('The resource has been modified within the timing of the '
+              'previous request. The action should be performed again.'),
         SIM_DISABLED: _('Payment simulations are disabled at this time.'),
         SIM_ONLY_KEY:
             _('This payment key can only be used to simulate purchases.'),
