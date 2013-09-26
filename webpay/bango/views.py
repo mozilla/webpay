@@ -60,8 +60,8 @@ def _record(request):
             'currency': qs.get('Currency'),
         })
     except HttpClientError, err:
-        log.info('Bango payment notice for transaction uuid %r '
-                 'failed: %s' % (trans_uuid, err))
+        log.error('Bango payment notice for transaction uuid %r '
+                  'failed: %s' % (trans_uuid, err))
         return msg.NOTICE_ERROR
 
     return RECORDED_OK
@@ -134,6 +134,9 @@ def error(request):
         # In theory users should never trigger this.
         return system_error(request, code=msg.UNSUPPORTED_PAY)
 
+    log.error('Fatal Bango error: {code}; query string: {qs}'
+              .format(code=request.GET.get('ResponseCode'),
+                      qs=request.GET))
     return system_error(request, code=msg.BANGO_ERROR)
 
 
