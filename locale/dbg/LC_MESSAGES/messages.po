@@ -7,8 +7,9 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.6.0\n"
 
@@ -24,13 +25,11 @@ msgstr "Ƥřīƈḗ ƥǿīƞŧ ŭƞȧṽȧīŀȧƀŀḗ ƒǿř ŧħīş řḗɠ�
 msgid "Received Bango error"
 msgstr "Řḗƈḗīṽḗḓ Ɓȧƞɠǿ ḗřřǿř"
 
-#: webpay/bango/templates/bango/cancel.html:10
-#: webpay/base/templates/base.html:34
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "Ƥȧẏḿḗƞŧ ƈȧƞƈḗŀŀḗḓ."
 
-#: webpay/bango/templates/bango/success.html:10
-#: webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
 msgstr "Ẏǿŭř ƥȧẏḿḗƞŧ īş ƈǿḿƥŀḗŧḗ."
 
@@ -103,12 +102,8 @@ msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Ŧħḗ ṽȧŀŭḗ ƒǿř ķḗẏ \"{0}\" ḗẋƈḗḗḓş ŧħḗ ḿȧẋīḿŭḿ ŀḗƞɠŧħ ǿƒ {1}"
 
 #: webpay/base/utils.py:33
-msgid ""
-"There was an error setting up the payment. Try again or contact the app if "
-"it persists."
-msgstr ""
-"Ŧħḗřḗ ẇȧş ȧƞ ḗřřǿř şḗŧŧīƞɠ ŭƥ ŧħḗ ƥȧẏḿḗƞŧ. Ŧřẏ ȧɠȧīƞ ǿř ƈǿƞŧȧƈŧ ŧħḗ ȧƥƥ īƒ "
-"īŧ ƥḗřşīşŧş."
+msgid "There was an error setting up the payment. Try again or contact the app if it persists."
+msgstr "Ŧħḗřḗ ẇȧş ȧƞ ḗřřǿř şḗŧŧīƞɠ ŭƥ ŧħḗ ƥȧẏḿḗƞŧ. Ŧřẏ ȧɠȧīƞ ǿř ƈǿƞŧȧƈŧ ŧħḗ ȧƥƥ īƒ īŧ ƥḗřşīşŧş."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -118,17 +113,12 @@ msgstr "Ƞǿŧ Ȧŀŀǿẇḗḓ"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Şǿřřẏ, ẏǿŭ ȧřḗ ƞǿŧ ȧŀŀǿẇḗḓ ŧǿ ḓǿ ŧħȧŧ."
 
-#: webpay/base/templates/403.html:8
-#: webpay/base/templates/error.html:17
-#: webpay/pay/templates/pay/simulate.html:18
-#: webpay/pin/templates/pin/pin_form.html:34
-#: webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Ƈȧƞƈḗŀ"
 
-#: webpay/base/templates/404.html:2
-#: webpay/base/templates/404.html:3
+#: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
 msgid "Page not found"
 msgstr "Ƥȧɠḗ ƞǿŧ ƒǿŭƞḓ"
 
@@ -136,8 +126,7 @@ msgstr "Ƥȧɠḗ ƞǿŧ ƒǿŭƞḓ"
 msgid "Sorry, but we couldn't find the page you're looking for."
 msgstr "Şǿřřẏ, ƀŭŧ ẇḗ ƈǿŭŀḓƞ'ŧ ƒīƞḓ ŧħḗ ƥȧɠḗ ẏǿŭ'řḗ ŀǿǿķīƞɠ ƒǿř."
 
-#: webpay/base/templates/500.html:2
-#: webpay/base/templates/500.html:3
+#: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
 msgstr "Şǿḿḗŧħīƞɠ ẇḗƞŧ ẇřǿƞɠ!"
 
@@ -186,13 +175,11 @@ msgstr "Ǿǿƥş&hellip;"
 msgid "An unexpected error occurred. Please try again."
 msgstr "Ȧƞ ŭƞḗẋƥḗƈŧḗḓ ḗřřǿř ǿƈƈŭřřḗḓ. Ƥŀḗȧşḗ ŧřẏ ȧɠȧīƞ."
 
-#: webpay/base/templates/base.html:55
-#: webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "ǾĶ"
 
-#: webpay/base/templates/error.html:9
-#: webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Ḗřřǿř"
 
@@ -200,8 +187,7 @@ msgstr "Ḗřřǿř"
 msgid "Payments are temporarily disabled."
 msgstr "Ƥȧẏḿḗƞŧş ȧřḗ ŧḗḿƥǿřȧřīŀẏ ḓīşȧƀŀḗḓ."
 
-#: webpay/pay/views.py:167
-#: webpay/pin/views.py:71
+#: webpay/pay/views.py:167 webpay/pin/views.py:71
 msgid "Enter Pin"
 msgstr "Ḗƞŧḗř Ƥīƞ"
 
@@ -209,23 +195,19 @@ msgstr "Ḗƞŧḗř Ƥīƞ"
 msgid "Transaction has already ended."
 msgstr "Ŧřȧƞşȧƈŧīǿƞ ħȧş ȧŀřḗȧḓẏ ḗƞḓḗḓ."
 
-#: webpay/pay/templates/pay/bounce.html:12
-#: webpay/pay/templates/pay/lobby.html:10
+#: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:10
 msgid "Sign In"
 msgstr "Şīɠƞ Īƞ"
 
-#: webpay/pay/templates/pay/bounce.html:13
-#: webpay/pay/templates/pay/lobby.html:11
+#: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign in to continue with the payment"
 msgstr "Şīɠƞ īƞ ŧǿ ƈǿƞŧīƞŭḗ ẇīŧħ ŧħḗ ƥȧẏḿḗƞŧ"
 
-#: webpay/pay/templates/pay/bounce.html:14
-#: webpay/pay/templates/pay/lobby.html:12
+#: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in"
 msgstr "Şīɠƞ īƞ"
 
-#: webpay/pay/templates/pay/simulate.html:7
-#: webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Şīḿŭŀȧŧḗ Ƥȧẏḿḗƞŧ"
 
@@ -237,9 +219,7 @@ msgstr "Ẏǿŭ ẇīŀŀ ƞǿŧ ƀḗ ƈħȧřɠḗḓ."
 msgid "result"
 msgstr "řḗşŭŀŧ"
 
-#: webpay/pay/templates/pay/simulate.html:20
-#: webpay/pin/templates/pin/pin_form.html:41
-#: webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Ƈǿƞŧīƞŭḗ"
 
@@ -267,8 +247,7 @@ msgstr "Ẏǿŭ ħȧṽḗ ȧŀřḗȧḓẏ ƈřḗȧŧḗḓ ȧ ƤĪȠ."
 msgid "Wrong pin"
 msgstr "Ẇřǿƞɠ ƥīƞ"
 
-#: webpay/pin/forms.py:104
-#: webpay/pin/forms.py:126
+#: webpay/pin/forms.py:104 webpay/pin/forms.py:126
 msgid "Pins do not match."
 msgstr "Ƥīƞş ḓǿ ƞǿŧ ḿȧŧƈħ."
 
@@ -276,14 +255,11 @@ msgstr "Ƥīƞş ḓǿ ƞǿŧ ḿȧŧƈħ."
 msgid "Create a Pin"
 msgstr "Ƈřḗȧŧḗ ȧ Ƥīƞ"
 
-#: webpay/pin/views.py:53
-#: webpay/pin/views.py:136
+#: webpay/pin/views.py:53 webpay/pin/views.py:136
 msgid "Confirm Pin"
 msgstr "Ƈǿƞƒīřḿ Ƥīƞ"
 
-#: webpay/pin/views.py:96
-#: webpay/pin/views.py:115
-#: webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:96 webpay/pin/views.py:115 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Řḗşḗŧ Ƥīƞ"
 
@@ -293,38 +269,25 @@ msgstr "Ƥīƞ řḗşḗŧ"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:26
-#: webpay/pin/templates/pin/reset_start.html:12
+#: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
 msgstr "Ƒǿřɠǿŧ ẏǿŭř ƥīƞ?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
-msgid ""
-"You entered the wrong pin too many times. Your account is locked. Please try "
-"your purchase again in 5 minutes."
-msgstr ""
-"Ẏǿŭ ḗƞŧḗřḗḓ ŧħḗ ẇřǿƞɠ ƥīƞ ŧǿǿ ḿȧƞẏ ŧīḿḗş. Ẏǿŭř ȧƈƈǿŭƞŧ īş ŀǿƈķḗḓ. Ƥŀḗȧşḗ ŧřẏ "
-"ẏǿŭř ƥŭřƈħȧşḗ ȧɠȧīƞ īƞ 5 ḿīƞŭŧḗş."
+msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
+msgstr "Ẏǿŭ ḗƞŧḗřḗḓ ŧħḗ ẇřǿƞɠ ƥīƞ ŧǿǿ ḿȧƞẏ ŧīḿḗş. Ẏǿŭř ȧƈƈǿŭƞŧ īş ŀǿƈķḗḓ. Ƥŀḗȧşḗ ŧřẏ ẏǿŭř ƥŭřƈħȧşḗ ȧɠȧīƞ īƞ 5 ḿīƞŭŧḗş."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
 msgstr "Ẏǿŭř Ƥīƞ ẇȧş ŀǿƈķḗḓ"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
-msgid ""
-"Your pin was locked because you entered it incorrectly too many times. You "
-"can continue and try entering your pin again or reset your pin."
-msgstr ""
-"Ẏǿŭř ƥīƞ ẇȧş ŀǿƈķḗḓ ƀḗƈȧŭşḗ ẏǿŭ ḗƞŧḗřḗḓ īŧ īƞƈǿřřḗƈŧŀẏ ŧǿǿ ḿȧƞẏ ŧīḿḗş. Ẏǿŭ "
-"ƈȧƞ ƈǿƞŧīƞŭḗ ȧƞḓ ŧřẏ ḗƞŧḗřīƞɠ ẏǿŭř ƥīƞ ȧɠȧīƞ ǿř řḗşḗŧ ẏǿŭř ƥīƞ."
+msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
+msgstr "Ẏǿŭř ƥīƞ ẇȧş ŀǿƈķḗḓ ƀḗƈȧŭşḗ ẏǿŭ ḗƞŧḗřḗḓ īŧ īƞƈǿřřḗƈŧŀẏ ŧǿǿ ḿȧƞẏ ŧīḿḗş. Ẏǿŭ ƈȧƞ ƈǿƞŧīƞŭḗ ȧƞḓ ŧřẏ ḗƞŧḗřīƞɠ ẏǿŭř ƥīƞ ȧɠȧīƞ ǿř řḗşḗŧ ẏǿŭř ƥīƞ."
 
 #: webpay/pin/templates/pin/reset_start.html:13
-msgid ""
-"Are you sure you want to reset your pin? You must sign in to Persona to "
-"reset your pin."
-msgstr ""
-"Ȧřḗ ẏǿŭ şŭřḗ ẏǿŭ ẇȧƞŧ ŧǿ řḗşḗŧ ẏǿŭř ƥīƞ? Ẏǿŭ ḿŭşŧ şīɠƞ īƞ ŧǿ Ƥḗřşǿƞȧ ŧǿ "
-"řḗşḗŧ ẏǿŭř ƥīƞ."
+msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
+msgstr "Ȧřḗ ẏǿŭ şŭřḗ ẏǿŭ ẇȧƞŧ ŧǿ řḗşḗŧ ẏǿŭř ƥīƞ? Ẏǿŭ ḿŭşŧ şīɠƞ īƞ ŧǿ Ƥḗřşǿƞȧ ŧǿ řḗşḗŧ ẏǿŭř ƥīƞ."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"

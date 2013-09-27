@@ -76,8 +76,7 @@ msgstr "Błąd dekodowania JWT."
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:68
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr ""
-"Adres URL jest zniekształcony. Może to być URL typu postback lub ikony."
+msgstr "Adres URL jest zniekształcony. Może to być URL typu postback lub ikony."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:72
@@ -95,8 +94,7 @@ msgstr "Symulacje płatności są w tej chwili niedostępne."
 
 #: webpay/base/dev_messages.py:80
 msgid "This payment key can only be used to simulate purchases."
-msgstr ""
-"Ten klucz płatności może być wykorzystywany tylko do symulacji zakupów."
+msgstr "Ten klucz płatności może być wykorzystywany tylko do symulacji zakupów."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -105,12 +103,8 @@ msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Wartość klucza „{0}” przekracza maksymalną długość {1}"
 
 #: webpay/base/utils.py:33
-msgid ""
-"There was an error setting up the payment. Try again or contact the app if it "
-"persists."
-msgstr ""
-"Wystąpił błąd podczas konfigurowania płatności. Spróbuj ponownie lub "
-"skontaktuj się z autorem aplikacji, jeśli błąd się powtarza."
+msgid "There was an error setting up the payment. Try again or contact the app if it persists."
+msgstr "Wystąpił błąd podczas konfigurowania płatności. Spróbuj ponownie lub skontaktuj się z autorem aplikacji, jeśli błąd się powtarza."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -281,36 +275,21 @@ msgid "Forgot your pin?"
 msgstr "Nie pamiętasz swojego kodu PIN?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
-msgid ""
-"You entered the wrong pin too many times. Your account is locked. Please try "
-"your purchase again in 5 minutes."
-msgstr ""
-"Błędny kod PIN wprowadzono zbyt wiele razy. Twoje konto jest zablokowane. "
-"Spróbuj ponownie dokonać zakupu za 5 minut."
+msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
+msgstr "Błędny kod PIN wprowadzono zbyt wiele razy. Twoje konto jest zablokowane. Spróbuj ponownie dokonać zakupu za 5 minut."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
 msgstr "Twój kod PIN został zablokowany"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
-msgid ""
-"Your pin was locked because you entered it incorrectly too many times. You "
-"can continue and try entering your pin again or reset your pin."
-msgstr ""
-"Twój kod PIN został zablokowany, ponieważ wprowadzono go niepoprawnie zbyt "
-"wiele razy. Możesz kontynuować i spróbować wprowadzić swój kod PIN ponownie "
-"lub zresetować go."
+msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
+msgstr "Twój kod PIN został zablokowany, ponieważ wprowadzono go niepoprawnie zbyt wiele razy. Możesz kontynuować i spróbować wprowadzić swój kod PIN ponownie lub zresetować go."
 
 #: webpay/pin/templates/pin/reset_start.html:13
-msgid ""
-"Are you sure you want to reset your pin? You must sign in to Persona to reset "
-"your pin."
-msgstr ""
-"Czy na pewno chcesz zresetować kod PIN? Musisz zalogować się do usługi "
-"Persona, by to zrobić."
+msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
+msgstr "Czy na pewno chcesz zresetować kod PIN? Musisz zalogować się do usługi Persona, by to zrobić."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
 msgstr "Resetuj"
-
-

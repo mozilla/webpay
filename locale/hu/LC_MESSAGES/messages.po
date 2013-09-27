@@ -81,8 +81,7 @@ msgstr "Az URL hibás. Ez egy postback vagy egy ikon URL lehet."
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:72
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
-"Ha a(z) {0} kulcs meg van adva, akkor a(z) {1} kulcsot is meg kell adnia."
+msgstr "Ha a(z) {0} kulcs meg van adva, akkor a(z) {1} kulcsot is meg kell adnia."
 
 #. L10n: First argument is the name of the key, 'reason'.
 #: webpay/base/dev_messages.py:76
@@ -101,16 +100,11 @@ msgstr "A fizetési kulcs csak szimulációhoz használható."
 #. argument is a number.
 #: webpay/base/dev_messages.py:87
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
-"A(z) \"{0}\" kulcshoz tartozó érték elérte a maximális hosszúságot: {1}."
+msgstr "A(z) \"{0}\" kulcshoz tartozó érték elérte a maximális hosszúságot: {1}."
 
 #: webpay/base/utils.py:33
-msgid ""
-"There was an error setting up the payment. Try again or contact the app if it "
-"persists."
-msgstr ""
-"Hiba történt a fizetés beállításánál. Próbálja újra vagy vegye fel a "
-"kapcsolatot az alkalmazással, ha a probléma továbbra is fennáll."
+msgid "There was an error setting up the payment. Try again or contact the app if it persists."
+msgstr "Hiba történt a fizetés beállításánál. Próbálja újra vagy vegye fel a kapcsolatot az alkalmazással, ha a probléma továbbra is fennáll."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -281,33 +275,21 @@ msgid "Forgot your pin?"
 msgstr "Elfelejtette a PIN kódot?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
-msgid ""
-"You entered the wrong pin too many times. Your account is locked. Please try "
-"your purchase again in 5 minutes."
-msgstr ""
-"Túl sokszor adott meg hibás PIN kódot. A felhasználói fiókját zároltuk. "
-"Próbálja megismételni a vásárlást 5 perc múlva."
+msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
+msgstr "Túl sokszor adott meg hibás PIN kódot. A felhasználói fiókját zároltuk. Próbálja megismételni a vásárlást 5 perc múlva."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
 msgstr "A PIN zárolva van"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
-msgid ""
-"Your pin was locked because you entered it incorrectly too many times. You "
-"can continue and try entering your pin again or reset your pin."
-msgstr ""
-"A PIN zárolva lett, mert túl sokszor adta meg hibásan. Megpróbálhatja újra "
-"megadni vagy megváltoztathatja."
+msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
+msgstr "A PIN zárolva lett, mert túl sokszor adta meg hibásan. Megpróbálhatja újra megadni vagy megváltoztathatja."
 
 #: webpay/pin/templates/pin/reset_start.html:13
-msgid ""
-"Are you sure you want to reset your pin? You must sign in to Persona to reset "
-"your pin."
-msgstr ""
-"Valóban vissza kívánja állítani a PIN kódját? Ehhez be kell lépni a Personába."
+msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
+msgstr "Valóban vissza kívánja állítani a PIN kódját? Ehhez be kell lépni a Personába."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
 msgstr "Visszaállítás"
-

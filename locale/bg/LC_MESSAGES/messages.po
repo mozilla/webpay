@@ -25,13 +25,11 @@ msgstr "Ценова точка не е налична за този регио�
 msgid "Received Bango error"
 msgstr "Получена грешка от Bango"
 
-#: webpay/bango/templates/bango/cancel.html:10
-#: webpay/base/templates/base.html:34
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
 msgstr "Плащането отказано."
 
-#: webpay/bango/templates/bango/success.html:10
-#: webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
 msgstr "Плащането ви е завършено"
 
@@ -104,12 +102,8 @@ msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Стойността за ключ \"{0}\" превишава максималната дължина на {1}"
 
 #: webpay/base/utils.py:33
-msgid ""
-"There was an error setting up the payment. Try again or contact the app if "
-"it persists."
-msgstr ""
-"Възникна грешка при настройване на плащането. Опитайте отново или се "
-"свържете с приложението, ако грешката продължи."
+msgid "There was an error setting up the payment. Try again or contact the app if it persists."
+msgstr "Възникна грешка при настройване на плащането. Опитайте отново или се свържете с приложението, ако грешката продължи."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -119,10 +113,7 @@ msgstr "Не е разрешено"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Съжаляваме, нямате право да правите това."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:17
-#: webpay/pay/templates/pay/simulate.html:18
-#: webpay/pin/templates/pin/pin_form.html:34
-#: webpay/pin/templates/pin/pin_form.html:38
+#: webpay/base/templates/403.html:8 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:34 webpay/pin/templates/pin/pin_form.html:38
 #: webpay/pin/templates/pin/reset_start.html:16
 msgid "Cancel"
 msgstr "Отказ"
@@ -184,13 +175,11 @@ msgstr "Опа...&hellip;"
 msgid "An unexpected error occurred. Please try again."
 msgstr "Възникна неочаквана грешка. Моля, опитайте отново."
 
-#: webpay/base/templates/base.html:55
-#: webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:55 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "ОК"
 
-#: webpay/base/templates/error.html:9
-#: webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Грешка"
 
@@ -206,23 +195,19 @@ msgstr "Въведете ПИН"
 msgid "Transaction has already ended."
 msgstr "Транзакцията вече е приключила"
 
-#: webpay/pay/templates/pay/bounce.html:12
-#: webpay/pay/templates/pay/lobby.html:10
+#: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:10
 msgid "Sign In"
 msgstr "Вход"
 
-#: webpay/pay/templates/pay/bounce.html:13
-#: webpay/pay/templates/pay/lobby.html:11
+#: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign in to continue with the payment"
 msgstr "Влезте, за да продължите с плащането"
 
-#: webpay/pay/templates/pay/bounce.html:14
-#: webpay/pay/templates/pay/lobby.html:12
+#: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in"
 msgstr "Вход"
 
-#: webpay/pay/templates/pay/simulate.html:7
-#: webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Симулирай плащане"
 
@@ -234,9 +219,7 @@ msgstr "Няма да бъдете таксувани"
 msgid "result"
 msgstr "резултат"
 
-#: webpay/pay/templates/pay/simulate.html:20
-#: webpay/pin/templates/pin/pin_form.html:41
-#: webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:41 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Продължи"
 
@@ -276,8 +259,7 @@ msgstr "Създай ПИН"
 msgid "Confirm Pin"
 msgstr "Потвърди ПИН"
 
-#: webpay/pin/views.py:96 webpay/pin/views.py:115
-#: webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:96 webpay/pin/views.py:115 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Изчисти пин"
 
@@ -286,40 +268,26 @@ msgid "Pin reset"
 msgstr "ПИН-ът изчистен"
 
 #. This is the same as the standard forgot
-#. password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:26
-#: webpay/pin/templates/pin/reset_start.html:12
+#.                  password that most sites have.
+#: webpay/pin/templates/pin/pin_form.html:26 webpay/pin/templates/pin/reset_start.html:12
 msgid "Forgot your pin?"
 msgstr "Забравили сте вашия ПИН?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
-msgid ""
-"You entered the wrong pin too many times. Your account is locked. Please try "
-"your purchase again in 5 minutes."
-msgstr ""
-"Въвели сте грешен ПИН прекалено много пъти. Акаунтът ви е заключен. Моля, "
-"опитайте покупката си отново след 5 минути."
+msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
+msgstr "Въвели сте грешен ПИН прекалено много пъти. Акаунтът ви е заключен. Моля, опитайте покупката си отново след 5 минути."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
 msgstr "ПИН-ът ви е заключен"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
-msgid ""
-"Your pin was locked because you entered it incorrectly too many times. You "
-"can continue and try entering your pin again or reset your pin."
-msgstr ""
-"ПИН-ът ви беше заключен, защото сте го въвели грешно прекалено много пъти. "
-"Може да продължите и да опитате да въведете ПИН-а си отново или да го "
-"възстановите."
+msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
+msgstr "ПИН-ът ви беше заключен, защото сте го въвели грешно прекалено много пъти. Може да продължите и да опитате да въведете ПИН-а си отново или да го възстановите."
 
 #: webpay/pin/templates/pin/reset_start.html:13
-msgid ""
-"Are you sure you want to reset your pin? You must sign in to Persona to "
-"reset your pin."
-msgstr ""
-"Сигурни ли сте, че искате да изчистите вашия ПИН? Трябва да влезете в "
-"Persona, за да изчистите."
+msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
+msgstr "Сигурни ли сте, че искате да изчистите вашия ПИН? Трябва да влезете в Persona, за да изчистите."
 
 #: webpay/pin/templates/pin/reset_start.html:19
 msgid "Reset"
