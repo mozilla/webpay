@@ -183,8 +183,11 @@ def lobby(request):
 
 @require_GET
 def bounce(request):
+    next = request.GET.get('next')
+    if not next or not next.startswith('/mozpay/'):
+        return http.HttpResponseForbidden()
     return render(request, 'pay/bounce.html', {
-        'next': request.GET.get('next')
+        'next': next
     })
 
 
