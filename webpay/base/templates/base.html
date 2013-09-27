@@ -33,13 +33,19 @@
     data-complete-msg="{{ _('Payment complete') }}"
     data-cancelled-msg="{{ _('Payment cancelled.') }}"
     data-logout-timeout="{{ settings.LOGOUT_TIMEOUT }}"
+    data-login-timeout="{{ settings.LOGIN_TIMEOUT }}"
     data-settings="{{ settings.JS_SETTINGS|json }}"
     data-error-code="{{ error_code }}"
     data-cancel-code="{{ dev_messages.USER_CANCELLED }}"
+    data-full-error-heading="{{ _('Oops&hellip;') }}"
+    data-full-error-detail="{{ _('This is taking longer than expected. Please try again.') }}"
+    data-full-error-button="{{ _('OK') }}"
     >
     <section class="pay">
       <div id="content">
-        {% block content %}{% endblock %}
+        <div class="hidden-full-error">
+          {% block content %}{% endblock %}
+        </div>
         {% if messages %}
         <ul class="messages">
            {% for message in messages %}
@@ -51,11 +57,11 @@
         {# Full screen error html #}
         <div id="full-screen-error" class="hidden">
           <div class="msg">
-            <h2 class="heading">{{ _('Oops&hellip;') }}</h2>
-            <p class="detail">{{ _('An unexpected error occurred. Please try again.') }}</p>
+            <h2 class="heading"></h2>
+            <p class="detail"></p>
           </div>
           <footer>
-            <a href="#" class="button">{{ _('OK') }}</a>
+            <a href="#" class="button"></a>
           </footer>
         </div>
 
@@ -63,7 +69,7 @@
     </section>
 
     {# Progress indicator html #}
-    <div id="progress" class="progress hidden">
+    <div id="progress" class="progress hidden hidden-full-error">
       <div class="throbber"></div>
       <span class="txt"></span>
     </div>

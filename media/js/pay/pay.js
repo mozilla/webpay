@@ -4,16 +4,17 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
     var bodyData = cli.bodyData;
 
     var LOGOUTTIMEOUT = parseInt(bodyData.logoutTimeout, 10);
+    var LOGINTIMEOUT = parseInt(bodyData.loginTimeout, 10);
 
     var $doc = cli.doc;
     var $body = $doc.find('body');
     var $pinEntry = $('#enter-pin');
-    var $errorScreen = $('#full-screen-error');
 
     // Elements to be labelled if longtext is detected.
     var $longTextElms = $('footer, body');
     // Elements to be checked for overflowing text.
     var $chkLongTextElms = $('.ltchk');
+
 
     // Currently we just default false, once loggedInUser is used properly we
     // can (and will have to) put a better value here. (bug 843192)
@@ -22,6 +23,8 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
     var calledBack = false;
     // url to verify a persona assertion
     var verifyUrl = bodyData.verifyUrl || null;
+    // The timeout for login.
+    var loginTimer = null;
 
     // Setup debounced resize custom event.
     cli.win.on('resize', _.debounce(function() { $doc.trigger('saferesize');}, 200));
@@ -42,8 +45,13 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
             console.log('[pay] nav.id onlogin');
             loggedIn = true;
             cli.showProgress(bodyData.personaMsg);
+
             $.post(verifyUrl, {assertion: assertion})
                 .success(function(data, textStatus, jqXHR) {
+                    if (loginTimer) {
+                        console.log('[pay] Clearing login timer');
+                        window.clearTimeout(loginTimer);
+                    }
                     cli.trackWebpayEvent({'action': 'persona login',
                                           'label': 'Login Success'});
                     bango.prepareAll(data.user_hash).done(function _onDone() {
@@ -99,6 +107,12 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
             // https://github.com/mozilla/browserid/issues/2648
             onready: function _lobbyOnReady() {
                 if (!calledBack && cli.bodyData.loggedInUser) {
+
+                    if (loginTimer) {
+                        console.log('[pay] Clearing login timer');
+                        window.clearTimeout(loginTimer);
+                    }
+
                     console.log('[pay] Probably logged in, Persona never called back');
                     bango.prepareSim().done(function _simDoneReady() {
                         console.log('[pay] Requesting focus on pin');
@@ -143,13 +157,28 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
         callPaySuccess();
     }
 
-    $('#signin').click(function _signInOnClick(ev) {
+    function manualSignIn(){
         console.log('[pay] signing in manually');
         cli.trackWebpayEvent({'action': 'sign in',
                               'label': 'Lobby Page'});
-        ev.preventDefault();
+        loginTimer = window.setTimeout(onLoginTimeout, LOGINTIMEOUT);
         cli.showProgress(bodyData.personaMsg);
         id.request();
+    }
+
+    function onLoginTimeout() {
+        cli.trackWebpayEvent({'action': 'persona login',
+                              'label': 'Log-in Timeout'});
+        if (loginTimer) {
+            console.log('[pay] Clearing login timer');
+            window.clearTimeout(loginTimer);
+        }
+        cli.showFullScreenError({callback: manualSignIn});
+    }
+
+    $('#signin').click(function _signInOnClick(ev) {
+        ev.preventDefault();
+        manualSignIn();
     });
 
     function callPaySuccess() {
@@ -173,6 +202,7 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
             paymentSuccess();
         }
     }
+
 
     $('#forgot-pin').click(function(evt) {
 
@@ -223,25 +253,9 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
                     // Called when we manually abort everything
                     // or if something fails.
                     window.clearTimeout(resetLogoutTimeout);
-                    cli.hideProgress();
-                    $pinEntry.hide();
-                    $body.addClass('full-error');
-                    $errorScreen.show();
-
                     cli.trackWebpayEvent({'action': 'forgot pin',
                                           'label': 'Logout Error'});
-
-                    // Setup click handler for one time use.
-                    $errorScreen.find('.button').one('click', function(e){
-                        e.stopPropagation();
-                        e.preventDefault();
-
-                        cli.showProgress();
-                        $errorScreen.hide();
-                        $body.removeClass('full-error');
-                        $pinEntry.show();
-                        runForgotPinLogout();
-                    });
+                    cli.showFullScreenError({callback: runForgotPinLogout});
                 });
 
             // Finally, log out of Persona so that the user has to
