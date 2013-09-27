@@ -1,14 +1,8 @@
 from tower import ugettext_lazy as _
 
 ERROR_STRINGS = {
-    'PIN must be exactly 4 numbers long':
-     _('PIN must be exactly 4 numbers long'),
-    'PIN may only consists of numbers':
-     _('PIN may only consists of numbers'),
-    'This field is required.':
-     _('This field is required.'),
-    'Buyer with this Uuid already exists.':
-    _('Buyer with this UUID already exists.'),
-    'The resource has been modified, please re-fetch it.':
-    _('The resource has been modified, please re-fetch it.'),
+    'BUYER_UUID_ALREADY_EXISTS': _('Buyer with this UUID already exists.'),
+    'FIELD_REQUIRED': _('This field is required.'),
+    'PIN_4_NUMBERS_LONG': _('PIN must be exactly 4 numbers long'),
+    'PIN_ONLY_NUMBERS': _('PIN may only consist of numbers'),
 }

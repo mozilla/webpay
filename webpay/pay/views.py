@@ -27,6 +27,7 @@ from webpay.pin.utils import check_pin_status
 from lib.marketplace.api import client as marketplace, UnknownPricePoint
 from lib.solitude import constants
 from lib.solitude.api import client as solitude
+from lib.solitude.exceptions import ResourceModified
 
 from . import tasks
 from .forms import VerifyForm
@@ -155,7 +156,10 @@ def lobby(request):
     # the reset pin flag. They can hit the forgot pin button if they still
     # don't remember their pin.
     if sess.get('uuid_needs_pin_reset'):
-        solitude.set_needs_pin_reset(sess['uuid'], False)
+        try:
+            solitude.set_needs_pin_reset(sess['uuid'], False)
+        except ResourceModified:
+            return system_error(request, code=msg.RESOURCE_MODIFIED)
         sess['uuid_needs_pin_reset'] = False
 
     if sess.get('is_simulation', False):

@@ -9,7 +9,7 @@ from slumber.exceptions import HttpClientError
 
 from lib.solitude.api import client, SellerNotConfigured
 from lib.solitude.errors import ERROR_STRINGS
-from lib.solitude.exceptions import ResourceNotModified
+from lib.solitude.exceptions import ResourceModified, ResourceNotModified
 
 
 @mock.patch('lib.solitude.api.client.slumber')
@@ -27,7 +27,7 @@ class SolitudeAPITest(TestCase):
 
     def create_error_response(self, status_code=400, content=None):
         if content is None:
-            content = {'ERROR': ['This field is required.']}
+            content = {'ERROR': [ERROR_STRINGS['FIELD_REQUIRED']]}
 
         class FakeResponse(object):
             pass
@@ -81,42 +81,41 @@ class SolitudeAPITest(TestCase):
     def test_create_buyer_with_alpha_pin(self, slumber):
         slumber.generic.buyer.post.side_effect = HttpClientError(
             response=self.create_error_response(content={
-                'pin': ['PIN may only consists of numbers']
+                'pin': ['PIN_ONLY_NUMBERS']
             }))
         buyer = client.create_buyer('with_alpha_pin', 'lame')
         assert buyer.get('errors')
-        eq_(buyer['errors'].get('pin'),
-            [ERROR_STRINGS['PIN may only consists of numbers']])
+        eq_(buyer['errors'].get('pin'), [ERROR_STRINGS['PIN_ONLY_NUMBERS']])
 
     def test_create_buyer_with_short_pin(self, slumber):
         slumber.generic.buyer.post.side_effect = HttpClientError(
             response=self.create_error_response(content={
-                'pin': ['PIN must be exactly 4 numbers long']
+                'pin': ['PIN_4_NUMBERS_LONG']
             }))
         buyer = client.create_buyer('with_short_pin', '123')
         assert buyer.get('errors')
         eq_(buyer['errors'].get('pin'),
-            [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
+            [ERROR_STRINGS['PIN_4_NUMBERS_LONG']])
 
     def test_create_buyer_with_long_pin(self, slumber):
         slumber.generic.buyer.post.side_effect = HttpClientError(
             response=self.create_error_response(content={
-                'pin': ['PIN must be exactly 4 numbers long']
+                'pin': ['PIN_4_NUMBERS_LONG']
             }))
         buyer = client.create_buyer('with_long_pin', '12345')
         assert buyer.get('errors')
         eq_(buyer['errors'].get('pin'),
-            [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
+            [ERROR_STRINGS['PIN_4_NUMBERS_LONG']])
 
     def test_create_buyer_with_existing_uuid(self, slumber):
         slumber.generic.buyer.post.side_effect = HttpClientError(
             response=self.create_error_response(content={
-                'uuid': ['Buyer with this Uuid already exists.']
+                'uuid': ['BUYER_UUID_ALREADY_EXISTS']
             }))
         buyer = client.create_buyer(self.uuid, '1234')
         assert buyer.get('errors')
         eq_(buyer['errors'].get('uuid'),
-            [ERROR_STRINGS['Buyer with this Uuid already exists.']])
+            [ERROR_STRINGS['BUYER_UUID_ALREADY_EXISTS']])
 
     def test_confirm_pin_with_good_pin(self, slumber):
         slumber.generic.confirm_pin.post.return_value = {'confirmed': True}
@@ -137,7 +136,7 @@ class SolitudeAPITest(TestCase):
     def test_verify_alpha_pin(self, slumber):
         slumber.generic.verify_pin.post.side_effect = HttpClientError(
             response=self.create_error_response(content={
-                'pin': ['PIN may only consists of numbers']
+                'pin': ['PIN_ONLY_NUMBERS']
             }))
         assert 'pin' in client.verify_pin(self.uuid, 'lame')['errors']
 
@@ -154,27 +153,24 @@ class SolitudeAPITest(TestCase):
         buyer = mock.Mock(return_value=self.buyer_data)
         buyer.patch.side_effect = HttpClientError(
             response=self.create_error_response(content={
-                'new_pin': ['PIN may only consists of numbers']
+                'new_pin': ['PIN_ONLY_NUMBERS']
             }))
         slumber.generic.buyer.return_value = buyer
         res = client.set_new_pin(self.uuid, 'meow')
         assert res.get('errors')
         eq_(res['errors'].get('new_pin'),
-            [ERROR_STRINGS['PIN may only consists of numbers']])
+            [ERROR_STRINGS['PIN_ONLY_NUMBERS']])
 
-    def test_set_new_pin_for_reset_with_bad_etag(self, slumber):
+    def test_set_new_pin_for_reset_with_wrong_etag(self, slumber):
         wrong_etag = 'etag:wrong'
         buyer = mock.Mock(return_value=self.buyer_data)
         buyer.patch.side_effect = HttpClientError(
             response=self.create_error_response(
                 status_code=412,
-                content={'ERROR': [('The resource has been modified, '
-                                          'please re-fetch it.')]}))
+                content={'ERROR': ['RESOURCE_MODIFIED']}))
         slumber.generic.buyer.return_value = buyer
-        res = client.set_new_pin(self.uuid, self.pin, wrong_etag)
-        assert res.get('errors')
-        eq_(res['errors'],
-        [ERROR_STRINGS['The resource has been modified, please re-fetch it.']])
+        with self.assertRaises(ResourceModified):
+            client.set_new_pin(self.uuid, self.pin, wrong_etag)
 
     def test_reset_confirm_pin_with_good_pin(self, slumber):
         new_pin = '1122'
@@ -224,13 +220,10 @@ class SolitudeAPITest(TestCase):
         buyer.patch.side_effect = HttpClientError(
             response=self.create_error_response(
                 status_code=412,
-                content={'ERROR': [('The resource has been modified, '
-                                          'please re-fetch it.')]}))
+                content={'ERROR': ['RESOURCE_MODIFIED']}))
         slumber.generic.buyer.return_value = buyer
-        res = client.change_pin(self.uuid, self.pin, wrong_etag)
-        assert 'errors' in res
-        eq_(res['errors'],
-        [ERROR_STRINGS['The resource has been modified, please re-fetch it.']])
+        with self.assertRaises(ResourceModified):
+            client.change_pin(self.uuid, self.pin, wrong_etag)
 
     def test_set_needs_pin_reset(self, slumber):
         buyer = mock.Mock(return_value=self.buyer_data)
@@ -253,13 +246,10 @@ class SolitudeAPITest(TestCase):
         buyer.patch.side_effect = HttpClientError(
             response=self.create_error_response(
                 status_code=412,
-                content={'ERROR': [('The resource has been modified, '
-                                          'please re-fetch it.')]}))
+                content={'ERROR': ['RESOURCE_MODIFIED']}))
         slumber.generic.buyer.return_value = buyer
-        res = client.set_needs_pin_reset(self.uuid, etag=wrong_etag)
-        assert 'errors' in res
-        eq_(res['errors'],
-        [ERROR_STRINGS['The resource has been modified, please re-fetch it.']])
+        with self.assertRaises(ResourceModified):
+            client.set_needs_pin_reset(self.uuid, etag=wrong_etag)
 
     def test_unset_needs_pin_reset(self, slumber):
         buyer = mock.Mock(return_value=self.buyer_data)
@@ -282,13 +272,10 @@ class SolitudeAPITest(TestCase):
         buyer.patch.side_effect = HttpClientError(
             response=self.create_error_response(
                 status_code=412,
-                content={'ERROR': [('The resource has been modified, '
-                                          'please re-fetch it.')]}))
+                content={'ERROR': ['RESOURCE_MODIFIED']}))
         slumber.generic.buyer.return_value = buyer
-        res = client.set_needs_pin_reset(self.uuid, False, etag=wrong_etag)
-        assert 'errors' in res
-        eq_(res['errors'],
-        [ERROR_STRINGS['The resource has been modified, please re-fetch it.']])
+        with self.assertRaises(ResourceModified):
+            client.set_needs_pin_reset(self.uuid, False, etag=wrong_etag)
 
 
 class CreateBangoTest(TestCase):

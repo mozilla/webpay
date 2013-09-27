@@ -72,36 +72,29 @@ class CreatePinViewTest(PinViewTestCase):
         eq_(res.status_code, 200)
         doc = pq(res.content)
         form_tracking_data = json.loads(doc('#pin').attr('data-tracking'))
-        eq_(form_tracking_data['pin_error_codes'],
-            ['PIN_ALREADY_CREATED'])
+        eq_(form_tracking_data['pin_error_codes'], ['PIN_ALREADY_CREATED'])
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': 'some:uuid'})
     @patch.object(client, 'change_pin',
                   lambda *args, **kwargs: {
-                    'errors':
-                        {'pin':
-                            ['PIN must be exactly 4 numbers long']}})
+                    'errors': {'pin': [ERROR_STRINGS['PIN_4_NUMBERS_LONG']]}})
     def test_buyer_does_exist_with_short_pin(self, create_buyer):
         res = self.client.post(self.url, data={'pin': '123'})
         assert not create_buyer.called
         form = res.context['form']
-        eq_(form.errors.get('pin'),
-            [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
+        eq_(form.errors.get('pin'), [ERROR_STRINGS['PIN_4_NUMBERS_LONG']])
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': 'some:uuid'})
     @patch.object(client, 'change_pin',
                   lambda *args, **kwargs: {
-                    'errors':
-                        {'pin':
-                            ['PIN may only consists of numbers']}})
+                    'errors': {'pin': [ERROR_STRINGS['PIN_ONLY_NUMBERS']]}})
     def test_buyer_does_exist_with_alpha_pin(self, create_buyer):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not create_buyer.called
         form = res.context['form']
-        eq_(form.errors.get('pin'),
-            [ERROR_STRINGS['PIN may only consists of numbers']])
+        eq_(form.errors.get('pin'), [ERROR_STRINGS['PIN_ONLY_NUMBERS']])
 
 
 class VerifyPinViewTest(PinViewTestCase):
@@ -130,8 +123,7 @@ class VerifyPinViewTest(PinViewTestCase):
         eq_(res.status_code, 200)
         doc = pq(res.content)
         form_tracking_data = json.loads(doc('#pin').attr('data-tracking'))
-        eq_(form_tracking_data['pin_error_codes'],
-            ['WRONG_PIN'])
+        eq_(form_tracking_data['pin_error_codes'], ['WRONG_PIN'])
 
     @patch.object(client, 'verify_pin', lambda x, y: {'locked': True,
                                                       'valid': False})
@@ -196,9 +188,7 @@ class ConfirmPinViewTest(PinViewTestCase):
         eq_(res.status_code, 200)
         doc = pq(res.content)
         form_tracking_data = json.loads(doc('#pin').attr('data-tracking'))
-        eq_(form_tracking_data['pin_error_codes'],
-            ['PINS_DONT_MATCH'])
-
+        eq_(form_tracking_data['pin_error_codes'], ['PINS_DONT_MATCH'])
 
     @patch.object(client, 'confirm_pin')
     def test_uuid_used(self, confirm_pin):
@@ -342,44 +332,39 @@ class ResetNewPinViewTest(ResetPinTest):
     @patch.object(client, 'set_new_pin',
                   lambda x, y: {'errors':
                                 {'pin':
-                                 ['PIN must be exactly 4 numbers long']}})
+                                 [ERROR_STRINGS['PIN_4_NUMBERS_LONG']]}})
     def test_short_pin(self):
         res = self.client.post(self.url, data={'pin': '123'})
         form = res.context['form']
-        eq_(form.errors.get('pin'),
-            [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
+        eq_(form.errors.get('pin'), [ERROR_STRINGS['PIN_4_NUMBERS_LONG']])
 
     @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
     @patch.object(client, 'set_new_pin',
                   lambda x, y: {'errors':
-                                {'pin': ['PIN may only consists of numbers']}})
+                                {'pin': [ERROR_STRINGS['PIN_ONLY_NUMBERS']]}})
     def test_alpha_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
         form = res.context['form']
-        eq_(form.errors.get('pin'),
-            [ERROR_STRINGS['PIN may only consists of numbers']])
+        eq_(form.errors.get('pin'), [ERROR_STRINGS['PIN_ONLY_NUMBERS']])
 
     @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
     @patch.object(client, 'set_new_pin',
                   lambda x, y: {'errors':
                                 {'new_pin':
-                                 ['PIN must be exactly 4 numbers long']}})
+                                 [ERROR_STRINGS['PIN_4_NUMBERS_LONG']]}})
     def test_short_new_pin(self):
         res = self.client.post(self.url, data={'pin': '123'})
         form = res.context['form']
-        eq_(form.errors.get('pin'),
-            [ERROR_STRINGS['PIN must be exactly 4 numbers long']])
+        eq_(form.errors.get('pin'), [ERROR_STRINGS['PIN_4_NUMBERS_LONG']])
 
     @patch.object(client, 'get_buyer', lambda x: {'uuid': x, 'id': '1'})
     @patch.object(client, 'set_new_pin',
                   lambda x, y: {'errors': {
-                      'new_pin': ['PIN may only consists of numbers']
-                  }})
+                      'new_pin': [ERROR_STRINGS['PIN_ONLY_NUMBERS']]}})
     def test_alpha_new_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
         form = res.context['form']
-        eq_(form.errors.get('pin'),
-            [ERROR_STRINGS['PIN may only consists of numbers']])
+        eq_(form.errors.get('pin'), [ERROR_STRINGS['PIN_ONLY_NUMBERS']])
 
     def test_redirects_to_locked_view(self):
         self.session['uuid_pin_is_locked'] = True
@@ -441,8 +426,7 @@ class ResetConfirmPinViewTest(ResetPinTest):
         eq_(res.status_code, 200)
         doc = pq(res.content)
         form_tracking_data = json.loads(doc('#pin').attr('data-tracking'))
-        eq_(form_tracking_data['pin_error_codes'],
-            ['PINS_DONT_MATCH'])
+        eq_(form_tracking_data['pin_error_codes'], ['PINS_DONT_MATCH'])
 
     @patch.object(client, 'reset_confirm_pin')
     def test_uuid_used(self, confirm_pin):

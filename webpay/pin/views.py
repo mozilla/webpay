@@ -9,10 +9,13 @@ from django.views.decorators.debug import sensitive_post_parameters
 from tower import ugettext as _
 
 from lib.solitude.api import client
+from lib.solitude.exceptions import ResourceModified
 from webpay.auth.decorators import enforce_sequence, user_verified
 from webpay.auth.utils import (get_user, set_user_has_confirmed_pin,
                                set_user_has_pin)
+from webpay.base import dev_messages as msg
 from webpay.base.logger import getLogger
+from webpay.base.utils import system_error
 from webpay.pay import get_payment_url
 from . import forms
 
@@ -27,8 +30,12 @@ def create(request):
         form = forms.CreatePinForm(uuid=get_user(request), data=request.POST)
         if form.is_valid():
             if getattr(form, 'buyer_exists', False):
-                res = client.change_pin(form.uuid, form.cleaned_data['pin'],
-                                        etag=form.buyer_etag)
+                try:
+                    res = client.change_pin(form.uuid,
+                                            form.cleaned_data['pin'],
+                                            etag=form.buyer_etag)
+                except ResourceModified:
+                    return system_error(request, code=msg.RESOURCE_MODIFIED)
             else:
                 res = client.create_buyer(form.uuid, form.cleaned_data['pin'])
             if form.handle_client_errors(res):
@@ -101,7 +108,10 @@ def is_locked(request):
 
 @enforce_sequence
 def was_locked(request):
-    client.unset_was_locked(uuid=get_user(request))
+    try:
+        client.unset_was_locked(uuid=get_user(request))
+    except ResourceModified:
+        return system_error(request, code=msg.RESOURCE_MODIFIED)
     request.session['uuid_pin_was_locked'] = False
     return render(request, 'pin/pin_was_locked.html')
 
@@ -110,7 +120,10 @@ def was_locked(request):
 @sensitive_post_parameters('pin')
 def reset_start(request):
     request.session['was_reverified'] = False
-    client.set_needs_pin_reset(get_user(request))
+    try:
+        client.set_needs_pin_reset(get_user(request))
+    except ResourceModified:
+        return system_error(request, code=msg.RESOURCE_MODIFIED)
     request.session['uuid_needs_pin_reset'] = True
     form = forms.CreatePinForm()
     form.reset_flow = True
@@ -131,7 +144,10 @@ def reset_new_pin(request):
     if request.method == 'POST':
         form = forms.ResetPinForm(uuid=get_user(request), data=request.POST)
         if form.is_valid():
-            res = client.set_new_pin(form.uuid, form.cleaned_data['pin'])
+            try:
+                res = client.set_new_pin(form.uuid, form.cleaned_data['pin'])
+            except ResourceModified:
+                return system_error(request, code=msg.RESOURCE_MODIFIED)
             if form.handle_client_errors(res):
                 request.session['uuid_has_new_pin'] = True
                 return http.HttpResponseRedirect(reverse('pin.reset_confirm'))
@@ -179,6 +195,9 @@ def reset_confirm(request):
 
 @user_verified
 def reset_cancel(request):
-    client.set_needs_pin_reset(get_user(request), False)
+    try:
+        client.set_needs_pin_reset(get_user(request), False)
+    except ResourceModified:
+        return system_error(request, code=msg.RESOURCE_MODIFIED)
     request.session['uuid_needs_pin_reset'] = False
     return http.HttpResponseRedirect(reverse('pin.verify'))
