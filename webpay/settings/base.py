@@ -440,8 +440,9 @@ PRODUCT_DESCRIPTION_LENGTH = 255
 # trigger form errors.
 SHORT_FIELD_MAX_LENGTH = 255
 
-# The timeout for the client-side logout in pay.js in millseconds.
+# The timeout for the client-side logout + login in pay.js in millseconds.
 LOGOUT_TIMEOUT = 30000
+LOGIN_TIMEOUT = 60000
 
 # This is the typ for signature checking JWTs.
 # This is used to integrate with Marketplace and other apps.
