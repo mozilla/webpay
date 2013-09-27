@@ -503,3 +503,22 @@ class TestSuperSimulate(BasicSessionCase):
         res = self.client.post(reverse('pay.super_simulate'))
         eq_(res.status_code, 403)
         assert not fake_notify.delay.called
+
+
+class TestBounce(Base):
+
+    def setUp(self):
+        super(TestBounce, self).setUp()
+        self.url = reverse('pay.bounce')
+
+    def test_good_next(self):
+        res = self.client.get(self.url + '?next=/mozpay/')
+        eq_(res.status_code, 200)
+
+    def test_bad_next(self):
+        res = self.client.get(self.url + '?next=http://google.com')
+        eq_(res.status_code, 403)
+
+    def test_missing_next(self):
+        res = self.client.get(self.url)
+        eq_(res.status_code, 403)
