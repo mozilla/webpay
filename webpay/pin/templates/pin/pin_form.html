@@ -11,7 +11,7 @@
 {% block content %}
   {% block extra_content %}{% endblock %}
 
-  <div {% if hide_pin %}class="hidden"{% endif %} id="enter-pin">
+  <div class="hidden-full-error{% if hide_pin %} hidden{% endif %}" id="enter-pin">
 
     <h2>{{ title }}</h2>
 
