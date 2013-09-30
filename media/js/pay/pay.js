@@ -52,6 +52,7 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
                         console.log('[pay] Clearing login timer');
                         window.clearTimeout(loginTimer);
                     }
+                    cli.clearFullScreenError();
                     cli.trackWebpayEvent({'action': 'persona login',
                                           'label': 'Login Success'});
                     bango.prepareAll(data.user_hash).done(function _onDone() {
