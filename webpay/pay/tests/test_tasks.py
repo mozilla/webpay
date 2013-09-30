@@ -448,6 +448,20 @@ class TestStartPay(BaseStartPay):
         eq_(solitude.bango.billing.post.call_args[0][0]['icon_url'], url)
 
     @mock.patch('lib.solitude.api.client.slumber')
+    def test_marketplace_other(self, solitude):
+        self.start()
+        eq_(solitude.bango.billing.post.call_args[0][0]['source'], 'other')
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    def test_marketplace_found(self, solitude):
+        self.notes['pay_request']['request']['productData'] = (
+            urlencode({'seller_uuid':self.notes['issuer_key']}))
+        self.notes['issuer_key'] = settings.KEY
+        self.start()
+        eq_(solitude.bango.billing.post.call_args[0][0]['source'],
+            'marketplace')
+
+    @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.get_icon_url')
     @mock.patch('lib.marketplace.api.client.api')
     def test_icon_url_disabled(self, mkt, get_icon_url, solitude):
