@@ -7,6 +7,9 @@ define('cli', ['settings', 'lib/tracking'], function(settings, tracking) {
     var bodyData = $body.data();
     var $win = $(window);
     var $fullErrorScreen = $('#full-screen-error');
+    var $fullErrorScreenHeading = $fullErrorScreen.find('.heading');
+    var $fullErrorScreenDetail = $fullErrorScreen.find('.detail');
+    var $fullErrorScreenButton = $fullErrorScreen.find('.button');
     var gaTrackingCategory = settings.ga_tracking_category;
 
     var cli = {
@@ -70,6 +73,7 @@ define('cli', ['settings', 'lib/tracking'], function(settings, tracking) {
             tracking.trackEvent(gaTrackingCategory, options.action, options.label, options.value, options.nonInteraction);
         },
         showFullScreenError: function(options) {
+            var that = this;
             options = options || {};
             options = _.defaults(options,  {
                 errorHeading: bodyData.fullErrorHeading,
@@ -81,22 +85,27 @@ define('cli', ['settings', 'lib/tracking'], function(settings, tracking) {
             // the full-screen error is displayed.
             $body.addClass('full-error');
 
-            $fullErrorScreen.find('.heading').text(options.errorHeading);
-            $fullErrorScreen.find('.detail').text(options.errorDetail);
-            $fullErrorScreen.find('.button').text(options.errorButton);
+            $fullErrorScreenHeading.text(options.errorHeading);
+            $fullErrorScreenDetail.text(options.errorDetail);
+            $fullErrorScreenButton.text(options.errorButton);
             $fullErrorScreen.show();
 
-            // Setup click handler for one time use.
-            $fullErrorScreen.find('.button').one('click', function(e){
+            // Note: handler is cleared when we clear the error.
+            $fullErrorScreenButton.on('click.retry', function(e) {
                 e.stopPropagation();
                 e.preventDefault();
-                $fullErrorScreen.hide();
-                $body.removeClass('full-error');
-                if (options.callback) {
-                    options.callback();
-                }
+                cli.clearFullScreenError(options.callback);
             });
 
+        },
+        clearFullScreenError: function(callback) {
+            console.log('[cli] Clearing Full screen error');
+            $fullErrorScreen.hide();
+            $body.removeClass('full-error');
+            $fullErrorScreenButton.off('click.retry');
+            if (callback) {
+                callback();
+            }
         }
     };
 

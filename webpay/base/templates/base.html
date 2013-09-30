@@ -43,9 +43,7 @@
     >
     <section class="pay">
       <div id="content">
-        <div class="hidden-full-error">
-          {% block content %}{% endblock %}
-        </div>
+        {% block content %}{% endblock %}
         {% if messages %}
         <ul class="messages">
            {% for message in messages %}
