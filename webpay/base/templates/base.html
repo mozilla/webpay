@@ -38,8 +38,9 @@
     data-error-code="{{ error_code }}"
     data-cancel-code="{{ dev_messages.USER_CANCELLED }}"
     data-full-error-heading="{{ _('Oops&hellip;') }}"
-    data-full-error-detail="{{ _('This is taking longer than expected. Please try again.') }}"
-    data-full-error-button="{{ _('OK') }}"
+    data-full-error-detail="{{ _('This is taking longer than expected. Try again?') }}"
+    data-full-error-confirm="{{ _('OK') }}"
+    data-full-error-cancel="{{ _('Cancel') }}"
     >
     <section class="pay">
       <div id="content">
@@ -59,7 +60,8 @@
             <p class="detail"></p>
           </div>
           <footer>
-            <a href="#" class="button"></a>
+            <a href="#" class="button cancel-button sec"></a>
+            <a href="#" class="button confirm"></a>
           </footer>
         </div>
 

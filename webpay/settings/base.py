@@ -440,10 +440,6 @@ PRODUCT_DESCRIPTION_LENGTH = 255
 # trigger form errors.
 SHORT_FIELD_MAX_LENGTH = 255
 
-# The timeout for the client-side logout + login in pay.js in millseconds.
-LOGOUT_TIMEOUT = 30000
-LOGIN_TIMEOUT = 60000
-
 # This is the typ for signature checking JWTs.
 # This is used to integrate with Marketplace and other apps.
 SIG_CHECK_TYP = 'mozilla/payments/sigcheck/v1'
@@ -486,4 +482,10 @@ JS_SETTINGS = {
     'ga_tracking_id': 'UA-36116321-6',
     # Turn GA tracking on/off wholesale.
     'tracking_enabled': False,
+    # Timeout for logout (Default 45s).
+    'logout_timeout': 45000,
+    # Timeout for logins (Default 90s).
+    'login_timeout': 90000,
+    # General Ajax timeout (Default 45s).
+    'ajax_timeout': 45000
 }

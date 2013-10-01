@@ -1,26 +1,49 @@
-require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
+require(['cli', 'id', 'pay/bango', 'settings'], function(cli, id, bango, settings) {
     "use strict";
-    var bodyData = cli.bodyData,
-        on_success;
+    var bodyData = cli.bodyData;
+    var on_success;
+    var resetLoginTimer = null;
 
     function watchForceAuth(_onSuccess) {
         id.watch({
             onlogin: function _resetLogin(assertion) {
+
+                if (resetLoginTimer) {
+                    console.log('[pay] Clearing login timer');
+                    window.clearTimeout(resetLoginTimer);
+                }
+
+                cli.clearFullScreenError();
+                cli.showProgress(bodyData.personaMsg);
                 console.log('[reset] nav.id onlogin');
-                $.post(bodyData.verifyUrl, {assertion: assertion})
-                    .success(function _resetLoginSuccess(data, textStatus, jqXHR) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: bodyData.verifyUrl,
+                    data: {assertion: assertion},
+                    timeout: settings.ajax_timeout,
+                    success: function _resetLoginSuccess(data, textStatus, jqXHR) {
                         console.log('[reset] login success');
                         bango.prepareAll(data.user_hash).done(function _forceAuthReady() {
                             cli.trackWebpayEvent({'action': 'reset force auth',
                                                   'label': 'Login Success'});
                             _onSuccess.apply(this);
                         });
-                    })
-                    .error(function _resetLoginError() {
-                        console.log('[reset] login error');
-                        cli.trackWebpayEvent({'action': 'reset force auth',
-                                              'label': 'Login Failure'});
-                    });
+                    },
+                    error: function _resetLoginError(xhr, textStatus) {
+                        if (textStatus == 'timeout') {
+                            console.log('[pay] login timed out');
+                            cli.trackWebpayEvent({'action': 'reset force auth',
+                                                  'label': 'Re-verification Timed Out'});
+                            var that = this;
+                            cli.showFullScreenError({callback: function(){ $.ajax(that); }});
+                        } else {
+                            console.log('[reset] login error');
+                            cli.trackWebpayEvent({'action': 'reset force auth',
+                                                  'label': 'Login Failure'});
+                        }
+                    }
+                });
             },
             onlogout: function _resetLogout() {
                 console.log('[reset] nav.id onlogout');
@@ -41,8 +64,9 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
         });
     }
 
-    $('.force-auth-button').on('click', function(evt) {
-        evt.preventDefault();
+    function forceAuth() {
+        console.log('[reset] Starting Reset login timer');
+        resetLoginTimer = window.setTimeout(onResetLoginTimeout, settings.login_timeout);
         cli.showProgress(bodyData.personaMsg);
         if (window.localStorage.getItem('reset-step') === 'pin') {
             /* You've already re-signed in. */
@@ -69,7 +93,29 @@ require(['cli', 'id', 'pay/bango'], function(cli, id, bango) {
                 cli.focusOnPin({ $toHide: $('#confirm-pin-reset'), $toShow: $('#enter-pin') });
             };
         }
-        watchForceAuth(on_success);
+        watchForceAuth(function() {
+            if (resetLoginTimer) {
+                console.log('[pay] Clearing Reset login timer');
+                window.clearTimeout(resetLoginTimer);
+            }
+            on_success();
+        });
         startForceAuth();
+    }
+
+    $('.force-auth-button').on('click', function(evt) {
+        evt.preventDefault();
+        forceAuth();
     });
+
+    function onResetLoginTimeout() {
+        cli.trackWebpayEvent({'action': 'reset force auth',
+                              'label': 'Log-in Timeout'});
+        if (resetLoginTimer) {
+            console.log('[reset] Clearing Reset login timer');
+            window.clearTimeout(resetLoginTimer);
+        }
+        cli.showFullScreenError({callback: forceAuth});
+    }
+
 });
