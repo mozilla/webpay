@@ -3,6 +3,7 @@
 {% block body_attrs -%}
   data-waitflow="true"
   data-trans-start-url="{{ url('pay.trans_start_url') }}"
+  data-loading-msg="{{ _('Setting up payment&hellip;') }}"
 {%- endblock %}
 
 {% block content %}
