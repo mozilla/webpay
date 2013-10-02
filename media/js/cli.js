@@ -1,4 +1,4 @@
-define('cli', ['settings', 'lib/tracking'], function(settings, tracking) {
+define('cli', ['settings', 'lib/longtext', 'lib/tracking'], function(settings, checkLongText, tracking) {
     'use strict';
 
     var $progress = $('#progress');
@@ -6,10 +6,12 @@ define('cli', ['settings', 'lib/tracking'], function(settings, tracking) {
     var $body = $('body');
     var bodyData = $body.data();
     var $win = $(window);
-    var $fullErrorScreen = $('#full-screen-error');
-    var $fullErrorScreenHeading = $fullErrorScreen.find('.heading');
-    var $fullErrorScreenDetail = $fullErrorScreen.find('.detail');
-    var $fullErrorScreenButton = $fullErrorScreen.find('.button');
+    var $fullError = $('#full-screen-error');
+    var $fullErrorHeading = $fullError.find('.heading');
+    var $fullErrorDetail = $fullError.find('.detail');
+    var $fullErrorCancel = $fullError.find('.cancel-button');
+    var $fullErrorConfirm = $fullError.find('.confirm');
+    var $fullErrorFooter = $fullError.find('footer');
     var gaTrackingCategory = settings.ga_tracking_category;
 
     var cli = {
@@ -78,31 +80,41 @@ define('cli', ['settings', 'lib/tracking'], function(settings, tracking) {
             options = _.defaults(options,  {
                 errorHeading: bodyData.fullErrorHeading,
                 errorDetail: bodyData.fullErrorDetail,
-                errorButton: bodyData.fullErrorButton
+                errorConfirm: bodyData.fullErrorConfirm,
+                errorCancel: bodyData.fullErrorCancel
             });
 
             // Use this to hide content that should be hidden when
             // the full-screen error is displayed.
             $body.addClass('full-error');
 
-            $fullErrorScreenHeading.text(options.errorHeading);
-            $fullErrorScreenDetail.text(options.errorDetail);
-            $fullErrorScreenButton.text(options.errorButton);
-            $fullErrorScreen.show();
+            $fullErrorHeading.text(options.errorHeading);
+            $fullErrorDetail.text(options.errorDetail);
+            $fullErrorConfirm.text(options.errorConfirm);
+            $fullErrorCancel.text(options.errorCancel);
+
+            $fullError.show();
+            // Check the buttons for long text so we can update the buttons accordingly.
+            $fullErrorFooter.find('.button').checkLongText($fullErrorFooter, true);
 
             // Note: handler is cleared when we clear the error.
-            $fullErrorScreenButton.on('click.retry', function(e) {
+            $fullErrorConfirm.on('click.retry', function(e) {
                 e.stopPropagation();
                 e.preventDefault();
                 cli.clearFullScreenError(options.callback);
             });
 
+            $fullErrorCancel.on('click.cancel', function(e) {
+                cli.clearFullScreenError();
+            });
         },
         clearFullScreenError: function(callback) {
             console.log('[cli] Clearing Full screen error');
-            $fullErrorScreen.hide();
+            $fullError.hide();
             $body.removeClass('full-error');
-            $fullErrorScreenButton.off('click.retry');
+            $fullErrorConfirm.off('click.retry');
+            $fullErrorCancel.off('click.cancel');
+            $fullErrorFooter.removeClass('longtext');
             if (callback) {
                 callback();
             }

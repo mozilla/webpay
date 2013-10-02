@@ -1,10 +1,7 @@
-require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], function(cli, id, auth, bango, checkLongText, tracking) {
+require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'settings', 'lib/tracking'], function(cli, id, auth, bango, checkLongText, settings, tracking) {
     "use strict";
 
     var bodyData = cli.bodyData;
-
-    var LOGOUTTIMEOUT = parseInt(bodyData.logoutTimeout, 10);
-    var LOGINTIMEOUT = parseInt(bodyData.loginTimeout, 10);
 
     var $doc = cli.doc;
     var $body = $doc.find('body');
@@ -44,30 +41,46 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
             calledBack = true;
             console.log('[pay] nav.id onlogin');
             loggedIn = true;
+            if (loginTimer) {
+                console.log('[pay] Clearing login timer');
+                window.clearTimeout(loginTimer);
+            }
+
+            cli.clearFullScreenError();
             cli.showProgress(bodyData.personaMsg);
 
-            $.post(verifyUrl, {assertion: assertion})
-                .success(function(data, textStatus, jqXHR) {
-                    if (loginTimer) {
-                        console.log('[pay] Clearing login timer');
-                        window.clearTimeout(loginTimer);
-                    }
-                    cli.clearFullScreenError();
+            $.ajax({
+                type: 'POST',
+                url: verifyUrl,
+                data: {assertion: assertion},
+                timeout: settings.ajax_timeout,
+                success: function(data, textStatus, jqXHR) {
                     cli.trackWebpayEvent({'action': 'persona login',
                                           'label': 'Login Success'});
                     bango.prepareAll(data.user_hash).done(function _onDone() {
                         callback(data);
                     });
-                })
-                .error(function(xhr) {
-                    cli.trackWebpayEvent({'action': 'persona login',
-                                          'label': 'Login Failed'});
-                    if (xhr.status === 403) {
+                },
+                error: function(xhr, textStatus ) {
+                    if (textStatus == 'timeout') {
+                        console.log('[pay] login timed out');
+                        cli.trackWebpayEvent({'action': 'persona login',
+                                              'label': 'Verification Timed Out'});
+                        var that = this;
+                        cli.showFullScreenError({callback: function(){ $.ajax(that); }});
+                    } else if (xhr.status === 403) {
                         console.log('[pay] permission denied after auth');
+                        cli.trackWebpayEvent({'action': 'persona login',
+                                              'label': 'Login Permission Denied'});
                         window.location.href = bodyData.deniedUrl;
+                    } else {
+                        console.log('[pay] login error');
+                        cli.trackWebpayEvent({'action': 'persona login',
+                                              'label': 'Login Failed'});
                     }
-                    console.log('[pay] login error');
-                });
+                }
+            });
+
         }
         return _onlogin;
     }
@@ -162,7 +175,8 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
         console.log('[pay] signing in manually');
         cli.trackWebpayEvent({'action': 'sign in',
                               'label': 'Lobby Page'});
-        loginTimer = window.setTimeout(onLoginTimeout, LOGINTIMEOUT);
+        console.log('[pay] Starting login timer.');
+        loginTimer = window.setTimeout(onLoginTimeout, settings.login_timeout);
         cli.showProgress(bodyData.personaMsg);
         id.request();
     }
@@ -232,16 +246,19 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
             var authResetUser = auth.resetUser();
             var bangoLogout = bango.logout();
 
+            console.log('[pay] starting logout timer.');
+
             var resetLogoutTimeout = window.setTimeout(function() {
                 // If the log-out times-out then abort/reject the requests/deferred.
                 console.log('[pay] logout timed-out');
                 authResetUser.abort();
                 bangoLogout.abort();
                 personaLoggedOut.reject();
-            }, LOGOUTTIMEOUT);
+            }, settings.logout_timeout);
 
             $.when(authResetUser, bangoLogout,  personaLoggedOut)
                 .done(function _allLoggedOut() {
+                    console.log('[pay] Clearing logout reset timer.');
                     window.clearTimeout(resetLogoutTimeout);
                     // Redirect to the original destination.
                     var dest = anchor.attr('href');
@@ -253,6 +270,7 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'lib/tracking'], func
                 .fail(function _failedLogout() {
                     // Called when we manually abort everything
                     // or if something fails.
+                    console.log('[pay] Clearing logout reset timer.');
                     window.clearTimeout(resetLogoutTimeout);
                     cli.trackWebpayEvent({'action': 'forgot pin',
                                           'label': 'Logout Error'});
