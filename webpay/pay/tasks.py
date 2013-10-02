@@ -163,10 +163,11 @@ def start_pay(transaction_uuid, notes, user_uuid, **kw):
     This puts the transaction in a state where it's
     ready to be fulfilled by Bango.
     """
+    key = notes['issuer_key']
     pay = notes['pay_request']
     product_data = urlparse.parse_qs(pay['request'].get('productData', ''))
     try:
-        seller_uuid = get_seller_uuid(notes['issuer_key'], product_data)
+        seller_uuid = get_seller_uuid(key, product_data)
         try:
             application_size = int(product_data['application_size'][0])
         except (KeyError, ValueError):
@@ -195,6 +196,7 @@ def start_pay(transaction_uuid, notes, user_uuid, **kw):
             icon_url,
             user_uuid,
             application_size,
+            source='marketplace' if is_marketplace(key) else 'other'
         )
         trans_pk = client.slumber.generic.transaction.get_object(
             uuid=transaction_uuid)['resource_pk']
