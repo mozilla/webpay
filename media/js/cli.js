@@ -9,7 +9,7 @@ define('cli', ['settings', 'lib/longtext', 'lib/tracking'], function(settings, c
     var $fullError = $('#full-screen-error');
     var $fullErrorHeading = $fullError.find('.heading');
     var $fullErrorDetail = $fullError.find('.detail');
-    var $fullErrorCancel = $fullError.find('.cancel-button');
+    var $fullErrorCancel = $fullError.find('.cancel');
     var $fullErrorConfirm = $fullError.find('.confirm');
     var $fullErrorFooter = $fullError.find('footer');
     var gaTrackingCategory = settings.ga_tracking_category;
