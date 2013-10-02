@@ -144,7 +144,8 @@ def lobby(request):
         # background.
         log.info('configuring transaction {0} from lobby'
                  .format(sess.get('trans_id')))
-        tasks.configure_transaction(request, trans=trans)
+        if not tasks.configure_transaction(request, trans=trans):
+            log.error('Configuring transaction failed.')
 
         redirect_url = check_pin_status(request)
         if redirect_url is not None:
