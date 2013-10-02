@@ -27,7 +27,7 @@ require(['cli'], function(cli) {
         callPayFailure();
     }
 
-    $('.cancel-button').on('click', function(e) {
+    $('.button.cancel').on('click', function(e) {
         cli.trackWebpayClick(e);
         e.preventDefault();
         callPayFailure();
