@@ -20,14 +20,14 @@ flow = {
 def log_redirect(request, step, dest):
     msg = 'Buyer was attempting %s redirecting to: %s' % (step, dest)
     log.info('enforce_sequence: %s' % msg)
-    log_cef(msg, request)
+    log_cef(msg, request, severity=7)
 
 
 def user_verified(f):
     @functools.wraps(f)
     def wrapper(request, *args, **kw):
         if not request.session.get('uuid'):
-            log_cef('No UUID in session, not verified', request)
+            log_cef('No UUID in session, not verified', request, severity=7)
             raise PermissionDenied
         return f(request, *args, **kw)
     return wrapper
@@ -37,7 +37,7 @@ def enforce_sequence(func):
     def wrapper(request, *args, **kwargs):
         step = func.func_name
         if not request.session.get('uuid'):
-            log_cef('No UUID in session, not verified', request)
+            log_cef('No UUID in session, not verified', request, severity=7)
             raise PermissionDenied
 
         locked_step = get_locked_step(request, step)
