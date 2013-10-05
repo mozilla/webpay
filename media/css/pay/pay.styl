@@ -49,15 +49,18 @@ a:focus {
     bottom: 0;
     color: $dark-gray;
     left: 0;
+    padding-top: 90px;
     position: absolute;
     right: 0;
     top: 0;
     z-index: 20;
-}
-.progress .txt {
-    display: block;
-    margin-top: 20px;
-    text-align: center;
+
+    .txt {
+        display: block;
+        font-size: 14px;
+        margin-top: 20px;
+        text-align: center;
+    }
 }
 
 section.pay {
@@ -84,20 +87,25 @@ footer {
     border-top: 1px solid $light-gray;
     bottom: 0;
     left: 0;
+    line-height: 0;
     opacity: 0;
-    padding: 10px 20px;
+    padding: 10px;
     position: absolute;
     transition(opacity 1s ease-in);
     width: 100%;
+    font-size: 0;
     &.longtext .button {
-        margin: 5px 0;
+        margin: 0 0 10px;
         width: 100%;
+    }
+    &.longtext .button:last-child {
+        margin: 0;
     }
     &.visible {
         opacity: 1;
     }
     .button {
-        width: 47%;
+        width: 48%;
     }
 }
 
@@ -302,7 +310,7 @@ a.sign-in,
         left: 0;
         max-height: 100%; /* Causes scroll bars when content is too large */
         overflow-y: auto;
-        padding-bottom: 0;
+        padding: 10px 10px 0;
         position: absolute;
         right: 0;
         width: 100%;
@@ -312,6 +320,8 @@ a.sign-in,
         padding-bottom: 5px;
     }
     .msg {
+        margin: 0 10px;
+
         p {
             font-size: 24px;
             line-height: 32px;
@@ -325,7 +335,7 @@ a.sign-in,
     footer {
         background: none;
         border-top: 0;
-        margin: 10px 0 20px;
+        margin: 20px 0 10px;
         padding: 0;
         position: static;
 
