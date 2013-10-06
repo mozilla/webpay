@@ -133,6 +133,7 @@ require(['cli'], function(cli) {
     }).on('blur', '.pinbox input', function(e) {
         stopWatching();
         if (window.focus) {
+            console.log('[pin] window.focus()');
             window.focus();
         }
     }).on('click', '.pinbox', function(e) {
