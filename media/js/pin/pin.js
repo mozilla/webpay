@@ -132,6 +132,9 @@ require(['cli'], function(cli) {
         watchInput(this);
     }).on('blur', '.pinbox input', function(e) {
         stopWatching();
+        if (window.focus) {
+            window.focus();
+        }
     }).on('click', '.pinbox', function(e) {
         $pinInput.focus();
     }).on('keypress', '.pinbox input', function(e) {
