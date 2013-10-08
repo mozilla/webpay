@@ -38,10 +38,15 @@ def configure_transaction(request, trans=None):
     """
     if settings.FAKE_PAYMENTS:
         log.info('FAKE_PAYMENTS: skipping configure payments step')
-        return
+        return False
+
     if request.session.get('is_simulation', False):
         log.info('is_simulation: skipping configure payments step')
-        return
+        return False
+
+    if not trans and not 'trans_id' in request.session:
+        log.error('trans_id: not found in session')
+        return False
 
     try:
         if not trans:
@@ -62,7 +67,7 @@ def configure_transaction(request, trans=None):
         log.info('trans %s (status=%r) already configured: '
                  'skipping configure payments step'
                  % (request.session['trans_id'], trans.get('status')))
-        return
+        return False
 
     # Prevent configuration from running twice.
     request.session['configured_trans'] = request.session['trans_id']
@@ -79,6 +84,7 @@ def configure_transaction(request, trans=None):
     # We passed notes to start_pay (which saves it to the transaction
     # object), so delete it from the session to save cookie space.
     del request.session['notes']
+    return True
 
 
 def _localize_pay_request(request):

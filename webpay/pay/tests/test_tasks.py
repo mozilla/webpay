@@ -15,7 +15,7 @@ import jwt
 import mock
 from mock import ANY
 from nose.exc import SkipTest
-from nose.tools import eq_, raises
+from nose.tools import eq_, ok_, raises
 from requests.exceptions import RequestException, Timeout
 import test_utils
 
@@ -582,7 +582,7 @@ class TestConfigureTransaction(BaseStartPay):
     @mock.patch('lib.solitude.api.client')
     @mock.patch('lib.marketplace.api.client.api')
     def start(self, marketplace, solitude, locale=None,
-              session=None):
+              session=None, request=None):
         if session is None:
             session = {}
         prices = mock.Mock()
@@ -594,22 +594,28 @@ class TestConfigureTransaction(BaseStartPay):
             'type': constants.TYPE_PAYMENT,
             'uuid': self.transaction_uuid
         }
-        request = RequestFactory().get('/')
-        if locale:
-            request.locale = locale
-        request.session = session
-        request.session['trans_id'] = self.transaction_uuid
-        request.session['notes'] = self.notes
-        request.session['is_simulation'] = False
-        request.session['uuid'] = self.user_uuid
-        tasks.configure_transaction(request)
+        if request is None:
+            request = RequestFactory().get('/')
+            if locale:
+                request.locale = locale
+            request.session = session
+            request.session['trans_id'] = self.transaction_uuid
+            request.session['notes'] = self.notes
+            request.session['is_simulation'] = False
+            request.session['uuid'] = self.user_uuid
+        return tasks.configure_transaction(request)
 
     def test_prevent_reconfiguring_transaction(self):
         self.solitude.side_effect = ObjectDoesNotExist
         session = {}
-        self.start(session=session)
-        self.start(session=session)  # Second call should do nothing.
+        ok_(self.start(session=session))
+        ok_(not self.start(session=session))  # Second call should do nothing.
         eq_(self.start_pay.call_count, 1)
+
+    def test_no_trans_id(self):
+        request = RequestFactory().get('/')
+        request.session = {}
+        eq_(self.start(request=request), False)
 
     def test_restart_certain_transactions(self):
         for st in constants.STATUS_RETRY_OK:
@@ -617,7 +623,7 @@ class TestConfigureTransaction(BaseStartPay):
                 'status': st, 'resource_pk': '1',
                 'notes': {}
             }
-            self.start()
+            ok_(self.start())
             assert self.start_pay.called, (
                 'Expected start_pay for status %s' % st)
             assert self.start_pay.call_args[0][0] != self.transaction_uuid, (
@@ -630,8 +636,8 @@ class TestConfigureTransaction(BaseStartPay):
             'notest': {}
         }
         session = {}
-        self.start(session=session)
-        self.start(session=session)  # Second call should still configure.
+        ok_(self.start(session=session))
+        ok_(self.start(session=session))  # Second call should still configure.
         eq_(self.start_pay.call_count, 2)
 
     def test_use_locale_name(self):
@@ -647,7 +653,7 @@ class TestConfigureTransaction(BaseStartPay):
             'status': constants.STATUS_CANCELLED, 'resource_pk': '1',
             'notes': self.notes
         }
-        self.start(locale='de')
+        ok_(self.start(locale='de'))
         start_pay = self.start_pay
         assert start_pay.called
         eq_(start_pay.call_args[0][1]['pay_request']['request']['name'],
@@ -777,7 +783,7 @@ class TestConfigureTrans(test.TestCase):
     @mock.patch('lib.solitude.api.client.get_transaction')
     def configure(self, get_trans):
         get_trans.side_effect = ObjectDoesNotExist
-        tasks.configure_transaction(self.request)
+        return tasks.configure_transaction(self.request)
 
     def setUp(self):
         self.request = mock.Mock()
@@ -792,7 +798,7 @@ class TestConfigureTrans(test.TestCase):
         self.addCleanup(patch.stop)
 
     def test_configure(self):
-        self.configure()
+        ok_(self.configure())
         assert self.start_pay.delay.called
         assert 'notes' not in self.request.session, (
                 'notes should be deleted from session after '
