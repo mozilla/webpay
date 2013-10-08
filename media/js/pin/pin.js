@@ -132,10 +132,6 @@ require(['cli'], function(cli) {
         watchInput(this);
     }).on('blur', '.pinbox input', function(e) {
         stopWatching();
-        if (window.focus) {
-            console.log('[pin] window.focus()');
-            window.focus();
-        }
     }).on('click', '.pinbox', function(e) {
         $pinInput.focus();
     }).on('keypress', '.pinbox input', function(e) {
@@ -169,4 +165,13 @@ require(['cli'], function(cli) {
         console.log('[pin] requesting focus on pin');
         cli.focusOnPin();
     });
+
+    if (cli.hasTouch) {
+        $submitButton.on('touchstart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('[pin] form submitted on touchstart');
+            $('#pin').submit();
+        });
+    }
 });
