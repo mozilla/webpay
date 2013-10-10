@@ -29,11 +29,11 @@ def log_cef_meta(msg, meta, full_path, **kw):
             'cef.file': g('CEF_FILE', 'syslog'),
         },
     }
-    # Each webpay request generates a request. That isn't that useful to
-    # see in the logs, so lets skip those.
-    if msg != 'webpay:request':
-        log.error('CEF Severity: {sev} Message: {msg}'.format(
-            sev=severity, msg=msg))
+    if severity > 2:
+        # Only send more severe logging to syslog. Messages lower than that
+        # could be every http request, etc.
+        log.error('CEF Severity: {sev} Message: {msg}'
+                  .format(sev=severity, msg=msg))
     _log_cef(msg, severity, meta, **cef_kw)
 
 

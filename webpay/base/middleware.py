@@ -130,7 +130,7 @@ class CEFMiddleware(object):
 
     def process_request(self, request):
         # Log all requests to cef.
-        log_cef('webpay:request', request)
+        log_cef('webpay:request', request, severity=2)
 
     def process_exception(self, request, exception):
         # We'll log the exceptions too with more severity.
