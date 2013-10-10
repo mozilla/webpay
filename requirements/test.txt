@@ -3,3 +3,5 @@
 nose-blockage==0.1.2
 pyquery==1.2.4
 cssselect==0.8
+supervisor==3.0
+meld3==0.6.10
