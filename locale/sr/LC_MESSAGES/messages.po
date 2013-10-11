@@ -36,46 +36,46 @@ msgstr "Плаћање је извршено."
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:47
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr ""
+msgstr "Кључ иконице није био објекат. Правилан пример: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:51
 msgid "No one has been registered for this JWT issuer."
-msgstr ""
+msgstr "Нико није био регистрован за овог JWT издавача. "
 
 #: webpay/base/dev_messages.py:53
 msgid "The requested payment simulation result is not supported."
-msgstr ""
+msgstr "Затражени резултат симулације плаћања није подржан."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:56
 msgid "The JWT has expired."
-msgstr ""
+msgstr "JWT је истекао."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:60
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr ""
+msgstr "JWT потпис је неважећи или је у погрешном формату."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:63
 msgid "The JWT did not decode to a JSON object."
-msgstr ""
+msgstr "JWT није декодирао JSON објекат."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:66
 msgid "Error decoding JWT."
-msgstr ""
+msgstr "Грешка у декодирању JWT-a."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:68
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr ""
+msgstr "URL адреса је погрешна. Може бити да URL прима HTTP поруке или је URL иконица."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:72
@@ -93,7 +93,7 @@ msgstr "Симулације плаћања су тренутно онемогу
 
 #: webpay/base/dev_messages.py:80
 msgid "This payment key can only be used to simulate purchases."
-msgstr ""
+msgstr "Овај кључ за плаћање је могуће користити само за симулирање куповине."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -103,7 +103,7 @@ msgstr "Вредност кључа \"{0}\" прекорачије максим�
 
 #: webpay/base/utils.py:33
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr ""
+msgstr "Дошло је до грешке приликом успостављања плаћања. Покушајте поново или контактирајте програмера апликације уколико се проблем настави.  "
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -141,7 +141,7 @@ msgstr "Молимо покушајте поново за пар тренута�
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9
 msgid "Web Pay"
-msgstr "Web Pay"
+msgstr "Веб плаћање"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
@@ -161,7 +161,7 @@ msgstr "Започињање плаћања&hellip;"
 
 #: webpay/base/templates/base.html:32
 msgid "Connecting to Persona"
-msgstr "Повезујем се са Persona"
+msgstr "Повезивање са Persona сервисом"
 
 #: webpay/base/templates/base.html:33
 msgid "Payment complete"
@@ -233,7 +233,7 @@ msgstr "Симулирај плаћање"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr "Реално плаћање"
+msgstr "Направите праву уплату"
 
 #: webpay/pay/templates/pay/wait-to-start.html:11
 msgid "Waiting for payment to complete&hellip;"
