@@ -487,5 +487,7 @@ JS_SETTINGS = {
     # Timeout for logins (Default 90s).
     'login_timeout': 90000,
     # General Ajax timeout (Default 45s).
-    'ajax_timeout': 45000
+    'ajax_timeout': 45000,
+    # Wait timeout (Default 60s).
+    'wait_timeout': 60000,
 }
