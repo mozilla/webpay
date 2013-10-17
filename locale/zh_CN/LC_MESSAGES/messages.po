@@ -12,11 +12,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382008395.0\n"
+"X-POOTLE-MTIME: 1382008434.0\n"
 
 #: webpay/bango/views.py:120
 msgid "Could not record Bango error"
-msgstr " "
+msgstr ""
 
 #: webpay/bango/views.py:127
 msgid "Price point unavailable for this region or carrier."
