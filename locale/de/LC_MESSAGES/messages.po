@@ -24,9 +24,7 @@ msgstr "Ihre Zahlung ist vollständig"
 
 #: webpay/base/dev_messages.py:71
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
-"Mozilla hat einen ungültigen Code vom Zahlungsanbieter (Bango) erhalten, "
-"während die Zahlung verarbeitet wurde"
+msgstr "Mozilla hat einen ungültigen Code vom Zahlungsanbieter (Bango) erhalten, während die Zahlung verarbeitet wurde"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:75
@@ -53,9 +51,7 @@ msgstr "Das angeforderte Ergebnis der Zahlungssimulation wird nicht unterstützt
 
 #: webpay/base/dev_messages.py:85
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
-"Der Zahlungsanbieter (Bango) hat einen Fehler bei der Verarbeitung der "
-"Zahlung gemeldet"
+msgstr "Der Zahlungsanbieter (Bango) hat einen Fehler bei der Verarbeitung der Zahlung gemeldet"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -88,9 +84,7 @@ msgstr "Eine URL ist nicht wohlgeformt. Sie könnte eine Postback-URL oder eine 
 
 #: webpay/base/dev_messages.py:103
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
-"Die Transaktions-ID fehlte in der Sitzung, als eine Rückzahlung verarbeitet "
-"wurde."
+msgstr "Die Transaktions-ID fehlte in der Sitzung, als eine Rückzahlung verarbeitet wurde."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:107
@@ -104,9 +98,7 @@ msgstr "Der angeforderten Erstattungssimulation fehlt der Schlüssel „{0}“."
 
 #: webpay/base/dev_messages.py:113
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
-"Der Benachrichtigungsdienst hat einen Fehler beim Bestätigen der "
-"Zahlungsbenachrichtigung gemeldet"
+msgstr "Der Benachrichtigungsdienst hat einen Fehler beim Bestätigen der Zahlungsbenachrichtigung gemeldet"
 
 #: webpay/base/dev_messages.py:115
 msgid "Payments are temporarily disabled"
@@ -114,9 +106,7 @@ msgstr "Zahlungen sind zeitweilig deaktiviert"
 
 #: webpay/base/dev_messages.py:117
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
-"Die Ressource wurde während der Terminierung der vorherigen Anfrage "
-"modifiziert. Die Aktion sollte erneut ausgeführt werden."
+msgstr "Die Ressource wurde während der Terminierung der vorherigen Anfrage modifiziert. Die Aktion sollte erneut ausgeführt werden."
 
 #: webpay/base/dev_messages.py:119
 msgid "Payment simulations are disabled at this time."
@@ -128,15 +118,11 @@ msgstr "Dieser Zahlungsschlüssel kann nur zur Simulation von Käufen verwendet 
 
 #: webpay/base/dev_messages.py:123
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
-"Der Kauf kann nicht abgeschlossen werden, weil die aktuelle Transaktion "
-"bereits geendet hat."
+msgstr "Der Kauf kann nicht abgeschlossen werden, weil die aktuelle Transaktion bereits geendet hat."
 
 #: webpay/base/dev_messages.py:126
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
-"Die Zahlungsmethode oder der Preispunkt werden für diese Region oder diesen "
-"Mobilfunkanbieter nicht unterstützt."
+msgstr "Die Zahlungsmethode oder der Preispunkt werden für diese Region oder diesen Mobilfunkanbieter nicht unterstützt."
 
 #: webpay/base/dev_messages.py:128
 msgid "The user cancelled the payment."
@@ -154,10 +140,7 @@ msgstr "Bei der Einrichtung der Zahlung ist ein Fehler aufgetreten. Versuchen Si
 
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
-"Beim Verarbeiten der Zahlung ist ein interner Fehler aufgetreten. Versuchen "
-"Sie es erneut, oder kontaktieren Sie Mozilla, wenn der Fehler weiterhin "
-"auftritt."
+msgstr "Beim Verarbeiten der Zahlung ist ein interner Fehler aufgetreten. Versuchen Sie es erneut, oder kontaktieren Sie Mozilla, wenn der Fehler weiterhin auftritt."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
