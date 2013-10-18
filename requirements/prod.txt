@@ -40,7 +40,7 @@ requests==0.14.2
 schematic==0.2
 six==1.2.0
 slumber==0.5.3
-statsd==1.0.0
+statsd==2.0.3
 translate-toolkit==1.9.0
 
 -e git://github.com/clouserw/tower.git@7711557f55fefa9526402b2731879edf9b128381#egg=tower
