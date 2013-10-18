@@ -23,7 +23,7 @@ msgstr "Uw betaling is voltooid."
 
 #: webpay/base/dev_messages.py:71
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
+msgstr "Mozilla heeft bij het verwerken van de betaling een ongeldige code van de betalingsprovider (Bango) ontvangen"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:75
@@ -38,11 +38,11 @@ msgstr "Voor deze JWT-uitgever is niemand geregistreerd."
 
 #: webpay/base/dev_messages.py:80
 msgid "The price point is unknown or invalid."
-msgstr ""
+msgstr "Het prijspunt is onbekend of ongeldig."
 
 #: webpay/base/dev_messages.py:81
 msgid "The request to begin payment was invalid."
-msgstr ""
+msgstr "Het verzoek om de betaling te starten was ongeldig."
 
 #: webpay/base/dev_messages.py:83
 msgid "The requested payment simulation result is not supported."
@@ -50,7 +50,7 @@ msgstr "Het gevraagde betalingssimulatieresultaat wordt niet ondersteund."
 
 #: webpay/base/dev_messages.py:85
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
+msgstr "De betalingsprovider (Bango) heeft een fout gemeld bij het verwerken van de betaling"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -83,7 +83,7 @@ msgstr "Een URL is beschadigd. Dit is mogelijk een postback-URL of een URL van e
 
 #: webpay/base/dev_messages.py:103
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
+msgstr "Het transactiekenmerk ontbrak bij de sessie bij het verwerken van een terugbetaling."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:107
@@ -97,15 +97,15 @@ msgstr "De aangevraagde restitutiesimulatie mist de sleutel ‘{0}’."
 
 #: webpay/base/dev_messages.py:113
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
+msgstr "De notificatiedienst heeft geantwoord met een fout bij de verificatie van de betalingsnotiticatie"
 
 #: webpay/base/dev_messages.py:115
 msgid "Payments are temporarily disabled"
-msgstr ""
+msgstr "Betalingen zijn tijdelijk uitgeschakeld"
 
 #: webpay/base/dev_messages.py:117
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
+msgstr "De hulpbron is gewijzigd binnen het tijdsvak van het voorgaande verzoek. De actie dient opnieuw te worden uitgevoerd."
 
 #: webpay/base/dev_messages.py:119
 msgid "Payment simulations are disabled at this time."
@@ -117,15 +117,15 @@ msgstr "Deze betalingssleutel kan alleen maar worden gebruikt voor aankoopsimula
 
 #: webpay/base/dev_messages.py:123
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
+msgstr "De aankoop kan niet worden afgerond omdat de huidige transactie al is beëindigd."
 
 #: webpay/base/dev_messages.py:126
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
+msgstr "De batlinsgmethode of het prijspunt wordt voor deze regio of provider niet ondersteund."
 
 #: webpay/base/dev_messages.py:128
 msgid "The user cancelled the payment."
-msgstr ""
+msgstr "De gebruiker heeft de betaling geannuleerd."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -139,7 +139,7 @@ msgstr "Er is een fout opgetreden bij het instellen van de betaling. Probeer het
 
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
+msgstr "Er is een interne fout opgetreden btijdens het evrwerken van de betaling. Probeer het opnieuw of neem contact met Mozilla op als het probleem aanhoudt."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
