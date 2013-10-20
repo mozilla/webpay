@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-17 08:28-0700\n"
-"PO-Revision-Date: 2013-10-20 20:24+0000\n"
+"PO-Revision-Date: 2013-10-20 20:28+0000\n"
 "Last-Translator: Gábor <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n !=1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382300653.0\n"
+"X-POOTLE-MTIME: 1382300919.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
@@ -42,7 +42,7 @@ msgstr "Senki sem regisztrált ehhez a JWT kibocsátóhoz."
 
 #: webpay/base/dev_messages.py:80
 msgid "The price point is unknown or invalid."
-msgstr "Az árcímke ismeretlen vagy érvénytelen."
+msgstr "Az irányár ismeretlen vagy érvénytelen."
 
 #: webpay/base/dev_messages.py:81
 msgid "The request to begin payment was invalid."
@@ -134,7 +134,7 @@ msgstr ""
 #: webpay/base/dev_messages.py:126
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr ""
-"A fizetési módszer vagy az árcímke nem támogatott ehhez a régióhoz vagy "
+"A fizetési módszer vagy az irányár nem támogatott ehhez a régióhoz vagy "
 "szolgáltatóhoz."
 
 #: webpay/base/dev_messages.py:128
