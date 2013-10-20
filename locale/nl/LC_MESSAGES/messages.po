@@ -121,7 +121,7 @@ msgstr "De aankoop kan niet worden afgerond omdat de huidige transactie al is be
 
 #: webpay/base/dev_messages.py:126
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr "De batlinsgmethode of het prijspunt wordt voor deze regio of provider niet ondersteund."
+msgstr "De betalingsmethode of het prijspunt wordt voor deze regio of provider niet ondersteund."
 
 #: webpay/base/dev_messages.py:128
 msgid "The user cancelled the payment."
@@ -139,7 +139,7 @@ msgstr "Er is een fout opgetreden bij het instellen van de betaling. Probeer het
 
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr "Er is een interne fout opgetreden btijdens het evrwerken van de betaling. Probeer het opnieuw of neem contact met Mozilla op als het probleem aanhoudt."
+msgstr "Er is een interne fout opgetreden btijdens het verwerken van de betaling. Probeer het opnieuw of neem contact met Mozilla op als het probleem aanhoudt."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -209,7 +209,7 @@ msgstr "Oeps…"
 
 #: webpay/base/templates/base.html:41
 msgid "This is taking longer than expected. Try again?"
-msgstr ""
+msgstr "Dit duurt langer dan verwacht. Opnieuw proberen?"
 
 #: webpay/base/templates/base.html:42 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -269,7 +269,7 @@ msgstr "Een echte betaling doen"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
-msgstr ""
+msgstr "Betaling instellen…"
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
