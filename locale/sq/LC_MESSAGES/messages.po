@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-17 08:28-0700\n"
-"PO-Revision-Date: 2013-10-21 00:55+0200\n"
+"PO-Revision-Date: 2013-10-21 01:06+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: none\n"
 "Language: sq\n"
@@ -62,16 +62,14 @@ msgstr "JWT-ja ka skaduar."
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:93
-#, fuzzy
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr "Importuesi <strong>%s</strong> është i pavlefshëm ose nuk është instaluar."
+msgstr "Nënshkrimi JWT është i mangët ose JWT-ja është e keqformuar."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:96
-#, fuzzy
 msgid "The JWT did not decode to a JSON object."
-msgstr "%s nuk duket të jetë një objekt urlpattern"
+msgstr "JWT-ja nuk prodhoi një objekt JSON pas kodimit."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -120,7 +118,7 @@ msgstr ""
 
 #: webpay/base/dev_messages.py:123
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
+msgstr "Blerja nuk mund të plotësohet, pasi transaksioni i tanishëm ka përfunduar tashmë."
 
 #: webpay/base/dev_messages.py:126
 msgid "The payment method or price point is not supported for this region or operator."
@@ -134,15 +132,15 @@ msgstr "Përdoruesi e anuloi pagesën."
 #. argument is a number.
 #: webpay/base/dev_messages.py:135
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
+msgstr "Vlera e kyçit \"{0}\" e tejkalon gjatësinë maksimum të {1}"
 
 #: webpay/base/utils.py:41
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr ""
+msgstr "Pati një gabim gjatë rregullimit të pagesës. Riprovoni ose lidhuni me autorin e zbatimit, nëse gabimi vazhdon."
 
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
+msgstr "Pati një gabim të brendshëm gjatë përpunimit të pagesës. Riprovoni ose lidhuni me Mozilla-n, nëse gabimi vazhdon."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -344,7 +342,7 @@ msgstr "Pin-i juaj u bllokua ngaqë e dhatë pasaktësisht shumë herë. Mund t�
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr ""
+msgstr "Jeni i sigurt se doni të ricaktoni pin-in tuaj? Duhet të keni bërë hyrjen te Persona që të ricaktoni pin-in tuaj."
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
