@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-17 08:28-0700\n"
-"PO-Revision-Date: 2013-10-21 11:49+0000\n"
+"PO-Revision-Date: 2013-10-21 11:59+0000\n"
 "Last-Translator: Branislav <sektormaster@atlas.sk>\n"
 "Language-Team: Mozilla.sk <l10n@mozilla.sk>\n"
 "Language: sk\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382356166.0\n"
+"X-POOTLE-MTIME: 1382356768.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
@@ -119,10 +119,13 @@ msgstr "Tento kľúč platby je možné použiť len na simuláciu objednávok."
 #: webpay/base/dev_messages.py:123
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr ""
+"Platba nemôže byť dokončená, pretože aktuálna transakcia už bola dokončená."
 
 #: webpay/base/dev_messages.py:126
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr ""
+"Platobná metóda, alebo cena nie je pre tento región, alebo operátora "
+"podporovaná."
 
 #: webpay/base/dev_messages.py:128
 msgid "The user cancelled the payment."
