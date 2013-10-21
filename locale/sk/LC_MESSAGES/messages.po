@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-17 08:28-0700\n"
-"PO-Revision-Date: 2013-10-21 11:39+0000\n"
+"PO-Revision-Date: 2013-10-21 11:49+0000\n"
 "Last-Translator: Branislav <sektormaster@atlas.sk>\n"
 "Language-Team: Mozilla.sk <l10n@mozilla.sk>\n"
 "Language: sk\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382355544.0\n"
+"X-POOTLE-MTIME: 1382356166.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
@@ -126,7 +126,7 @@ msgstr ""
 
 #: webpay/base/dev_messages.py:128
 msgid "The user cancelled the payment."
-msgstr ""
+msgstr "Používateľ platbu zrušil."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -141,6 +141,8 @@ msgstr "Pri nastavení platby sa vyskytla chyba. Skúste to neskôr alebo kontak
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr ""
+"Pri spracovaní platby nastala interná chyba. Skúste to znovu, alebo ak "
+"problém pretrváva kontaktujte Mozillu."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -210,7 +212,7 @@ msgstr "Ups&hellip;"
 
 #: webpay/base/templates/base.html:41
 msgid "This is taking longer than expected. Try again?"
-msgstr ""
+msgstr "Táto akcia trvá dlhšie než inokedy. Chcete to skúsiť znovu?"
 
 #: webpay/base/templates/base.html:42 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -270,7 +272,7 @@ msgstr "Vykonať reálnu platbu"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
-msgstr ""
+msgstr "Nastavenia platby&hellip;"
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
