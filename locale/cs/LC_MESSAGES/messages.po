@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Czech (cs)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-17 08:28-0700\n"
-"PO-Revision-Date: 2013-10-18 13:04+0000\n"
+"PO-Revision-Date: 2013-10-21 12:11+0000\n"
 "Last-Translator: Pavel <jasnapaka@jasnapaka.com>\n"
 "Language-Team: Czech Mozilla Team <info@mozilla.cz>\n"
 "Language: cs\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382101448.0\n"
+"X-POOTLE-MTIME: 1382357518.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
@@ -126,7 +126,7 @@ msgstr "Platební metoda nebo cena není podporována pro tento region či oper�
 
 #: webpay/base/dev_messages.py:128
 msgid "The user cancelled the payment."
-msgstr "Uživatel zrušit platbu."
+msgstr "Uživatel zrušil platbu."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
