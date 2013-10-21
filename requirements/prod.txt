@@ -1,6 +1,6 @@
 amqp==1.0.11
 Babel==0.9.6
-Django==1.4.8
+Django==1.5.4
 anyjson==0.3.3
 billiard==2.7.3.28
 cef==0.5
@@ -9,6 +9,7 @@ curling==0.3.3
 dj-database-url==0.2.1
 django_csp==2.0.2
 django-celery==3.0.17
+django-encrypted-cookie-session==1.1.1
 django-mobility==0.1
 django-multidb-router==0.5
 django-nose==1.1
@@ -44,18 +45,15 @@ statsd==2.0.3
 translate-toolkit==1.9.0
 
 -e git://github.com/clouserw/tower.git@7711557f55fefa9526402b2731879edf9b128381#egg=tower
--e git://github.com/jbalogh/test-utils.git@3c2214d193d1b0c0d74c77b3731c8afb0173e669#egg=test-utils
+-e git://github.com/jbalogh/test-utils.git@ffccaeda15d7f0477570a6e848bef91f9aa69df9#egg=test-utils
 
 -e git://github.com/jsocol/commonware.git@1b2e7623782c7aaca5401714758845cf9fcee621#egg=commonware
 -e git://github.com/jsocol/django-cronjobs.git@cfda8176c5c3a50d1b58fcf57e87e23c467789bd#egg=django-cronjobs
 -e git://github.com/jsocol/jingo-minify.git@cb911038e20a399aeff871e199c8bc2be12b5cee#egg=jingo-minify
 
 -e git://github.com/fwenzel/django-sha2.git@f4519bf0cc9b1dd7a7d78394fa4aec4504bc86e9#egg=django-sha2
--e git://github.com/fwenzel/django-mozilla-product-details.git@36ef06539d6b34c4f345fd0d3e16937d0db9a752#egg=django-mozilla-product-details
+-e git://github.com/fwenzel/django-mozilla-product-details.git@f5a3c3c846fb75e12ad890b22ed5375d5b85ccb4#egg=django-mozilla-product-details
 
 -e git://github.com/mozilla/django-browserid.git@72009f28f55c91c8ed1bb79930bc84f88dc00211#egg=django-browserid
 -e git://github.com/mozilla/django-session-csrf.git@94e2858a427a6b278e41c051643f3c226f096f21#egg=django-session-csrf
 -e git://github.com/mozilla/nuggets.git@96e80a64aa4bfcfef4f43fc3ab6966450ccd7325#egg=nuggets
-
-# Waiting on 1.1.0 release in PyPI.
--e git://github.com/brightinteractive/django-encrypted-cookie-session.git@f544639efd1d27b9baac0f74fafe4e2ddae52c38#egg=django-encrypted-cookie-session
