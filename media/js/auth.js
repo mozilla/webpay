@@ -6,7 +6,7 @@ define('auth', ['cli'], function(cli) {
 
     return {
         resetUser: function _resetUser() {
-            console.log('Begin webpay user reset');
+            console.log('[auth] Begin webpay user reset');
             var request = {
                 'type': 'POST',
                 url: cli.bodyData.resetUserUrl,
@@ -14,13 +14,13 @@ define('auth', ['cli'], function(cli) {
             };
             var result = $.ajax(request)
                 .done(function _resetSuccess(data, textStatus, jqXHR) {
-                    console.log('reset webpay user');
+                    console.log('[auth] reset webpay user');
                     window.localStorage.clear();
                     cli.trackWebpayEvent({'action': 'webpay user reset',
                                           'label': 'Reset User Success'});
                 })
                 .fail(function _resetFail(jqXHR, textStatus, errorThrown) {
-                    console.log('error resetting user:', textStatus, errorThrown);
+                    console.log('[auth] error resetting user:', textStatus, errorThrown);
                     cli.trackWebpayEvent({'action': 'webpay user reset',
                                           'label': 'Reset User Error'});
                 });
