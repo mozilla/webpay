@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-17 08:28-0700\n"
-"PO-Revision-Date: 2013-10-21 01:06+0200\n"
+"PO-Revision-Date: 2013-10-21 12:49+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: none\n"
 "Language: sq\n"
@@ -24,18 +24,18 @@ msgstr "Pagimi juaj u plotësua."
 
 #: webpay/base/dev_messages.py:71
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
+msgstr "Gjatë përpunimit të pagesës Mozilla mori një kod të pavlefshëm nga mundësuesi i pagesave (Bango)"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:75
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr ""
+msgstr "Një kyç ikone figure nuk qe një objekt. Shembull i saktë: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:79
 msgid "No one has been registered for this JWT issuer."
-msgstr ""
+msgstr "Askush nuk është regjistruar për këtë emetues JWT-sh."
 
 #: webpay/base/dev_messages.py:80
 msgid "The price point is unknown or invalid."
@@ -47,7 +47,7 @@ msgstr "Kërkesa për fillimin e pagimit qe e pavlefshme."
 
 #: webpay/base/dev_messages.py:83
 msgid "The requested payment simulation result is not supported."
-msgstr ""
+msgstr "Rezultati i simulimit të kërkuar për pagimin nuk mbulohet."
 
 #: webpay/base/dev_messages.py:85
 msgid "The payment provider (Bango) returned an error while processing the payment"
@@ -84,7 +84,7 @@ msgstr "Ka një URL të keqformuar. Kjo mund të jetë një URL postback-u ose n
 
 #: webpay/base/dev_messages.py:103
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
+msgstr "Mungonte ID-ja e transaksionit prej sesionit, teksa përpunohej rimbursimi i pagimit."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:107
@@ -94,11 +94,11 @@ msgstr "Nëse {0} është e përkufizuar, atëherë duhet të përkufizoni gjith
 #. L10n: First argument is the name of the key, 'reason'.
 #: webpay/base/dev_messages.py:111
 msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr ""
+msgstr "Simulimit të kërkuar për rimbursim përmes karte krediti i mungon kyçi '{0}'."
 
 #: webpay/base/dev_messages.py:113
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
+msgstr "Shërbimi i njoftimeve u përgjigj me një gabim, teksa verifikonte njoftimin e pagimit"
 
 #: webpay/base/dev_messages.py:115
 msgid "Payments are temporarily disabled"
@@ -106,7 +106,7 @@ msgstr "Pagesat janë përkohësisht të çaktivizuara"
 
 #: webpay/base/dev_messages.py:117
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
+msgstr "Burimi është modifikuar brenda kohës së kërkesës së mëparshme. Veprimi do të duhej kryer sërish."
 
 #: webpay/base/dev_messages.py:119
 msgid "Payment simulations are disabled at this time."
@@ -114,7 +114,7 @@ msgstr "Simulimet e pagimeve janë të çaktivizuara për pak kohë."
 
 #: webpay/base/dev_messages.py:121
 msgid "This payment key can only be used to simulate purchases."
-msgstr ""
+msgstr "Kyçi i pagesës mund të përdoret vetëm për të simuluar blerje."
 
 #: webpay/base/dev_messages.py:123
 msgid "The purchase cannot be completed because the current transaction has already ended."
