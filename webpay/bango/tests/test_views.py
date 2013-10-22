@@ -101,6 +101,7 @@ class TestBangoReturn(BasicSessionCase):
 class TestNotification(TestCase):
 
     def setUp(self):
+        self.client = self.client_class()
         self.url = reverse('bango.notification')
         self.auth = 'basic ' + base64.b64encode('u:p')
 
