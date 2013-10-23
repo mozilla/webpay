@@ -491,3 +491,6 @@ JS_SETTINGS = {
     # Wait timeout (Default 60s).
     'wait_timeout': 60000,
 }
+
+# New Relic is configured here.
+NEWRELIC_INI = None
