@@ -19,5 +19,19 @@ sys.path.remove(tmp_path)
 
 manage.setup_environ(__file__, more_pythonic=True)
 
+# Specifically importing once the environment has been setup.
+from django.conf import settings
+newrelic_ini = getattr(settings, 'NEWRELIC_INI', None)
+
+if newrelic_ini:
+    import newrelic.agent
+    try:
+        newrelic.agent.initialize(newrelic_ini)
+    except newrelic.api.exceptions.ConfigurationError:
+        import logging
+        startup_logger = logging.getLogger('.startup')
+        startup_logger.exception('Failed to load new relic config.')
+
+
 if __name__ == "__main__":
     manage.main()
