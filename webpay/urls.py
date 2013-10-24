@@ -5,6 +5,10 @@ from django.conf.urls.defaults import patterns, include, url
 # from django.contrib import admin
 # admin.autodiscover()
 
+# Run jingo monkey patch - see https://github.com/jbalogh/jingo#forms
+import jingo.monkey
+jingo.monkey.patch()
+
 urlpatterns = patterns('',
     (r'^mozpay/auth/', include('webpay.auth.urls')),
     (r'^mozpay/bango/', include('webpay.bango.urls')),
