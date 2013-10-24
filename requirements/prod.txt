@@ -22,7 +22,7 @@ GitPython==0.1.7
 gunicorn==0.17.4
 httplib2==0.7.6
 importlib-no-failure==1.0.2
-jingo==0.4
+jingo==0.6
 kombu==2.5.10
 m2secret==0.1.1
 mock==1.0b1
