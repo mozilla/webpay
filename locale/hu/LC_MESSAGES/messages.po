@@ -25,9 +25,7 @@ msgstr "A fizetés megtörtént."
 
 #: webpay/base/dev_messages.py:71
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
-"A Mozilla érvénytelen kódot kapott a fizetésszolgáltatótól (Bango) a fizetés "
-"feldolgozásakor"
+msgstr "A Mozilla érvénytelen kódot kapott a fizetésszolgáltatótól (Bango) a fizetés feldolgozásakor"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:75
@@ -54,8 +52,7 @@ msgstr "A kért fizetési szimulációs eredmény nem támogatott."
 
 #: webpay/base/dev_messages.py:85
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
-"A fizetésszolgáltató (Bango) a fizetés feldolgozásakor hibát adott vissza"
+msgstr "A fizetésszolgáltató (Bango) a fizetés feldolgozásakor hibát adott vissza"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -88,9 +85,7 @@ msgstr "Az URL hibás. Ez egy postback vagy egy ikon URL lehet."
 
 #: webpay/base/dev_messages.py:103
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
-"A tranzakcióazonosító hiányzott a munkamenetből a fizetés-visszatérítés "
-"feldolgozásakor."
+msgstr "A tranzakcióazonosító hiányzott a munkamenetből a fizetés-visszatérítés feldolgozásakor."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:107
@@ -104,9 +99,7 @@ msgstr "A kért visszafizetési szimuláció hiányolja a(z) „{0}” kulcsot."
 
 #: webpay/base/dev_messages.py:113
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
-"Az értesítési szolgáltatás hibával válaszolt a fizetési értesítés "
-"ellenőrzésekor"
+msgstr "Az értesítési szolgáltatás hibával válaszolt a fizetési értesítés ellenőrzésekor"
 
 #: webpay/base/dev_messages.py:115
 msgid "Payments are temporarily disabled"
@@ -114,9 +107,7 @@ msgstr "A fizetés ideiglenesen le van tiltva"
 
 #: webpay/base/dev_messages.py:117
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
-"Az erőforrás módosításra került az előző kérés idején belül. A műveletet "
-"újra végre kell hajtani."
+msgstr "Az erőforrás módosításra került az előző kérés idején belül. A műveletet újra végre kell hajtani."
 
 #: webpay/base/dev_messages.py:119
 msgid "Payment simulations are disabled at this time."
@@ -128,14 +119,11 @@ msgstr "A fizetési kulcs csak szimulációhoz használható."
 
 #: webpay/base/dev_messages.py:123
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
-"A vásárlás nem fejezhető be, mert a jelenlegi tranzakció már befejeződött."
+msgstr "A vásárlás nem fejezhető be, mert a jelenlegi tranzakció már befejeződött."
 
 #: webpay/base/dev_messages.py:126
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
-"A fizetési módszer vagy az irányár nem támogatott ehhez a régióhoz vagy "
-"szolgáltatóhoz."
+msgstr "A fizetési módszer vagy az irányár nem támogatott ehhez a régióhoz vagy szolgáltatóhoz."
 
 #: webpay/base/dev_messages.py:128
 msgid "The user cancelled the payment."
@@ -153,9 +141,7 @@ msgstr "Hiba történt a fizetés beállításánál. Próbálja újra vagy vegy
 
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
-"Belső hiba a fizetés feldolgozása során. Próbálja újra, vagy keresse meg a "
-"Mozillát, ha tartósan fennáll."
+msgstr "Belső hiba a fizetés feldolgozása során. Próbálja újra, vagy keresse meg a Mozillát, ha tartósan fennáll."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"

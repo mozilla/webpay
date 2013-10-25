@@ -140,10 +140,7 @@ msgstr "Er is een fout opgetreden bij het instellen van de betaling. Probeer het
 
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
-"Er is een interne fout opgetreden tijdens het verwerken van de betaling. "
-"Probeer het opnieuw of neem contact met Mozilla op als het probleem "
-"aanhoudt."
+msgstr "Er is een interne fout opgetreden tijdens het verwerken van de betaling. Probeer het opnieuw of neem contact met Mozilla op als het probleem aanhoudt."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"

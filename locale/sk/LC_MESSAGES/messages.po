@@ -24,9 +24,7 @@ msgstr "Platba je dokončená."
 
 #: webpay/base/dev_messages.py:71
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
-"Mozilla dostala pri spracovaní platby od poskytovateľa platieb (Bango) "
-"chybný kód."
+msgstr "Mozilla dostala pri spracovaní platby od poskytovateľa platieb (Bango) chybný kód."
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:75
@@ -108,9 +106,7 @@ msgstr "Platby sú dočasne zakázané"
 
 #: webpay/base/dev_messages.py:117
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
-"Zdroj bol od predchádzajúcej požiadavky zmenený. Akciu by ste mali vykonať "
-"znovu."
+msgstr "Zdroj bol od predchádzajúcej požiadavky zmenený. Akciu by ste mali vykonať znovu."
 
 #: webpay/base/dev_messages.py:119
 msgid "Payment simulations are disabled at this time."
@@ -122,14 +118,11 @@ msgstr "Tento kľúč platby je možné použiť len na simuláciu objednávok."
 
 #: webpay/base/dev_messages.py:123
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
-"Platba nemôže byť dokončená, pretože aktuálna transakcia už bola dokončená."
+msgstr "Platba nemôže byť dokončená, pretože aktuálna transakcia už bola dokončená."
 
 #: webpay/base/dev_messages.py:126
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
-"Platobná metóda, alebo cena nie je pre tento región, alebo operátora "
-"podporovaná."
+msgstr "Platobná metóda, alebo cena nie je pre tento región, alebo operátora podporovaná."
 
 #: webpay/base/dev_messages.py:128
 msgid "The user cancelled the payment."
@@ -147,9 +140,7 @@ msgstr "Pri nastavení platby sa vyskytla chyba. Skúste to neskôr alebo kontak
 
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
-"Pri spracovaní platby nastala interná chyba. Skúste to znovu, alebo ak "
-"problém pretrváva kontaktujte Mozillu."
+msgstr "Pri spracovaní platby nastala interná chyba. Skúste to znovu, alebo ak problém pretrváva kontaktujte Mozillu."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
