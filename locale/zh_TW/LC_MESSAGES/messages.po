@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-17 08:28-0700\n"
-"PO-Revision-Date: 2013-10-17 16:32+0000\n"
+"PO-Revision-Date: 2013-10-26 00:32+0000\n"
 "Last-Translator: Peter <petercpg@mail.moztw.org>\n"
 "Language-Team: MozTW <petercpg@mail.moztw.org>\n"
 "Language: zh_TW\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382027566.0\n"
+"X-POOTLE-MTIME: 1382747536.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
@@ -320,7 +320,7 @@ msgstr "您輸錯太多次 Pin 碼，已被鎖定。您可以繼續嘗試輸入�
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr "您確定要重設 Pin 瑪媽？必須登入至 Persona 才能重設您的 Pin 碼。"
+msgstr "您確定要重設 Pin 碼嗎？必須登入至 Persona 才能重設您的 Pin 碼。"
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
