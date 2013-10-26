@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-17 08:28-0700\n"
-"PO-Revision-Date: 2013-10-26 00:32+0000\n"
+"PO-Revision-Date: 2013-10-26 00:36+0000\n"
 "Last-Translator: Peter <petercpg@mail.moztw.org>\n"
 "Language-Team: MozTW <petercpg@mail.moztw.org>\n"
 "Language: zh_TW\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382747536.0\n"
+"X-POOTLE-MTIME: 1382747778.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:34
 msgid "Payment cancelled."
@@ -75,7 +75,7 @@ msgstr "JWT 無法被解碼為 JSON 物件。"
 #. localized.
 #: webpay/base/dev_messages.py:99
 msgid "Error decoding JWT."
-msgstr "解碼 JWT 時發生錯誤。"
+msgstr "JWT 解碼錯誤。"
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:101
