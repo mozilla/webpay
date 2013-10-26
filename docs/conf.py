@@ -92,7 +92,7 @@ exclude_patterns = ['_build']
 #show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+#pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
@@ -251,3 +251,10 @@ class Mock(object):
 MOCK_MODULES = ['django.conf']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
+
+
+
+import mdn_theme
+
+html_theme_path = [mdn_theme.get_theme_dir()]
+html_theme = 'mdn'
