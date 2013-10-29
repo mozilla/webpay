@@ -252,6 +252,9 @@ LOGGING = {
             'level': 'INFO',
             'handlers': ['console', 'unicodesyslog', 'sentry'],
         },
+        'requests.packages.urllib3.connectionpool': {
+            'level': 'ERROR',
+        },
     },
     'handlers': {
         'unicodesyslog': {
