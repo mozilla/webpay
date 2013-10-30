@@ -27,6 +27,7 @@ Contents
    solitude_api
    localization_testing
    services
+   flows
 
 Indices and tables
 ------------------
