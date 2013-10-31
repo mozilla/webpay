@@ -46,10 +46,10 @@ if settings.TEMPLATE_DEBUG:
     urlpatterns += patterns('',
         url(r'^404$', page_not_found, name="error_404"),
         url(r'^500$', server_error, name="error_500"),
-        (r'^was-locked/$', TemplateView,
-         {'template': 'pin/pin_was_locked.html'} ),
-        (r'^is-locked/$', TemplateView,
-         {'template': 'pin/pin_is_locked.html'} ),
+        (r'^was-locked/$', TemplateView.as_view(
+         template_name='pin/pin_was_locked.html')),
+        (r'^is-locked/$', TemplateView.as_view(
+         template_name='pin/pin_is_locked.html')),
         (r'^%s/(?P<path>.*)$' % media_url, 'django.views.static.serve',
          {'document_root': settings.MEDIA_ROOT}),
     )
