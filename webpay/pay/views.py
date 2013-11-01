@@ -13,7 +13,7 @@ from mozpay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
-from curling.lib import HttpServerError
+from curling.lib import HttpClientError, HttpServerError
 
 from webpay.auth.decorators import user_can_simulate, user_verified
 from webpay.auth import utils as auth_utils
@@ -128,7 +128,7 @@ def lobby(request):
     elif not sess.get('is_simulation', False):
         try:
             trans = solitude.get_transaction(sess.get('trans_id'))
-        except ObjectDoesNotExist:
+        except (ObjectDoesNotExist, HttpClientError):
             if sess.get('trans_id'):
                 log.info('Attempted to restart non-existent transaction {0}'
                          .format(sess.get('trans_id')))
