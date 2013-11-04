@@ -301,6 +301,9 @@ SESSION_ENGINE = 'encrypted_cookies'
 # subdomain.
 SESSION_COOKIE_NAME = 'webpay_sessionid'
 
+# All the webpay stuff is under a custom domain.
+SESSION_COOKIE_PATH = '/mozpay/'
+
 # By default, celery is active.
 # If you need to disable it, make this True in your local settings.
 CELERY_ALWAYS_EAGER = False  # required to activate celeryd

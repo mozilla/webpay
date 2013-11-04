@@ -1,6 +1,7 @@
 import functools
 
 from django import http
+from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 
@@ -37,6 +38,12 @@ def enforce_sequence(func):
     def wrapper(request, *args, **kwargs):
         step = func.func_name
         if not request.session.get('uuid'):
+            # This is just a warning for developers trying to use webpay if
+            # they haven't set their settings correctly.
+            if (not request.session.keys() and settings.SESSION_COOKIE_SECURE
+                and settings.DEBUG):
+                log.warning('No session data. '
+                            'Try setting SESSION_COOKIE_SECURE to False')
             log_cef('No UUID in session, not verified', request, severity=7)
             raise PermissionDenied
 
