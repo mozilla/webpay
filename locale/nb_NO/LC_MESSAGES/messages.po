@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-18 16:49-0700\n"
-"PO-Revision-Date: 2013-11-02 21:32+0000\n"
+"PO-Revision-Date: 2013-11-04 00:18+0000\n"
 "Last-Translator: Håvar <havar@firefox.no>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nb_NO\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1383427959.0\n"
+"X-POOTLE-MTIME: 1383524334.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10
 #: webpay/base/templates/base.html:34
@@ -226,11 +226,11 @@ msgstr "Nettbetaling"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr "PIN-koden må være på 4 siffer."
+msgstr "Sikkerhetskoden må være på 4 siffer."
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr "PIN-koden kan kun inneholde siffer."
+msgstr "Sikkerhetskoden kan kun inneholde siffer."
 
 #: webpay/base/templates/base.html:30
 msgid "Loading"
@@ -273,7 +273,7 @@ msgstr "Betalinger er midlertidig deaktivert."
 #: webpay/pay/views.py:177
 #: webpay/pin/views.py:93
 msgid "Enter Pin"
-msgstr "Oppgi PIN-kode"
+msgstr "Oppgi sikkerhetskode"
 
 #: webpay/pay/templates/pay/bounce.html:12
 #: webpay/pay/templates/pay/lobby.html:11
@@ -328,71 +328,71 @@ msgstr "Sett opp betalingen &hellip;"
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
-msgstr "Du har allerede opprettet en PIN-kode."
+msgstr "Du har allerede opprettet en sikkerhetskode."
 
 #: webpay/pin/forms.py:111
 msgid "Wrong pin"
-msgstr "Feil PIN-kode"
+msgstr "Feil sikkerhetskode"
 
 #: webpay/pin/forms.py:123
 #: webpay/pin/forms.py:146
 msgid "Pins do not match."
-msgstr "PIN-kodene stemmer ikke overens."
+msgstr "Sikkerhetskodene stemmer ikke overens."
 
 #: webpay/pin/views.py:46
 msgid "Create a Pin"
-msgstr "Opprett en PIN-kode"
+msgstr "Opprett en sikkerhetskode"
 
 #: webpay/pin/views.py:68
 #: webpay/pin/views.py:185
 msgid "Confirm Pin"
-msgstr "Bekreft PIN-kode"
+msgstr "Bekreft sikkerhetskode"
 
 #: webpay/pin/views.py:131
 #: webpay/pin/views.py:157
 #: webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
-msgstr "Nullstill PIN-kode"
+msgstr "Nullstill sikkerhetskode"
 
 #: webpay/pin/views.py:178
 msgid "Pin reset"
-msgstr "PIN-kode tilbakestilling"
+msgstr "Tilbakestilling av sikkerhetskode"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:31
 #: webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
-msgstr "Glemt PIN-koden?"
+msgstr "Glemt sikkerhetskoden?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid ""
 "You entered the wrong pin too many times. Your account is locked. Please try "
 "your purchase again in 5 minutes."
 msgstr ""
-"Du har tastet inn feil PIN-kode for mange ganger. Kontoen din er låst. Prøv "
-"kjøpet på nytt om 5 minutter."
+"Du har tastet inn feil sikkerhetskode for mange ganger. Kontoen din er låst. "
+"Prøv kjøpet på nytt om 5 minutter."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
-msgstr "Din PIN-kode var låst"
+msgstr "Din sikkerhetskode var låst"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid ""
 "Your pin was locked because you entered it incorrectly too many times. You "
 "can continue and try entering your pin again or reset your pin."
 msgstr ""
-"Din PIN-kode var låst fordi du skrev det feil for mange ganger. Du kan "
-"fortsette og prøve å skrive inn PIN-koden igjen, eller tilbakestille PIN-"
-"koden."
+"Din sikkerhetskode var låst fordi du skrev det feil for mange ganger. Du kan "
+"fortsette og prøve å skrive inn sikkerhetskoden igjen, eller tilbakestille "
+"sikkerhetskoden."
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid ""
 "Are you sure you want to reset your pin? You must sign in to Persona to "
 "reset your pin."
 msgstr ""
-"Er du sikker på at du vil tilbakestille din PIN-kode? Du må logge deg på "
-"Persona for å tilbakestille PIN-koden."
+"Er du sikker på at du vil tilbakestille din sikkerhetskode? Du må logge deg "
+"på Persona for å tilbakestille sikkerhetskoden."
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
