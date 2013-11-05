@@ -229,7 +229,8 @@ def fake_payment_notify(transaction_uuid, pay_request, issuer_key, **kw):
              'notes': {'pay_request': pay_request,
                        'issuer_key': issuer_key}}
     trans.update(_fake_amount(pay_request['request']['pricePoint']))
-    _notify(fake_payment_notify, trans)
+    _notify(fake_payment_notify, trans,
+            task_args=[transaction_uuid, pay_request, issuer_key])
 
 
 @task(**notify_kw)
