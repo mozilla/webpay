@@ -114,8 +114,10 @@ def process_pay_req(request):
 def lobby(request):
     sess = request.session
     trans = None
+    have_jwt = bool(request.GET.get('req'))
 
-    if request.GET.get('req'):
+    log.info('starting from JWT? {have_jwt}'.format(have_jwt=have_jwt))
+    if have_jwt:
         # If it returns a response there was likely
         # an error and we should return it.
         res = process_pay_req(request)
@@ -128,10 +130,11 @@ def lobby(request):
     elif not sess.get('is_simulation', False):
         try:
             trans = solitude.get_transaction(sess.get('trans_id'))
-        except (ObjectDoesNotExist, HttpClientError):
+        except (ObjectDoesNotExist, HttpClientError), exc:
             if sess.get('trans_id'):
-                log.info('Attempted to restart non-existent transaction {0}'
-                         .format(sess.get('trans_id')))
+                log.info('Attempted to restart non-existent transaction '
+                         '{trans}; exc={exc}'
+                         .format(trans=sess.get('trans_id'), exc=exc))
             return system_error(request, code=msg.BAD_REQUEST)
 
     pin_form = VerifyPinForm()
