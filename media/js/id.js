@@ -9,6 +9,7 @@ define('id', ['cli'], function(cli) {
             var defaults = {
                 experimental_allowUnverified: true,
                 experimental_forceIssuer: cli.bodyData.unverifiedIssuer,
+                experimental_emailHint: cli.bodyData.loggedInUser,
                 privacyPolicy: cli.bodyData.privacyPolicy,
                 termsOfService: cli.bodyData.termsOfService
             };
