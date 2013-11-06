@@ -255,6 +255,9 @@ LOGGING = {
         'requests.packages.urllib3.connectionpool': {
             'level': 'ERROR',
         },
+        'newrelic': {
+            'level': 'ERROR'
+        }
     },
     'handlers': {
         'unicodesyslog': {
