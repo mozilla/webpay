@@ -41,6 +41,12 @@ require(['cli', 'id', 'pay/bango', 'settings'], function(cli, id, bango, setting
                             console.log('[reset] login error');
                             cli.trackWebpayEvent({'action': 'reset force auth',
                                                   'label': 'Login Failure'});
+                            cli.showFullScreenError({
+                              // There isn't really anything we can do here,
+                              // a user has to go back and start again.
+                              hideConfirm: true,
+                              errorDetail: bodyData.pinReauthMsg
+                            });
                         }
                     }
                 });
@@ -117,5 +123,4 @@ require(['cli', 'id', 'pay/bango', 'settings'], function(cli, id, bango, setting
         }
         cli.showFullScreenError({callback: forceAuth});
     }
-
 });

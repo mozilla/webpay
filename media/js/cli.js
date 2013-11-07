@@ -94,6 +94,16 @@ define('cli', ['settings', 'lib/longtext', 'lib/tracking'], function(settings, c
             $fullErrorCancel.text(options.errorCancel);
 
             $fullError.show();
+
+            // Provide the option to hide the confirm button.
+            if (options.hideConfirm !== undefined) {
+              $fullErrorConfirm.hide();
+              $fullErrorCancel.addClass('single pri').removeClass('sec');
+            } else {
+              $fullErrorConfirm.show();
+              $fullErrorCancel.removeClass('single pri').addClass('sec');
+            }
+
             // Check the buttons for long text so we can update the buttons accordingly.
             $fullErrorFooter.find('.button').checkLongText($fullErrorFooter, true);
 

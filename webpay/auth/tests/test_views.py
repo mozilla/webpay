@@ -93,6 +93,15 @@ class TestAuth(SessionTestCase):
         assert store_mkt.called, (
                 'After reverify, marketplace permissions should be stored')
 
+    @mock.patch('webpay.auth.views.verify_assertion')
+    def test_reverify_failed(self, verify_assertion):
+        verify_assertion.return_value = dict(good_assertion)
+        self.session['uuid'] = 'not-the-same'
+        self.save_session()
+
+        res = self.client.post(self.reverify_url, {'assertion': 'good'})
+        eq_(res.status_code, 400)
+
 
 class TestMktPermissions(SessionTestCase):
 

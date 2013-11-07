@@ -65,11 +65,11 @@ def reverify(request):
             logged_user = request.session.get('uuid')
             reverified_user = get_uuid(email)
             if logged_user and logged_user != reverified_user:
-                # TODO: Should we try to support this?
-                raise ValueError('User %r tried to reverify as '
-                                 'new email: %s' % (logged_user, email))
-            request.session['was_reverified'] = True
+                log.error('User %r tried to reverify as '
+                          'new email: %s' % (logged_user, email))
+                return http.HttpResponseBadRequest()
 
+            request.session['was_reverified'] = True
             return {'user_hash': reverified_user}
 
         log.error('Persona assertion failed.')
@@ -91,7 +91,6 @@ def verify(request):
             'experimental_allowUnverified': 'true'
         }
         assertion = form.cleaned_data['assertion']
-
         log.info('verifying Persona assertion. url: %s, audience: %s, '
                  'extra_params: %s, assertion: %s' % (url, audience,
                                                       extra_params, assertion))
