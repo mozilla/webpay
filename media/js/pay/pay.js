@@ -67,7 +67,8 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'settings', 'lib/trac
                         cli.trackWebpayEvent({'action': 'persona login',
                                               'label': 'Verification Timed Out'});
                         var that = this;
-                        cli.showFullScreenError({callback: function(){ $.ajax(that); }});
+                        cli.showFullScreenError({callback: function(){ $.ajax(that); },
+                                                 errorCode: 'INTERNAL_TIMEOUT'});
                     } else if (xhr.status === 403) {
                         console.log('[pay] permission denied after auth');
                         cli.trackWebpayEvent({'action': 'persona login',
@@ -188,7 +189,8 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'settings', 'lib/trac
             console.log('[pay] Clearing login timer');
             window.clearTimeout(loginTimer);
         }
-        cli.showFullScreenError({callback: manualSignIn});
+        cli.showFullScreenError({callback: manualSignIn,
+                                 errorCode: 'LOGIN_TIMEOUT'});
     }
 
     $('#signin').click(function _signInOnClick(ev) {
@@ -274,7 +276,8 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'settings', 'lib/trac
                     window.clearTimeout(resetLogoutTimeout);
                     cli.trackWebpayEvent({'action': 'forgot pin',
                                           'label': 'Logout Error'});
-                    cli.showFullScreenError({callback: runForgotPinLogout});
+                    cli.showFullScreenError({callback: runForgotPinLogout,
+                                             errorCode: 'LOGOUT_TIMEOUT'});
                 });
 
             // Finally, log out of Persona so that the user has to

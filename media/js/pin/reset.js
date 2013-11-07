@@ -36,7 +36,8 @@ require(['cli', 'id', 'pay/bango', 'settings'], function(cli, id, bango, setting
                             cli.trackWebpayEvent({'action': 'reset force auth',
                                                   'label': 'Re-verification Timed Out'});
                             var that = this;
-                            cli.showFullScreenError({callback: function(){ $.ajax(that); }});
+                            cli.showFullScreenError({callback: function(){ $.ajax(that); },
+                                                     errorCode: 'INTERNAL_TIMEOUT'});
                         } else {
                             console.log('[reset] login error');
                             cli.trackWebpayEvent({'action': 'reset force auth',
@@ -121,6 +122,7 @@ require(['cli', 'id', 'pay/bango', 'settings'], function(cli, id, bango, setting
             console.log('[reset] Clearing Reset login timer');
             window.clearTimeout(resetLoginTimer);
         }
-        cli.showFullScreenError({callback: forceAuth});
+        cli.showFullScreenError({callback: forceAuth,
+                                 errorCode: 'LOGIN_TIMEOUT'});
     }
 });

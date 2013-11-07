@@ -9,6 +9,7 @@ define('cli', ['settings', 'lib/longtext', 'lib/tracking'], function(settings, c
     var $fullError = $('#full-screen-error');
     var $fullErrorHeading = $fullError.find('.heading');
     var $fullErrorDetail = $fullError.find('.detail');
+    var $fullErrorCode = $fullError.find('.error-code');
     var $fullErrorCancel = $fullError.find('.cancel');
     var $fullErrorConfirm = $fullError.find('.confirm');
     var $fullErrorFooter = $fullError.find('footer');
@@ -76,7 +77,10 @@ define('cli', ['settings', 'lib/longtext', 'lib/tracking'], function(settings, c
         },
         showFullScreenError: function(options) {
             var that = this;
-            options = options || {};
+            options = options || {
+                callback: function() {},
+                errorCode: undefined
+            };
             options = _.defaults(options,  {
                 errorHeading: bodyData.fullErrorHeading,
                 errorDetail: bodyData.fullErrorDetail,
@@ -90,6 +94,7 @@ define('cli', ['settings', 'lib/longtext', 'lib/tracking'], function(settings, c
 
             $fullErrorHeading.text(options.errorHeading);
             $fullErrorDetail.text(options.errorDetail);
+            $fullErrorCode.text(options.errorCode || '');
             $fullErrorConfirm.text(options.errorConfirm);
             $fullErrorCancel.text(options.errorCancel);
 
