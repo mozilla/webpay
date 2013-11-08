@@ -13,9 +13,12 @@ BAD_REQUEST = 'BAD_REQUEST'
 BAD_SIM_RESULT = 'BAD_SIM_RESULT'
 BANGO_ERROR = 'BANGO_ERROR'
 EXPIRED_JWT = 'EXPIRED_JWT'
+INTERNAL_TIMEOUT = 'INTERNAL_TIMEOUT'
 INVALID_JWT = 'INVALID_JWT'
 INVALID_JWT_OBJ = 'INVALID_JWT_OBJ'
 JWT_DECODE_ERR = 'JWT_DECODE_ERR'
+LOGIN_TIMEOUT = 'LOGIN_TIMEOUT'
+LOGOUT_TIMEOUT = 'LOGOUT_TIMEOUT'
 MALFORMED_URL = 'MALFORMED_URL'
 NO_ACTIVE_TRANS = 'NO_ACTIVE_TRANS'
 NO_DEFAULT_LOC = 'NO_DEFAULT_LOC'
@@ -26,6 +29,7 @@ RESOURCE_MODIFIED = 'RESOURCE_MODIFIED'
 SIM_DISABLED = 'SIM_DISABLED'
 SIM_ONLY_KEY = 'SIM_ONLY_KEY'
 TRANS_ENDED = 'TRANS_ENDED'
+TRANS_TIMEOUT = 'TRANS_TIMEOUT'
 UNSUPPORTED_PAY = 'UNSUPPORTED_PAY'
 # This string is used to determine the message on Marketplace;
 # change it at your peril.
@@ -87,6 +91,7 @@ def _build_legend():
         # L10n: JWT stands for JSON Web Token and does not need to be
         # localized.
         EXPIRED_JWT: _('The JWT has expired.'),
+        INTERNAL_TIMEOUT: _('An internal web request timed out.'),
         INVALID_JWT:
             # L10n: JWT stands for JSON Web Token and does not need to be
             # localized.
@@ -97,6 +102,8 @@ def _build_legend():
         # L10n: JWT stands for JSON Web Token and does not need to be
         # localized.
         JWT_DECODE_ERR: _('Error decoding JWT.'),
+        LOGIN_TIMEOUT: _('The system timed out while trying to log in.'),
+        LOGOUT_TIMEOUT: _('The system timed out while trying to log out.'),
         # L10n: 'postback' is a term that means a URL accepting HTTP posts.
         MALFORMED_URL: _('A URL is malformed. This could be a postback '
                          'URL or an icon URL.'),
@@ -122,6 +129,9 @@ def _build_legend():
         TRANS_ENDED:
             _('The purchase cannot be completed because the current '
               'transaction has already ended.'),
+        TRANS_TIMEOUT:
+            _('The system timed out while waiting for a transaction '
+              'to start.'),
         UNSUPPORTED_PAY:
             _('The payment method or price point is not supported for this '
               'region or operator.'),

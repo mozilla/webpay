@@ -38,7 +38,8 @@ require(['cli', 'settings'], function(cli, settings) {
             cli.trackWebpayEvent({'action': 'payment',
                                   'label': 'Transaction Failed to be found'});
             cli.hideProgress();
-            cli.showFullScreenError({callback: function(){ startWaiting(); }});
+            cli.showFullScreenError({callback: function(){ startWaiting(); },
+                                     errorCode: 'TRANS_TIMEOUT'});
         }, settings.wait_timeout);
     }
 
@@ -82,7 +83,8 @@ require(['cli', 'settings'], function(cli, settings) {
                     cli.trackWebpayEvent({'action': 'payment',
                                           'label': 'Transaction Request Timed Out'});
                     cli.hideProgress();
-                    cli.showFullScreenError({callback: poll});
+                    cli.showFullScreenError({callback: poll,
+                                             errorCode: 'INTERNAL_TIMEOUT'});
                 } else {
                     console.log('error checking transaction');
                     cli.trackWebpayEvent({'action': 'payment',
