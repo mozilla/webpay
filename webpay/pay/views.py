@@ -106,7 +106,9 @@ def process_pay_req(request):
     # Otherwise it is used for simulations and fake payments.
     request.session['notes'] = {'pay_request': pay_req,
                                 'issuer_key': form.key}
-    request.session['trans_id'] = trans_id()
+    tx = trans_id()
+    log.info('Generated new transaction ID: {tx}'.format(tx=tx))
+    request.session['trans_id'] = tx
 
 
 @anonymous_csrf_exempt
@@ -136,6 +138,8 @@ def lobby(request):
                          '{trans}; exc={exc}'
                          .format(trans=sess.get('trans_id'), exc=exc))
             return system_error(request, code=msg.BAD_REQUEST)
+        log.info('Re-used existing transaction ID: {tx}'
+                 .format(tx=sess.get('trans_id')))
 
     pin_form = VerifyPinForm()
 
