@@ -307,6 +307,11 @@ SESSION_COOKIE_NAME = 'webpay_sessionid'
 # All the webpay stuff is under a custom domain.
 SESSION_COOKIE_PATH = '/mozpay/'
 
+# Limiting the session cookie down to a small number prevents people coming back
+# later with valid transactions and session. It does mean people inactive for
+# more than this time will have to start again though.
+SESSION_COOKIE_AGE = 60 * 10
+
 # By default, celery is active.
 # If you need to disable it, make this True in your local settings.
 CELERY_ALWAYS_EAGER = False  # required to activate celeryd
