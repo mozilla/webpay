@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-25 13:52-0700\n"
+"POT-Creation-Date: 2013-11-12 15:28-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "X-Generator: Translate Toolkit 1.9.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10
-#: webpay/base/templates/base.html:34
+#: webpay/base/templates/base.html:35
 msgid "Payment cancelled."
 msgstr "Ƥȧẏḿḗƞŧ ƈȧƞƈḗŀŀḗḓ."
 
@@ -21,7 +21,7 @@ msgstr "Ƥȧẏḿḗƞŧ ƈȧƞƈḗŀŀḗḓ."
 msgid "Your payment is complete."
 msgstr "Ẏǿŭř ƥȧẏḿḗƞŧ īş ƈǿḿƥŀḗŧḗ."
 
-#: webpay/base/dev_messages.py:71
+#: webpay/base/dev_messages.py:75
 msgid ""
 "Mozilla received an invalid code from the payment provider (Bango) when "
 "processing the payment"
@@ -30,29 +30,29 @@ msgstr ""
 "ƥřǿƈḗşşīƞɠ ŧħḗ ƥȧẏḿḗƞŧ"
 
 #. L10n: First argument is an example of the proper key format.
-#: webpay/base/dev_messages.py:75
+#: webpay/base/dev_messages.py:79
 msgid "An image icon key was not an object. Correct example: {0}"
 msgstr "Ȧƞ īḿȧɠḗ īƈǿƞ ķḗẏ ẇȧş ƞǿŧ ȧƞ ǿƀĵḗƈŧ. Ƈǿřřḗƈŧ ḗẋȧḿƥŀḗ: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:79
+#: webpay/base/dev_messages.py:83
 msgid "No one has been registered for this JWT issuer."
 msgstr "Ƞǿ ǿƞḗ ħȧş ƀḗḗƞ řḗɠīşŧḗřḗḓ ƒǿř ŧħīş ĴẆŦ īşşŭḗř."
 
-#: webpay/base/dev_messages.py:80
+#: webpay/base/dev_messages.py:84
 msgid "The price point is unknown or invalid."
 msgstr "Ŧħḗ ƥřīƈḗ ƥǿīƞŧ īş ŭƞķƞǿẇƞ ǿř īƞṽȧŀīḓ."
 
-#: webpay/base/dev_messages.py:81
+#: webpay/base/dev_messages.py:85
 msgid "The request to begin payment was invalid."
 msgstr "Ŧħḗ řḗɋŭḗşŧ ŧǿ ƀḗɠīƞ ƥȧẏḿḗƞŧ ẇȧş īƞṽȧŀīḓ."
 
-#: webpay/base/dev_messages.py:83
+#: webpay/base/dev_messages.py:87
 msgid "The requested payment simulation result is not supported."
 msgstr "Ŧħḗ řḗɋŭḗşŧḗḓ ƥȧẏḿḗƞŧ şīḿŭŀȧŧīǿƞ řḗşŭŀŧ īş ƞǿŧ şŭƥƥǿřŧḗḓ."
 
-#: webpay/base/dev_messages.py:85
+#: webpay/base/dev_messages.py:89
 msgid ""
 "The payment provider (Bango) returned an error while processing the payment"
 msgstr ""
@@ -60,34 +60,46 @@ msgstr ""
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:89
+#: webpay/base/dev_messages.py:93
 msgid "The JWT has expired."
 msgstr "Ŧħḗ ĴẆŦ ħȧş ḗẋƥīřḗḓ."
 
+#: webpay/base/dev_messages.py:94
+msgid "An internal web request timed out."
+msgstr "Ȧƞ īƞŧḗřƞȧŀ ẇḗƀ řḗɋŭḗşŧ ŧīḿḗḓ ǿŭŧ."
+
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:93
+#: webpay/base/dev_messages.py:98
 msgid "The JWT signature is invalid or the JWT is malformed."
 msgstr "Ŧħḗ ĴẆŦ şīɠƞȧŧŭřḗ īş īƞṽȧŀīḓ ǿř ŧħḗ ĴẆŦ īş ḿȧŀƒǿřḿḗḓ."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:96
+#: webpay/base/dev_messages.py:101
 msgid "The JWT did not decode to a JSON object."
 msgstr "Ŧħḗ ĴẆŦ ḓīḓ ƞǿŧ ḓḗƈǿḓḗ ŧǿ ȧ ĴŞǾȠ ǿƀĵḗƈŧ."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:99
+#: webpay/base/dev_messages.py:104
 msgid "Error decoding JWT."
 msgstr "Ḗřřǿř ḓḗƈǿḓīƞɠ ĴẆŦ."
 
+#: webpay/base/dev_messages.py:105
+msgid "The system timed out while trying to log in."
+msgstr "Ŧħḗ şẏşŧḗḿ ŧīḿḗḓ ǿŭŧ ẇħīŀḗ ŧřẏīƞɠ ŧǿ ŀǿɠ īƞ."
+
+#: webpay/base/dev_messages.py:106
+msgid "The system timed out while trying to log out."
+msgstr "Ŧħḗ şẏşŧḗḿ ŧīḿḗḓ ǿŭŧ ẇħīŀḗ ŧřẏīƞɠ ŧǿ ŀǿɠ ǿŭŧ."
+
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
-#: webpay/base/dev_messages.py:101
+#: webpay/base/dev_messages.py:108
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
 msgstr "Ȧ ŬŘĿ īş ḿȧŀƒǿřḿḗḓ. Ŧħīş ƈǿŭŀḓ ƀḗ ȧ ƥǿşŧƀȧƈķ ŬŘĿ ǿř ȧƞ īƈǿƞ ŬŘĿ."
 
-#: webpay/base/dev_messages.py:103
+#: webpay/base/dev_messages.py:110
 msgid ""
 "The transaction ID was missing from the session when processing a payment "
 "return."
@@ -96,16 +108,16 @@ msgstr ""
 "řḗŧŭřƞ."
 
 #. L10n: First and second arguements are the names of keys.
-#: webpay/base/dev_messages.py:107
+#: webpay/base/dev_messages.py:114
 msgid "If {0} is defined, then you must also define {1}."
 msgstr "Īƒ {0} īş ḓḗƒīƞḗḓ, ŧħḗƞ ẏǿŭ ḿŭşŧ ȧŀşǿ ḓḗƒīƞḗ {1}."
 
 #. L10n: First argument is the name of the key, 'reason'.
-#: webpay/base/dev_messages.py:111
+#: webpay/base/dev_messages.py:118
 msgid "The requested chargeback simulation is missing the key '{0}'."
 msgstr "Ŧħḗ řḗɋŭḗşŧḗḓ ƈħȧřɠḗƀȧƈķ şīḿŭŀȧŧīǿƞ īş ḿīşşīƞɠ ŧħḗ ķḗẏ '{0}'."
 
-#: webpay/base/dev_messages.py:113
+#: webpay/base/dev_messages.py:120
 msgid ""
 "The notification service responded with an error while verifying the payment "
 "notice"
@@ -113,11 +125,11 @@ msgstr ""
 "Ŧħḗ ƞǿŧīƒīƈȧŧīǿƞ şḗřṽīƈḗ řḗşƥǿƞḓḗḓ ẇīŧħ ȧƞ ḗřřǿř ẇħīŀḗ ṽḗřīƒẏīƞɠ ŧħḗ ƥȧẏḿḗƞŧ "
 "ƞǿŧīƈḗ"
 
-#: webpay/base/dev_messages.py:115
+#: webpay/base/dev_messages.py:122
 msgid "Payments are temporarily disabled"
 msgstr "Ƥȧẏḿḗƞŧş ȧřḗ ŧḗḿƥǿřȧřīŀẏ ḓīşȧƀŀḗḓ"
 
-#: webpay/base/dev_messages.py:117
+#: webpay/base/dev_messages.py:124
 msgid ""
 "The resource has been modified within the timing of the previous request. "
 "The action should be performed again."
@@ -125,15 +137,15 @@ msgstr ""
 "Ŧħḗ řḗşǿŭřƈḗ ħȧş ƀḗḗƞ ḿǿḓīƒīḗḓ ẇīŧħīƞ ŧħḗ ŧīḿīƞɠ ǿƒ ŧħḗ ƥřḗṽīǿŭş řḗɋŭḗşŧ. "
 "Ŧħḗ ȧƈŧīǿƞ şħǿŭŀḓ ƀḗ ƥḗřƒǿřḿḗḓ ȧɠȧīƞ."
 
-#: webpay/base/dev_messages.py:119
+#: webpay/base/dev_messages.py:126
 msgid "Payment simulations are disabled at this time."
 msgstr "Ƥȧẏḿḗƞŧ şīḿŭŀȧŧīǿƞş ȧřḗ ḓīşȧƀŀḗḓ ȧŧ ŧħīş ŧīḿḗ."
 
-#: webpay/base/dev_messages.py:121
+#: webpay/base/dev_messages.py:128
 msgid "This payment key can only be used to simulate purchases."
 msgstr "Ŧħīş ƥȧẏḿḗƞŧ ķḗẏ ƈȧƞ ǿƞŀẏ ƀḗ ŭşḗḓ ŧǿ şīḿŭŀȧŧḗ ƥŭřƈħȧşḗş."
 
-#: webpay/base/dev_messages.py:123
+#: webpay/base/dev_messages.py:130
 msgid ""
 "The purchase cannot be completed because the current transaction has already "
 "ended."
@@ -141,7 +153,11 @@ msgstr ""
 "Ŧħḗ ƥŭřƈħȧşḗ ƈȧƞƞǿŧ ƀḗ ƈǿḿƥŀḗŧḗḓ ƀḗƈȧŭşḗ ŧħḗ ƈŭřřḗƞŧ ŧřȧƞşȧƈŧīǿƞ ħȧş ȧŀřḗȧḓẏ "
 "ḗƞḓḗḓ."
 
-#: webpay/base/dev_messages.py:126
+#: webpay/base/dev_messages.py:133
+msgid "The system timed out while waiting for a transaction to start."
+msgstr "Ŧħḗ şẏşŧḗḿ ŧīḿḗḓ ǿŭŧ ẇħīŀḗ ẇȧīŧīƞɠ ƒǿř ȧ ŧřȧƞşȧƈŧīǿƞ ŧǿ şŧȧřŧ."
+
+#: webpay/base/dev_messages.py:136
 msgid ""
 "The payment method or price point is not supported for this region or "
 "operator."
@@ -149,13 +165,13 @@ msgstr ""
 "Ŧħḗ ƥȧẏḿḗƞŧ ḿḗŧħǿḓ ǿř ƥřīƈḗ ƥǿīƞŧ īş ƞǿŧ şŭƥƥǿřŧḗḓ ƒǿř ŧħīş řḗɠīǿƞ ǿř "
 "ǿƥḗřȧŧǿř."
 
-#: webpay/base/dev_messages.py:128
+#: webpay/base/dev_messages.py:138
 msgid "The user cancelled the payment."
 msgstr "Ŧħḗ ŭşḗř ƈȧƞƈḗŀŀḗḓ ŧħḗ ƥȧẏḿḗƞŧ."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:135
+#: webpay/base/dev_messages.py:145
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Ŧħḗ ṽȧŀŭḗ ƒǿř ķḗẏ \"{0}\" ḗẋƈḗḗḓş ŧħḗ ḿȧẋīḿŭḿ ŀḗƞɠŧħ ǿƒ {1}"
 
@@ -184,7 +200,7 @@ msgid "Sorry, you are not allowed to do that."
 msgstr "Şǿřřẏ, ẏǿŭ ȧřḗ ƞǿŧ ȧŀŀǿẇḗḓ ŧǿ ḓǿ ŧħȧŧ."
 
 #: webpay/base/templates/403.html:8
-#: webpay/base/templates/base.html:43
+#: webpay/base/templates/base.html:44
 #: webpay/base/templates/error.html:17
 #: webpay/pay/templates/pay/simulate.html:18
 #: webpay/pin/templates/pin/pin_form.html:39
@@ -229,30 +245,34 @@ msgid "Pin can only contain digits."
 msgstr "Ƥīƞ ƈȧƞ ǿƞŀẏ ƈǿƞŧȧīƞ ḓīɠīŧş."
 
 #: webpay/base/templates/base.html:30
+msgid "You logged in as a different user, you must start the payment again."
+msgstr "Ẏǿŭ ŀǿɠɠḗḓ īƞ ȧş ȧ ḓīƒƒḗřḗƞŧ ŭşḗř, ẏǿŭ ḿŭşŧ şŧȧřŧ ŧħḗ ƥȧẏḿḗƞŧ ȧɠȧīƞ."
+
+#: webpay/base/templates/base.html:31
 msgid "Loading"
 msgstr "Ŀǿȧḓīƞɠ"
 
-#: webpay/base/templates/base.html:31
+#: webpay/base/templates/base.html:32
 msgid "Beginning payment&hellip;"
 msgstr "Ɓḗɠīƞƞīƞɠ ƥȧẏḿḗƞŧ&hellip;"
 
-#: webpay/base/templates/base.html:32
+#: webpay/base/templates/base.html:33
 msgid "Connecting to Persona"
 msgstr "Ƈǿƞƞḗƈŧīƞɠ ŧǿ Ƥḗřşǿƞȧ"
 
-#: webpay/base/templates/base.html:33
+#: webpay/base/templates/base.html:34
 msgid "Payment complete"
 msgstr "Ƥȧẏḿḗƞŧ ƈǿḿƥŀḗŧḗ"
 
-#: webpay/base/templates/base.html:40
+#: webpay/base/templates/base.html:41
 msgid "Oops&hellip;"
 msgstr "Ǿǿƥş&hellip;"
 
-#: webpay/base/templates/base.html:41
+#: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
 msgstr "Ŧħīş īş ŧȧķīƞɠ ŀǿƞɠḗř ŧħȧƞ ḗẋƥḗƈŧḗḓ. Ŧřẏ ȧɠȧīƞ?"
 
-#: webpay/base/templates/base.html:42
+#: webpay/base/templates/base.html:43
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "ǾĶ"
@@ -266,7 +286,7 @@ msgstr "Ḗřřǿř"
 msgid "Payments are temporarily disabled."
 msgstr "Ƥȧẏḿḗƞŧş ȧřḗ ŧḗḿƥǿřȧřīŀẏ ḓīşȧƀŀḗḓ."
 
-#: webpay/pay/views.py:177
+#: webpay/pay/views.py:184
 #: webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Ḗƞŧḗř Ƥīƞ"
