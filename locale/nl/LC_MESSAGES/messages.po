@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-12 15:28-0700\n"
-"PO-Revision-Date: 2013-10-21 06:00+0000\n"
+"PO-Revision-Date: 2013-11-13 07:48+0000\n"
 "Last-Translator: Mark <markh@babelzilla.org>\n"
 "Language-Team: none\n"
 "Language: nl\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382335259.0\n"
+"X-POOTLE-MTIME: 1384328903.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -61,7 +61,7 @@ msgstr "De JWT is verlopen."
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Een intern webverzoek is verlopen."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -83,11 +83,11 @@ msgstr "Fout bij decoderen JWT."
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Het systeem heeft een time-out gegeven tijdens het aanmelden."
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "Het systeem heeft een time-out gegeven tijdens het afmelden."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
@@ -135,6 +135,8 @@ msgstr "De aankoop kan niet worden afgerond omdat de huidige transactie al is be
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
 msgstr ""
+"Het systeem heeft een time-out gegeven tijdens het wachten op het begin van "
+"een transactie."
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
@@ -207,6 +209,8 @@ msgstr "Pincode mag alleen cijfers bevatten."
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
 msgstr ""
+"U bent aangemeld als een andere gebruiker, u dient de betaling opnieuw te "
+"starten."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
