@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: AMO Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-12 15:28-0700\n"
-"PO-Revision-Date: 2013-10-17 15:41+0000\n"
+"PO-Revision-Date: 2013-11-13 07:53+0000\n"
 "Last-Translator: Michael <michael.koehler1@gmx.de>\n"
 "Language-Team: German (de) <coce@nufuerspam.de>\n"
 "Language: de\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382024483.0\n"
+"X-POOTLE-MTIME: 1384329209.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -61,7 +61,7 @@ msgstr "Das JWT ist abgelaufen."
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Die Zeit für eine interne Web-Anfrage wurde überschritten."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -83,11 +83,11 @@ msgstr "Fehler beim Dekodieren des JWT."
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Die Systemzeit wurde beim Anmeldeversuch überschritten."
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "Die Systemzeit wurde beim Abmeldeversuch überschritten."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
@@ -135,6 +135,8 @@ msgstr "Der Kauf kann nicht abgeschlossen werden, weil die aktuelle Transaktion 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
 msgstr ""
+"Die Systemzeit wurde überschritten, während auf den Beginn einer Transaktion "
+"gewartet wurde."
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
@@ -207,6 +209,8 @@ msgstr "Die PIN darf nur Ziffern enthalten."
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
 msgstr ""
+"Sie sind als anderer Benutzer angemeldet, Sie müssen die Zahlung erneut "
+"starten."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
