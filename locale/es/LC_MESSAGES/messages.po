@@ -61,7 +61,7 @@ msgstr "El JWT ha caducado."
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Una solicitud web interna agotó el tiempo de espera."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -83,11 +83,11 @@ msgstr "Error al decodificar JWT."
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "El sistema agotó el tiempo de espera intentado iniciar sesión."
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "El sistema agotó el tiempo de espera intentado cerrar sesión."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
@@ -134,7 +134,7 @@ msgstr "No se puede completar la compra porque la transacción actual ha finaliz
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "El sistema agotó el tiempo de espera esperando a que se iniciara una transacción."
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
@@ -185,7 +185,7 @@ msgstr "Algo no salió bien."
 
 #: webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
-msgstr "Hubo un error al procesar la petición."
+msgstr "Hubo un error al procesar la solicitud."
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
@@ -206,7 +206,7 @@ msgstr "El PIN solo puede contener dígitos."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
+msgstr "Te identificaste con un usuario diferente, por lo que tendrás que iniciar el pago de nuevo."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -230,7 +230,7 @@ msgstr "Uy&hellip;"
 
 #: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
-msgstr "Está llevando más tiempo de lo esperado. ¿Probamos de nuevo?"
+msgstr "Está tardando más de lo esperado. ¿Probamos de nuevo?"
 
 #: webpay/base/templates/base.html:43 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
