@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-12 15:28-0700\n"
-"PO-Revision-Date: 2013-10-18 21:11+0000\n"
+"PO-Revision-Date: 2013-11-13 15:54+0000\n"
 "Last-Translator: Sara <sara.todaro@mozillaitalia.org>\n"
 "Language-Team: mozillaitalia\n"
 "Language: it\n"
@@ -11,8 +11,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Translate Toolkit 1.6.0\n"
-"X-POOTLE-MTIME: 1382130673.0\n"
+"X-Generator: Pootle 2.5.0\n"
+"X-POOTLE-MTIME: 1384358084.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -61,7 +61,7 @@ msgstr "Il token JWT è scaduto."
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Una richiesta web interna è scaduta."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -83,11 +83,13 @@ msgstr "Errore durante la decodifica del token JWT."
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Durante il tentativo di accesso il server è andato fuori tempo massimo."
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
 msgstr ""
+"Durante il tentativo di disconnessione il server è andato fuori tempo "
+"massimo."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
@@ -135,6 +137,8 @@ msgstr "L'acquisto non può essere completato in quanto la corrente transazione 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
 msgstr ""
+"Durante l'attesa per l'avvio di una transazione il sistema è andato fuori "
+"tempo massimo."
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
@@ -207,6 +211,7 @@ msgstr "Per il codice PIN è possibile utilizzare solo caratteri numerici."
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
 msgstr ""
+"Eri identificato con un altro account e dovrai rieffettuare il pagamento."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
