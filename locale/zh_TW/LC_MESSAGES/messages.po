@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-12 15:28-0700\n"
-"PO-Revision-Date: 2013-10-26 00:36+0000\n"
+"PO-Revision-Date: 2013-11-13 03:12+0000\n"
 "Last-Translator: Peter <petercpg@mail.moztw.org>\n"
 "Language-Team: MozTW <petercpg@mail.moztw.org>\n"
 "Language: zh_TW\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382747778.0\n"
+"X-POOTLE-MTIME: 1384312342.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -61,7 +61,7 @@ msgstr "JWT 已經過期。"
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "發生內部網頁操作逾時。"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -83,11 +83,11 @@ msgstr "JWT 解碼錯誤。"
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "嘗試登入時系統逾時。"
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "嘗試登出時系統逾時。"
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
@@ -134,7 +134,7 @@ msgstr "因為目前的交易已結束，無法完成付款。"
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "等候交易開始時發生系統逾時。"
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
@@ -206,7 +206,7 @@ msgstr "Pin 碼只能為數字。"
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
+msgstr "您已登入為不同使用者，您必須重新開始付款流程。"
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
