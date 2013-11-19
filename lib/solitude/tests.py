@@ -299,8 +299,6 @@ class CreateBangoTest(TestCase):
         assert slumber.generic.product.post.called
         kw = slumber.generic.product.post.call_args[0][0]
         eq_(kw['external_id'], 'ext:id')
-        eq_(slumber.bango.rating.post.call_count, 2)
-        assert slumber.bango.premium.post.called
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_no_seller(self, slumber):
