@@ -40,9 +40,11 @@ if settings.TEMPLATE_DEBUG:
 
     from django.views.defaults import page_not_found, server_error
     from django.views.generic.base import TemplateView
+    from urlparse import urlparse
 
     # Remove leading and trailing slashes so the regex matches.
-    media_url = settings.MEDIA_URL.lstrip('/').rstrip('/')
+    path = urlparse(settings.MEDIA_URL).path
+    media_url = path.lstrip('/').rstrip('/')
     urlpatterns += patterns('',
         url(r'^404$', page_not_found, name="error_404"),
         url(r'^500$', server_error, name="error_500"),
