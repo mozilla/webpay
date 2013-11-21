@@ -508,3 +508,12 @@ JS_SETTINGS = {
 
 # New Relic is configured here.
 NEWRELIC_INI = None
+
+# Which payment provider to use on the backend.
+# Choices: 'bango', 'reference'
+# In the future this might be chosen dynamically based on region or something.
+PAYMENT_PROVIDER = 'bango'
+
+# When True, Webpay uses a universal payment provider API for the active
+# PAYMENT_PROVIDER.
+UNIVERSAL_PROVIDER = False

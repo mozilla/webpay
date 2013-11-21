@@ -37,3 +37,4 @@ USER_WHITELIST = []
 UUID_HMAC_KEY = 'this is a test value'
 
 ALLOW_ADMIN_SIMULATIONS = True
+UNIVERSAL_PROVIDER = False
