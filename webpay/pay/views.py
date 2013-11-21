@@ -290,8 +290,6 @@ def wait_to_start(request):
         # Dump any messages so we don't show them later.
         clear_messages(request)
         # The transaction is ready; no need to wait for it.
-        log.info('Starting transaction with transaction {0}'
-                 .format(trans['uid_pay']))
         return http.HttpResponseRedirect(_bango_start_url(trans['uid_pay']))
     return render(request, 'pay/wait-to-start.html')
 
@@ -317,8 +315,6 @@ def trans_start_url(request):
             delta = int((time.time() - float(payment_start)) * 1000)
             statsd.timing('purchase.payment_time.duration', delta)
         data['url'] = _bango_start_url(trans['uid_pay'])
-        log.info('Starting transaction with transaction {0}'
-                 .format(trans['uid_pay']))
     return data
 
 

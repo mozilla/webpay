@@ -260,7 +260,7 @@ class SolitudeAPI(SlumberWrapper):
             'public_id': str(uuid.uuid4()),
             'access': ACCESS_PURCHASE,
         })
-        bango = self.slumber.provider.bango.product.post({
+        bango = self.slumber.bango.product.post({
             'seller_bango': seller['bango']['resource_uri'],
             'seller_product': product['resource_uri'],
             'name': product_name,
@@ -268,6 +268,31 @@ class SolitudeAPI(SlumberWrapper):
             'packageId': seller['bango']['package_id'],
             'secret': 'n'  # This is likely going to be removed.
         })
+        self.slumber.bango.premium.post({
+            'bango': bango['bango_id'],
+            'seller_product_bango': bango['resource_uri'],
+            # TODO(Kumar): why do we still need this?
+            # The array of all possible prices/currencies is
+            # set in the configure billing call.
+            # Marketplace also sets dummy prices here.
+            'price': '0.99',
+            'currencyIso': 'USD',
+        })
+
+        self.slumber.bango.rating.post({
+            'bango': bango['bango_id'],
+            'rating': 'UNIVERSAL',
+            'ratingScheme': 'GLOBAL',
+            'seller_product_bango': bango['resource_uri']
+        })
+        # Bug 836865.
+        self.slumber.bango.rating.post({
+            'bango': bango['bango_id'],
+            'rating': 'GENERAL',
+            'ratingScheme': 'USA',
+            'seller_product_bango': bango['resource_uri']
+        })
+
         return bango
 
     def get_transaction(self, uuid):
