@@ -8,7 +8,7 @@ from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 
 from ..utils import SlumberWrapper
-from .constants import ACCESS_PURCHASE
+from . import constants as solitude_const
 from .errors import ERROR_STRINGS
 from .exceptions import ResourceNotModified
 
@@ -225,43 +225,72 @@ class SolitudeAPI(SlumberWrapper):
         """
         provider = self.set_provider(provider)
         try:
-            seller = self.slumber.generic.seller.get_object(uuid=seller_uuid)
+            seller = self.slumber.generic.seller.get_object_or_404(
+                                                    uuid=seller_uuid)
         except ObjectDoesNotExist:
             raise SellerNotConfigured('Seller with uuid %s does not exist'
                                       % seller_uuid)
         seller_id = seller['resource_pk']
         log.info('transaction %s: seller: %s' % (transaction_uuid,
                                                  seller_id))
-
+        log.info('{provider}: get product for '
+                 'seller_uuid={uuid} external_id={ext}'
+                 .format(provider=provider,
+                         uuid=seller_uuid, ext=product_id))
         try:
-            bango_product = self.provider.product.get_object(
-                    seller_product__seller=seller_id,
-                    seller_product__external_id=product_id)
+            product = self.slumber.generic.product.get_object_or_404(
+                external_id=product_id,
+                seller=seller_id,
+            )
+            log.info('found product {pr}'.format(pr=product))
+            print self.provider.products
+            provider_product = self.provider.products.get_object_or_404(
+                                                seller_uuid=seller_uuid,
+                                                external_id=product_id)
+            log.info('found provider product {pr}'.format(pr=provider_product))
         except ObjectDoesNotExist:
-            bango_product = self.create_product(product_id, product_name,
-                                                seller)
+            product, provider_product = self.create_product(
+                                product_id, product_name,
+                                seller, provider=provider)
 
-        log.info('transaction %s: bango product: %s'
-                 % (transaction_uuid, bango_product['resource_uri']))
+        # TODO: Make these real values. See bug 941952.
+        carrier = 'USA_TMOBILE'
+        region = '123'
+        pay_method = 'OPERATOR'
+        price = '0.99'
+        currency = 'EUR'
 
-        res = self.provider.billing.post({
-            'pageTitle': product_name,
-            'prices': prices,
-            'transaction_uuid': transaction_uuid,
-            'seller_product_bango': bango_product['resource_uri'],
-            'redirect_url_onsuccess': redirect_url_onsuccess,
-            'redirect_url_onerror': redirect_url_onerror,
-            'icon_url': icon_url,
-            'user_uuid': user_uuid,
-            'application_size': application_size,
-            'source': source
+        provider_trans = self.provider.transactions.post({
+            'product_id': provider_product['resource_pk'],
+            'region': region,
+            'carrier': carrier,
+            'price': price,
+            'currency': currency,
+            'pay_method': pay_method,
         })
-        bill_id = res['billingConfigurationId']
-        log.info('transaction %s: billing config ID: %s; '
-                 'prices: %s'
-                 % (transaction_uuid, bill_id, prices))
+        log.info('made provider trans {trans}'.format(trans=provider_trans))
 
-        return bill_id, seller_id
+        buyer = self.slumber.generic.buyer.get_object_or_404(uuid=user_uuid)
+
+        # Note that the old Bango code used to do get-or-create
+        # but I can't tell if we need that or not. Let's wait until it breaks.
+        # See solitude/lib/transactions/models.py
+        trans = self.slumber.generic.transaction.post({
+            'uuid': transaction_uuid,
+            'status': solitude_const.STATUS_PENDING,
+            'provider': solitude_const.PROVIDERS[provider],
+            'seller_product': product['resource_uri'],
+            'buyer': buyer['resource_uri'],
+            'source': solitude_const.PROVIDERS[provider],
+            'region': region,
+            'carrier': carrier,
+            'type': solitude_const.TYPE_PAYMENT,
+            'amount': price,
+            'currency': currency,
+        })
+        log.info('made solitude trans {trans}'.format(trans=trans))
+
+        return provider_trans['token'], seller_id
 
     def create_product(self, external_id, product_name, seller,
                        provider=None):
@@ -280,9 +309,9 @@ class SolitudeAPI(SlumberWrapper):
             'external_id': external_id,
             'seller': seller['bango']['seller'],
             'public_id': str(uuid.uuid4()),
-            'access': ACCESS_PURCHASE,
+            'access': solitude_const.ACCESS_PURCHASE,
         })
-        bango = self.provider.product.post({
+        bango = self.slumber.bango.product.post({
             'seller_bango': seller['bango']['resource_uri'],
             'seller_product': product['resource_uri'],
             'name': product_name,
@@ -405,7 +434,7 @@ class BangoSolitudeAPI(SolitudeAPI):
             'external_id': external_id,
             'seller': seller['bango']['seller'],
             'public_id': str(uuid.uuid4()),
-            'access': ACCESS_PURCHASE,
+            'access': solitude_const.ACCESS_PURCHASE,
         })
         bango = self.slumber.bango.product.post({
             'seller_bango': seller['bango']['resource_uri'],

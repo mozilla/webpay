@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 
@@ -7,7 +8,7 @@ import mock
 from nose.tools import eq_
 from slumber.exceptions import HttpClientError
 
-from lib.solitude.api import client, SellerNotConfigured
+from lib.solitude.api import client, SellerNotConfigured, SolitudeAPI
 from lib.solitude.errors import ERROR_STRINGS
 from lib.solitude.exceptions import ResourceModified, ResourceNotModified
 
@@ -314,15 +315,126 @@ class CreateBangoTest(TestCase):
         slumber.bango.billing.post.return_value = {
             'billingConfigurationId': 'bar'}
         slumber.bango.product.get_object.side_effect = ObjectDoesNotExist
-        eq_(client.configure_product_for_billing(*range(0, 10)), ('bar', 'foo'))
+        eq_(client.configure_product_for_billing(*range(0, 10)),
+            ('bar', 'foo'))
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_has_bango(self, slumber):
         slumber.generic.seller.get_object.return_value = self.seller
         slumber.bango.billing.post.return_value = {
             'billingConfigurationId': 'bar'}
-        slumber.bango.product.get_object.return_value = {'resource_uri': 'foo'}
-        eq_(client.configure_product_for_billing(*range(0, 10)), ('bar', 'foo'))
+        slumber.bango.product.get_object.return_value = {
+            'resource_uri': 'foo'
+        }
+        eq_(client.configure_product_for_billing(*range(0, 10)),
+            ('bar', 'foo'))
+
+
+@mock.patch.object(settings, 'UNIVERSAL_PROVIDER', True)
+@mock.patch.object(settings, 'PAYMENT_PROVIDER', 'reference')
+class TestConfigureRefTrans(TestCase):
+
+    def setUp(self):
+        self.api = SolitudeAPI(settings.SOLITUDE_URL, settings.SOLITUDE_OAUTH)
+        self.api.slumber = mock.Mock()
+        self.slumber = self.api.slumber
+
+    def configure(self, trans_uuid='trans-xyz', seller_uuid='seller-xyz',
+                  product_uuid='product-xyz', product_name='Shiny App',
+                  success_redirect='/todo/postback',
+                  error_redirect='/todo/chargeback',
+                  prices=[{'price': 1, 'currency': 'EUR'}],
+                  icon_url='/todo/icons', user_uuid='user-xyz',
+                  app_size=1024 * 5, provider='reference'):
+        return self.api.configure_product_for_billing(
+            trans_uuid,
+            seller_uuid,
+            product_uuid,
+            product_name,
+            success_redirect,
+            error_redirect,
+            prices,
+            icon_url,
+            user_uuid,
+            app_size,
+            provider=provider,
+        )
+
+    def set_mocks(self, returns={},
+                  keys=('generic.seller',
+                        'generic.product',
+                        'generic.buyer',
+                        'provider.reference.products',
+                        'provider.reference.transactions',)):
+        """
+        Set mock object returns, for example:
+
+            self.set_mocks({
+                'provider.reference.transactions': {
+                    'method': 'post',
+                    'return': {
+                        'token': 'the-token',
+                    }
+                }
+            })
+
+        That will do the same thing as:
+
+           self.slumber.provider.reference.transactions.post.return_value = {
+               'token': 'the-token',
+           }
+
+        By default, get_object_or_404 will be mocked with a resource_pk and
+        resource_uri
+        """
+        keys = set(list(keys) + returns.keys())
+        for k in keys:
+            attr_path = k.split('.')
+            api = self.slumber
+            while True:
+                try:
+                    api = getattr(api, attr_path.pop(0))
+                except IndexError:
+                    break
+
+            conf = returns.get(k, {})
+            method = conf.get('method', 'get_object_or_404')
+            getattr(api, method).return_value = conf.get('return', {
+                'resource_pk': 1,
+                'resource_uri': '/something/1',
+            })
+
+    def test_with_existing_prod(self):
+
+        seller_id = 99
+        self.set_mocks({
+            'generic.seller': {
+                'return': {
+                    'resource_pk': seller_id,
+                    'resource_uri': '/seller/1',
+                }
+            },
+            'provider.reference.transactions': {
+                'method': 'post',
+                'return': {
+                    'token': 'zippy-trans-token',
+                }
+            },
+        })
+
+        seller_uuid = 'seller-xyz'
+        product_uuid = 'app-xyz'
+
+        result = self.configure(seller_uuid=seller_uuid,
+                                product_uuid=product_uuid)
+
+        eq_(result[0], 'zippy-trans-token')
+        eq_(result[1], seller_id)
+
+        kw = self.slumber.provider.reference.products\
+                                            .get_object_or_404.call_args[1]
+        eq_(kw['external_id'], product_uuid)
+        eq_(kw['seller_uuid'], seller_uuid)
 
 
 @mock.patch('lib.solitude.api.client.slumber')
