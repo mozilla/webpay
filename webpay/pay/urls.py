@@ -6,7 +6,7 @@ urlpatterns = patterns('',
     url(r'^$', views.lobby, name='pay.lobby'),
     url(r'^fakepay$', views.fakepay, name='pay.fakepay'),
     # Be careful if you change this because it could be hard
-    # coded into settings. See BANGO_PAY_URL.
+    # coded into settings. See settings.PAY_URLS.
     url(r'^fake-bango-url$', views.fake_bango_url,
         name='pay.fake_bango_url'),
     url(r'^bounce$', views.bounce, name='pay.bounce'),

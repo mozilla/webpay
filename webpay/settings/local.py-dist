@@ -115,10 +115,6 @@ MARKETPLACE_URL = 'http://localhost:8000'
 # payment, set this to True.
 #FAKE_PAYMENTS = True
 
-# Uncomment this to redirect to a fake Bango payments screen
-# when FAKE_PAYMENTS is False.
-#BANGO_PAY_URL = '/mozpay/fake-bango-url?bcid=%s'
-
 # Set up your local webpay for payments against a B2G device.
 #DOMAIN = 'localhost'  # JWT aud
 #KEY = DOMAIN  # JWT iss
