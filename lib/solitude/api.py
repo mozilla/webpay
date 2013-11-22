@@ -237,13 +237,14 @@ class SolitudeAPI(SlumberWrapper):
                  'seller_uuid={uuid} external_id={ext}'
                  .format(provider=provider,
                          uuid=seller_uuid, ext=product_id))
+
+        product = None
         try:
             product = self.slumber.generic.product.get_object_or_404(
                 external_id=product_id,
                 seller=seller_id,
             )
             log.info('found product {pr}'.format(pr=product))
-            print self.provider.products
             provider_product = self.provider.products.get_object_or_404(
                                                 seller_uuid=seller_uuid,
                                                 external_id=product_id)
@@ -251,7 +252,8 @@ class SolitudeAPI(SlumberWrapper):
         except ObjectDoesNotExist:
             product, provider_product = self.create_product(
                                 product_id, product_name,
-                                seller, provider=provider)
+                                seller, provider=provider,
+                                generic_product=product)
 
         # TODO: Make these real values. See bug 941952.
         carrier = 'USA_TMOBILE'
@@ -292,59 +294,45 @@ class SolitudeAPI(SlumberWrapper):
 
         return provider_trans['token'], seller_id
 
-    def create_product(self, external_id, product_name, seller,
-                       provider=None):
+    def create_product(self, external_id, product_name, generic_seller,
+                       provider=None, generic_product=None):
         """
-        Creates a product and a payment provider ID on the fly in solitude.
+        Creates a generic product and provider product on the fly.
+
+        This is for scenarios like adhoc in-app payments where the
+        system might be selling a product for the first time.
         """
         provider = self.set_provider(provider)
 
-        log.info(('creating product with  name: %s, external_id: %s , '
-                  'seller: %s') % (product_name, external_id, seller))
-        if not seller['bango']:
-            raise ValueError('No bango account set up for %s' %
-                             seller['resource_pk'])
+        log.info(('creating product with name: {name}, '
+                  'external_id: {ext_id}, seller: {seller}')
+                  .format(name=product_name, ext_id=external_id,
+                          seller=generic_seller))
 
-        product = self.slumber.generic.product.post({
+        if not generic_product:
+            generic_product = self.slumber.generic.product.post({
+                'external_id': external_id,
+                'seller': generic_seller['resource_uri'],
+                'public_id': str(uuid.uuid4()),
+                'access': solitude_const.ACCESS_PURCHASE,
+            })
+            log.info('created generic product {pr}'
+                     .format(pr=generic_product))
+
+        # If there is no provider seller it means the billing account has
+        # not yet been set up in Devhub.
+        provider_seller = self.provider.sellers.get_object_or_404(
+                                        seller_uuid=generic_seller['uuid'])
+
+        provider_product = self.provider.products.post({
             'external_id': external_id,
-            'seller': seller['bango']['seller'],
-            'public_id': str(uuid.uuid4()),
-            'access': solitude_const.ACCESS_PURCHASE,
-        })
-        bango = self.slumber.bango.product.post({
-            'seller_bango': seller['bango']['resource_uri'],
-            'seller_product': product['resource_uri'],
+            'seller_id': provider_seller['resource_pk'],
             'name': product_name,
-            'categoryId': 1,
-            'packageId': seller['bango']['package_id'],
-            'secret': 'n'  # This is likely going to be removed.
         })
-        self.slumber.bango.premium.post({
-            'bango': bango['bango_id'],
-            'seller_product_bango': bango['resource_uri'],
-            # TODO(Kumar): why do we still need this?
-            # The array of all possible prices/currencies is
-            # set in the configure billing call.
-            # Marketplace also sets dummy prices here.
-            'price': '0.99',
-            'currencyIso': 'USD',
-        })
+        log.info('created provider product {pr}'
+                 .format(pr=provider_product))
 
-        self.slumber.bango.rating.post({
-            'bango': bango['bango_id'],
-            'rating': 'UNIVERSAL',
-            'ratingScheme': 'GLOBAL',
-            'seller_product_bango': bango['resource_uri']
-        })
-        # Bug 836865.
-        self.slumber.bango.rating.post({
-            'bango': bango['bango_id'],
-            'rating': 'GENERAL',
-            'ratingScheme': 'USA',
-            'seller_product_bango': bango['resource_uri']
-        })
-
-        return bango
+        return generic_product, provider_product
 
     def get_transaction(self, uuid):
         transaction = self.slumber.generic.transaction.get_object(uuid=uuid)
