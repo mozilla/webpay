@@ -399,13 +399,16 @@ class TestConfigureRefTrans(TestCase):
 
             conf = returns.get(k, {})
             method = conf.get('method', 'get_object_or_404')
-            getattr(api, method).return_value = conf.get('return', {
-                'resource_pk': 1,
-                'resource_uri': '/something/1',
-            })
+            api = getattr(api, method)
+            if conf.get('side_effect'):
+                api.side_effect = conf['side_effect']
+            else:
+                api.return_value = conf.get('return', {
+                    'resource_pk': 1,
+                    'resource_uri': '/something/1',
+                })
 
     def test_with_existing_prod(self):
-
         seller_id = 99
         self.set_mocks({
             'generic.seller': {
@@ -435,6 +438,52 @@ class TestConfigureRefTrans(TestCase):
                                             .get_object_or_404.call_args[1]
         eq_(kw['external_id'], product_uuid)
         eq_(kw['seller_uuid'], seller_uuid)
+
+    def test_with_new_prod(self):
+        new_product_id = 66
+        provider_sel_id = 99
+        product_uuid = 'app-xyz'
+        seller_uuid = 'seller-xyz'
+
+        self.set_mocks({
+            'generic.seller': {
+                'return': {
+                    'resource_pk': 1,
+                    'resource_uri': '/seller/1',
+                    'uuid': seller_uuid,
+                }
+            },
+            'provider.reference.transactions': {
+                'method': 'post',
+                'return': {
+                    'token': 'zippy-trans-token',
+                }
+            },
+            'provider.reference.products': {
+                'side_effect': ObjectDoesNotExist,
+            },
+            'provider.reference.sellers': {
+                'return': {
+                    'resource_pk': provider_sel_id,
+                }
+            },
+        })
+
+        self.slumber.provider.reference.products.post.return_value = {
+            'resource_pk': new_product_id,
+        }
+
+        result = self.configure(seller_uuid=seller_uuid,
+                                product_uuid=product_uuid)
+
+        eq_(result[0], 'zippy-trans-token')
+
+        kw = self.slumber.provider.reference.products.post.call_args[0][0]
+        eq_(kw['external_id'], product_uuid)
+        eq_(kw['seller_id'], provider_sel_id)
+
+        kw = self.slumber.provider.reference.transactions.post.call_args[0][0]
+        eq_(kw['product_id'], new_product_id)
 
 
 @mock.patch('lib.solitude.api.client.slumber')
