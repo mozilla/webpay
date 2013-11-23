@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-12 15:28-0700\n"
-"PO-Revision-Date: 2013-08-31 17:00-0400\n"
+"PO-Revision-Date: 2013-11-22 19:53-0500\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -15,15 +15,15 @@ msgstr ""
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
-msgstr "支払いはキャンセルされました。"
+msgstr "決済はキャンセルされました。"
 
 #: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
 msgid "Your payment is complete."
-msgstr "支払いが完了しました。"
+msgstr "決済が完了しました。"
 
 #: webpay/base/dev_messages.py:75
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
+msgstr "Mozilla は決済処理中に決済代行業者 (Bango) から不正なコードを受け取りました"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:79
@@ -38,19 +38,19 @@ msgstr "この JWT 発行者には誰も登録されていません。"
 
 #: webpay/base/dev_messages.py:84
 msgid "The price point is unknown or invalid."
-msgstr ""
+msgstr "販売価格が不明もしくは不正です。"
 
 #: webpay/base/dev_messages.py:85
 msgid "The request to begin payment was invalid."
-msgstr ""
+msgstr "決済開始リクエストが不正です。"
 
 #: webpay/base/dev_messages.py:87
 msgid "The requested payment simulation result is not supported."
-msgstr "リクエストされた支払いシミュレーション結果には対応していません。"
+msgstr "リクエストされた決済シミュレーション結果には対応していません。"
 
 #: webpay/base/dev_messages.py:89
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
+msgstr "決済処理中に決済代行業者 (Bango) がエラーを返しました"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -60,7 +60,7 @@ msgstr "JWT が期限切れです。"
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "内部 Web リクエストがタイムアウトしました。"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -82,11 +82,11 @@ msgstr "JWT のデコード中に問題が発生しました。"
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "ログイン試行中にシステムがタイムアウトしました。"
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "ログアウト試行中にシステムがタイムアウトしました。"
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
@@ -95,7 +95,7 @@ msgstr "URL の形式が間違っています。これはポストバック URL 
 
 #: webpay/base/dev_messages.py:110
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
+msgstr "決済処理セッション中に使用されたトランザクション ID が不足しています。"
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:114
@@ -109,39 +109,39 @@ msgstr "リクエストされたチャージバックシミュレーションに
 
 #: webpay/base/dev_messages.py:120
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
+msgstr "決済通知の検証中に通知サービスがエラーを返しました"
 
 #: webpay/base/dev_messages.py:122
 msgid "Payments are temporarily disabled"
-msgstr ""
+msgstr "決済は一時的に無効化されています"
 
 #: webpay/base/dev_messages.py:124
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
+msgstr "前回のリクエスト以降リソースが変更されているため、再度アクションを実行する必要があります。"
 
 #: webpay/base/dev_messages.py:126
 msgid "Payment simulations are disabled at this time."
-msgstr "現時点で支払いシミュレーションは無効化されています。"
+msgstr "現在、決済シミュレーションは無効化されています。"
 
 #: webpay/base/dev_messages.py:128
 msgid "This payment key can only be used to simulate purchases."
-msgstr "この支払いキーはシミュレーション購入専用です。"
+msgstr "この決済キーはシミュレーション購入専用です。"
 
 #: webpay/base/dev_messages.py:130
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
+msgstr "現在のトランザクションは既に終了しているため、決済を完了できません。"
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "トランザクションの開始を待っている間にシステムがタイムアウトしました。"
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
+msgstr "この地域もしくは事業者では、指定された決済方法または販売価格に対応していません。"
 
 #: webpay/base/dev_messages.py:138
 msgid "The user cancelled the payment."
-msgstr ""
+msgstr "ユーザが決済をキャンセルしました。"
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -151,11 +151,11 @@ msgstr "キー「{0}」の値が最大文字数 {1} を超えています"
 
 #: webpay/base/utils.py:41
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr "支払いの設定中に問題が発生しました。また後で試し、もし問題が続くようならアプリ作者に連絡を取ってください。"
+msgstr "決済設定中に問題が発生しました。また後で試し、もし問題が続くようならアプリ作者に連絡を取ってください。"
 
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
+msgstr "決済処理中に内部エラーが発生しました。また後で試し、もし問題が続くようなら Mozilla に連絡を取ってください。"
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -205,7 +205,7 @@ msgstr "暗証番号に数字以外の文字を含めることはできません
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
+msgstr "あなたは別のユーザとしてログインしたため、再度決済を開始する必要があります。"
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -213,7 +213,7 @@ msgstr "読み込み中"
 
 #: webpay/base/templates/base.html:32
 msgid "Beginning payment&hellip;"
-msgstr "支払いを開始しています..."
+msgstr "決済を開始しています..."
 
 #: webpay/base/templates/base.html:33
 msgid "Connecting to Persona"
@@ -221,7 +221,7 @@ msgstr "Persona に接続しています"
 
 #: webpay/base/templates/base.html:34
 msgid "Payment complete"
-msgstr "支払いが完了しました"
+msgstr "決済が完了しました"
 
 #: webpay/base/templates/base.html:41
 msgid "Oops&hellip;"
@@ -229,7 +229,7 @@ msgstr "おっと..."
 
 #: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
-msgstr ""
+msgstr "通常よりもこの処理に時間が掛かっています。再度試しますか？"
 
 #: webpay/base/templates/base.html:43 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -241,7 +241,7 @@ msgstr "エラー"
 
 #: webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
-msgstr "支払いは一時的に無効化されています。"
+msgstr "決済は一時的に無効化されています。"
 
 #: webpay/pay/views.py:184 webpay/pin/views.py:93
 msgid "Enter Pin"
@@ -253,7 +253,7 @@ msgstr "ログイン"
 
 #: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in to continue with the payment"
-msgstr "支払いを続けるにはログインしてください"
+msgstr "決済を続けるにはログインしてください"
 
 #: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in"
@@ -261,7 +261,7 @@ msgstr "ログイン"
 
 #: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
-msgstr "支払いシミュレーション"
+msgstr "決済シミュレーション"
 
 #: webpay/pay/templates/pay/simulate.html:8
 msgid "You will not be charged."
@@ -281,15 +281,15 @@ msgstr "あなたは特権を持っています"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr "支払いをシミュレーションする"
+msgstr "決済をシミュレーションする"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr "実際の支払いを行う"
+msgstr "実際の決済を行う"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
-msgstr ""
+msgstr "決済を設定する..."
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
