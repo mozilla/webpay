@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-12 15:28-0700\n"
-"PO-Revision-Date: 2013-10-21 12:01+0000\n"
-"Last-Translator: Branislav <sektormaster@atlas.sk>\n"
+"PO-Revision-Date: 2013-11-24 22:35+0000\n"
+"Last-Translator: Vlado <valastiak@mozilla.sk>\n"
 "Language-Team: Mozilla.sk <l10n@mozilla.sk>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382356905.0\n"
+"X-POOTLE-MTIME: 1385332554.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -61,7 +61,7 @@ msgstr "JWT vypršalo."
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Čas internej požiadavky vypršal."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -83,11 +83,11 @@ msgstr "Chyba pri dekódovaní JWT."
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Čas určený na prihlásenie vypršal."
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "Čas určený na odhlásenie vypršal."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
@@ -134,7 +134,7 @@ msgstr "Platba nemôže byť dokončená, pretože aktuálna transakcia už bola
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "Počas čakania na spustenie transakcie vypršal čas požiadavky."
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
@@ -189,7 +189,7 @@ msgstr "Pri spracovávaní požiadavky sa vyskytla chyba."
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
-msgstr "Skúste to znova o chvíľu"
+msgstr "Skúste to znova o chvíľu."
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9
@@ -206,7 +206,7 @@ msgstr "PIN môže obsahovať len číslice"
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
+msgstr "Prihlásili ste sa ako iný používateľ, platbu musíte zadať znova."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
