@@ -87,10 +87,20 @@ SOLITUDE_OAUTH = {'key': private.SOLITUDE_OAUTH_KEY,
 
 SENTRY_DSN = private.SENTRY_DSN
 
-# Hook into the production web flow.
-BANGO_BASE_URL = 'https://mozilla.bango.net'
-BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'
-BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
+PAY_URLS = {
+    # Hook into the production web flow.
+    'bango': {
+        'base': 'https://mozilla.bango.net',
+        'pay': '/mozpayments/?bcid={uid_pay}',
+        'logout': '/mozpayments/logout/',
+    },
+    'reference': {
+        'base': 'https://zippy.paas.allizom.org',
+        'pay': '/?tx={uid_pay}',
+        # TODO: bug 942330
+        #'logout': '/logout',
+    },
+}
 
 STATSD_HOST = private.STATSD_HOST
 STATSD_PORT = private.STATSD_PORT

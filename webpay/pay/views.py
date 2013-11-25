@@ -15,6 +15,7 @@ from tower import ugettext as _
 
 from curling.lib import HttpClientError, HttpServerError
 
+from webpay import provider
 from webpay.auth.decorators import user_can_simulate, user_verified
 from webpay.auth import utils as auth_utils
 from webpay.base import dev_messages as msg
@@ -290,7 +291,8 @@ def wait_to_start(request):
         # Dump any messages so we don't show them later.
         clear_messages(request)
         # The transaction is ready; no need to wait for it.
-        return http.HttpResponseRedirect(_bango_start_url(trans['uid_pay']))
+        return http.HttpResponseRedirect(
+                        provider.get_start_url(trans['uid_pay']))
     return render(request, 'pay/wait-to-start.html')
 
 
@@ -314,14 +316,8 @@ def trans_start_url(request):
         if payment_start:
             delta = int((time.time() - float(payment_start)) * 1000)
             statsd.timing('purchase.payment_time.duration', delta)
-        data['url'] = _bango_start_url(trans['uid_pay'])
+        data['url'] = provider.get_start_url(trans['uid_pay'])
     return data
-
-
-def _bango_start_url(bango_trans_id):
-    url = settings.BANGO_PAY_URL % bango_trans_id
-    log.info('Start Bango pay at: %s' % url)
-    return url
 
 
 def _trim_pay_request(req):

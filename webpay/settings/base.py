@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'webpay.base',  # Needed for global templates, etc.
     'webpay.bango',
     'webpay.pay',
+    'webpay.provider',
     'webpay.pin',
     'webpay.services',
     'raven.contrib.django',
@@ -364,15 +365,6 @@ BROWSERID_UNVERIFIED_ISSUER = 'firefoxos.persona.org'
 BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
 BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN
 
-BANGO_BASE_URL = 'http://mozilla.test.bango.org'
-
-# This is the URL for the bango payment screen.
-# It will receive one string substitution: the billing configuration ID.
-BANGO_PAY_URL = BANGO_BASE_URL + '/mozpayments/?bcid=%s'
-
-# This is used by the UI to clear all Bango cookies.
-BANGO_LOGOUT_URL = '%s/mozpayments/logout/' % BANGO_BASE_URL
-
 # This is the URL to the marketplace.
 MARKETPLACE_URL = None
 
@@ -509,11 +501,32 @@ JS_SETTINGS = {
 # New Relic is configured here.
 NEWRELIC_INI = None
 
-# Which payment provider to use on the backend.
-# Choices: 'bango', 'reference'
-# In the future this might be chosen dynamically based on region or something.
+PAYMENT_PROVIDERS = ('bango', 'reference')
+
+# Which payment provider to use on the backend, it must be one of
+# PAYMENT_PROVIDERS.
+# In the future this setting might be chosen dynamically based on region
+# or something.
 PAYMENT_PROVIDER = 'bango'
 
 # When True, Webpay uses a universal payment provider API for the active
 # PAYMENT_PROVIDER.
 UNIVERSAL_PROVIDER = False
+
+# The pay URL is the starting page of the payment screen.
+# It will receive one substitution: the uid_pay value. For example, this is the
+# Billing Configuration ID in Bangoland.
+PAY_URLS = {
+    'bango': {
+        'base': 'http://mozilla.test.bango.org',
+        'pay': '/mozpayments/?bcid={uid_pay}',
+        # This is used by the UI to clear all Bango cookies.
+        'logout': '/mozpayments/logout/',
+    },
+    'reference': {
+        'base': 'https://zippy.paas.allizom.org',
+        'pay': '/?tx={uid_pay}',
+        # TODO: bug 942330
+        #'logout': '/logout',
+    },
+}

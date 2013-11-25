@@ -410,10 +410,10 @@ class ResetConfirmPinViewTest(ResetPinTest):
 
     @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
     @patch('lib.solitude.api.client.get_transaction', auto_spec=True)
-    @patch('webpay.pay.views._bango_start_url', auto_spec=True)
-    def test_messages_cleared_in_pin_reset(self, _bango_start_url,
-                                                 get_transaction):
-        _bango_start_url.return_value = self.url
+    @patch('webpay.provider.get_start_url', auto_spec=True)
+    def test_messages_cleared_in_pin_reset(self, get_start_url,
+                                           get_transaction):
+        get_start_url.return_value = self.url
         get_transaction.return_value = {'status': constants.STATUS_PENDING,
                                         'uid_pay': 1}
         self.add_fake_trans_id_to_session()

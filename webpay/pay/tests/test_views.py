@@ -355,7 +355,9 @@ class TestWaitToStart(Base):
         self.session['trans_id'] = 'some:trans'
         self.save_session()
 
-    @mock.patch.object(settings, 'BANGO_PAY_URL', 'http://bango/pay?bcid=%s')
+    @mock.patch.object(settings, 'PAY_URLS',
+                       {'bango': {'base': 'http://bango',
+                                  'pay': '/pay?bcid={uid_pay}'}})
     def test_redirect_when_ready(self, get_transaction):
         get_transaction.return_value = {
             'status': constants.STATUS_PENDING,
@@ -364,9 +366,25 @@ class TestWaitToStart(Base):
         self.session['payment_start'] = time.time()
         self.save_session()
         res = self.client.get(self.wait)
-        eq_(res['Location'], settings.BANGO_PAY_URL % 123)
+        eq_(res['Location'], 'http://bango/pay?bcid=123')
 
-    @mock.patch.object(settings, 'BANGO_PAY_URL', 'http://bango/pay?bcid=%s')
+    @mock.patch.object(settings, 'PAYMENT_PROVIDER', 'reference')
+    def test_universal_redirect_when_ready(self, get_transaction):
+        get_transaction.return_value = {
+            'status': constants.STATUS_PENDING,
+            'uid_pay': 123,
+        }
+        self.session['payment_start'] = time.time()
+        self.save_session()
+        with mock.patch.object(settings, 'PAY_URLS',
+                               {'reference': {'base': 'http://base',
+                                              'pay': '/pay?t={uid_pay}'}}):
+            res = self.client.get(self.wait)
+        eq_(res['Location'], 'http://base/pay?t=123')
+
+    @mock.patch.object(settings, 'PAY_URLS',
+                       {'bango': {'base': 'http://bango',
+                                  'pay': '/pay?bcid={uid_pay}'}})
     def test_start_ready(self, get_transaction):
         get_transaction.return_value = {
             'status': constants.STATUS_PENDING,
@@ -377,7 +395,24 @@ class TestWaitToStart(Base):
         res = self.client.get(self.start)
         eq_(res.status_code, 200, res.content)
         data = json.loads(res.content)
-        eq_(data['url'], settings.BANGO_PAY_URL % 123)
+        eq_(data['url'], 'http://bango/pay?bcid=123')
+        eq_(data['status'], constants.STATUS_PENDING)
+
+    @mock.patch.object(settings, 'PAYMENT_PROVIDER', 'reference')
+    def test_universal_start_ready(self, get_transaction):
+        get_transaction.return_value = {
+            'status': constants.STATUS_PENDING,
+            'uid_pay': 123,
+        }
+        self.session['payment_start'] = time.time()
+        self.save_session()
+        with mock.patch.object(settings, 'PAY_URLS',
+                               {'reference': {'base': 'http://base',
+                                              'pay': '/pay?t={uid_pay}'}}):
+            res = self.client.get(self.start)
+        eq_(res.status_code, 200, res.content)
+        data = json.loads(res.content)
+        eq_(data['url'], 'http://base/pay?t=123')
         eq_(data['status'], constants.STATUS_PENDING)
 
     def test_start_not_there(self, get_transaction):
