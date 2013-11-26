@@ -15,4 +15,8 @@ urlpatterns = patterns('',
     url(r'^wait_to_start$', views.wait_to_start, name='pay.wait_to_start'),
     url(r'^trans_start_url$', views.trans_start_url,
         name='pay.trans_start_url'),
+    url(r'^callback_success_url$', views.callback_success_url,
+        name='pay.callback_success_url'),
+    url(r'^callback_error_url$', views.callback_error_url,
+        name='pay.callback_error_url'),
 )

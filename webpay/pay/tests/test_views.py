@@ -454,6 +454,61 @@ class TestWaitToStart(Base):
         self.assertContains(res, 'Setting up payment')
 
 
+class TestPostback(Base):
+
+    def setUp(self):
+        super(TestPostback, self).setUp()
+        self.callback_success = reverse('pay.callback_success_url')
+        self.callback_error = reverse('pay.callback_error_url')
+        p = mock.patch('lib.solitude.api.client.is_callback_token_valid')
+        self.tok_check = p.start()
+        self.addCleanup(p.stop)
+
+    @mock.patch('webpay.pay.tasks.payment_notify')
+    def test_callback_success(self, payment_notify):
+        self.tok_check.return_value = True
+        res = self.client.post(self.callback_success, {
+            'signed_notice': 'foo=bar&ext_transaction_id=123'
+        })
+        eq_(res.status_code, 204)
+
+    def test_callback_success_failure(self):
+        self.tok_check.return_value = False
+        res = self.client.post(self.callback_success, {
+            'signed_notice': 'foo=bar&ext_transaction_id=123'
+        })
+        eq_(res.status_code, 400)
+
+    def test_callback_success_incomplete(self):
+        self.tok_check.return_value = True
+        res = self.client.post(self.callback_success, {
+            'signed_notice': 'foo=bar'
+        })
+        eq_(res.status_code, 400)
+
+    @mock.patch('webpay.pay.tasks.chargeback_notify')
+    def test_callback_error(self, chargeback_notify):
+        self.tok_check.return_value = True
+        res = self.client.post(self.callback_error, {
+            'signed_notice': 'foo=bar&ext_transaction_id=123'
+        })
+        eq_(res.status_code, 204)
+
+    def test_callback_error_failure(self):
+        self.tok_check.return_value = False
+        res = self.client.post(self.callback_error, {
+            'signed_notice': 'foo=bar&ext_transaction_id=123'
+        })
+        eq_(res.status_code, 400)
+
+    def test_callback_error_incomplete(self):
+        self.tok_check.return_value = True
+        res = self.client.post(self.callback_error, {
+            'signed_notice': 'foo=bar'
+        })
+        eq_(res.status_code, 400)
+
+
 class TestSimulate(BasicSessionCase, JWTtester):
 
     def setUp(self):

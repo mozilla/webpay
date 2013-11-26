@@ -320,6 +320,51 @@ def trans_start_url(request):
     return data
 
 
+def _callback_url(request, is_success):
+    status = is_success and 'success' or 'error'
+    signed_notice = request.POST['signed_notice']
+    statsd.incr('purchase.payment_{0}_callback.received'.format(status))
+    if solitude.is_callback_token_valid(signed_notice):
+        statsd.incr('purchase.payment_{0}_callback.ok'.format(status))
+        log.info('Callback {0} token was valid.'.format(status))
+        querystring = http.QueryDict(signed_notice)
+        if 'ext_transaction_id' in querystring:
+            ext_transaction_id = querystring['ext_transaction_id']
+            if is_success:
+                tasks.payment_notify.delay(ext_transaction_id)
+            else:
+                tasks.chargeback_notify.delay(ext_transaction_id)
+            return http.HttpResponse(status=204)
+        else:
+            statsd.incr('purchase.payment_{0}_callback.incomplete'
+                        ''.format(status))
+            log.error('Callback {0} token was incomplete: '
+                     '{1}'.format(status, querystring))
+    else:
+        statsd.incr('purchase.payment_{0}_callback.fail'.format(status))
+        log.error('Callback {0} token was invalid: '
+                  '{1}'.format(status, signed_notice))
+    return http.HttpResponseBadRequest()
+
+
+@require_POST
+def callback_success_url(request):
+    """
+    Hit by the provider to confirm a success of a transaction
+    in case of an interruption in the payment process.
+    """
+    return _callback_url(request, is_success=True)
+
+
+@require_POST
+def callback_error_url(request):
+    """
+    Hit by the provider to confirm a failure of a transaction
+    in case of an interruption in the payment process.
+    """
+    return _callback_url(request, is_success=False)
+
+
 def _trim_pay_request(req):
 
     def _trim(st):
