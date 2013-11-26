@@ -24,7 +24,7 @@
     data-logged-in-user="{{ session.get('logged_in_user', '') }}"
     data-reset-user-url="{{ url('auth.reset_user') }}"
     data-denied-url="{{ url('auth.denied') }}"
-    data-bango-logout-url="{{ settings.PAY_URLS[settings.PAYMENT_PROVIDER]['logout'] }}"
+    data-bango-logout-url="{{ settings.PAY_URLS[settings.PAYMENT_PROVIDER]['base'] + settings.PAY_URLS[settings.PAYMENT_PROVIDER]['logout'] }}"
     data-pin-num-chars-warning="{{ _('Pin must be 4 digits.') }}"
     data-pin-non-numeric-warning="{{ _('Pin can only contain digits.') }}"
     data-pin-reauth-msg="{{ _('You logged in as a different user, you must start the payment again.') }}"
