@@ -163,7 +163,10 @@ require(['cli'], function(cli) {
         box.html(Array(PINLENGTH+1).join('<span'+pinClass+'></span>'));
         $el.prepend(box);
         console.log('[pin] requesting focus on pin');
-        cli.focusOnPin({ $toShow: $('#enter-pin') });
+        cli.focusOnPin();
+        // TODO: muffinresearch to help me figure out the regressions
+        // this caused.
+        // cli.focusOnPin({ $toShow: $('#enter-pin') });
     });
 
     if (cli.hasTouch) {
