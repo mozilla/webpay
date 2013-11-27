@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 15:28-0700\n"
+"POT-Creation-Date: 2013-11-27 07:59-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -200,11 +200,11 @@ msgid "Sorry, you are not allowed to do that."
 msgstr "Şǿřřẏ, ẏǿŭ ȧřḗ ƞǿŧ ȧŀŀǿẇḗḓ ŧǿ ḓǿ ŧħȧŧ."
 
 #: webpay/base/templates/403.html:8
-#: webpay/base/templates/base.html:44
+#: webpay/base/templates/base.html:45
 #: webpay/base/templates/error.html:17
 #: webpay/pay/templates/pay/simulate.html:18
-#: webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43
+#: webpay/pin/templates/pin/pin_form.html:47
 #: webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Ƈȧƞƈḗŀ"
@@ -273,6 +273,10 @@ msgid "This is taking longer than expected. Try again?"
 msgstr "Ŧħīş īş ŧȧķīƞɠ ŀǿƞɠḗř ŧħȧƞ ḗẋƥḗƈŧḗḓ. Ŧřẏ ȧɠȧīƞ?"
 
 #: webpay/base/templates/base.html:43
+msgid "Something went wrong. Try again?"
+msgstr "Şǿḿḗŧħīƞɠ ẇḗƞŧ ẇřǿƞɠ. Ŧřẏ ȧɠȧīƞ?"
+
+#: webpay/base/templates/base.html:44
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "ǾĶ"
@@ -282,11 +286,11 @@ msgstr "ǾĶ"
 msgid "Error"
 msgstr "Ḗřřǿř"
 
-#: webpay/pay/views.py:54
+#: webpay/pay/views.py:55
 msgid "Payments are temporarily disabled."
 msgstr "Ƥȧẏḿḗƞŧş ȧřḗ ŧḗḿƥǿřȧřīŀẏ ḓīşȧƀŀḗḓ."
 
-#: webpay/pay/views.py:184
+#: webpay/pay/views.py:185
 #: webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Ḗƞŧḗř Ƥīƞ"
@@ -320,7 +324,7 @@ msgid "result"
 msgstr "řḗşŭŀŧ"
 
 #: webpay/pay/templates/pay/simulate.html:20
-#: webpay/pin/templates/pin/pin_form.html:46
+#: webpay/pin/templates/pin/pin_form.html:50
 #: webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Ƈǿƞŧīƞŭḗ"
@@ -374,9 +378,13 @@ msgstr "Řḗşḗŧ Ƥīƞ"
 msgid "Pin reset"
 msgstr "Ƥīƞ řḗşḗŧ"
 
+#: webpay/pin/templates/pin/pin_form.html:13
+msgid "For testing only. Marketplace users <b>should not</b> use this site."
+msgstr "Ƒǿř ŧḗşŧīƞɠ ǿƞŀẏ. Ḿȧřķḗŧƥŀȧƈḗ ŭşḗřş <b>şħǿŭŀḓ ƞǿŧ</b> ŭşḗ ŧħīş şīŧḗ."
+
 #. This is the same as the standard forgot
 #.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:31
+#: webpay/pin/templates/pin/pin_form.html:35
 #: webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
 msgstr "Ƒǿřɠǿŧ ẏǿŭř ƥīƞ?"

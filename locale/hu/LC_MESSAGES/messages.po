@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 15:28-0700\n"
+"POT-Creation-Date: 2013-11-27 07:59-0700\n"
 "PO-Revision-Date: 2013-10-20 20:28+0000\n"
 "Last-Translator: Gábor <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -167,8 +167,8 @@ msgstr "Nem engedélyezett"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Nincs jogosultsága ehhez a művelethez."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:44 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
-#: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:43
+#: webpay/pin/templates/pin/pin_form.html:47 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Mégse"
 
@@ -233,7 +233,11 @@ msgstr "Hoppá&hellip;"
 msgid "This is taking longer than expected. Try again?"
 msgstr "Ez tovább tart a vártnál. Újra megpróbálja?"
 
-#: webpay/base/templates/base.html:43 webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:43
+msgid "Something went wrong. Try again?"
+msgstr ""
+
+#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "OK"
 
@@ -241,11 +245,11 @@ msgstr "OK"
 msgid "Error"
 msgstr "Hiba"
 
-#: webpay/pay/views.py:54
+#: webpay/pay/views.py:55
 msgid "Payments are temporarily disabled."
 msgstr "A fizetés átmenetileg szünetel."
 
-#: webpay/pay/views.py:184 webpay/pin/views.py:93
+#: webpay/pay/views.py:185 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Adja meg a PIN-kódot"
 
@@ -273,7 +277,7 @@ msgstr "Összeg nem kerül levonásra."
 msgid "result"
 msgstr "eredmény"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:50 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Folytatás"
 
@@ -321,9 +325,13 @@ msgstr "PIN visszaállítása"
 msgid "Pin reset"
 msgstr "PIN visszaállítása"
 
+#: webpay/pin/templates/pin/pin_form.html:13
+msgid "For testing only. Marketplace users <b>should not</b> use this site."
+msgstr ""
+
 #. This is the same as the standard forgot
 #.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
+#: webpay/pin/templates/pin/pin_form.html:35 webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
 msgstr "Elfelejtette a PIN kódot?"
 

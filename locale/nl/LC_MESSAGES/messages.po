@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 15:28-0700\n"
+"POT-Creation-Date: 2013-11-27 07:59-0700\n"
 "PO-Revision-Date: 2013-11-13 07:48+0000\n"
 "Last-Translator: Mark <markh@babelzilla.org>\n"
 "Language-Team: none\n"
@@ -134,9 +134,7 @@ msgstr "De aankoop kan niet worden afgerond omdat de huidige transactie al is be
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
-"Het systeem heeft een time-out gegeven tijdens het wachten op het begin van "
-"een transactie."
+msgstr "Het systeem heeft een time-out gegeven tijdens het wachten op het begin van een transactie."
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
@@ -168,8 +166,8 @@ msgstr "Niet toegestaan"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Sorry, maar u mag dat niet doen."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:44 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
-#: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:43
+#: webpay/pin/templates/pin/pin_form.html:47 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -208,9 +206,7 @@ msgstr "Pincode mag alleen cijfers bevatten."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
-"U bent aangemeld als een andere gebruiker, u dient de betaling opnieuw te "
-"starten."
+msgstr "U bent aangemeld als een andere gebruiker, u dient de betaling opnieuw te starten."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -236,7 +232,11 @@ msgstr "Oeps…"
 msgid "This is taking longer than expected. Try again?"
 msgstr "Dit duurt langer dan verwacht. Opnieuw proberen?"
 
-#: webpay/base/templates/base.html:43 webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:43
+msgid "Something went wrong. Try again?"
+msgstr ""
+
+#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "OK"
 
@@ -244,11 +244,11 @@ msgstr "OK"
 msgid "Error"
 msgstr "Fout"
 
-#: webpay/pay/views.py:54
+#: webpay/pay/views.py:55
 msgid "Payments are temporarily disabled."
 msgstr "Betalingen zijn tijdelijk uitgeschakeld."
 
-#: webpay/pay/views.py:184 webpay/pin/views.py:93
+#: webpay/pay/views.py:185 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Voer pincode in"
 
@@ -276,7 +276,7 @@ msgstr "U hoeft niets te betalen."
 msgid "result"
 msgstr "resultaat"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:50 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Doorgaan"
 
@@ -324,9 +324,13 @@ msgstr "Pincode resetten"
 msgid "Pin reset"
 msgstr "Reset pincode"
 
+#: webpay/pin/templates/pin/pin_form.html:13
+msgid "For testing only. Marketplace users <b>should not</b> use this site."
+msgstr ""
+
 #. This is the same as the standard forgot
 #.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
+#: webpay/pin/templates/pin/pin_form.html:35 webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
 msgstr "Pincode vergeten?"
 
