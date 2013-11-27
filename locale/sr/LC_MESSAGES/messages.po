@@ -133,7 +133,7 @@ msgstr "Куповина није могла да се заврши зато ш�
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
-msgstr Систем је престао са радом приликом чекања да трансакција почне""
+msgstr "Систем је престао са радом приликом чекања да трансакција почне"
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
