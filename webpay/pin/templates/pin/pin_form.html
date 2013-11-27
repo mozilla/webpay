@@ -9,6 +9,10 @@
 {%- endblock %}
 
 {% block content %}
+  {% if USAGE_WARNING %}
+    <section class="warning">{% trans %}For testing only. Marketplace users <b>should not</b> use this site.{% endtrans %}</section>
+  {% endif %}
+
   {% block extra_content %}{% endblock %}
 
   <div class="hidden-full-error{% if hide_pin %} hidden{% endif %}" id="enter-pin">

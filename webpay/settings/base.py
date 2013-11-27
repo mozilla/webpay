@@ -530,3 +530,6 @@ PAY_URLS = {
         #'logout': '/logout',
     },
 }
+
+# Warning that this server is really only for testing.
+USAGE_WARNING = False
