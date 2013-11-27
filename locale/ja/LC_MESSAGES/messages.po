@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-27 07:59-0700\n"
-"PO-Revision-Date: 2013-11-22 19:53-0500\n"
+"PO-Revision-Date: 2013-11-27 12:02-0500\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -233,7 +233,7 @@ msgstr "通常よりもこの処理に時間が掛かっています。再度試
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "何か問題が発生しました。再度試しますか？"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -325,7 +325,7 @@ msgstr "暗証番号のリセット"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
+msgstr "テスト専用。Marketplace ユーザはこのサイトを <b>使うべきではありません</b>。"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
