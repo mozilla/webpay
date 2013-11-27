@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: AMO Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-27 07:59-0700\n"
-"PO-Revision-Date: 2013-11-13 07:53+0000\n"
+"PO-Revision-Date: 2013-11-27 17:15+0000\n"
 "Last-Translator: Michael <michael.koehler1@gmx.de>\n"
 "Language-Team: German (de) <coce@nufuerspam.de>\n"
 "Language: de\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1384329209.0\n"
+"X-POOTLE-MTIME: 1385572524.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -234,7 +234,7 @@ msgstr "Das dauert länger als erwartet. Erneut versuchen?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "Etwas ist schief gegangen. Erneut versuchen?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -327,6 +327,8 @@ msgstr "PIN zurückgesetzt"
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
 msgstr ""
+"Nur zu Testzwecken. Marketplace-Nutzer sollten diese Website <b>nicht "
+"verwenden</b>."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
