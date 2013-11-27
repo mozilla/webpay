@@ -57,6 +57,8 @@ define('cli', ['settings', 'lib/longtext', 'lib/tracking'], function(settings, c
             if ($toShow && $toShow.length) {
                 $toShow.show();
                 $doc.trigger('check-long-text');
+            } else {
+              console.log('[cli] has nothing toShow');
             }
             if ($pinBox.length && !$pinBox.hasClass('error')) {
                 console.log('[cli] Focusing pin');
