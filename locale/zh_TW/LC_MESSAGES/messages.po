@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-27 07:59-0700\n"
-"PO-Revision-Date: 2013-11-13 03:12+0000\n"
+"PO-Revision-Date: 2013-11-27 16:15+0000\n"
 "Last-Translator: Peter <petercpg@mail.moztw.org>\n"
 "Language-Team: MozTW <petercpg@mail.moztw.org>\n"
 "Language: zh_TW\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1384312342.0\n"
+"X-POOTLE-MTIME: 1385568951.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -234,7 +234,7 @@ msgstr "花的時間比預期的還久，再是一次？"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "有些東西不對勁。再試試看？"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -326,7 +326,7 @@ msgstr "重設 Pin 碼"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
+msgstr "僅供測試。Marketplace 使用者 <b>不應該</b> 使用此網站。"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
