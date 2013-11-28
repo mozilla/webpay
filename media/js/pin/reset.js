@@ -1,4 +1,4 @@
-require(['cli', 'id', 'pay/bango', 'settings'], function(cli, id, bango, settings) {
+require(['cli', 'id', 'bango', 'settings'], function(cli, id, bango, settings) {
     "use strict";
     var bodyData = cli.bodyData;
     var on_success;

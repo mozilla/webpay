@@ -5,7 +5,7 @@
  *
  * Should be run in initialisation and when viewport is resized.
  */
-define('lib/longtext', [], function() {
+define('longtext', [], function() {
 
     var $doc = $(document);
     var HASLONGTEXTCLASS = 'longtext';

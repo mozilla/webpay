@@ -1,4 +1,4 @@
-define('lib/tracking', ['settings'], function(settings) {
+define('tracking', ['settings'], function(settings) {
 
     var enabled = settings.tracking_enabled;
     var actions_enabled = settings.action_tracking_enabled;
