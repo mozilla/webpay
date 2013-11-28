@@ -234,7 +234,7 @@ msgstr "Dit duurt langer dan verwacht. Opnieuw proberen?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "Er is iets foutgegaan. Opnieuw proberen?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
