@@ -518,7 +518,7 @@ UNIVERSAL_PROVIDER = False
 # Billing Configuration ID in Bangoland.
 PAY_URLS = {
     'bango': {
-        'base': 'http://mozilla.test.bango.org',
+        'base': 'https://mozilla.bango.net',
         'pay': '/mozpayments/?bcid={uid_pay}',
         # This is used by the UI to clear all Bango cookies.
         'logout': '/mozpayments/logout/',
