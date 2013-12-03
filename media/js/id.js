@@ -18,7 +18,7 @@ define('id', ['cli', 'format', 'l10n'], function(cli, format, l10n) {
 
             // Jank hack because Persona doesn't allow scripts in the doc iframe.
             // Please just delete it when they don't do that anymore.
-            var doc_langs = ['el', 'en-US', 'es', 'pl', 'pt-BR', 'de'];
+            var doc_langs = ['el', 'en-US', 'es', 'it', 'pl', 'pt-BR', 'de'];
             var locale = l10n.getLocale(navigator.language || navigator.userLanguage);
             var doc_lang = doc_langs.indexOf(locale) >= 0 ? locale : 'en-US';
             var doc_location = cli.bodyData.staticUrl + 'media/docs/{type}/' + doc_lang + '.html?20131014-4';
