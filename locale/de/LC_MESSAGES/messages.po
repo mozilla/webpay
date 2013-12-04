@@ -326,9 +326,7 @@ msgstr "PIN zurückgesetzt"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
-"Nur zu Testzwecken. Marketplace-Nutzer sollten diese Website <b>nicht "
-"verwenden</b>."
+msgstr "Nur zu Testzwecken. Marketplace-Nutzer sollten diese Website <b>nicht verwenden</b>."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.

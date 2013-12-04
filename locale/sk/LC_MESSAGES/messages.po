@@ -326,9 +326,7 @@ msgstr "Kód PIN vynulovaný"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
-"Na testovacie účely. Používatelia Marketplace <b>by nemali</b> používať túto "
-"stránku."
+msgstr "Na testovacie účely. Používatelia Marketplace <b>by nemali</b> používať túto stránku."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
