@@ -47,6 +47,7 @@
     >
     <section class="pay">
       <div id="content">
+        {% block extra_content %}{% endblock %}
         {% block content %}{% endblock %}
         {% if messages %}
         <ul class="messages">
