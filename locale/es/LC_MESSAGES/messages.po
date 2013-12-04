@@ -234,7 +234,7 @@ msgstr "Está tardando más de lo esperado. ¿Probamos de nuevo?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "Algo no salió bien. ¿Probamos de nuevo?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -326,7 +326,7 @@ msgstr "PIN restablecido"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
+msgstr "Solo para realizar pruebas. Los usuarios de Marketplace <b>no deben</b> usar este sitio."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
