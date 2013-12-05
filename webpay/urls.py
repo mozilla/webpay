@@ -12,6 +12,7 @@ jingo.monkey.patch()
 urlpatterns = patterns('',
     (r'^mozpay/auth/', include('webpay.auth.urls')),
     (r'^mozpay/bango/', include('webpay.bango.urls')),
+    (r'^mozpay/provider/', include('webpay.provider.urls')),
     (r'^mozpay/services/', include('webpay.services.urls')),
     (r'^mozpay/', include('webpay.pay.urls')),
     # When jsi18n is ready, re-enable this.
