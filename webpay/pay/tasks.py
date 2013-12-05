@@ -8,7 +8,6 @@ import uuid
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse
 from django.db import transaction
 
 from celeryutils import task
@@ -18,7 +17,6 @@ from lib.solitude import constants
 from lib.solitude.api import client
 from multidb.pinning import use_master
 
-from webpay.base.helpers import absolutify
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from .constants import NOT_SIMULATED, SIMULATED_POSTBACK, SIMULATED_CHARGEBACK
 from .utils import send_pay_notice, trans_id
@@ -196,8 +194,6 @@ def start_pay(transaction_uuid, notes, user_uuid, **kw):
             seller_uuid,
             pay['request']['id'],
             pay['request']['name'],  # app/product name
-            absolutify(reverse('bango.success')),
-            absolutify(reverse('bango.error')),
             prices['prices'],
             icon_url,
             user_uuid,

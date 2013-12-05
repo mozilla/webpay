@@ -6,7 +6,9 @@ import warnings
 from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 
+from webpay.base.helpers import absolutify
 from ..utils import SlumberWrapper
 from . import constants as solitude_const
 from .errors import ERROR_STRINGS
@@ -211,8 +213,6 @@ class SolitudeAPI(SlumberWrapper):
     def configure_product_for_billing(self, transaction_uuid,
                                       seller_uuid,
                                       product_id, product_name,
-                                      redirect_url_onsuccess,
-                                      redirect_url_onerror,
                                       prices, icon_url,
                                       user_uuid, application_size,
                                       source='unknown',
@@ -269,10 +269,10 @@ class SolitudeAPI(SlumberWrapper):
             'price': price,
             'currency': currency,
             'pay_method': pay_method,
+            'success_url': absolutify(reverse('provider.success')),
+            'error_url': absolutify(reverse('provider.error')),
         })
         log.info('made provider trans {trans}'.format(trans=provider_trans))
-
-        buyer = self.slumber.generic.buyer.get_object_or_404(uuid=user_uuid)
 
         # Note that the old Bango code used to do get-or-create
         # but I can't tell if we need that or not. Let's wait until it breaks.
@@ -282,7 +282,6 @@ class SolitudeAPI(SlumberWrapper):
             'status': solitude_const.STATUS_PENDING,
             'provider': solitude_const.PROVIDERS[provider],
             'seller_product': product['resource_uri'],
-            'buyer': buyer['resource_uri'],
             'source': solitude_const.PROVIDERS[provider],
             'region': region,
             'carrier': carrier,
@@ -353,8 +352,6 @@ class BangoSolitudeAPI(SolitudeAPI):
     def configure_product_for_billing(self, transaction_uuid,
                                       seller_uuid,
                                       product_id, product_name,
-                                      redirect_url_onsuccess,
-                                      redirect_url_onerror,
                                       prices, icon_url,
                                       user_uuid, application_size,
                                       source='unknown'):
@@ -364,6 +361,9 @@ class BangoSolitudeAPI(SolitudeAPI):
 
         # TODO: remove this.
         # Do not edit this code. Add new logic to the SolitudeAPI.
+
+        redirect_url_onsuccess = absolutify(reverse('bango.success'))
+        redirect_url_onerror = absolutify(reverse('bango.error'))
 
         try:
             seller = self.slumber.generic.seller.get_object(uuid=seller_uuid)
