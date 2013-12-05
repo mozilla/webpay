@@ -1,4 +1,5 @@
 import base64
+import urllib
 
 from django.core.urlresolvers import reverse
 
@@ -111,27 +112,38 @@ class TestNotification(TestCase):
     def test_post_no_auth(self):
         eq_(self.client.post(self.url, data={}).status_code, 401)
 
+    def post(self, **kwargs):
+        request = {'data': urllib.urlencode({'XML': '<xml>'}),
+                   'content_type': 'application/x-www-form-urlencoded',
+                   'HTTP_AUTHORIZATION': self.auth}
+        request.update(kwargs)
+        return self.client.post(self.url, **request)
+
     def test_post_incorrect_auth(self):
-        res = self.client.post(self.url, data={'XML': '<xml>'},
-                               HTTP_AUTHORIZATION='foopy')
+        res = self.post(HTTP_AUTHORIZATION='foopy')
         eq_(res.status_code, 403)
 
     @mock.patch('webpay.bango.views.client.slumber')
     def test_post_auth(self, slumber):
-        res = self.client.post(self.url, data={'XML': '<xml>'},
-                               HTTP_AUTHORIZATION=self.auth)
-        eq_(slumber.bango.event.post.call_args[0][0]['notification'],
-            '<xml>')
-        eq_(res.status_code, 200)
+        eq_(self.post().status_code, 200)
 
     @mock.patch('webpay.bango.views.client.slumber')
     def test_post_encoded_auth(self, slumber):
         # This is the first part of a real Bango XML event.
         raw = '\xef\xbb\xbf<?xml version="1.0" encoding="utf-8"?>'
-        # A real Bango request seems to not specify content-type but
-        # that's hard to simulate in Django.
-        res = self.client.post(self.url, data={'XML': raw},
-                               HTTP_AUTHORIZATION=self.auth)
+        res = self.post(data=urllib.urlencode({'XML': raw}))
         eq_(slumber.bango.event.post.call_args[0][0]['notification'],
             raw)
+        eq_(res.status_code, 200)
+
+    @mock.patch('webpay.bango.views.client.slumber')
+    def test_wrong_type(self, slumber):
+        eq_(self.post(content_type='text/html').status_code, 415)
+
+    @mock.patch('webpay.bango.views.client.slumber')
+    def test_xml(self, slumber):
+        xml = '\xef\xbb\xbf<?xml version="1.0" encoding="utf-8"?>'
+        res = self.post(data=xml, content_type='text/xml')
+        eq_(slumber.bango.event.post.call_args[0][0]['notification'],
+            xml)
         eq_(res.status_code, 200)
