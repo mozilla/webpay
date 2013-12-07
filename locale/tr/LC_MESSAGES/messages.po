@@ -3,15 +3,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-27 07:59-0700\n"
-"PO-Revision-Date: 2013-08-28 11:11+0200\n"
-"Last-Translator: Selim Şumlu <selim@sum.lu>\n"
+"PO-Revision-Date: 2013-12-07 13:28+0000\n"
+"Last-Translator: Selim <selim@sum.lu>\n"
 "Language-Team: Mozilla Turkey <bilgi@mozilla.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Pootle 2.5.0\n"
+"X-POOTLE-MTIME: 1386422911.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -24,69 +25,73 @@ msgstr "Ödemeniz tamamlandı."
 #: webpay/base/dev_messages.py:75
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
 msgstr ""
+"Mozilla ödeme işlemi gerçekleşirken ödeme hizmeti sağlayıcısından (Bango) "
+"geçersiz bir kod aldı."
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:79
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr ""
+msgstr "Bir resim simge anahtarı nesne değildi. Doğru örnek: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:83
 msgid "No one has been registered for this JWT issuer."
-msgstr ""
+msgstr "Bu JWT sağlayıcısı için hiç kimse kaydedilmiş."
 
 #: webpay/base/dev_messages.py:84
 msgid "The price point is unknown or invalid."
-msgstr ""
+msgstr "Fiyat noktası geçersiz ya da bilinmiyor."
 
 #: webpay/base/dev_messages.py:85
 msgid "The request to begin payment was invalid."
-msgstr ""
+msgstr "Ödeme işlemini başlatma talebi geçersiz."
 
 #: webpay/base/dev_messages.py:87
 msgid "The requested payment simulation result is not supported."
-msgstr ""
+msgstr "Talep edilen ödeme simülasyonu sonucu desteklenmiyor."
 
 #: webpay/base/dev_messages.py:89
 msgid "The payment provider (Bango) returned an error while processing the payment"
 msgstr ""
+"Ödeme hizmeti sağlayıcısı (Bango) ödeme işlemi gerçekleştirilirken bir "
+"sorunla karşılaştı"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:93
 msgid "The JWT has expired."
-msgstr ""
+msgstr "JWT zaman aşımına uğradı."
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Bir iç web isteği zaman aşımına uğradı."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:98
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr ""
+msgstr "JWT imzası geçersiz veya JWT zarar görmüş."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:101
 msgid "The JWT did not decode to a JSON object."
-msgstr ""
+msgstr "JWT bir JSON nesnesi olarak çözülemedi."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:104
 msgid "Error decoding JWT."
-msgstr ""
+msgstr "JWT çözülürken hata oluştu."
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Oturum açılırken sistem zaman aşımına uğradı."
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "Oturum kapatılırken sistem zaman aşımına uğradı."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
