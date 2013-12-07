@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-27 07:59-0700\n"
-"PO-Revision-Date: 2013-10-20 20:28+0000\n"
+"PO-Revision-Date: 2013-12-07 00:24+0000\n"
 "Last-Translator: Gábor <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n !=1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382300919.0\n"
+"X-POOTLE-MTIME: 1386375885.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -62,7 +62,7 @@ msgstr "A JWT lejárt."
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Egy belső webkérés túllépte az időkorlátot."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -84,11 +84,11 @@ msgstr "JWT dekódolási hiba."
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Időtúllépés belépéskor."
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "Időtúllépés kijelentkezéskor."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
@@ -135,7 +135,7 @@ msgstr "A vásárlás nem fejezhető be, mert a jelenlegi tranzakció már befej
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "Időtúllépés a tranzakció indításakor."
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
@@ -208,6 +208,8 @@ msgstr "A PIN csak számokból állhat."
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
 msgstr ""
+"Másik felhasználóként volt bejelentkezve, a fizetési folyamatot újra kell "
+"indítani."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -235,7 +237,7 @@ msgstr "Ez tovább tart a vártnál. Újra megpróbálja?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "Hiba történt. Megpróbálja ismét?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -328,6 +330,8 @@ msgstr "PIN visszaállítása"
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
 msgstr ""
+"Kizárólag tesztelésre. Marketplace felhasználók <b>ne</b> használják ezt az "
+"oldalt."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
