@@ -4,6 +4,8 @@ import views
 
 
 urlpatterns = patterns('',
-    url(r'^success$', views.success, name='provider.success'),
-    url(r'^error$', views.error, name='provider.error'),
+    url(r'^(?P<provider>[^/]+)/success$', views.success,
+        name='provider.success'),
+    url(r'^(?P<provider>[^/]+)/error$', views.error,
+        name='provider.error'),
 )
