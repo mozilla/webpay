@@ -269,8 +269,11 @@ class SolitudeAPI(SlumberWrapper):
             'price': price,
             'currency': currency,
             'pay_method': pay_method,
-            'success_url': absolutify(reverse('provider.success')),
-            'error_url': absolutify(reverse('provider.error')),
+            'ext_transaction_id': transaction_uuid,
+            'success_url': absolutify(reverse('provider.success',
+                                      args=[provider])),
+            'error_url': absolutify(reverse('provider.error',
+                                    args=[provider])),
         })
         log.info('made provider trans {trans}'.format(trans=provider_trans))
 

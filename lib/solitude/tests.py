@@ -482,6 +482,10 @@ class TestConfigureRefTrans(TestCase):
 
         kw = self.slumber.provider.reference.transactions.post.call_args[0][0]
         eq_(kw['product_id'], new_product_id)
+        assert kw['success_url'].endswith('/provider/reference/success'), (
+                'Unexpected: {0}'.format(kw['success_url']))
+        assert kw['error_url'].endswith('/provider/reference/error'), (
+                'Unexpected: {0}'.format(kw['error_url']))
 
 
 @mock.patch('lib.solitude.api.client.slumber')
