@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-27 07:59-0700\n"
-"PO-Revision-Date: 2013-12-07 13:28+0000\n"
+"PO-Revision-Date: 2013-12-10 07:54+0000\n"
 "Last-Translator: Selim <selim@sum.lu>\n"
 "Language-Team: Mozilla Turkey <bilgi@mozilla.org.tr>\n"
 "Language: tr\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1386422911.0\n"
+"X-POOTLE-MTIME: 1386662044.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -96,11 +96,11 @@ msgstr "Oturum kapatılırken sistem zaman aşımına uğradı."
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr ""
+msgstr "Bir URL hasar görmüş. Bu bir postback URL'i veya simge URL'i olabilir."
 
 #: webpay/base/dev_messages.py:110
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
+msgstr "Ödeme iadesi işlenirken oturumda işlem nuamrası eksikti."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:114
@@ -114,15 +114,17 @@ msgstr "İstenen iade simülasyonunda '{0}' anahtarı eksik."
 
 #: webpay/base/dev_messages.py:120
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
+msgstr "Ödeme bildirimi doğrulanırken bildirim servisi hata verdi"
 
 #: webpay/base/dev_messages.py:122
 msgid "Payments are temporarily disabled"
-msgstr ""
+msgstr "Ödemeler geçici olarak devre dışıdır"
 
 #: webpay/base/dev_messages.py:124
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
 msgstr ""
+"Kaynak, önceki isteğin zamanlaması içinde değiştirilmiş. Bu eylemi "
+"tekrarlamanız gerekiyor."
 
 #: webpay/base/dev_messages.py:126
 msgid "Payment simulations are disabled at this time."
@@ -130,11 +132,11 @@ msgstr "Ödeme simülasyonu şu anda devre dışıdır."
 
 #: webpay/base/dev_messages.py:128
 msgid "This payment key can only be used to simulate purchases."
-msgstr ""
+msgstr "Bu ödeme anahtarı sadece satın alma simülasyonu için kullanılabilir."
 
 #: webpay/base/dev_messages.py:130
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
+msgstr "Geçerli işlem zaten sona erdiği için satın alma tamamlanamadı."
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
