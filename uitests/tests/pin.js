@@ -5,8 +5,9 @@ var helpers = require('./helpers');
 casper.test.begin('Test Basic Pin Entry', {
 
     setUp: function(test) {
-        // Sets the filter so we always login as this user.
-        helpers.setLoginFilter("tester@fakepersona.mozilla.org");
+        // Sets the filter so we always login as a new user.
+        var token = Math.random().toString(36).slice(2);
+        helpers.setLoginFilter("tester+" + token + "@fakepersona.mozilla.org");
     },
 
     tearDown: function(test) {

@@ -7,10 +7,12 @@ from django.views.decorators.csrf import csrf_exempt
 
 from webpay.base.decorators import json_view
 
-OK_USER = 'tester@fakepersona.mozilla.org'
-TIMEOUT_USER = 'timeout@fakepersona.mozilla.org'
-FAILED_LOGIN = 'fail@fakepersona.mozilla.org'
-ERROR_LOGIN = '500@fakepersona.mozilla.org'
+# When email addressess are prefixed with these values they will trigger login
+# behavior.
+OK_USER = 'tester'
+TIMEOUT_USER = 'timeout'
+FAILED_LOGIN = 'fail'
+ERROR_LOGIN = '500'
 
 
 def fake_include(request):
@@ -32,6 +34,7 @@ def fake_verify(request):
     if not settings.DEV or not settings.TEST_PIN_UI:
         return http.HttpResponseForbidden()
 
+    # This is not a real assertion, it's an email address.
     assertion = request.POST.get('assertion')
     success = {
         'status': 'okay',
@@ -40,15 +43,14 @@ def fake_verify(request):
         'issuer': 'fake-persona'
     }
 
-    if assertion == OK_USER:
-        success['email'] = OK_USER
+    success['email'] = assertion
+    if assertion.startswith(OK_USER):
         return success
-    elif assertion == TIMEOUT_USER:
+    elif assertion.startswith(TIMEOUT_USER):
         sleep(10)
-        success['email'] = TIMEOUT_USER
         return success
-    elif assertion == ERROR_LOGIN:
+    elif assertion.startswith(ERROR_LOGIN):
         return http.HttpResponseServerError()
-    elif assertion == FAILED_LOGIN:
+    elif assertion.startswith(FAILED_LOGIN):
         request.session.clear()
         return http.HttpResponseBadRequest()
