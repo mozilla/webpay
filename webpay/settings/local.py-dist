@@ -119,3 +119,6 @@ MARKETPLACE_URL = 'http://localhost:8000'
 #DOMAIN = 'localhost'  # JWT aud
 #KEY = DOMAIN  # JWT iss
 #SECRET = 'this must match APP_PURCHASE_SECRET in zamboni'
+
+# Add the single page app for local dev.
+ENABLE_SPA = True

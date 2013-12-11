@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'webpay.pay',
     'webpay.provider',
     'webpay.pin',
+    'webpay.spa',  # Single page app view.
     'webpay.services',
     'raven.contrib.django',
     'jingo_minify',
@@ -533,3 +534,6 @@ PAY_URLS = {
 
 # Warning that this server is really only for testing.
 USAGE_WARNING = False
+
+# Enable the Single Page App
+ENABLE_SPA = False

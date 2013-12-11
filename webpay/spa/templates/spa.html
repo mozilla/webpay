@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html LANG="{{ LANG }}" dir="{{ DIR }}">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    {# L10n: Web Pay is what we call the payment server/flow. #}
+    <title>{% block page_title %}{{ _('Web Pay') }}{% endblock %}</title>
+  </head>
+  <body>
+    <h1>It lives</h1>
+    <script src="{{ settings.BROWSERID_JS_URL }}"></script>
+  </body>
+</html>
