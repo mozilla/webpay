@@ -4,12 +4,6 @@ var helpers = require('./helpers');
 
 casper.test.begin('Test Pin Behavior', {
 
-  setUp: function(test) {
-  },
-
-  tearDown: function(test) {
-  },
-
   test: function(test) {
 
     helpers.start(casper);
@@ -76,13 +70,6 @@ casper.test.begin('Test Pin Behavior', {
 
 casper.test.begin('Test Create/Confirm Pin', {
 
-  setUp: function(test) {
-  },
-
-  tearDown: function(test) {
-
-  },
-
   test: function(test) {
 
     helpers.start(casper);
@@ -130,6 +117,63 @@ casper.test.begin('Test Create/Confirm Pin', {
     }, function timeout() {
       this.echo('page title was ' + this.fetchText('h2'));
       test.fail('failure creating/confirming pin.');
+    }, 10000);
+
+    casper.run(function() {
+      test.done();
+    });
+  },
+});
+
+
+casper.test.begin('Test Pin confirmed incorrectly', {
+
+  test: function(test) {
+
+    helpers.start(casper);
+    helpers.logInAsNewUser(casper, test);
+
+    casper.waitFor(function pinCanBeEntered() {
+      return this.visible('#pin') && !this.visible('#progress');
+    }, function createPin() {
+      test.assertEquals(this.fetchText('h2'), 'Create a Pin');
+      this.sendKeys('#id_pin', '1234', {keepFocus: true});
+    }, function timeout() {
+      test.fail('enter pin fail.');
+    }, 10000);
+
+    casper.waitFor(function pinWasEntered() {
+      return this.exists('button[type="submit"]:not(:disabled)');
+    }, function submitPin() {
+      this.click('button[type="submit"]');
+    }, function timeout() {
+      test.fail('failure creating/confirming pin.');
+    }, 10000);
+
+    casper.waitFor(function pinWasSubmitted() {
+      return this.fetchText('h2') === 'Confirm Pin';
+    }, function submitPin() {
+      // Confirm the wrong pin.
+      this.sendKeys('#id_pin', '4444', {keepFocus: true});
+    }, function timeout() {
+      this.echo('page title was ' + this.fetchText('h2'));
+      test.fail('failure creating/confirming pin.');
+    }, 10000);
+
+    casper.waitFor(function pin2WasEntered() {
+      return this.exists('button[type="submit"]:not(:disabled)');
+    }, function submitPin2() {
+      this.click('button[type="submit"]');
+    }, function timeout() {
+      test.fail('failure creating/confirming pin.');
+    }, 10000);
+
+    casper.waitFor(function pin2WasSubmitted() {
+      return this.visible('.error-msg');
+    }, function checkError() {
+      test.assertEquals(this.fetchText('.error-msg'), 'Pins do not match.');
+    }, function timeout() {
+      test.fail('failure confirming wrong pin.');
     }, 10000);
 
     casper.run(function() {
