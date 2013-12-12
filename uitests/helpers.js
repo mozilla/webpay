@@ -6,12 +6,34 @@ if (settings.showClientConsole) {
   });
 }
 
-// Clear localStorage when the page object is initialised.
+
+var _currTestId;
+var _testInited = {};
+
+
 casper.on('page.initialized', function(page) {
-  casper.echo('Clearing page state', 'INFO');
-  page.clearCookies();
-  casper.evaluate(function(){ localStorage.clear(); });
+  if (!_testInited[_currTestId]) {
+    // Only initialize the browser state once per test run.
+    casper.echo('Clearing browser state', 'INFO');
+    page.clearCookies();
+    casper.evaluate(function(){ localStorage.clear(); });
+    _testInited[_currTestId] = true;
+  }
 });
+
+
+casper.on('started', function() {
+  _currTestId = makeToken();
+  casper.echo('starting test');
+});
+
+
+casper.on('waitFor.timeout', function() {
+  var file = 'captures/timeout-' + _currTestId + '.png';
+  casper.echo('timeout screenshot at ' + file);
+  casper.capture(file);
+});
+
 
 var _currentEmail;
 
@@ -32,16 +54,16 @@ exports.setLoginFilter = function(emailAddress) {
 };
 
 
-exports.start = function(casper, url) {
-  casper.start(settings.testServer + (url || '/mozpay/'));
+exports.start = function(casper, opt) {
+  opt = opt || {};
+  casper.start(settings.testServer + (opt.url || '/mozpay/'), opt.onstart);
 };
 
 
 exports.logInAsNewUser = function(casper, test) {
 
   // Sets the filter so we always login as a new user.
-  var token = Math.random().toString(36).slice(2);
-  var email = "tester+" + token + "@fakepersona.mozilla.org";
+  var email = "tester+" + makeToken() + "@fakepersona.mozilla.org";
   helpers.setLoginFilter(email);
 
   casper.waitFor(function check() {
@@ -49,7 +71,15 @@ exports.logInAsNewUser = function(casper, test) {
   }, function then() {
     test.assertVisible('#signin', 'Check signin element is present.');
     this.click('#signin');
+  }, function timeout() {
+    test.fail('#signin was not visible');
   });
 
   return email;
 };
+
+
+function makeToken() {
+  // Return a random ascii string.
+  return Math.random().toString(36).slice(2);
+}
