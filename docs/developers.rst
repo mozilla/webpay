@@ -126,7 +126,7 @@ be something like this: ``uitests/captures/timeout-oye23zirsf0qkt9.png``.
 For more debugging see the `casperjs`_ docs.
 
 .. _casperjs: http://docs.casperjs.org/en/latest/
-.. _homebrew: http://mxcl.github.com/homebrew/
+.. _homebrew: http://brew.sh/
 
 Building the Docs
 ~~~~~~~~~~~~~~~~~
