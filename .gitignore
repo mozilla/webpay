@@ -18,8 +18,9 @@ build.py
 docs/_gh-pages
 ezboot.ini
 locale/xx
-node_modules/grunt-i18n-abide/*
 media/spa/css/*
+node_modules/grunt-i18n-abide/*
+npm-debug.log
 pip-log.txt
 settings/local.py
 settings_local.py

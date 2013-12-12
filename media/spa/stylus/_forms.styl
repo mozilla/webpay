@@ -1,0 +1,147 @@
+$form-padding = 0.4em 0.2em 0.2em 0.2em;
+$form-line-height = 1.5em;
+$form-margin-top = 0.5em;
+
+// Placeholder Text
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: $medium-gray;
+}
+::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: $medium-gray;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: $medium-gray;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: $medium-gray;
+}
+
+label {
+    margin-top: $form-margin-top;
+    padding: $form-padding;
+    padding-left: 0;
+    padding-right: 0;
+
+    &:after {
+        content: "";
+        padding-right: 5px;
+    }
+
+}
+
+input,
+textarea {
+    border-radius: 5px;
+    border: 1px solid $light-gray;
+    box-shadow: inset 0 2px 2px 0 rgba(177, 177, 177, 0.30);
+    margin-top: $form-margin-top;
+    padding: $form-padding;
+
+    &[type="checkbox"] {
+        display: inline-block;
+
+        &:focus,
+        &.focused {
+            box-shadow: none;
+        }
+
+    }
+
+    &:focus,
+    &.focused {
+        border: 1px solid $light-blue;
+        box-shadow: 0 0px 5px 0 $light-blue;
+    }
+
+    &:invalid, &.error {
+        border: 1px solid $blood-red;
+        box-shadow: 0px 0px 5px 0 $blood-red;
+    }
+}
+
+
+
+.help {
+    color: $battleship-gray;
+    font-size: 11px;
+    margin-top: 0.25em;
+}
+
+
+
+.flex-container {
+    display-flex();
+    width: 100%;
+
+    .row {
+        display-flex();
+        flex(1, 1, 100%);
+        flex-direction(row);
+    }
+
+    .col {
+        align-items(flex-end);
+        display-flex();
+        flex(1, 1, 50%);
+        flex-direction(column);
+        margin-bottom: 10px;
+
+        &:first-child {
+            margin-right: 10px;
+        }
+
+    }
+
+    .flex {
+        display-flex();
+        flex(1, 1, 100%);
+        width: 100%;
+        margin: 2.5px 0;
+
+        label {
+            min-width: 50%;
+            overflow: hidden;
+            text-align: right;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        input {
+            flex(1, 1, 50%);
+
+            &:not([type="checkbox"]) {
+                min-width: 50%;
+            }
+
+            &[type="checkbox"] {
+                min-width: auto;
+                margin-left: 5px;
+            }
+        }
+
+        .right {
+            align-items(flex-end);
+        }
+
+    }
+}
+
+@media $small-min-width {
+
+    .flex-container {
+        .col {
+            align-content(flex-end);
+        }
+
+        .flex {
+            width: 100%;
+            input, label {
+                min-width: 50%;
+            }
+            input[type="checkbox"] {
+                min-width: 0;
+            }
+
+        }
+    }
+}
