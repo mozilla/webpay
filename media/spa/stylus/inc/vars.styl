@@ -1,0 +1,79 @@
+// Colors
+$white = #fff;
+$border-gray = #717371;
+$dark-gray = #333;
+$vibrant-gray = #3b3b3b;
+$medium-gray = #666;
+$battleship-gray = #999;
+$light-gray = #ccc;
+$pale-gray = #eaeaea;
+$light-blue = #0096dc;
+$bright-blue = #00caf2;
+$shiny-blue = #00aacc;
+$blood-red = #A50606;
+
+// Page
+$bg-color = $pale-gray;
+$grain-bg-color = $vibrant-gray;
+
+// Button Colors
+$button-bg-color = $white;
+$button-bg-color2 = $light-gray;
+$button-text-color = $dark-gray;
+$button-focus-color = $light-blue;
+
+$button-border-color = darken($button-bg-color, 40%);
+$button-border-color-disabled = darken($button-bg-color2, 2.5%);
+$button-bg-color-disabled = darken($button-bg-color, 9.5%);
+$button-text-shadow-color = $button-bg-color;
+$button-text-color-disabled = darken($button-bg-color2, 2.5%);
+
+// Call To Action Button
+$button-cta-bg-color = $bright-blue;
+$button-cta-bg-color2 = $shiny-blue;
+$button-cta-border-color = darken($button-cta-bg-color, 40%);
+$button-cta-border-color-disabled = darken($button-cta-bg-color2, 2.5%);
+$button-cta-bg-color-disabled = darken($button-cta-bg-color, 9.5%);
+$button-cta-text-color = $button-text-color;
+$button-cta-text-shadow-color = lighten($button-cta-bg-color, 10%);
+$button-cta-text-color-disabled = darken($button-cta-bg-color2, 2.5%);
+
+$full-error-text-color = $white;
+
+
+// Vars representing minimum px values for media queries;
+// Media queries are S/M/L/XL and up.
+// This is deliberately device agnostic.
+
+$XS-max = 480px;
+
+$S-min = 480px;
+$S-max = 768px;
+
+$M-min = 768px;
+$M-max = 1024px;
+
+$L-min = 1024px;
+$L-max = 1440px;
+
+$XL-min = 1440px;
+
+// Usage:
+// @media $breakpoint {
+//     ....
+// }
+$small-min-width = 'only screen and (min-width: ' + $S-min + ')';
+$medium-min-width = 'only screen and (min-width: ' + $M-min + ')';
+$large-min-width = 'only screen and (min-width: ' + $L-min + ')';
+$extra-large-min-width = 'only screen and (min-width: ' + $XL-min + ')';
+
+$extra-small-max-width = 'only screen and (max-width: ' + $XS-max + ')';
+$small-max-width = 'only screen and (max-width: ' + $S-max + ')';
+$medium-max-width = 'only screen and (max-width: ' + $M-max + ')';
+$elarge-max-width = 'only screen and (max-width: ' + $L-max + ')';
+
+$small-min-and-max-width = 'only screen and  (min-width: ' + $S-min + ') and (max-width: ' + $S-max + ')';
+$medium-min-and-max-width = 'only screen and (min-width: ' + $M-min + ') and (max-width: ' + $M-max + ')';
+$large-min-and-max-width = 'only screen and  (min-width: ' + $L-min + ') and (max-width: ' + $L-max + ')';
+
+$retina = '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)';

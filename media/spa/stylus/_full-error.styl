@@ -1,0 +1,62 @@
+.full-error {
+    position: relative;
+
+    .page {
+        display: block;
+        background-color: $grain-bg-color;
+        grain();
+    }
+
+    main {
+        bottom: 0;
+        color: $full-error-text-color;
+        display: block;
+        left: 0;
+        max-height: 100%; /* Causes scroll bars when content is too large */
+        max-width: 100%;
+        overflow-y: auto;
+        padding: 10px 20px 10px;
+        position: absolute;
+        right: 0;
+        width: 100%;
+    }
+
+    h2 {
+        border-bottom: 1px solid $border-gray;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 26px;
+        padding-bottom: 5px;
+    }
+
+    .msg {
+        font-size: 18px;
+        line-height: 26px;
+        min-height: 150px;
+
+        a {
+            color: $full-error-text-color;
+        }
+
+        p {
+            margin: 15px 0 0;
+
+            &:last-child {
+                margin-bottom: 10px;
+            }
+        }
+
+        .error-code {
+            color: $dark-gray;
+            text-shadow: 0 1px 0 $medium-gray;
+        }
+    }
+
+    .buttons {
+        background: none;
+        border-top: none;
+        margin: 10px -10px -10px;
+        padding: 10px 0;
+    }
+
+}

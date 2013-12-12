@@ -1,0 +1,75 @@
+a.button,
+.button {
+    background-color: $button-bg-color;
+    border: 1px solid $button-border-color;
+    border-radius: 3px;
+    color: $button-text-color;
+    display: inline-block;
+    font: 500 14px/40px "Fira Sans", "Open Sans", "Helvetica Neue", Arial, sans-serif;
+    gradient-two-color($button-bg-color, $button-bg-color2);
+    height: 40px;
+    overflow: hidden;
+    padding: 0 10px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 0 $button-text-shadow-color;
+    width: 100%;
+    white-space: nowrap;
+
+    // Everything after the first one.
+    &:nth-of-type(n + 2) {
+        margin-top: 10px;
+    }
+
+    &::-moz-focus-inner {
+        border: 0;
+        padding: 0 10px;
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+        background-color: $button-bg-color;
+        gradient-two-color($button-bg-color2, $button-bg-color);
+    }
+
+    &:focus {
+        border: 1px solid $button-focus-color;
+        box-shadow: 0 0 5px 0 $button-focus-color;
+        outline: none;
+    }
+
+    &[disabled],
+    &.disabled {
+        background: $button-bg-color-disabled;
+        border-color: $button-border-color-disabled;
+        color: $button-text-color-disabled;
+        padding: 0 10px;
+        pointer-events: none;
+        text-shadow: none;
+    }
+
+    // A call to action button.
+    &.cta {
+        border: 1px solid $button-cta-border-color;
+        background-color: $button-cta-bg-color;
+        gradient-two-color($button-cta-bg-color, $button-cta-bg-color2);
+        text-shadow: 0 1px 0 $button-cta-text-shadow-color;
+
+        &:hover,
+        &:active,
+        &:focus {
+            gradient-two-color($button-cta-bg-color2, $button-cta-bg-color);
+        }
+
+        &[disabled],
+        &.disabled {
+            border-color: $button-cta-border-color-disabled;
+            background: $button-cta-bg-color-disabled;
+            color: $button-cta-text-color-disabled;
+            text-shadow: none;
+        }
+    }
+}

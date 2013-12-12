@@ -1,0 +1,55 @@
+.throbber {
+    background: rgba(244, 244, 244, 0.9);
+    bottom: 0;
+    min-height: 100%;
+    left: 0;
+    padding-top: 90px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+
+    &:before {
+        // embedurl will embed as base64.
+        background-image: embedurl('throbber.png');
+        content: '';
+        display: block;
+        margin: 0 auto;
+        width: 50px;
+        height: 50px;
+        animation(unquote('.9s spin infinite linear'));
+    }
+    span {
+        display: block;
+        margin: 0 auto;
+        max-width: 320px;
+        text-align: center;
+        margin-top: 1em;
+    }
+}
+
+@-webkit-keyframes spin {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(365deg);
+    }
+}
+@-moz-keyframes spin {
+    from {
+        -moz-transform: rotate(0deg);
+    }
+    to {
+        -moz-transform: rotate(365deg);
+    }
+}
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(365deg);
+    }
+}
+
