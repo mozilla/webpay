@@ -70,11 +70,7 @@ Sync up your database by running all the migrations::
 
     schematic ./migrations
 
-Now you should be ready to run the test suite::
-
-    python manage.py test
-
-If they all pass then fire up a development server::
+You can now fire up a development server::
 
     python manage.py runserver 0.0.0.0:8001
 
@@ -89,6 +85,48 @@ URL bar of how you run your dev server exactly.
 
 See :ref:`this section <use-hosted>` for how to set up a B2G device to
 talk to your brand new local development server.
+
+Running Tests
+~~~~~~~~~~~~~
+
+Webpay has integration tests that make HTTP requests to Django views
+or test public functions and classes directly.
+You can run the test suite like this::
+
+    python manage.py test
+
+Running UI Tests
+~~~~~~~~~~~~~~~~
+
+Webpay has a test suite that sets up a couple mocks then runs tests
+against the web UI in a headless browser.
+To run UI tests you need `casperjs`_ 1.1 or greater. With `homebrew`_ on
+Mac OS X you can install it like this::
+
+    brew install --devel casperjs
+
+From the root of Webpay and within your Python virualenv,
+run the tests like this::
+
+    make test-ui
+
+To hack on tests, add a file like ``uitests/tests/*.js``.
+All JS files in that directory are run automatically.
+
+Debugging UI Tests
+~~~~~~~~~~~~~~~~~~
+
+If something catastrophic goes wrong, check the output of
+``tmp/supervisord.log`` and/or ``tmp/webpay.log`` for clues.
+
+In the case of timeout failures, you'll see a message in the console showing you
+where to find a screenshot of the browser page when the test timed out. It will
+be something like this: ``uitests/captures/timeout-oye23zirsf0qkt9.png``.
+
+For more debugging see the `casperjs`_ docs.
+
+.. _casperjs: http://docs.casperjs.org/en/latest/
+.. _homebrew: http://mxcl.github.com/homebrew/
 
 Building the Docs
 ~~~~~~~~~~~~~~~~~
