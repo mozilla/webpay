@@ -19,7 +19,7 @@ docs/_gh-pages
 ezboot.ini
 locale/xx
 media/spa/css/*
-node_modules/grunt-i18n-abide/*
+node_modules/grunt*
 npm-debug.log
 pip-log.txt
 settings/local.py
