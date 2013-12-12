@@ -53,3 +53,5 @@ PAY_URLS = {
         'logout': '/logout',
     },
 }
+
+ENABLE_SPA = False

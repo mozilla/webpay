@@ -24,6 +24,7 @@ from webpay.base.logger import getLogger
 from webpay.base.utils import app_error, custom_error, system_error
 from webpay.pin.forms import VerifyPinForm
 from webpay.pin.utils import check_pin_status
+from webpay.spa.views import index as spa
 
 from lib.marketplace.api import client as marketplace, UnknownPricePoint
 from lib.solitude import constants
@@ -115,6 +116,10 @@ def process_pay_req(request):
 @anonymous_csrf_exempt
 @require_GET
 def lobby(request):
+
+    if settings.ENABLE_SPA:
+        return spa(request)
+
     sess = request.session
     trans = None
     have_jwt = bool(request.GET.get('req'))
