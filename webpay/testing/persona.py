@@ -6,6 +6,9 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
 from webpay.base.decorators import json_view
+from webpay.base.logger import getLogger
+
+log = getLogger('w.pay')
 
 # When email addressess are prefixed with these values they will trigger login
 # behavior.
@@ -44,13 +47,18 @@ def fake_verify(request):
     }
 
     success['email'] = assertion
+    log.info('logging in {email}'.format(email=assertion))
     if assertion.startswith(OK_USER):
+        log.info('ok')
         return success
     elif assertion.startswith(TIMEOUT_USER):
         sleep(10)
+        log.info('ok')
         return success
     elif assertion.startswith(ERROR_LOGIN):
+        log.info('fail')
         return http.HttpResponseServerError()
     elif assertion.startswith(FAILED_LOGIN):
         request.session.clear()
+        log.info('fail')
         return http.HttpResponseBadRequest()

@@ -5,25 +5,15 @@ var helpers = require('./helpers');
 casper.test.begin('Test Basic Pin Entry', {
 
   setUp: function(test) {
-    // Sets the filter so we always login as a new user.
-    var token = Math.random().toString(36).slice(2);
-    helpers.setLoginFilter("tester+" + token + "@fakepersona.mozilla.org");
   },
 
   tearDown: function(test) {
-
   },
 
   test: function(test) {
 
-    casper.start(settings.testServer + '/mozpay/');
-
-    casper.waitFor(function check() {
-      return this.visible('#signin');
-    }, function then() {
-      test.assertVisible('#signin', 'Check signin element is present.');
-      this.click('#signin');
-    });
+    helpers.start(casper);
+    helpers.logInAsNewUser(casper, test);
 
     casper.waitFor(function check() {
       return this.visible('#pin') && !this.visible('#progress');
