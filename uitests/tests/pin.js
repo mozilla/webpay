@@ -89,7 +89,7 @@ casper.test.begin('Test Create/Confirm Pin', {
     }, function submitPin() {
       this.click('button[type="submit"]');
     }, function timeout() {
-      test.fail('failure creating/confirming pin.');
+      test.fail('failure entering pin.');
     }, 10000);
 
     casper.waitFor(function pinWasSubmitted() {
@@ -98,7 +98,7 @@ casper.test.begin('Test Create/Confirm Pin', {
       this.sendKeys('#id_pin', '1234', {keepFocus: true});
     }, function timeout() {
       this.echo('page title was ' + this.fetchText('h2'));
-      test.fail('failure creating/confirming pin.');
+      test.fail('failure submitting pin 1.');
     }, 10000);
 
     casper.waitFor(function pin2WasEntered() {
@@ -106,10 +106,10 @@ casper.test.begin('Test Create/Confirm Pin', {
     }, function submitPin2() {
       this.click('button[type="submit"]');
     }, function timeout() {
-      test.fail('failure creating/confirming pin.');
+      test.fail('failure submitting pin 2.');
     }, 10000);
 
-    casper.waitFor(function pin2WasSubmitted() {
+    casper.waitFor(function pinWasCreated() {
       // This is the payment faker page.
       return this.fetchText('h2') === 'Fake a payment';
     }, function finish() {
