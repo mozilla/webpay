@@ -12,7 +12,9 @@
 
     {% raw %}
       <script type="text/x-handlebars">
-        {{ outlet }}
+        <div class="page">
+            {{ outlet }}
+        </div>
       </script>
 
       <script type="text/x-handlebars" data-template-name="loading">
@@ -36,8 +38,30 @@
         <h2>{{ title }}</h2>
       </script>
 
+      <script type="text/x-handlebars" id="login">
+        <main role="main">
+          <div id="login" class="message">
+            <h2>Sign In</h2>
+            <p>Sign in to continue with the payment</p>
+            <a id="signin" class="sign-in" href="#">Sign in</a>
+          </div>
+        </main>
+      </script>
+
       <script type="text/x-handlebars" id="create">
-        <h2>{{ title }}</h2>
+        <main role="main">
+          <h2>{{ title }}</h2>
+          <form class="pinform" id="pinform">
+            <input type="password" name="char1" maxlength="1">
+            <input type="password" name="char2" maxlength="1">
+            <input type="password" name="char3" maxlength="1">
+            <input type="password" name="char4" maxlength="1">
+          </form>
+        </main>
+        <div class="buttons">
+          <button class="button">Cancel</button>
+          <button class="button cta">Continue</button>
+        </div>
       </script>
 
       <script type="text/x-handlebars" id="enter">
