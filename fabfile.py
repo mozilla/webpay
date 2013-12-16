@@ -2,7 +2,6 @@ import os
 from fabric.api import (env, execute, lcd, local, parallel,
                         run, roles, task)
 
-from fabdeploytools.rpm import RPMBuild
 from fabdeploytools import helpers
 import fabdeploytools.envs
 
@@ -11,6 +10,10 @@ import deploysettings as settings
 
 env.key_filename = settings.SSH_KEY
 fabdeploytools.envs.loadenv(settings.CLUSTER)
+
+SCL_NAME = getattr(settings, 'SCL_NAME', False)
+if SCL_NAME:
+    helpers.scl_enable(SCL_NAME)
 
 ROOT, WEBPAY = helpers.get_app_dirs(__file__)
 
@@ -25,18 +28,9 @@ def managecmd(cmd):
 
 @task
 def create_virtualenv():
-    with lcd(WEBPAY):
-        # Compare the last reflog change with the latest change we introduced.
-        status = local('git diff HEAD@{1} HEAD --name-only', capture=True)
-
-    if 'requirements/' in status:
-        venv = VIRTUALENV
-        if not venv.startswith('/data'):
-            raise Exception('venv must start with /data')
-
-        local('rm -rf %s' % venv)
-        helpers.create_venv(venv, settings.PYREPO,
-                            '%s/requirements/prod.txt' % WEBPAY)
+    helpers.create_venv(VIRTUALENV, settings.PYREPO,
+                        '%s/requirements/prod.txt' % WEBPAY,
+                        update_on_change=True, rm_first=True)
 
 
 @task
@@ -68,21 +62,6 @@ def update_info(ref='origin/master'):
 
 
 @task
-@roles('web')
-@parallel
-def restart_workers():
-    for gservice in settings.GUNICORN:
-        run("/sbin/service %s graceful" % gservice)
-    restarts = []
-    for g in settings.MULTI_GUNICORN:
-        restarts.append('( supervisorctl restart {0}-a; '
-                        'supervisorctl restart {0}-b )&'.format(g))
-
-    if restarts:
-        run('%s wait' % ' '.join(restarts))
-
-
-@task
 @roles('celery')
 @parallel
 def update_celery():
@@ -101,7 +80,6 @@ def deploy():
                    deploy_roles=['web', 'celery'],
                    package_dirs=['webpay', 'venv'])
 
-    execute(restart_workers)
     helpers.restart_uwsgi(getattr(settings, 'UWSGI', []))
     execute(update_celery)
 
