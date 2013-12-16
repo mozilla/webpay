@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-27 07:59-0700\n"
-"PO-Revision-Date: 2013-11-13 07:48+0000\n"
-"Last-Translator: Mark <markh@babelzilla.org>\n"
+"PO-Revision-Date: 2013-12-16 15:58+0000\n"
+"Last-Translator: Ton <tonnes.mb@gmail.com>\n"
 "Language-Team: none\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1384328903.0\n"
+"X-POOTLE-MTIME: 1387209501.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -29,7 +29,7 @@ msgstr "Mozilla heeft bij het verwerken van de betaling een ongeldige code van d
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:79
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr "Een afbeeldingspictorgamsleutel was geen object. Correct voorbeeld: {0}"
+msgstr "Een afbeeldingspictogramsleutel was geen object. Correct voorbeeld: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -61,7 +61,7 @@ msgstr "De JWT is verlopen."
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr "Een intern webverzoek is verlopen."
+msgstr "Een interne webaanvraag is verlopen."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -79,7 +79,7 @@ msgstr "De JWT is niet gedecodeerd naar een JSON-object."
 #. localized.
 #: webpay/base/dev_messages.py:104
 msgid "Error decoding JWT."
-msgstr "Fout bij decoderen JWT."
+msgstr "Fout bij decoderen van JWT."
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
@@ -118,7 +118,9 @@ msgstr "Betalingen zijn tijdelijk uitgeschakeld"
 
 #: webpay/base/dev_messages.py:124
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr "De hulpbron is gewijzigd binnen het tijdsvak van het voorgaande verzoek. De actie dient opnieuw te worden uitgevoerd."
+msgstr ""
+"De hulpbron is gewijzigd binnen het tijdvak van het voorgaande verzoek. De "
+"actie dient opnieuw te worden uitgevoerd."
 
 #: webpay/base/dev_messages.py:126
 msgid "Payment simulations are disabled at this time."
@@ -130,7 +132,9 @@ msgstr "Deze betalingssleutel kan alleen maar worden gebruikt voor aankoopsimula
 
 #: webpay/base/dev_messages.py:130
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr "De aankoop kan niet worden afgerond omdat de huidige transactie al is beëindigd."
+msgstr ""
+"De aankoop kan niet worden voltooid, omdat de huidige transactie al is "
+"beëindigd."
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
@@ -156,7 +160,10 @@ msgstr "Er is een fout opgetreden bij het instellen van de betaling. Probeer het
 
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr "Er is een interne fout opgetreden tijdens het verwerken van de betaling. Probeer het opnieuw of neem contact met Mozilla op als het probleem aanhoudt."
+msgstr ""
+"Er is een interne fout opgetreden tijdens het verwerken van de betaling. "
+"Probeer het opnieuw of neem contact op met Mozilla als het probleem "
+"aanhoudt."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -234,7 +241,7 @@ msgstr "Dit duurt langer dan verwacht. Opnieuw proberen?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr "Er is iets foutgegaan. Opnieuw proberen?"
+msgstr "Er is iets misgegaan. Opnieuw proberen?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -318,11 +325,11 @@ msgstr "Pincode bevestigen"
 
 #: webpay/pin/views.py:131 webpay/pin/views.py:157 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
-msgstr "Pincode resetten"
+msgstr "Pincode opnieuw instellen"
 
 #: webpay/pin/views.py:178
 msgid "Pin reset"
-msgstr "Reset pincode"
+msgstr "Pincode opnieuw instellen"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
@@ -336,7 +343,9 @@ msgstr "Pincode vergeten?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr "U hebt te vaak de verkeerde pincode ingegeven. Uw account is vergrendeld. Probeer het opnieuw over vijf minuten."
+msgstr ""
+"U hebt te vaak de verkeerde pincode ingevoerd. Uw account is vergrendeld. "
+"Probeer het over 5 minuten opnieuw."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
@@ -344,12 +353,17 @@ msgstr "Uw pincode is vergrendeld"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
-msgstr "Uw pincode is vergrendeld omdat u deze te vaak onjuist hebt ingegeven. U kunt doorgaan en proberen uw pincode opnieuw in te geven of uw pincode resetten."
+msgstr ""
+"Uw pincode is vergrendeld, omdat u deze te vaak onjuist hebt ingevoerd. U "
+"kunt doorgaan en proberen uw pincode nogmaals in te voeren of uw pincode "
+"opnieuw instellen."
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr "Weet u zeker dat u uw pincode wilt resetten? U dient u bij Persona aan te melden om uw pincode te resetten."
+msgstr ""
+"Weet u zeker dat u uw pincode opnieuw wilt instellen? U dient zich bij "
+"Persona aan te melden om uw pincode opnieuw in te stellen."
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
-msgstr "Resetten"
+msgstr "Opnieuw instellen"
