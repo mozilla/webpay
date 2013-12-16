@@ -23,8 +23,10 @@ gunicorn==0.17.4
 httplib2==0.7.6
 importlib-no-failure==1.0.2
 jingo==0.6
+Jinja2==2.6
 kombu==2.5.10
 m2secret==0.1.1
+MarkupSafe==0.18
 mock==1.0b1
 mozilla-logger==0.1
 mozpay==2.0.0
