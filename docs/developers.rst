@@ -9,12 +9,12 @@ You can also :ref:`use a hosted <use-hosted>` WebPay server.
 Install
 ~~~~~~~
 
-You need Python 2.6, and MySQL, and a few NodeJS commands
+You need Python 2.7, and MySQL, and a few NodeJS commands
 like `stylus`_ for minifying JS/CSS.
 Install system requirements with `homebrew`_ (Mac OS X)::
 
     brew tap homebrew/versions
-    brew install python26 mysql swig nodejs
+    brew install python mysql swig nodejs
 
 To develop locally you also need:
 
@@ -35,7 +35,7 @@ Install all Python dependencies. You probably want to do this
 within a `virtualenv`_. If you use `virtualenvwrapper`_ (recommended)
 set yourself up with::
 
-    mkvirtualenv --python=python2.6 webpay
+    mkvirtualenv --python=python2.7 webpay
 
 Install with::
 
