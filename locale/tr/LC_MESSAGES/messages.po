@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 07:59-0700\n"
+"POT-Creation-Date: 2013-12-18 09:32-0700\n"
 "PO-Revision-Date: 2013-12-10 07:54+0000\n"
 "Last-Translator: Selim <selim@sum.lu>\n"
 "Language-Team: Mozilla Turkey <bilgi@mozilla.org.tr>\n"
@@ -18,15 +18,13 @@ msgstr ""
 msgid "Payment cancelled."
 msgstr "Ödeme iptal edildi."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "Ödemeniz tamamlandı."
 
 #: webpay/base/dev_messages.py:75
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
-"Mozilla ödeme işlemi gerçekleşirken ödeme hizmeti sağlayıcısından (Bango) "
-"geçersiz bir kod aldı."
+msgstr "Mozilla ödeme işlemi gerçekleşirken ödeme hizmeti sağlayıcısından (Bango) geçersiz bir kod aldı."
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:79
@@ -53,9 +51,7 @@ msgstr "Talep edilen ödeme simülasyonu sonucu desteklenmiyor."
 
 #: webpay/base/dev_messages.py:89
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
-"Ödeme hizmeti sağlayıcısı (Bango) ödeme işlemi gerçekleştirilirken bir "
-"sorunla karşılaştı"
+msgstr "Ödeme hizmeti sağlayıcısı (Bango) ödeme işlemi gerçekleştirilirken bir sorunla karşılaştı"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -122,9 +118,7 @@ msgstr "Ödemeler geçici olarak devre dışıdır"
 
 #: webpay/base/dev_messages.py:124
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
-"Kaynak, önceki isteğin zamanlaması içinde değiştirilmiş. Bu eylemi "
-"tekrarlamanız gerekiyor."
+msgstr "Kaynak, önceki isteğin zamanlaması içinde değiştirilmiş. Bu eylemi tekrarlamanız gerekiyor."
 
 #: webpay/base/dev_messages.py:126
 msgid "Payment simulations are disabled at this time."
@@ -172,8 +166,8 @@ msgstr "İzin verilmiyor"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Üzgünüz, bunu yapmaya izniniz yok."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:43
-#: webpay/pin/templates/pin/pin_form.html:47 webpay/pin/templates/pin/reset_start.html:17
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
+#: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "İptal"
 
@@ -198,7 +192,7 @@ msgid "Please try again in a few moments."
 msgstr "Lütfen birkaç dakika sonra tekrar deneyin."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
 msgid "Web Pay"
 msgstr "Web Ödemesi"
 
@@ -250,11 +244,11 @@ msgstr "Tamam"
 msgid "Error"
 msgstr "Hata"
 
-#: webpay/pay/views.py:55
+#: webpay/pay/views.py:56
 msgid "Payments are temporarily disabled."
 msgstr "Ödemeler geçici olarak devre dışıdır."
 
-#: webpay/pay/views.py:185 webpay/pin/views.py:93
+#: webpay/pay/views.py:190 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "PIN'i girin"
 
@@ -282,7 +276,7 @@ msgstr "Para ödemeyeceksiniz."
 msgid "result"
 msgstr "sonuç"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:50 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Devam et"
 
@@ -336,7 +330,7 @@ msgstr ""
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:35 webpay/pin/templates/pin/reset_start.html:13
+#: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
 msgstr "PIN'inizi mi unuttunuz?"
 

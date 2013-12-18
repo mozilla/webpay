@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 07:59-0700\n"
+"POT-Creation-Date: 2013-12-18 09:32-0700\n"
 "PO-Revision-Date: 2013-01-08 08:50-0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,7 +17,7 @@ msgstr ""
 msgid "Payment cancelled."
 msgstr "Payment cancelled."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "Your payment is complete."
 
@@ -165,8 +165,8 @@ msgstr "Not Allowed"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Sorry, you are not allowed to do that."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:43
-#: webpay/pin/templates/pin/pin_form.html:47 webpay/pin/templates/pin/reset_start.html:17
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
+#: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -191,7 +191,7 @@ msgid "Please try again in a few moments."
 msgstr "Please try again in a few moments."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
 msgid "Web Pay"
 msgstr "Web Pay"
 
@@ -243,11 +243,11 @@ msgstr "OK"
 msgid "Error"
 msgstr "Error"
 
-#: webpay/pay/views.py:55
+#: webpay/pay/views.py:56
 msgid "Payments are temporarily disabled."
 msgstr "Payments are temporarily disabled."
 
-#: webpay/pay/views.py:185 webpay/pin/views.py:93
+#: webpay/pay/views.py:190 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Enter Pin"
 
@@ -275,7 +275,7 @@ msgstr "You will not be charged."
 msgid "result"
 msgstr "result"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:50 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Continue"
 
@@ -329,7 +329,7 @@ msgstr "For testing only. Marketplace users <b>should not</b> use this site."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:35 webpay/pin/templates/pin/reset_start.html:13
+#: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
 msgstr "Forgot your pin?"
 
