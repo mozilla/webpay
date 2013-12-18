@@ -81,6 +81,7 @@ MINIFY_BUNDLES = {
             'js/cli.js',
             'js/id.js',
             'js/auth.js',
+            'js/lib/l10n.js',
             'js/pay/bango.js',
 
             # These are top-level modules.
