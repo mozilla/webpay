@@ -13,8 +13,11 @@ This guide can help you do a few things:
 * :ref:`Install and configure <developers>` your own WebPay server for development.
 * Understand the APIs WebPay consumes and generally how things work.
 
+This is also available as a `PDF`.
+
 .. _WebPaymentProvider: https://wiki.mozilla.org/WebAPI/WebPaymentProvider
 .. _`navigator.mozPay()`: https://wiki.mozilla.org/WebAPI/WebPayment
+.. _PDF: https://media.readthedocs.org/pdf/webpay/latest/webpay.pdf
 
 Contents
 --------
