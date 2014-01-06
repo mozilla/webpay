@@ -23,7 +23,7 @@ msgstr "Плащането ви е завършено"
 
 #: webpay/base/dev_messages.py:75
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
+msgstr "Mozilla получи невалиден код от доставчика на плащания (Bango), докато обработваше плащането"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:79
@@ -38,11 +38,11 @@ msgstr "Никой не е регистриран за този JWT издате
 
 #: webpay/base/dev_messages.py:84
 msgid "The price point is unknown or invalid."
-msgstr ""
+msgstr "Цената е неизвестна или невалидна."
 
 #: webpay/base/dev_messages.py:85
 msgid "The request to begin payment was invalid."
-msgstr ""
+msgstr "Заявката за започване на плащане беше невалидна."
 
 #: webpay/base/dev_messages.py:87
 msgid "The requested payment simulation result is not supported."
@@ -50,7 +50,7 @@ msgstr "Заявеният резултат от симулация на пла�
 
 #: webpay/base/dev_messages.py:89
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
+msgstr "Доставчикът на плащания (Bango) върна грешка, докато обработваше плащането"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -60,7 +60,7 @@ msgstr "JWT е изтекъл."
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Вътрешна заявка е отнела прекалено много време."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -82,11 +82,11 @@ msgstr "Грешка при декодиране на JWT."
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Опитът за вход отне прекалено много време."
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "Опитът за изход отне прекалено много време."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
@@ -95,7 +95,7 @@ msgstr "Има грешка в адрес. Може да е обратен ад�
 
 #: webpay/base/dev_messages.py:110
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
+msgstr "ID-то на транзакцията липсваше от сесията, докато се обработваше връщане на плащания"
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:114
@@ -109,15 +109,15 @@ msgstr "Ключът '{0}' липсва в заявената симулация
 
 #: webpay/base/dev_messages.py:120
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
+msgstr "Системата за уведомяване отговори с грешка, докато проверяваше известието за плащане"
 
 #: webpay/base/dev_messages.py:122
 msgid "Payments are temporarily disabled"
-msgstr ""
+msgstr "Плащанията са временно спрени"
 
 #: webpay/base/dev_messages.py:124
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
+msgstr "Ресурсът е модифициран по време на предишната заявка. Операцията трябва да се извърши отново."
 
 #: webpay/base/dev_messages.py:126
 msgid "Payment simulations are disabled at this time."
@@ -129,19 +129,19 @@ msgstr "Този ключ може да се използва само за си
 
 #: webpay/base/dev_messages.py:130
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
+msgstr "Покупката не може да бъде завършена, защото текущата транзакция е вече приключила."
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "Времето за чакане изтече, докато се очакваше транзакцията да започне."
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
+msgstr "Методът за плащане или цената не се поддържат за този регион или оператор."
 
 #: webpay/base/dev_messages.py:138
 msgid "The user cancelled the payment."
-msgstr ""
+msgstr "Потребителят отказа плащането"
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -155,7 +155,7 @@ msgstr "Възникна грешка при настройване на пла�
 
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
+msgstr "Възникна грешка при обработване на плащането. Опитайте отново или се свържете с Mozilla, ако грешката продължи."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -205,7 +205,7 @@ msgstr "ПИН-ът може да съръдржа само цифри"
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
+msgstr "Влезли сте като различен потребител, трябва да започнете плащането отново."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -229,11 +229,11 @@ msgstr "Опа...&hellip;"
 
 #: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
-msgstr ""
+msgstr "Това отнема повече, отколкото се очаква. Опитване отново?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "Нещо се обърка. Опитване отново?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -293,7 +293,7 @@ msgstr "Направи истинско плащане"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
-msgstr ""
+msgstr "Настройване на плащането&hellip;"
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
@@ -325,7 +325,7 @@ msgstr "ПИН-ът изчистен"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
+msgstr "Само за тестване. Потребителите <b>не трябва</b> да използват този сайт."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
