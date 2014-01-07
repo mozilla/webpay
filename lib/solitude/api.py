@@ -246,7 +246,7 @@ class SolitudeAPI(SlumberWrapper):
             )
             log.info('found product {pr}'.format(pr=product))
             provider_product = self.provider.products.get_object_or_404(
-                                                seller_uuid=seller_uuid,
+                                                seller_id=seller_uuid,
                                                 external_id=product_id)
             log.info('found provider product {pr}'.format(pr=provider_product))
         except ObjectDoesNotExist:
@@ -324,7 +324,7 @@ class SolitudeAPI(SlumberWrapper):
         # If there is no provider seller it means the billing account has
         # not yet been set up in Devhub.
         provider_seller = self.provider.sellers.get_object_or_404(
-                                        seller_uuid=generic_seller['uuid'])
+                                        uuid=generic_seller['resource_pk'])
 
         provider_product = self.provider.products.post({
             'external_id': external_id,
