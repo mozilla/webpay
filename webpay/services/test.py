@@ -1,6 +1,4 @@
-import calendar
 import json
-import time
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -15,6 +13,7 @@ from nose.tools import eq_
 from lib.marketplace.api import client as marketplace
 from lib.solitude.api import client as solitude
 from webpay.base.dev_messages import BAD_ICON_KEY
+from webpay.base.utils import gmtime
 from webpay.pay.utils import UnknownIssuer
 
 
@@ -68,7 +67,7 @@ class TestSigCheck(TestCase):
             issuer = settings.KEY
         if not secret:
             secret = settings.SECRET
-        issued_at = calendar.timegm(time.gmtime())
+        issued_at = gmtime()
         req = {
             'iss': issuer,
             'typ': typ,

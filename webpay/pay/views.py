@@ -21,7 +21,7 @@ from webpay.auth import utils as auth_utils
 from webpay.base import dev_messages as msg
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
-from webpay.base.utils import app_error, custom_error, system_error
+from webpay.base.utils import app_error, custom_error, gmtime, system_error
 from webpay.pin.forms import VerifyPinForm
 from webpay.pin.utils import check_pin_status
 from webpay.spa.views import index as spa
@@ -144,6 +144,12 @@ def lobby(request):
                          '{trans}; exc={exc}'
                          .format(trans=sess.get('trans_id'), exc=exc))
             return system_error(request, code=msg.BAD_REQUEST)
+
+        if (gmtime() - trans['created']) > settings.TRANSACTION_TIME_LIMIT:
+            log.info('Transaction {trans} is out of date'
+                     .format(trans=sess.get('trans_id')))
+            return system_error(request, code=msg.TRANS_EXPIRED)
+
         log.info('Re-used existing transaction ID: {tx}'
                  .format(tx=sess.get('trans_id')))
 

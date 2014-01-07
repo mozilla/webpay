@@ -1,4 +1,6 @@
+import calendar
 import functools
+import time
 
 from django.conf import settings
 from django.shortcuts import render
@@ -9,6 +11,10 @@ from tower import ugettext as _
 from webpay.base.logger import getLogger
 
 log = getLogger('w.cef')
+
+
+def gmtime():
+    return calendar.timegm(time.gmtime())
 
 
 def log_cef(msg, request, **kw):

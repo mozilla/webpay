@@ -18,6 +18,7 @@ from lib.solitude import constants
 
 from webpay.base import dev_messages as msg
 from webpay.base.tests import BasicSessionCase
+from webpay.base.utils import gmtime
 from webpay.pay import get_payment_url
 from webpay.pay.samples import JWTtester
 
@@ -58,8 +59,15 @@ class TestVerify(Base):
     def test_get_no_req(self, solitude):
         # Setting this is the minimum needed to simulate that you've already
         # started a transaction.
-        solitude.get_transaction.return_value = {'notes': {}}
+        solitude.get_transaction.return_value = {'notes': {},
+                                                 'created': gmtime()}
         eq_(self.client.get(self.url).status_code, 200)
+
+    @mock.patch('webpay.pay.views.solitude')
+    def test_expired(self, solitude):
+        solitude.get_transaction.return_value = {'created': gmtime() - 10}
+        with self.settings(TRANSACTION_TIME_LIMIT=5):
+            eq_(self.client.get(self.url).status_code, 400)
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')

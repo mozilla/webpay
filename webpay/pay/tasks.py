@@ -1,8 +1,6 @@
-import calendar
 import json
 import logging
 import sys
-import time
 import urlparse
 import uuid
 
@@ -17,6 +15,7 @@ from lib.solitude import constants
 from lib.solitude.api import client
 from multidb.pinning import use_master
 
+from webpay.base.utils import gmtime
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from .constants import NOT_SIMULATED, SIMULATED_POSTBACK, SIMULATED_CHARGEBACK
 from .utils import send_pay_notice, trans_id
@@ -372,7 +371,7 @@ def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED,
 
     response['price'] = {'amount': trans['amount'],
                          'currency': trans['currency']}
-    issued_at = calendar.timegm(time.gmtime())
+    issued_at = gmtime()
     notice = {'iss': settings.NOTIFY_ISSUER,
               'aud': notes['issuer_key'],
               'typ': typ,
