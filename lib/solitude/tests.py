@@ -407,12 +407,12 @@ class TestConfigureRefTrans(TestCase):
                 })
 
     def test_with_existing_prod(self):
-        seller_id = 99
+        seller_uuid = 'seller-xyz'
         self.set_mocks({
             'generic.seller': {
                 'return': {
-                    'resource_pk': seller_id,
-                    'resource_uri': '/seller/1',
+                    'resource_pk': seller_uuid,
+                    'resource_uri': '/seller/' + seller_uuid,
                 }
             },
             'provider.reference.transactions': {
@@ -423,32 +423,29 @@ class TestConfigureRefTrans(TestCase):
             },
         })
 
-        seller_uuid = 'seller-xyz'
         product_uuid = 'app-xyz'
 
         result = self.configure(seller_uuid=seller_uuid,
                                 product_uuid=product_uuid)
 
         eq_(result[0], 'zippy-trans-token')
-        eq_(result[1], seller_id)
+        eq_(result[1], seller_uuid)
 
         kw = self.slumber.provider.reference.products\
                                             .get_object_or_404.call_args[1]
         eq_(kw['external_id'], product_uuid)
-        eq_(kw['seller_uuid'], seller_uuid)
+        eq_(kw['seller_id'], seller_uuid)
 
     def test_with_new_prod(self):
         new_product_id = 66
-        provider_sel_id = 99
         product_uuid = 'app-xyz'
         seller_uuid = 'seller-xyz'
 
         self.set_mocks({
             'generic.seller': {
                 'return': {
-                    'resource_pk': 1,
-                    'resource_uri': '/seller/1',
-                    'uuid': seller_uuid,
+                    'resource_pk': seller_uuid,
+                    'resource_uri': '/seller/' + seller_uuid,
                 }
             },
             'provider.reference.transactions': {
@@ -462,7 +459,7 @@ class TestConfigureRefTrans(TestCase):
             },
             'provider.reference.sellers': {
                 'return': {
-                    'resource_pk': provider_sel_id,
+                    'resource_pk': seller_uuid,
                 }
             },
         })
@@ -478,7 +475,7 @@ class TestConfigureRefTrans(TestCase):
 
         kw = self.slumber.provider.reference.products.post.call_args[0][0]
         eq_(kw['external_id'], product_uuid)
-        eq_(kw['seller_id'], provider_sel_id)
+        eq_(kw['seller_id'], seller_uuid)
 
         kw = self.slumber.provider.reference.transactions.post.call_args[0][0]
         eq_(kw['product_id'], new_product_id)
