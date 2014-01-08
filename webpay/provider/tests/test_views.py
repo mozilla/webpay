@@ -33,14 +33,22 @@ class TestProviderSuccess(BasicSessionCase):
         self.notify = p.start()
         self.addCleanup(p.stop)
 
-    def success(self, data=None, clear_qs=False):
+    def callback(self, data=None, clear_qs=False, view=None):
+        assert view, 'not sure which view to use'
         params = {'ext_transaction_id': self.trans_id}
         if clear_qs:
             params.clear()
         if data:
             params.update(data)
-        return self.client.get(reverse('provider.success', args=['reference']),
-                               params)
+        return self.client.get(view, params)
+
+    def error(self, **kw):
+        kw['view'] = reverse('provider.error', args=['reference'])
+        return self.callback(**kw)
+
+    def success(self, **kw):
+        kw['view'] = reverse('provider.success', args=['reference'])
+        return self.callback(**kw)
 
     def test_missing_ext_trans(self):
         res = self.success(clear_qs=True)
@@ -59,3 +67,10 @@ class TestProviderSuccess(BasicSessionCase):
         eq_(res.status_code, 200)
         self.notify.delay.assert_called_with(self.trans_id)
         self.assertTemplateUsed(res, 'provider/success.html')
+
+    def test_error(self):
+        res = self.error()
+        eq_(res.status_code, 400)
+        assert not self.notify.delay.called, (
+                'did not expect a notification on error')
+        self.assertTemplateUsed(res, 'error.html')
