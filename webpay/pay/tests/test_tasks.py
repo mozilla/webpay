@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import calendar
-import time
 import urllib2
 from urllib import urlencode
 
@@ -23,6 +21,7 @@ import test_utils
 from lib.marketplace.api import client, UnknownPricePoint
 from lib.solitude import api
 from lib.solitude import constants
+from webpay.base.utils import gmtime
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from webpay.pay import tasks
 from webpay.pay.samples import JWTtester
@@ -235,9 +234,9 @@ class TestNotifyApp(NotifyTest):
             eq_(data['request']['postbackURL'], 'http://foo.url/post')
             eq_(data['request']['chargebackURL'], 'http://foo.url/charge')
             eq_(data['response']['transactionID'], 'some:uuid')
-            assert data['iat'] <= calendar.timegm(time.gmtime()) + 60, (
+            assert data['iat'] <= gmtime() + 60, (
                                 'Expected iat to be about now')
-            assert data['exp'] > calendar.timegm(time.gmtime()) + 3500, (
+            assert data['exp'] > gmtime() + 3500, (
                                 'Expected exp to be about an hour from now')
             return True
 

@@ -538,3 +538,7 @@ USAGE_WARNING = False
 
 # Enable the Single Page App
 ENABLE_SPA = False
+
+# The amount of seconds that we'll accept a transaction for. See also the
+# session age limit.
+TRANSACTION_TIME_LIMIT = 60 * 60

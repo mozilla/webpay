@@ -1,11 +1,11 @@
-import calendar
 from optparse import make_option
-import time
 
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
 import jwt
+
+from webpay.base.utils import gmtime
 
 
 class Command(BaseCommand):
@@ -28,7 +28,7 @@ class Command(BaseCommand):
     )
 
     def handle(self, *args, **options):
-        iat = calendar.timegm(time.gmtime())
+        iat = gmtime()
         exp = iat + 3600  # Expires in 1 hour.
         req = {
             'iss': options['iss'],

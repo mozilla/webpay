@@ -57,7 +57,7 @@ class SolitudeAPITest(TestCase):
     def test_non_existent_get_buyer(self, slumber):
         slumber.generic.buyer.get.side_effect = HttpClientError(
             response=self.create_error_response())
-        buyer = client.get_buyer('something that does not exist')
+        buyer = client.get_buyer('something-that-does-not-exist')
         assert 'errors' in buyer
 
     def test_create_buyer_without_pin(self, slumber):

@@ -29,6 +29,7 @@ RESOURCE_MODIFIED = 'RESOURCE_MODIFIED'
 SIM_DISABLED = 'SIM_DISABLED'
 SIM_ONLY_KEY = 'SIM_ONLY_KEY'
 TRANS_ENDED = 'TRANS_ENDED'
+TRANS_EXPIRED = 'TRANS_EXPIRED'
 TRANS_TIMEOUT = 'TRANS_TIMEOUT'
 UNSUPPORTED_PAY = 'UNSUPPORTED_PAY'
 # This string is used to determine the message on Marketplace;
@@ -129,6 +130,9 @@ def _build_legend():
         TRANS_ENDED:
             _('The purchase cannot be completed because the current '
               'transaction has already ended.'),
+        TRANS_EXPIRED:
+            _('The purchase cannot be started because the transaction '
+              'started too long ago'),
         TRANS_TIMEOUT:
             _('The system timed out while waiting for a transaction '
               'to start.'),

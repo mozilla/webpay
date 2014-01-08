@@ -1,12 +1,12 @@
 # Copied from mozpay. Will remove when tests are included in bundle.
-import calendar
 import json
-import time
 import unittest
 
 from django.conf import settings
 
 import jwt
+
+from webpay.base.utils import gmtime
 
 
 class JWTtester(unittest.TestCase):
@@ -22,7 +22,7 @@ class JWTtester(unittest.TestCase):
         iss = iss or self.key
         aud = aud or settings.DOMAIN
         if not iat:
-            iat = calendar.timegm(time.gmtime())
+            iat = gmtime()
         if not exp:
             exp = iat + 3600  # Expires in 1 hour.
 
