@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-18 09:32-0700\n"
+"POT-Creation-Date: 2014-01-08 09:43-0700\n"
 "PO-Revision-Date: 2013-12-16 15:58+0000\n"
 "Last-Translator: Ton <tonnes.mb@gmail.com>\n"
 "Language-Team: none\n"
@@ -22,139 +22,143 @@ msgstr "Betaling geannuleerd."
 msgid "Your payment is complete."
 msgstr "Uw betaling is voltooid."
 
-#: webpay/base/dev_messages.py:75
+#: webpay/base/dev_messages.py:76
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
 msgstr "Mozilla heeft bij het verwerken van de betaling een ongeldige code van de betalingsprovider (Bango) ontvangen"
 
 #. L10n: First argument is an example of the proper key format.
-#: webpay/base/dev_messages.py:79
+#: webpay/base/dev_messages.py:80
 msgid "An image icon key was not an object. Correct example: {0}"
 msgstr "Een afbeeldingspictogramsleutel was geen object. Correct voorbeeld: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:83
+#: webpay/base/dev_messages.py:84
 msgid "No one has been registered for this JWT issuer."
 msgstr "Voor deze JWT-uitgever is niemand geregistreerd."
 
-#: webpay/base/dev_messages.py:84
+#: webpay/base/dev_messages.py:85
 msgid "The price point is unknown or invalid."
 msgstr "Het prijspunt is onbekend of ongeldig."
 
-#: webpay/base/dev_messages.py:85
+#: webpay/base/dev_messages.py:86
 msgid "The request to begin payment was invalid."
 msgstr "Het verzoek om de betaling te starten was ongeldig."
 
-#: webpay/base/dev_messages.py:87
+#: webpay/base/dev_messages.py:88
 msgid "The requested payment simulation result is not supported."
 msgstr "Het gevraagde betalingssimulatieresultaat wordt niet ondersteund."
 
-#: webpay/base/dev_messages.py:89
+#: webpay/base/dev_messages.py:90
 msgid "The payment provider (Bango) returned an error while processing the payment"
 msgstr "De betalingsprovider (Bango) heeft een fout gemeld bij het verwerken van de betaling"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:93
+#: webpay/base/dev_messages.py:94
 msgid "The JWT has expired."
 msgstr "De JWT is verlopen."
 
-#: webpay/base/dev_messages.py:94
+#: webpay/base/dev_messages.py:95
 msgid "An internal web request timed out."
 msgstr "Een interne webaanvraag is verlopen."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:98
+#: webpay/base/dev_messages.py:99
 msgid "The JWT signature is invalid or the JWT is malformed."
 msgstr "De JWT-handtekening is ongeldig of de JWT is beschadigd."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:101
+#: webpay/base/dev_messages.py:102
 msgid "The JWT did not decode to a JSON object."
 msgstr "De JWT is niet gedecodeerd naar een JSON-object."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:104
+#: webpay/base/dev_messages.py:105
 msgid "Error decoding JWT."
 msgstr "Fout bij decoderen van JWT."
 
-#: webpay/base/dev_messages.py:105
+#: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log in."
 msgstr "Het systeem heeft een time-out gegeven tijdens het aanmelden."
 
-#: webpay/base/dev_messages.py:106
+#: webpay/base/dev_messages.py:107
 msgid "The system timed out while trying to log out."
 msgstr "Het systeem heeft een time-out gegeven tijdens het afmelden."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
-#: webpay/base/dev_messages.py:108
+#: webpay/base/dev_messages.py:109
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
 msgstr "Een URL is beschadigd. Dit is mogelijk een postback-URL of een URL van een pictogram."
 
-#: webpay/base/dev_messages.py:110
+#: webpay/base/dev_messages.py:111
 msgid "The transaction ID was missing from the session when processing a payment return."
 msgstr "Het transactiekenmerk ontbrak bij de sessie bij het verwerken van een terugbetaling."
 
 #. L10n: First and second arguements are the names of keys.
-#: webpay/base/dev_messages.py:114
+#: webpay/base/dev_messages.py:115
 msgid "If {0} is defined, then you must also define {1}."
 msgstr "Als {0} is gedefinieerd, dient u tevens {1} te definiëren."
 
 #. L10n: First argument is the name of the key, 'reason'.
-#: webpay/base/dev_messages.py:118
+#: webpay/base/dev_messages.py:119
 msgid "The requested chargeback simulation is missing the key '{0}'."
 msgstr "De aangevraagde restitutiesimulatie mist de sleutel ‘{0}’."
 
-#: webpay/base/dev_messages.py:120
+#: webpay/base/dev_messages.py:121
 msgid "The notification service responded with an error while verifying the payment notice"
 msgstr "De notificatiedienst heeft geantwoord met een fout bij de verificatie van de betalingsnotiticatie"
 
-#: webpay/base/dev_messages.py:122
+#: webpay/base/dev_messages.py:123
 msgid "Payments are temporarily disabled"
 msgstr "Betalingen zijn tijdelijk uitgeschakeld"
 
-#: webpay/base/dev_messages.py:124
+#: webpay/base/dev_messages.py:125
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
 msgstr "De hulpbron is gewijzigd binnen het tijdvak van het voorgaande verzoek. De actie dient opnieuw te worden uitgevoerd."
 
-#: webpay/base/dev_messages.py:126
+#: webpay/base/dev_messages.py:127
 msgid "Payment simulations are disabled at this time."
 msgstr "Momenteel zijn betalingssimulaties uitgeschakeld."
 
-#: webpay/base/dev_messages.py:128
+#: webpay/base/dev_messages.py:129
 msgid "This payment key can only be used to simulate purchases."
 msgstr "Deze betalingssleutel kan alleen maar worden gebruikt voor aankoopsimulaties."
 
-#: webpay/base/dev_messages.py:130
+#: webpay/base/dev_messages.py:131
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr "De aankoop kan niet worden voltooid, omdat de huidige transactie al is beëindigd."
 
-#: webpay/base/dev_messages.py:133
+#: webpay/base/dev_messages.py:134
+msgid "The purchase cannot be started because the transaction started too long ago"
+msgstr ""
+
+#: webpay/base/dev_messages.py:137
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "Het systeem heeft een time-out gegeven tijdens het wachten op het begin van een transactie."
 
-#: webpay/base/dev_messages.py:136
+#: webpay/base/dev_messages.py:140
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr "De betalingsmethode of het prijspunt wordt voor deze regio of provider niet ondersteund."
 
-#: webpay/base/dev_messages.py:138
+#: webpay/base/dev_messages.py:142
 msgid "The user cancelled the payment."
 msgstr "De gebruiker heeft de betaling geannuleerd."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:145
+#: webpay/base/dev_messages.py:149
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "De waarde voor sleutel “{0}” is langer dan het maximum van {1}"
 
-#: webpay/base/utils.py:41
+#: webpay/base/utils.py:47
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr "Er is een fout opgetreden bij het instellen van de betaling. Probeer het opnieuw of neem contact op met de app als het probleem aanhoudt."
 
-#: webpay/base/utils.py:47
+#: webpay/base/utils.py:53
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr "Er is een interne fout opgetreden tijdens het verwerken van de betaling. Probeer het opnieuw of neem contact op met Mozilla als het probleem aanhoudt."
 
@@ -248,7 +252,7 @@ msgstr "Fout"
 msgid "Payments are temporarily disabled."
 msgstr "Betalingen zijn tijdelijk uitgeschakeld."
 
-#: webpay/pay/views.py:190 webpay/pin/views.py:93
+#: webpay/pay/views.py:196 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Voer pincode in"
 
