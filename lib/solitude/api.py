@@ -8,6 +8,9 @@ from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 
+from slumber.exceptions import HttpClientError
+from webpay.base.helpers import absolutify
+
 from webpay.base.helpers import absolutify
 from ..utils import SlumberWrapper
 from . import constants as solitude_const
@@ -269,6 +272,10 @@ class SolitudeAPI(SlumberWrapper):
             'price': price,
             'currency': currency,
             'pay_method': pay_method,
+            'callback_success_url': absolutify(
+                                        reverse('pay.callback_success_url')),
+            'callback_error_url': absolutify(
+                                        reverse('pay.callback_error_url')),
             'ext_transaction_id': transaction_uuid,
             'success_url': absolutify(reverse('provider.success',
                                       args=[provider])),
@@ -343,6 +350,18 @@ class SolitudeAPI(SlumberWrapper):
         if notes:
             transaction['notes'] = json.loads(notes)
         return transaction
+
+    def is_callback_token_valid(self, querystring, provider=None):
+        provider = self.set_provider(provider)
+        try:
+            response = self.provider.notices.post({'qs': querystring})
+        except HttpClientError as e:
+            log.error(('Notice creation with querystring {querystring} failed:'
+                       ' {error}').format(querystring=querystring, error=e))
+            return False
+        log.info('validation of the token against the provider {response}'
+                 .format(response=response))
+        return response['result'] == 'OK'
 
 
 class BangoSolitudeAPI(SolitudeAPI):

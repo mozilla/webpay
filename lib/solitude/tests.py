@@ -484,13 +484,56 @@ class TestConfigureRefTrans(TestCase):
         assert kw['error_url'].endswith('/provider/reference/error'), (
                 'Unexpected: {0}'.format(kw['error_url']))
 
+    def test_callback_validation_success(self):
+        self.set_mocks({
+            'provider.reference.notices': {
+                'method': 'post',
+                'return': {
+                    'result': 'OK',
+                }
+            },
+            'provider.reference.transactions': {
+                'method': 'post',
+                'return': {
+                    'token': 'zippy-trans-token',
+                }
+            },
+        })
+
+        self.configure(seller_uuid='seller-xyz', product_uuid='app-xyz')
+        is_valid = self.api.is_callback_token_valid({'foo': 'bar'})
+        eq_(is_valid, True)
+        eq_(self.slumber.provider.reference.notices.post.call_args[0][0],
+            {'qs': {'foo': 'bar'}})
+
+    def test_callback_validation_failure(self):
+        self.set_mocks({
+            'provider.reference.notices': {
+                'method': 'post',
+                'return': {
+                    'result': 'FAIL',
+                    'reason': 'signature mismatch',
+                }
+            },
+            'provider.reference.transactions': {
+                'method': 'post',
+                'return': {
+                    'token': 'zippy-trans-token',
+                }
+            },
+        })
+
+        self.configure(seller_uuid='seller-xyz', product_uuid='app-xyz')
+        is_valid = self.api.is_callback_token_valid({'foo': 'bar'})
+        eq_(is_valid, False)
+
 
 @mock.patch('lib.solitude.api.client.slumber')
 class TransactionTest(TestCase):
 
     def test_notes_transactions(self, slumber):
         slumber.generic.transaction.get_object.return_value = {
-                'notes': json.dumps({'foo': 'bar'})
+            'notes': json.dumps({'foo': 'bar'})
         }
         trans = client.get_transaction('x')
         eq_(trans['notes'], {'foo': 'bar'})
