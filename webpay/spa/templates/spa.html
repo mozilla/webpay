@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html LANG="{{ LANG }}" dir="{{ DIR }}">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    {# L10n: Web Pay is what we call the payment server/flow. #}
+    <title>{% block page_title %}{{ _('Web Pay') }}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ settings.MEDIA_URL }}spa/css/spartacus.css">
+  </head>
+  <body>
+
+    {% raw %}
+      <script type="text/x-handlebars">
+        {{ outlet }}
+      </script>
+
+      <script type="text/x-handlebars" data-template-name="loading">
+        <div class="throbber">
+          <span>Loading</span>
+        </div>
+      </script>
+
+      <script type="text/x-handlebars" data-template-name="error">
+        <h2>{{ error.title }}</h2>
+        <div class="msg">
+          <p>{{ error.details }}</p>
+        </div>
+        <div class="buttons">
+          <button class="button">{{ error.cancel }}</button>
+          <button class="button cta">{{ error.ok }}</button>
+        </div>
+      </script>
+
+      <script type="text/x-handlebars" id="index">
+        <h2>{{ title }}</h2>
+      </script>
+
+      <script type="text/x-handlebars" id="create">
+        <h2>{{ title }}</h2>
+      </script>
+
+      <script type="text/x-handlebars" id="enter">
+        <h2>{{ title }}</h2>
+      </script>
+
+      <script type="text/x-handlebars" id="reset">
+        <h2>{{ title }}</h2>
+      </script>
+
+      <script type="text/x-handlebars" id="locked">
+        <h2>{{ title }}</h2>
+      </script>
+
+      <script type="text/x-handlebars" id="was-locked">
+        <h2>{{ title }}</h2>
+      </script>
+    {% endraw %}
+
+    <script src="{{ settings.BROWSERID_JS_URL }}"></script>
+    <script data-main="{{ settings.MEDIA_URL }}spa/js/main.js" src="{{ settings.MEDIA_URL }}spa/js/libs/require-2.1.9.js"></script>
+  </body>
+</html>

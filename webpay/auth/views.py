@@ -124,7 +124,7 @@ def verify(request):
 
 
 def denied(request):
-    return render(request, '403.html')
+    return render(request, '403.html', status=403)
 
 
 def get_audience(request):

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 15:28-0700\n"
+"POT-Creation-Date: 2013-12-18 09:32-0700\n"
 "PO-Revision-Date: 2013-11-23 15:01+0000\n"
 "Last-Translator: Anna <arosichsoler@gmail.com>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -19,7 +19,7 @@ msgstr ""
 msgid "Payment cancelled."
 msgstr "S'ha cancel·lat el pagament."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "S'ha completat el pagament."
 
@@ -52,9 +52,7 @@ msgstr ""
 
 #: webpay/base/dev_messages.py:89
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
-"El proveïdor de pagament (Bango) ha retornat un error en processar el "
-"pagament."
+msgstr "El proveïdor de pagament (Bango) ha retornat un error en processar el pagament."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -99,9 +97,7 @@ msgstr ""
 
 #: webpay/base/dev_messages.py:110
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
-"L'identificador de la transacció mancava de la sessió en processar una "
-"devolució de pagament."
+msgstr "L'identificador de la transacció mancava de la sessió en processar una devolució de pagament."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:114
@@ -115,9 +111,7 @@ msgstr "A la simulació de recàrrega sol·licitada li manca la clau '{0}'."
 
 #: webpay/base/dev_messages.py:120
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
-"El servei de notificacions ha generat un error en verificar l'anunci de "
-"pagament"
+msgstr "El servei de notificacions ha generat un error en verificar l'anunci de pagament"
 
 #: webpay/base/dev_messages.py:122
 msgid "Payments are temporarily disabled"
@@ -137,8 +131,7 @@ msgstr "Aquesta clau de pagament només es pot fer servir per simular comandes."
 
 #: webpay/base/dev_messages.py:130
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
-"No es pot completar la comanda perquè la transacció actual ja ha finalitzat."
+msgstr "No es pot completar la comanda perquè la transacció actual ja ha finalitzat."
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
@@ -146,9 +139,7 @@ msgstr ""
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
-"No es permet el mètode de pagament o el punt de preu per aquesta regió o "
-"aquest operador."
+msgstr "No es permet el mètode de pagament o el punt de preu per aquesta regió o aquest operador."
 
 #: webpay/base/dev_messages.py:138
 msgid "The user cancelled the payment."
@@ -166,9 +157,7 @@ msgstr ""
 
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
-"S'ha produït un error intern en processar el pagament. Torneu-ho a provar o "
-"contacteu amb Mozilla si el problema persisteix."
+msgstr "S'ha produït un error intern en processar el pagament. Torneu-ho a provar o contacteu amb Mozilla si el problema persisteix."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -178,7 +167,7 @@ msgstr "No és permès"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Ho sentim, no podeu fer-ho."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:44 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Cancel·la"
@@ -204,7 +193,7 @@ msgid "Please try again in a few moments."
 msgstr "Torneu-ho a provar en uns moments."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
 msgid "Web Pay"
 msgstr "Web Pay"
 
@@ -244,7 +233,11 @@ msgstr ""
 msgid "This is taking longer than expected. Try again?"
 msgstr "Està trigant més del que s'esperava. Voleu tornar-ho a provar?"
 
-#: webpay/base/templates/base.html:43 webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:43
+msgid "Something went wrong. Try again?"
+msgstr ""
+
+#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "D'acord"
 
@@ -252,11 +245,11 @@ msgstr "D'acord"
 msgid "Error"
 msgstr "Error"
 
-#: webpay/pay/views.py:54
+#: webpay/pay/views.py:56
 msgid "Payments are temporarily disabled."
 msgstr "Els pagaments estan inhabilitats temporalment"
 
-#: webpay/pay/views.py:184 webpay/pin/views.py:93
+#: webpay/pay/views.py:190 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Introduïu el PIN"
 
@@ -331,6 +324,10 @@ msgstr "Reinicia el PIN"
 #: webpay/pin/views.py:178
 msgid "Pin reset"
 msgstr "Reinici del PIN"
+
+#: webpay/pin/templates/pin/pin_form.html:13
+msgid "For testing only. Marketplace users <b>should not</b> use this site."
+msgstr ""
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.

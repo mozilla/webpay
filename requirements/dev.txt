@@ -3,6 +3,6 @@
 # package for developers (testing, docs, etc.), it goes in this file.
 -r prod.txt
 -r compiled.txt
-nosenicedots==0.3
+nosenicedots==0.5
 pyquery==1.2.4
 cssselect==0.8

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'webpay.pay',
     'webpay.provider',
     'webpay.pin',
+    'webpay.spa',  # Single page app view.
     'webpay.services',
     'raven.contrib.django',
     'jingo_minify',
@@ -80,6 +81,7 @@ MINIFY_BUNDLES = {
             'js/cli.js',
             'js/id.js',
             'js/auth.js',
+            'js/lib/l10n.js',
             'js/pay/bango.js',
 
             # These are top-level modules.
@@ -518,7 +520,7 @@ UNIVERSAL_PROVIDER = False
 # Billing Configuration ID in Bangoland.
 PAY_URLS = {
     'bango': {
-        'base': 'http://mozilla.test.bango.org',
+        'base': 'https://mozilla.bango.net',
         'pay': '/mozpayments/?bcid={uid_pay}',
         # This is used by the UI to clear all Bango cookies.
         'logout': '/mozpayments/logout/',
@@ -530,3 +532,9 @@ PAY_URLS = {
         #'logout': '/logout',
     },
 }
+
+# Warning that this server is really only for testing.
+USAGE_WARNING = False
+
+# Enable the Single Page App
+ENABLE_SPA = False

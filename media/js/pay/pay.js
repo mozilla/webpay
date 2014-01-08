@@ -1,4 +1,4 @@
-require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'settings', 'lib/tracking'], function(cli, id, auth, bango, checkLongText, settings, tracking) {
+require(['cli', 'id', 'auth', 'bango', 'longtext', 'settings', 'tracking'], function(cli, id, auth, bango, checkLongText, settings, tracking) {
     "use strict";
 
     var bodyData = cli.bodyData;
@@ -276,8 +276,10 @@ require(['cli', 'id', 'auth', 'pay/bango', 'lib/longtext', 'settings', 'lib/trac
                     window.clearTimeout(resetLogoutTimeout);
                     cli.trackWebpayEvent({'action': 'forgot pin',
                                           'label': 'Logout Error'});
-                    cli.showFullScreenError({callback: runForgotPinLogout,
-                                             errorCode: 'LOGOUT_TIMEOUT'});
+                    // This can be a timeout or a failure. So a more generic message is needed.
+                    cli.showFullScreenError({errorDetail: bodyData.fullErrorDetailGeneric,
+                                             callback: runForgotPinLogout,
+                                             errorCode: 'LOGOUT_ERROR'});
                 });
 
             // Finally, log out of Persona so that the user has to

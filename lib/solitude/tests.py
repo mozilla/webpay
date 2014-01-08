@@ -307,7 +307,7 @@ class CreateBangoTest(TestCase):
     def test_no_seller(self, slumber):
         slumber.generic.seller.get_object.side_effect = ObjectDoesNotExist
         with self.assertRaises(SellerNotConfigured):
-            client.configure_product_for_billing(*range(0, 10))
+            client.configure_product_for_billing(*range(0, 8))
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_no_bango(self, slumber):
@@ -315,7 +315,7 @@ class CreateBangoTest(TestCase):
         slumber.bango.billing.post.return_value = {
             'billingConfigurationId': 'bar'}
         slumber.bango.product.get_object.side_effect = ObjectDoesNotExist
-        eq_(client.configure_product_for_billing(*range(0, 10)),
+        eq_(client.configure_product_for_billing(*range(0, 8)),
             ('bar', 'foo'))
 
     @mock.patch('lib.solitude.api.client.slumber')
@@ -326,7 +326,7 @@ class CreateBangoTest(TestCase):
         slumber.bango.product.get_object.return_value = {
             'resource_uri': 'foo'
         }
-        eq_(client.configure_product_for_billing(*range(0, 10)),
+        eq_(client.configure_product_for_billing(*range(0, 8)),
             ('bar', 'foo'))
 
 
@@ -351,8 +351,6 @@ class TestConfigureRefTrans(TestCase):
             seller_uuid,
             product_uuid,
             product_name,
-            success_redirect,
-            error_redirect,
             prices,
             icon_url,
             user_uuid,
@@ -409,12 +407,12 @@ class TestConfigureRefTrans(TestCase):
                 })
 
     def test_with_existing_prod(self):
-        seller_id = 99
+        seller_uuid = 'seller-xyz'
         self.set_mocks({
             'generic.seller': {
                 'return': {
-                    'resource_pk': seller_id,
-                    'resource_uri': '/seller/1',
+                    'resource_pk': seller_uuid,
+                    'resource_uri': '/seller/' + seller_uuid,
                 }
             },
             'provider.reference.transactions': {
@@ -425,32 +423,29 @@ class TestConfigureRefTrans(TestCase):
             },
         })
 
-        seller_uuid = 'seller-xyz'
         product_uuid = 'app-xyz'
 
         result = self.configure(seller_uuid=seller_uuid,
                                 product_uuid=product_uuid)
 
         eq_(result[0], 'zippy-trans-token')
-        eq_(result[1], seller_id)
+        eq_(result[1], seller_uuid)
 
         kw = self.slumber.provider.reference.products\
                                             .get_object_or_404.call_args[1]
         eq_(kw['external_id'], product_uuid)
-        eq_(kw['seller_uuid'], seller_uuid)
+        eq_(kw['seller_id'], seller_uuid)
 
     def test_with_new_prod(self):
         new_product_id = 66
-        provider_sel_id = 99
         product_uuid = 'app-xyz'
         seller_uuid = 'seller-xyz'
 
         self.set_mocks({
             'generic.seller': {
                 'return': {
-                    'resource_pk': 1,
-                    'resource_uri': '/seller/1',
-                    'uuid': seller_uuid,
+                    'resource_pk': seller_uuid,
+                    'resource_uri': '/seller/' + seller_uuid,
                 }
             },
             'provider.reference.transactions': {
@@ -464,7 +459,7 @@ class TestConfigureRefTrans(TestCase):
             },
             'provider.reference.sellers': {
                 'return': {
-                    'resource_pk': provider_sel_id,
+                    'resource_pk': seller_uuid,
                 }
             },
         })
@@ -480,10 +475,14 @@ class TestConfigureRefTrans(TestCase):
 
         kw = self.slumber.provider.reference.products.post.call_args[0][0]
         eq_(kw['external_id'], product_uuid)
-        eq_(kw['seller_id'], provider_sel_id)
+        eq_(kw['seller_id'], seller_uuid)
 
         kw = self.slumber.provider.reference.transactions.post.call_args[0][0]
         eq_(kw['product_id'], new_product_id)
+        assert kw['success_url'].endswith('/provider/reference/success'), (
+                'Unexpected: {0}'.format(kw['success_url']))
+        assert kw['error_url'].endswith('/provider/reference/error'), (
+                'Unexpected: {0}'.format(kw['error_url']))
 
     def test_callback_validation_success(self):
         self.set_mocks({

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 15:28-0700\n"
+"POT-Creation-Date: 2013-12-18 09:32-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,7 @@ msgstr "Ƥȧẏḿḗƞŧ ƈȧƞƈḗŀŀḗḓ."
 
 #: webpay/bango/templates/bango/success.html:10
 #: webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "Ẏǿŭř ƥȧẏḿḗƞŧ īş ƈǿḿƥŀḗŧḗ."
 
@@ -200,7 +201,7 @@ msgid "Sorry, you are not allowed to do that."
 msgstr "Şǿřřẏ, ẏǿŭ ȧřḗ ƞǿŧ ȧŀŀǿẇḗḓ ŧǿ ḓǿ ŧħȧŧ."
 
 #: webpay/base/templates/403.html:8
-#: webpay/base/templates/base.html:44
+#: webpay/base/templates/base.html:45
 #: webpay/base/templates/error.html:17
 #: webpay/pay/templates/pay/simulate.html:18
 #: webpay/pin/templates/pin/pin_form.html:39
@@ -233,6 +234,7 @@ msgstr "Ƥŀḗȧşḗ ŧřẏ ȧɠȧīƞ īƞ ȧ ƒḗẇ ḿǿḿḗƞŧş."
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9
+#: webpay/spa/templates/spa.html:8
 msgid "Web Pay"
 msgstr "Ẇḗƀ Ƥȧẏ"
 
@@ -273,6 +275,10 @@ msgid "This is taking longer than expected. Try again?"
 msgstr "Ŧħīş īş ŧȧķīƞɠ ŀǿƞɠḗř ŧħȧƞ ḗẋƥḗƈŧḗḓ. Ŧřẏ ȧɠȧīƞ?"
 
 #: webpay/base/templates/base.html:43
+msgid "Something went wrong. Try again?"
+msgstr "Şǿḿḗŧħīƞɠ ẇḗƞŧ ẇřǿƞɠ. Ŧřẏ ȧɠȧīƞ?"
+
+#: webpay/base/templates/base.html:44
 #: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "ǾĶ"
@@ -282,11 +288,11 @@ msgstr "ǾĶ"
 msgid "Error"
 msgstr "Ḗřřǿř"
 
-#: webpay/pay/views.py:54
+#: webpay/pay/views.py:56
 msgid "Payments are temporarily disabled."
 msgstr "Ƥȧẏḿḗƞŧş ȧřḗ ŧḗḿƥǿřȧřīŀẏ ḓīşȧƀŀḗḓ."
 
-#: webpay/pay/views.py:184
+#: webpay/pay/views.py:190
 #: webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Ḗƞŧḗř Ƥīƞ"
@@ -373,6 +379,10 @@ msgstr "Řḗşḗŧ Ƥīƞ"
 #: webpay/pin/views.py:178
 msgid "Pin reset"
 msgstr "Ƥīƞ řḗşḗŧ"
+
+#: webpay/pin/templates/pin/pin_form.html:13
+msgid "For testing only. Marketplace users <b>should not</b> use this site."
+msgstr "Ƒǿř ŧḗşŧīƞɠ ǿƞŀẏ. Ḿȧřķḗŧƥŀȧƈḗ ŭşḗřş <b>şħǿŭŀḓ ƞǿŧ</b> ŭşḗ ŧħīş şīŧḗ."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.

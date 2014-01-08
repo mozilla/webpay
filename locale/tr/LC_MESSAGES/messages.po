@@ -2,100 +2,101 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 15:28-0700\n"
-"PO-Revision-Date: 2013-08-28 11:11+0200\n"
-"Last-Translator: Selim Şumlu <selim@sum.lu>\n"
+"POT-Creation-Date: 2013-12-18 09:32-0700\n"
+"PO-Revision-Date: 2013-12-10 07:54+0000\n"
+"Last-Translator: Selim <selim@sum.lu>\n"
 "Language-Team: Mozilla Turkey <bilgi@mozilla.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Pootle 2.5.0\n"
+"X-POOTLE-MTIME: 1386662044.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
 msgstr "Ödeme iptal edildi."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "Ödemeniz tamamlandı."
 
 #: webpay/base/dev_messages.py:75
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
+msgstr "Mozilla ödeme işlemi gerçekleşirken ödeme hizmeti sağlayıcısından (Bango) geçersiz bir kod aldı."
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:79
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr ""
+msgstr "Bir resim simge anahtarı nesne değildi. Doğru örnek: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:83
 msgid "No one has been registered for this JWT issuer."
-msgstr ""
+msgstr "Bu JWT sağlayıcısı için hiç kimse kaydedilmiş."
 
 #: webpay/base/dev_messages.py:84
 msgid "The price point is unknown or invalid."
-msgstr ""
+msgstr "Fiyat noktası geçersiz ya da bilinmiyor."
 
 #: webpay/base/dev_messages.py:85
 msgid "The request to begin payment was invalid."
-msgstr ""
+msgstr "Ödeme işlemini başlatma talebi geçersiz."
 
 #: webpay/base/dev_messages.py:87
 msgid "The requested payment simulation result is not supported."
-msgstr ""
+msgstr "Talep edilen ödeme simülasyonu sonucu desteklenmiyor."
 
 #: webpay/base/dev_messages.py:89
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
+msgstr "Ödeme hizmeti sağlayıcısı (Bango) ödeme işlemi gerçekleştirilirken bir sorunla karşılaştı"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:93
 msgid "The JWT has expired."
-msgstr ""
+msgstr "JWT zaman aşımına uğradı."
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Bir iç web isteği zaman aşımına uğradı."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:98
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr ""
+msgstr "JWT imzası geçersiz veya JWT zarar görmüş."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:101
 msgid "The JWT did not decode to a JSON object."
-msgstr ""
+msgstr "JWT bir JSON nesnesi olarak çözülemedi."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:104
 msgid "Error decoding JWT."
-msgstr ""
+msgstr "JWT çözülürken hata oluştu."
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Oturum açılırken sistem zaman aşımına uğradı."
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "Oturum kapatılırken sistem zaman aşımına uğradı."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr ""
+msgstr "Bir URL hasar görmüş. Bu bir postback URL'i veya simge URL'i olabilir."
 
 #: webpay/base/dev_messages.py:110
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
+msgstr "Ödeme iadesi işlenirken oturumda işlem nuamrası eksikti."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:114
@@ -109,15 +110,15 @@ msgstr "İstenen iade simülasyonunda '{0}' anahtarı eksik."
 
 #: webpay/base/dev_messages.py:120
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
+msgstr "Ödeme bildirimi doğrulanırken bildirim servisi hata verdi"
 
 #: webpay/base/dev_messages.py:122
 msgid "Payments are temporarily disabled"
-msgstr ""
+msgstr "Ödemeler geçici olarak devre dışıdır"
 
 #: webpay/base/dev_messages.py:124
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
+msgstr "Kaynak, önceki isteğin zamanlaması içinde değiştirilmiş. Bu eylemi tekrarlamanız gerekiyor."
 
 #: webpay/base/dev_messages.py:126
 msgid "Payment simulations are disabled at this time."
@@ -125,11 +126,11 @@ msgstr "Ödeme simülasyonu şu anda devre dışıdır."
 
 #: webpay/base/dev_messages.py:128
 msgid "This payment key can only be used to simulate purchases."
-msgstr ""
+msgstr "Bu ödeme anahtarı sadece satın alma simülasyonu için kullanılabilir."
 
 #: webpay/base/dev_messages.py:130
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
+msgstr "Geçerli işlem zaten sona erdiği için satın alma tamamlanamadı."
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
@@ -165,7 +166,7 @@ msgstr "İzin verilmiyor"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Üzgünüz, bunu yapmaya izniniz yok."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:44 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "İptal"
@@ -191,7 +192,7 @@ msgid "Please try again in a few moments."
 msgstr "Lütfen birkaç dakika sonra tekrar deneyin."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
 msgid "Web Pay"
 msgstr "Web Ödemesi"
 
@@ -231,7 +232,11 @@ msgstr "Hata&hellip;"
 msgid "This is taking longer than expected. Try again?"
 msgstr ""
 
-#: webpay/base/templates/base.html:43 webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:43
+msgid "Something went wrong. Try again?"
+msgstr ""
+
+#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "Tamam"
 
@@ -239,11 +244,11 @@ msgstr "Tamam"
 msgid "Error"
 msgstr "Hata"
 
-#: webpay/pay/views.py:54
+#: webpay/pay/views.py:56
 msgid "Payments are temporarily disabled."
 msgstr "Ödemeler geçici olarak devre dışıdır."
 
-#: webpay/pay/views.py:184 webpay/pin/views.py:93
+#: webpay/pay/views.py:190 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "PIN'i girin"
 
@@ -318,6 +323,10 @@ msgstr "PIN'i sıfırla"
 #: webpay/pin/views.py:178
 msgid "Pin reset"
 msgstr "PIN sıfırlama"
+
+#: webpay/pin/templates/pin/pin_form.html:13
+msgid "For testing only. Marketplace users <b>should not</b> use this site."
+msgstr ""
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.

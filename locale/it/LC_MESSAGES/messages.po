@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 15:28-0700\n"
-"PO-Revision-Date: 2013-11-13 15:54+0000\n"
-"Last-Translator: Sara <sara.todaro@mozillaitalia.org>\n"
+"POT-Creation-Date: 2013-12-18 09:32-0700\n"
+"PO-Revision-Date: 2013-12-01 00:36+0000\n"
+"Last-Translator: Sandro <gialloporpora@mozillaitalia.org>\n"
 "Language-Team: mozillaitalia\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -12,13 +12,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1384358084.0\n"
+"X-POOTLE-MTIME: 1385858160.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
 msgstr "Il pagamento è stato annullato."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "Il pagamento è stato effettuato."
 
@@ -87,9 +87,7 @@ msgstr "Durante il tentativo di accesso il server è andato fuori tempo massimo.
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
-"Durante il tentativo di disconnessione il server è andato fuori tempo "
-"massimo."
+msgstr "Durante il tentativo di disconnessione il server è andato fuori tempo massimo."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
@@ -136,9 +134,7 @@ msgstr "L'acquisto non può essere completato in quanto la corrente transazione 
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
-"Durante l'attesa per l'avvio di una transazione il sistema è andato fuori "
-"tempo massimo."
+msgstr "Durante l'attesa per l'avvio di una transazione il sistema è andato fuori tempo massimo."
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
@@ -170,7 +166,7 @@ msgstr "Non consentito"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Spiacenti, non possiedi le autorizzazioni necessarie per effettuare quanto richiesto."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:44 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Annulla"
@@ -196,7 +192,7 @@ msgid "Please try again in a few moments."
 msgstr "Riprova tra un attimo."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
 msgid "Web Pay"
 msgstr "Web Pay"
 
@@ -210,8 +206,7 @@ msgstr "Per il codice PIN è possibile utilizzare solo caratteri numerici."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
-"Eri identificato con un altro account e dovrai rieffettuare il pagamento."
+msgstr "Eri identificato con un altro account e dovrai rieffettuare il pagamento."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -237,7 +232,11 @@ msgstr "Oops&hellip;"
 msgid "This is taking longer than expected. Try again?"
 msgstr "L'operazione sta richiedendo più tempo del previsto. Riprovare?"
 
-#: webpay/base/templates/base.html:43 webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:43
+msgid "Something went wrong. Try again?"
+msgstr "Qualcosa è andato storto. Vuoi riprovare?"
+
+#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "OK"
 
@@ -245,11 +244,11 @@ msgstr "OK"
 msgid "Error"
 msgstr "Errore"
 
-#: webpay/pay/views.py:54
+#: webpay/pay/views.py:56
 msgid "Payments are temporarily disabled."
 msgstr "I pagamenti sono momentaneamente disattivati."
 
-#: webpay/pay/views.py:184 webpay/pin/views.py:93
+#: webpay/pay/views.py:190 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Inserisci il codice PIN"
 
@@ -324,6 +323,10 @@ msgstr "Reimposta codice PIN"
 #: webpay/pin/views.py:178
 msgid "Pin reset"
 msgstr "Reimpostazione del codice PIN"
+
+#: webpay/pin/templates/pin/pin_form.html:13
+msgid "For testing only. Marketplace users <b>should not</b> use this site."
+msgstr "Sito utilizzato solo per i test. Gli utenti del Marketplace <b>non dovrebbero</b> utilizzare questo sito."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.

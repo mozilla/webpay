@@ -22,6 +22,8 @@ PROVIDER_PAYPAL = 0
 PROVIDER_BANGO = 1
 PROVIDER_REFERENCE = 2
 
+# These are constants for Solitude but not necessarily for Webpay.
+# See PAYMENT_PROVIDER in settings.
 PROVIDERS = {
     'paypal': PROVIDER_PAYPAL,
     'bango': PROVIDER_BANGO,

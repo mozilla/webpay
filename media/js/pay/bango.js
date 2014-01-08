@@ -1,4 +1,4 @@
-define('pay/bango', ['cli'], function(cli) {
+define('bango', ['cli'], function(cli) {
     'use strict';
 
     var bango = {

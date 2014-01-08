@@ -159,13 +159,21 @@ def notification(request):
         log.info('Header given but invalid')
         return HttpResponseForbidden(request)
 
+    content_type = request.META['CONTENT_TYPE']
     # This should help figure out why.
     log.info('Bango notification encoding={0.encoding} '
-             'content_type={0.META[CONTENT_TYPE]} POST keys={1}'
-             .format(request, request.POST.keys()))
+             'content_type={1} POST keys={1}'
+             .format(request, content_type, request.POST.keys()))
 
-    # We want to send XML as bytes to Solitude.
-    notice = request.POST['XML'].encode('utf8')
+    # As per bug 903567, the requests might come in with different
+    # content types.
+    if content_type == 'application/x-www-form-urlencoded':
+        notice = request.POST['XML'].encode('utf8')
+    elif content_type == 'text/xml':
+        notice = request.body
+    else:
+        return HttpResponse(request, status=415)
+
     log.debug('Bango notice: {0}'.format(repr(notice)))
 
     try:

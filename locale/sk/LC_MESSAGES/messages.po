@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 15:28-0700\n"
-"PO-Revision-Date: 2013-11-24 22:35+0000\n"
+"POT-Creation-Date: 2013-12-18 09:32-0700\n"
+"PO-Revision-Date: 2013-11-27 18:13+0000\n"
 "Last-Translator: Vlado <valastiak@mozilla.sk>\n"
 "Language-Team: Mozilla.sk <l10n@mozilla.sk>\n"
 "Language: sk\n"
@@ -12,13 +12,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1385332554.0\n"
+"X-POOTLE-MTIME: 1385575980.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
 msgstr "Platba zrušená"
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "Platba je dokončená."
 
@@ -166,7 +166,7 @@ msgstr "Nie je povolené"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Ospravedlňujeme sa, ale na toto nemáte oprávnenie."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:44 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Zrušiť"
@@ -192,7 +192,7 @@ msgid "Please try again in a few moments."
 msgstr "Skúste to znova o chvíľu."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
 msgid "Web Pay"
 msgstr "Webová platba"
 
@@ -232,7 +232,11 @@ msgstr "Ups&hellip;"
 msgid "This is taking longer than expected. Try again?"
 msgstr "Táto akcia trvá dlhšie než inokedy. Chcete to skúsiť znovu?"
 
-#: webpay/base/templates/base.html:43 webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:43
+msgid "Something went wrong. Try again?"
+msgstr "Niečo sa pokazilo. Skúsiť znova?"
+
+#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "OK"
 
@@ -240,11 +244,11 @@ msgstr "OK"
 msgid "Error"
 msgstr "Chyba"
 
-#: webpay/pay/views.py:54
+#: webpay/pay/views.py:56
 msgid "Payments are temporarily disabled."
 msgstr "Platby sú dočasne nedostupné."
 
-#: webpay/pay/views.py:184 webpay/pin/views.py:93
+#: webpay/pay/views.py:190 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Zadajte PIN"
 
@@ -319,6 +323,10 @@ msgstr "Vynulovať PIN"
 #: webpay/pin/views.py:178
 msgid "Pin reset"
 msgstr "Kód PIN vynulovaný"
+
+#: webpay/pin/templates/pin/pin_form.html:13
+msgid "For testing only. Marketplace users <b>should not</b> use this site."
+msgstr "Na testovacie účely. Používatelia Marketplace <b>by nemali</b> používať túto stránku."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.

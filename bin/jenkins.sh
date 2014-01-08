@@ -1,6 +1,10 @@
 #!/bin/sh
 # This script makes sure that Jenkins can properly run your tests against your
 # codebase.
+if [ -f /opt/rh/python27/enable ]; then
+  source /opt/rh/python27/enable
+fi
+
 set -e
 
 DB_HOST="localhost"
@@ -16,10 +20,9 @@ find . -name '*.pyc' -exec rm {} \;
 
 if [ ! -d "$VENV/bin" ]; then
   echo "No virtualenv found.  Making one..."
-  virtualenv $VENV --no-site-packages
+  virtualenv $VENV --no-site-packages --python=python
   source $VENV/bin/activate
   pip install --upgrade pip
-  pip install coverage
 fi
 
 git submodule sync -q
@@ -63,7 +66,6 @@ echo "CREATE DATABASE IF NOT EXISTS ${JOB_NAME}"|mysql -u $DB_USER -h $DB_HOST
 
 echo "Starting tests..."
 export FORCE_DB=1
-coverage run manage.py test --noinput --with-xunit --with-blockage
-coverage xml $(find apps lib -name '*.py')
+python manage.py test --noinput --with-xunit --with-blockage
 
 echo "FIN"

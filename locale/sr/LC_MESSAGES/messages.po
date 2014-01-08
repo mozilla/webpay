@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 15:28-0700\n"
+"POT-Creation-Date: 2013-12-18 09:32-0700\n"
 "PO-Revision-Date: 2013-08-14 06:03+0100\n"
 "Last-Translator: Milos <milos@mozilla.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,13 +17,13 @@ msgstr ""
 msgid "Payment cancelled."
 msgstr "Плаћање отказано."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "Плаћање је извршено."
 
 #: webpay/base/dev_messages.py:75
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
+msgstr "Mozilla је добила неважећи код од провајдера за плаћање (Bango) приликом обраде уплате"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:79
@@ -42,7 +42,7 @@ msgstr ""
 
 #: webpay/base/dev_messages.py:85
 msgid "The request to begin payment was invalid."
-msgstr ""
+msgstr "Захтев за почетак плаћања је био неважећи."
 
 #: webpay/base/dev_messages.py:87
 msgid "The requested payment simulation result is not supported."
@@ -50,7 +50,7 @@ msgstr "Затражени резултат симулације плаћања 
 
 #: webpay/base/dev_messages.py:89
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
+msgstr "Провајдер услуге плаћања (Bango) је пријавио грешку приликом обраде уплате. "
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -60,7 +60,7 @@ msgstr "JWT је истекао."
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Интерни веб захтев је истекао."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -82,11 +82,11 @@ msgstr "Грешка у декодирању JWT-a."
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Систем је престао са радом приликом покушаја пријављивања."
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "Систем је престао са радом приликом покушаја одјављивања."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
@@ -95,7 +95,7 @@ msgstr "URL адреса је погрешна. Може бити да URL пр�
 
 #: webpay/base/dev_messages.py:110
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
+msgstr "Идентификација трансакције недостаје из сесије приликом обраде повраћаја уплате. "
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:114
@@ -109,15 +109,15 @@ msgstr "Захтеваној симулацији повраћаја новца 
 
 #: webpay/base/dev_messages.py:120
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
+msgstr "Сервис за обавештења је пријавио грешку приликом провере плаћања"
 
 #: webpay/base/dev_messages.py:122
 msgid "Payments are temporarily disabled"
-msgstr ""
+msgstr "Уплате су привремено онемогућене."
 
 #: webpay/base/dev_messages.py:124
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
+msgstr "Извор је измењен након претходног захтева. Радња би требала поново да се изврши. "
 
 #: webpay/base/dev_messages.py:126
 msgid "Payment simulations are disabled at this time."
@@ -129,33 +129,33 @@ msgstr "Овај кључ за плаћање је могуће користит
 
 #: webpay/base/dev_messages.py:130
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
+msgstr "Куповина није могла да се заврши зато што се тренутна трансакција већ завршила."
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "Систем је престао са радом приликом чекања да трансакција почне"
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
+msgstr "Медота плаћања или почетна цена није подржана за овај регион или овог оператера."
 
 #: webpay/base/dev_messages.py:138
 msgid "The user cancelled the payment."
-msgstr ""
+msgstr "Корисник је обуставио уплату."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
 #: webpay/base/dev_messages.py:145
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr "Вредност кључа \"{0}\" прекорачије максималну вредност од {1}"
+msgstr "Вредност кључа \"{0}\" прекорачује максималну вредност од {1}"
 
 #: webpay/base/utils.py:41
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr "Дошло је до грешке приликом успостављања плаћања. Покушајте поново или контактирајте програмера апликације уколико се проблем настави.  "
+msgstr "Дошло је до грешке приликом успостављања уплате. Покушајте поново или контактирајте програмера апликације уколико се проблем настави.  "
 
 #: webpay/base/utils.py:47
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
+msgstr "Дошло је до интерне грешке приликом обраде уплате. Покушајте поново или контактирајте Mozilla-у уколико се и даље јавља.  "
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -165,7 +165,7 @@ msgstr "Није дозвољено"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Жао нам је - не можете то урадити."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:44 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Откажи"
@@ -191,21 +191,21 @@ msgid "Please try again in a few moments."
 msgstr "Молимо покушајте поново за пар тренутака."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
 msgid "Web Pay"
 msgstr "Веб плаћање"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr "ПИН мора имати 4 бројке."
+msgstr "PIN мора имати 4 бројке."
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr "ПИН може имати само бројеве."
+msgstr "PIN може имати само бројеве."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
+msgstr "Пријављени сте као други корисник, морате поново покренути уплату."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -213,7 +213,7 @@ msgstr "Учитавање"
 
 #: webpay/base/templates/base.html:32
 msgid "Beginning payment&hellip;"
-msgstr "Започињање плаћања&hellip;"
+msgstr "Започињање уплате&hellip;"
 
 #: webpay/base/templates/base.html:33
 msgid "Connecting to Persona"
@@ -221,7 +221,7 @@ msgstr "Повезивање са Persona сервисом"
 
 #: webpay/base/templates/base.html:34
 msgid "Payment complete"
-msgstr "Плаћање извршено"
+msgstr "Уплата извршена"
 
 #: webpay/base/templates/base.html:41
 msgid "Oops&hellip;"
@@ -229,9 +229,13 @@ msgstr "Упс&hellip;"
 
 #: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
+msgstr "Ово траје дуже него што се очекивало. Покушати поново?"
+
+#: webpay/base/templates/base.html:43
+msgid "Something went wrong. Try again?"
 msgstr ""
 
-#: webpay/base/templates/base.html:43 webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "У реду"
 
@@ -239,13 +243,13 @@ msgstr "У реду"
 msgid "Error"
 msgstr "Грешка"
 
-#: webpay/pay/views.py:54
+#: webpay/pay/views.py:56
 msgid "Payments are temporarily disabled."
-msgstr "Плаћање је привремено онемогућено."
+msgstr "Уплате су привремено онемогућене."
 
-#: webpay/pay/views.py:184 webpay/pin/views.py:93
+#: webpay/pay/views.py:190 webpay/pin/views.py:93
 msgid "Enter Pin"
-msgstr "Унесите ПИН"
+msgstr "Унесите PIN"
 
 #: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign In"
@@ -253,7 +257,7 @@ msgstr "Пријавите се"
 
 #: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in to continue with the payment"
-msgstr "Пријавите се да бисте наставили са плаћањем"
+msgstr "Пријавите се да бисте наставили са уплатом"
 
 #: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in"
@@ -261,7 +265,7 @@ msgstr "Пријавите се"
 
 #: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
-msgstr "Симулирај плаћање"
+msgstr "Симулирај уплату"
 
 #: webpay/pay/templates/pay/simulate.html:8
 msgid "You will not be charged."
@@ -289,57 +293,61 @@ msgstr "Направите праву уплату"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
-msgstr ""
+msgstr "Успостављање уплате&hellip;"
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
-msgstr "Већ сте направили ПИН."
+msgstr "Већ сте направили PIN."
 
 #: webpay/pin/forms.py:111
 msgid "Wrong pin"
-msgstr "Погрешан ПИН"
+msgstr "Погрешан PIN"
 
 #: webpay/pin/forms.py:123 webpay/pin/forms.py:146
 msgid "Pins do not match."
-msgstr "ПИНови се не поклапају."
+msgstr "PIN-ови се не поклапају."
 
 #: webpay/pin/views.py:46
 msgid "Create a Pin"
-msgstr "Направите ПИН"
+msgstr "Направите PIN"
 
 #: webpay/pin/views.py:68 webpay/pin/views.py:185
 msgid "Confirm Pin"
-msgstr "Потврдите ПИН"
+msgstr "Потврдите PIN"
 
 #: webpay/pin/views.py:131 webpay/pin/views.py:157 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
-msgstr "Обновите ПИН"
+msgstr "Обновите PIN"
 
 #: webpay/pin/views.py:178
 msgid "Pin reset"
-msgstr "Обнављање ПИНа"
+msgstr "Обнављање PIN-а"
+
+#: webpay/pin/templates/pin/pin_form.html:13
+msgid "For testing only. Marketplace users <b>should not</b> use this site."
+msgstr ""
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
-msgstr "Заборавили сте свој ПИН?"
+msgstr "Заборавили сте свој PIN?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr "Унели сте погрешан ПИН превише пута. Ваш налог је закључан. Молимо покушајте поново да обавите куповину за 5 минута."
+msgstr "Унели сте погрешан PIN превише пута. Ваш налог је закључан. Молимо покушајте поново да обавите куповину за 5 минута."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
-msgstr "Ваш ПИН је био закључан"
+msgstr "Ваш PIN је био закључан"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
-msgstr "Ваш ПИН је био закључан јер сте га унели погрешно превише пута. Можете наставити и поново унести свој ПИН или га можете обновити."
+msgstr "Ваш PIN је био закључан јер сте га унели погрешно превише пута. Можете наставити и поново унести свој PIN или га можете обновити."
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr "Да ли сте сигурни да желите да обновите свој ПИН? Морате се пријавити на Persona да бисте обновили свој ПИН."
+msgstr "Да ли сте сигурни да желите да обновите свој PIN? Морате се пријавити на Persona налог да бисте обновили свој PIN."
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"

@@ -39,3 +39,19 @@ UUID_HMAC_KEY = 'this is a test value'
 ALLOW_ADMIN_SIMULATIONS = True
 UNIVERSAL_PROVIDER = False
 PAYMENT_PROVIDER = 'bango'
+
+PAY_URLS = {
+    'bango': {
+        'base': 'http://mozilla.test.bango.org',
+        'pay': '/mozpayments/?bcid={uid_pay}',
+        'logout': '/mozpayments/logout/',
+    },
+    'reference': {
+        'base': 'https://zippy.paas.allizom.org',
+        'pay': '/?tx={uid_pay}',
+        # TODO: bug 942330
+        'logout': '/logout',
+    },
+}
+
+ENABLE_SPA = False

@@ -1,0 +1,212 @@
+box-sizing($val) {
+    -moz-box-sizing: $val;
+    box-sizing: $val;
+}
+
+animation($animation) {
+    -webkit-animation: $animation;
+    -moz-animation: $animation;
+    -ms-animation: $animation;
+    animation: $animation;
+}
+
+gradient-two-color($color1, $color2) {
+    background-color: $color2;
+    background-image: -webkit-gradient(linear, left bottom, left top, from($color1), to($color2));
+    background-image: -webkit-linear-gradient($color1, $color2);
+    background-image:    -moz-linear-gradient($color1, $color2);
+    background-image:     -ms-linear-gradient($color1, $color2);
+    background-image:      -o-linear-gradient($color1, $color2);
+    background-image:         linear-gradient($color1, $color2);
+}
+
+/* Flexbox Mixins */
+display-flex() {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+display-inline-flex() {
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -moz-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+}
+
+flex($grow, $shrink=, $basis=) {
+    -webkit-box-flex: $grow;
+       -moz-box-flex: $grow;
+        -webkit-flex: $grow $shrink $basis;
+           -moz-flex: $grow $shrink $basis;
+            -ms-flex: $grow $shrink $basis;
+                flex: $grow $shrink $basis;
+}
+
+flex-grow($value) {
+    -webkit-flex-grow: $value;
+    -ms-flex-positive: $value;
+       -moz-flex-grow: $value;
+            flex-grow: $value;
+}
+
+flex-shrink($value) {
+    -webkit-flex-shrink: $value;
+       -moz-flex-shrink: $value;
+      -ms-flex-negative: $value;
+            flex-shrink: $value;
+}
+
+flex-basis($value) {
+    -ms-flex-preferred-size: $value;
+         -webkit-flex-basis: $value;
+            -moz-flex-basis: $value;
+                 flex-basis: $value;
+}
+
+
+flex-wrap($value) {
+    -webkit-flex-wrap: $value;
+    -moz-flex-wrap: $value;
+    if ($value == 'nowrap') {
+      -ms-flex-wrap: none;
+    } else {
+      -ms-flex-wrap: $value;
+    }
+    flex-wrap: $value;
+}
+
+flex-flow($values) {
+    -webkit-flex-flow: $values;
+    -moz-flex-flow: $values;
+    -ms-flex-flow: $values;
+    flex-flow: $values;
+}
+
+order($order) {
+  -webkit-box-ordinal-group: $order;
+     -moz-box-ordinal-group: $order;
+
+  -ms-flex-order: $order;
+
+  -webkit-order: $order;
+          order: $order;
+}
+
+flex-direction($direction) {
+
+    $legacy-orient = normal;
+
+    if ($direction == 'column') {
+        $legacy-orient = vertical;
+    } else if ($direction == 'row') {
+        $legacy-orient = horizontal;
+    } else if ($direction == 'column-reverse') {
+        $legacy-orient = vertical;
+        $legacy-direction = reverse;
+    } else if ($direction == 'row-reverse') {
+        $legacy-orient = horizontal;
+        $legacy-direction = reverse;
+    }
+
+        -webkit-box-orient: $legacy-orient;
+           -moz-box-orient: $legacy-orient;
+
+    if ($direction == 'column-reverse' || $direction == 'row-reverse') {
+        -webkit-box-direction: $legacy-direction;
+           -moz-box-direction: $legacy-direction;
+    }
+
+    -webkit-flex-direction: $direction;
+        -ms-flex-direction: $direction;
+            flex-direction: $direction;
+}
+
+justify-content($value) {
+    if ($value == 'flex-start') {
+        -webkit-box-pack: start;
+           -moz-box-pack: start;
+           -ms-flex-pack: start;
+    } else if ($value == 'flex-end') {
+        -webkit-box-pack: end;
+           -moz-box-pack: end;
+           -ms-flex-pack: end;
+    } else if ($value == 'space-between') {
+        -webkit-box-pack: justify;
+           -moz-box-pack: justify;
+           -ms-flex-pack: justify;
+    } else {
+        -webkit-box-pack: $value;
+           -moz-box-pack: $value;
+           -ms-flex-pack: $value;
+    }
+    -webkit-justify-content: $value;
+       -moz-justify-content: $value;
+            justify-content: $value;
+}
+
+align-items($value) {
+    if ($value == 'flex-start') {
+        -webkit-box-align: start;
+           -moz-box-align: start;
+           -ms-flex-align: start;
+    } else if ($value == 'flex-end') {
+        -webkit-box-align: end;
+           -moz-box-align: end;
+           -ms-flex-align: end;
+    } else {
+        -webkit-box-align: $value;
+           -moz-box-align: $value;
+           -ms-flex-align: $value;
+    }
+    -webkit-align-items: $value;
+       -moz-align-items: $value;
+            align-items: $value;
+}
+
+align-self($value) {
+    -webkit-align-self: $value;
+       -moz-align-self: $value;
+    if ($value == 'flex-start') {
+        -ms-flex-item-align: start;
+    } else if ($value == 'flex-end') {
+        -ms-flex-item-align: end;
+    } else {
+        -ms-flex-item-align: $value;
+    }
+    align-self: $value;
+}
+
+align-content($value) {
+    -webkit-align-content: $value;
+       -moz-align-content: $value;
+    if ($value == 'flex-start') {
+        -ms-flex-line-pack: start;
+    } else if ($value == 'flex-end') {
+        -ms-flex-line-pack: end;
+    } else {
+        -ms-flex-line-pack: $value;
+    }
+    align-content: $value;
+}
+
+grain() {
+    background-image: url('/images/grain.png');
+}
+
+// http://developer.yahoo.com/blogs/ydn/posts/2012/10/clip-your-hidden-content-for-better-accessibility/
+visually-hidden() {
+    position: absolute !important;
+    border:0 !important;
+    clip: rect(1px 1px 1px 1px); // IE6, IE7
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px !important;
+    overflow: hidden;
+    padding:0 !important;
+    width: 1px !important;
+    min-width: 1px !important;
+    max-width: 1px !important;
+}

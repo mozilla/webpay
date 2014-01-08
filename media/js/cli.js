@@ -1,4 +1,14 @@
-define('cli', ['settings', 'lib/longtext', 'lib/tracking'], function(settings, checkLongText, tracking) {
+require.config({
+    baseUrl: '/mozpay/media/js',
+    paths: {
+        'bango': 'pay/bango',
+        'l10n': 'lib/l10n',
+        'tracking': 'lib/tracking',
+        'longtext': 'lib/longtext'
+    }
+});
+
+define('cli', ['settings', 'longtext', 'tracking'], function(settings, checkLongText, tracking) {
     'use strict';
 
     var $progress = $('#progress');
@@ -57,6 +67,8 @@ define('cli', ['settings', 'lib/longtext', 'lib/tracking'], function(settings, c
             if ($toShow && $toShow.length) {
                 $toShow.show();
                 $doc.trigger('check-long-text');
+            } else {
+              console.log('[cli] has nothing toShow');
             }
             if ($pinBox.length && !$pinBox.hasClass('error')) {
                 console.log('[cli] Focusing pin');

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AMO Webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 15:28-0700\n"
-"PO-Revision-Date: 2013-11-13 07:53+0000\n"
+"POT-Creation-Date: 2013-12-18 09:32-0700\n"
+"PO-Revision-Date: 2013-11-27 17:15+0000\n"
 "Last-Translator: Michael <michael.koehler1@gmx.de>\n"
 "Language-Team: German (de) <coce@nufuerspam.de>\n"
 "Language: de\n"
@@ -12,13 +12,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1384329209.0\n"
+"X-POOTLE-MTIME: 1385572524.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
 msgstr "Zahlung abgebrochen."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "Ihre Zahlung ist vollständig"
 
@@ -134,9 +134,7 @@ msgstr "Der Kauf kann nicht abgeschlossen werden, weil die aktuelle Transaktion 
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
-"Die Systemzeit wurde überschritten, während auf den Beginn einer Transaktion "
-"gewartet wurde."
+msgstr "Die Systemzeit wurde überschritten, während auf den Beginn einer Transaktion gewartet wurde."
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
@@ -168,7 +166,7 @@ msgstr "Nicht erlaubt"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Es tut uns Leid, Sie dürfen das nicht tun."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:44 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -194,7 +192,7 @@ msgid "Please try again in a few moments."
 msgstr "Bitte versuchen Sie es nach kurzer Pause erneut."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
 msgid "Web Pay"
 msgstr "Web-Zahlung"
 
@@ -208,9 +206,7 @@ msgstr "Die PIN darf nur Ziffern enthalten."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
-"Sie sind als anderer Benutzer angemeldet, Sie müssen die Zahlung erneut "
-"starten."
+msgstr "Sie sind als anderer Benutzer angemeldet, Sie müssen die Zahlung erneut starten."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -236,7 +232,11 @@ msgstr "Hoppla&hellip;"
 msgid "This is taking longer than expected. Try again?"
 msgstr "Das dauert länger als erwartet. Erneut versuchen?"
 
-#: webpay/base/templates/base.html:43 webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:43
+msgid "Something went wrong. Try again?"
+msgstr "Etwas ist schief gegangen. Erneut versuchen?"
+
+#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "Ok"
 
@@ -244,11 +244,11 @@ msgstr "Ok"
 msgid "Error"
 msgstr "Fehler"
 
-#: webpay/pay/views.py:54
+#: webpay/pay/views.py:56
 msgid "Payments are temporarily disabled."
 msgstr "Zahlungen sind zeitweilig deaktiviert."
 
-#: webpay/pay/views.py:184 webpay/pin/views.py:93
+#: webpay/pay/views.py:190 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "PIN eingeben"
 
@@ -323,6 +323,10 @@ msgstr "PIN zurücksetzen"
 #: webpay/pin/views.py:178
 msgid "Pin reset"
 msgstr "PIN zurückgesetzt"
+
+#: webpay/pin/templates/pin/pin_form.html:13
+msgid "For testing only. Marketplace users <b>should not</b> use this site."
+msgstr "Nur zu Testzwecken. Marketplace-Nutzer sollten diese Website <b>nicht verwenden</b>."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.

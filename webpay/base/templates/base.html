@@ -24,7 +24,7 @@
     data-logged-in-user="{{ session.get('logged_in_user', '') }}"
     data-reset-user-url="{{ url('auth.reset_user') }}"
     data-denied-url="{{ url('auth.denied') }}"
-    data-bango-logout-url="{{ settings.PAY_URLS[settings.PAYMENT_PROVIDER]['logout'] }}"
+    data-bango-logout-url="{{ settings.PAY_URLS[settings.PAYMENT_PROVIDER]['base'] + settings.PAY_URLS[settings.PAYMENT_PROVIDER]['logout'] }}"
     data-pin-num-chars-warning="{{ _('Pin must be 4 digits.') }}"
     data-pin-non-numeric-warning="{{ _('Pin can only contain digits.') }}"
     data-pin-reauth-msg="{{ _('You logged in as a different user, you must start the payment again.') }}"
@@ -40,11 +40,14 @@
     data-cancel-code="{{ dev_messages.USER_CANCELLED }}"
     data-full-error-heading="{{ _('Oops&hellip;') }}"
     data-full-error-detail="{{ _('This is taking longer than expected. Try again?') }}"
+    data-full-error-detail-generic="{{ _('Something went wrong. Try again?') }}"
     data-full-error-confirm="{{ _('OK') }}"
     data-full-error-cancel="{{ _('Cancel') }}"
+    data-static-url="{{ settings.STATIC_URL }}"
     >
     <section class="pay">
       <div id="content">
+        {% block extra_content %}{% endblock %}
         {% block content %}{% endblock %}
         {% if messages %}
         <ul class="messages">

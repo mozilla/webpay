@@ -9,12 +9,12 @@
 {%- endblock %}
 
 {% block content %}
-  {% block extra_content %}{% endblock %}
+  {% if USAGE_WARNING %}
+    <section class="warning">{% trans %}For testing only. Marketplace users <b>should not</b> use this site.{% endtrans %}</section>
+  {% endif %}
 
   <div class="hidden-full-error{% if hide_pin %} hidden{% endif %}" id="enter-pin">
-
     <h2>{{ title }}</h2>
-
     <form id="pin" class="pin-form" action="{{ action }}" method="post"
       {% if pin_form_tracking %}
         data-tracking="{{ pin_form_tracking|json }}"

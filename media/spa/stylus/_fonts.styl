@@ -1,0 +1,87 @@
+@font-face{
+    font-family: 'Fira Sans';
+    font-style: normal;
+    font-weight: 300;
+    src: url('../fonts/fira/FiraSans-Light.woff') format('woff');
+}
+@font-face{
+    font-family: 'Fira Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/fira/FiraSans-Regular.woff') format('woff');
+}
+@font-face{
+    font-family: 'Fira Sans';
+    font-style: normal;
+    font-weight: 500;
+    src: url('../fonts/fira/FiraSans-Medium.woff') format('woff');
+}
+@font-face{
+    font-family: 'Fira Sans';
+    font-style: normal;
+    font-weight: 600;
+    src: url('../fonts/fira/FiraSans-Bold.woff') format('woff');
+}
+@font-face{
+    font-family: 'Fira Mono';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/fira/FiraMono-Regular.woff') format('woff');
+}
+
+body {
+    font-family: "Fira Sans","Open Sans","Helvetica Neue",Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+    line-height: 1em;
+    margin: 1em 0;
+    clear: left;
+}
+
+p {
+    font-size: 14px;
+    line-height: 18px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+$heading-font-size = 18px;
+$step = 2px;
+
+headings() {
+    $orig_step = $step;
+    for i in (1..4) {
+        if i == 1 {
+            $deincrement = 0;
+        } else {
+            $deincrement = $step;
+            $step += $orig_step;
+        }
+        h{i} {
+            font-size: $heading-font-size - $deincrement;
+        }
+    }
+}
+
+headings();
+
+a {
+    color: $light-blue;
+    font-weight: 400;
+    line-height: 18px;
+    text-decoration: none;
+}
+a:focus, a:hover {
+    text-decoration: underline;
+}
+
+footer p {
+    font-size: 10px;
+    margin: 0;
+}

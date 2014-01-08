@@ -5,7 +5,7 @@ anyjson==0.3.3
 billiard==2.7.3.28
 cef==0.5
 celery==3.0.19
-curling==0.3.3
+curling==0.3.9
 dj-database-url==0.2.1
 django_csp==2.0.2
 django-celery==3.0.17
@@ -23,8 +23,10 @@ gunicorn==0.17.4
 httplib2==0.7.6
 importlib-no-failure==1.0.2
 jingo==0.6
+Jinja2==2.6
 kombu==2.5.10
 m2secret==0.1.1
+MarkupSafe==0.18
 mock==1.0b1
 mozilla-logger==0.1
 mozpay==2.0.0

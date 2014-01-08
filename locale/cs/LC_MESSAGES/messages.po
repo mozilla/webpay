@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Czech (cs)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 15:28-0700\n"
-"PO-Revision-Date: 2013-10-21 12:11+0000\n"
+"POT-Creation-Date: 2013-12-18 09:32-0700\n"
+"PO-Revision-Date: 2013-12-05 12:41+0000\n"
 "Last-Translator: Pavel <jasnapaka@jasnapaka.com>\n"
 "Language-Team: Czech Mozilla Team <info@mozilla.cz>\n"
 "Language: cs\n"
@@ -12,13 +12,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1382357518.0\n"
+"X-POOTLE-MTIME: 1386247298.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
 msgstr "Platba zrušena."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "Vaše platba byla dokončena."
 
@@ -61,7 +61,7 @@ msgstr "JWT vypršel."
 
 #: webpay/base/dev_messages.py:94
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Interní požadavek webu vypršel."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -83,11 +83,11 @@ msgstr "Chyba při dekódování JWT."
 
 #: webpay/base/dev_messages.py:105
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Vypršel čas při snaze systému provést přihlášení."
 
 #: webpay/base/dev_messages.py:106
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "Vypršel čas při snaze systému provést odhlášení."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:108
@@ -134,7 +134,7 @@ msgstr "Platba nemůže být dokončena, protože aktuální transakce již byla
 
 #: webpay/base/dev_messages.py:133
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "Vypršel čas při snaze systému provést zahájení transakce."
 
 #: webpay/base/dev_messages.py:136
 msgid "The payment method or price point is not supported for this region or operator."
@@ -166,7 +166,7 @@ msgstr "Není povoleno"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Omlouváme se, ale tuto akci nemáte povolenu."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:44 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Zrušit"
@@ -192,7 +192,7 @@ msgid "Please try again in a few moments."
 msgstr "Zkuste to prosím znovu za chvíli."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
 msgid "Web Pay"
 msgstr "Webová platba"
 
@@ -206,7 +206,7 @@ msgstr "PIN může obsahovat pouze čísla."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
+msgstr "Jste přihlášen(a) jako jiný uživatel. Musíte platbu zahájit znovu."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -232,7 +232,11 @@ msgstr "Oops&hellip;"
 msgid "This is taking longer than expected. Try again?"
 msgstr "Tato akce trvá déle než je obvyklé. Zkusit znovu?"
 
-#: webpay/base/templates/base.html:43 webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:43
+msgid "Something went wrong. Try again?"
+msgstr "Někde nastala chyba. Zkusit znovu?"
+
+#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "OK"
 
@@ -240,11 +244,11 @@ msgstr "OK"
 msgid "Error"
 msgstr "Chyba"
 
-#: webpay/pay/views.py:54
+#: webpay/pay/views.py:56
 msgid "Payments are temporarily disabled."
 msgstr "Platby jsou dočasně zakázány"
 
-#: webpay/pay/views.py:184 webpay/pin/views.py:93
+#: webpay/pay/views.py:190 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Vložte PIN"
 
@@ -319,6 +323,10 @@ msgstr "Obnova PINu"
 #: webpay/pin/views.py:178
 msgid "Pin reset"
 msgstr "Obnova kódu PIN"
+
+#: webpay/pin/templates/pin/pin_form.html:13
+msgid "For testing only. Marketplace users <b>should not</b> use this site."
+msgstr "Pro testovací účely. Uživatele Marketplace <b>by neměli</b> tento web používat."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
