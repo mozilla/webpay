@@ -30,7 +30,21 @@ def success(request, provider):
 
 @require_GET
 def error(request, provider):
-    raise NotImplementedError
+    if provider != 'reference':
+        raise NotImplementedError(
+                'only the reference provider is implemented so far')
+
+    notice = NoticeClasses[provider](request.GET)
+    result = _prepare_notice(notice, request)
+    if result is not PREPARED_OK:
+        return system_error(request, code=result)
+
+    # TODO: handle user cancellation, bug 957774.
+
+    log.error('Fatal payment error for {provider}: {code}; query string: {qs}'
+              .format(provider=provider, code=request.GET.get('ResponseCode'),
+                      qs=request.GET))
+    return system_error(request, code=msg.EXT_ERROR)
 
 
 def register(provider):
