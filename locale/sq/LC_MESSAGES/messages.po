@@ -139,7 +139,7 @@ msgstr "Blerja nuk mund të fillohet, ngaqë transaksioni filloi shumë kohë m�
 
 #: webpay/base/dev_messages.py:137
 msgid "The system timed out while waiting for a transaction to start."
-msgstr "Sistemit i mbaroi koha teksa po priste fillimin e një transalsioni."
+msgstr "Sistemit i mbaroi koha teksa po priste fillimin e një transaksioni."
 
 #: webpay/base/dev_messages.py:140
 msgid "The payment method or price point is not supported for this region or operator."
@@ -353,7 +353,7 @@ msgstr "Ricaktim Pin-i"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr "Vetëm për testim. Marketplace users <b>should not</b> use this site."
+msgstr "Vetëm për testim. Përdoruesit e Marketplace-it <b>nuk duhen</b> ta përdorin këtë sajt."
 
 #. This is the same as the standard forgot
 #. password that most sites have.
