@@ -2,7 +2,9 @@ from django.conf import settings
 from django.shortcuts import render
 
 from django_paranoia.decorators import require_GET
+from slumber.exceptions import HttpClientError
 
+from lib.solitude.api import client
 from webpay.base import dev_messages as msg
 from webpay.base.logger import getLogger
 from webpay.base.utils import system_error
@@ -10,7 +12,6 @@ from webpay.pay import tasks
 
 log = getLogger('w.provider')
 NoticeClasses = {}
-PREPARED_OK = 'PREPARED_OK'
 
 
 @require_GET
@@ -19,10 +20,11 @@ def success(request, provider):
         raise NotImplementedError(
                 'only the reference provider is implemented so far')
 
-    notice = NoticeClasses[provider](request.GET)
-    result = _prepare_notice(notice, request)
-    if result is not PREPARED_OK:
-        return system_error(request, code=result)
+    notice = NoticeClasses[provider](request)
+    try:
+        notice.prepare()
+    except msg.DevMessage as m:
+        return system_error(request, code=m.code)
 
     tasks.payment_notify.delay(notice.transaction_id)
     return render(request, 'provider/success.html')
@@ -34,10 +36,11 @@ def error(request, provider):
         raise NotImplementedError(
                 'only the reference provider is implemented so far')
 
-    notice = NoticeClasses[provider](request.GET)
-    result = _prepare_notice(notice, request)
-    if result is not PREPARED_OK:
-        return system_error(request, code=result)
+    notice = NoticeClasses[provider](request)
+    try:
+        notice.prepare()
+    except msg.DevMessage as m:
+        return system_error(request, code=m.code)
 
     # TODO: handle user cancellation, bug 957774.
 
@@ -69,8 +72,37 @@ class Notice(object):
     """
     provider = None  # set by @register_cls
 
-    def __init__(self, query_string):
-        self.qs = query_string
+    def __init__(self, request):
+        self.request = request
+        self.qs = request.GET
+        if request.GET:
+            self.raw_qs = request.get_full_path().split('?')[1]
+        else:
+            self.raw_qs = ''
+
+    @property
+    def api(self):
+        """
+        Access the top level provider API attribute.
+
+        Example: client.slumber.provider.bango
+        """
+        return getattr(client.slumber.provider, self.provider)
+
+    def prepare(self):
+        trans_id = self.transaction_id
+        session_trans_id = self.request.session.get('trans_id')
+
+        if not trans_id:
+            log.info('Provider={pr} did not provide a transaction ID '
+                     'on the query string'.format(pr=self.provider))
+            raise msg.DevMessage(msg.TRANS_MISSING)
+        if trans_id != session_trans_id:
+            log.info('Provider={pr} transaction {tr} is not in the '
+                     'active session'.format(pr=self.provider, tr=trans_id))
+            raise msg.DevMessage(msg.NO_ACTIVE_TRANS)
+
+        self.verify_signature()
 
     @property
     def transaction_id(self):
@@ -86,6 +118,13 @@ class Notice(object):
         """
         raise NotImplementedError
 
+    def verify_signature(self):
+        """
+        Returns without raising an exception if the signagture
+        of the notification is valid.
+        """
+        raise NotImplementedError
+
 
 @register('reference')
 class RefNotice(Notice):
@@ -94,20 +133,18 @@ class RefNotice(Notice):
     def transaction_id(self):
         return self.qs.get('ext_transaction_id')
 
+    def verify_signature(self):
+        try:
+            response = self.api.notices.post({'qs': self.raw_qs})
+        except HttpClientError, err:
+            log.error('post to reference payment notice for transaction '
+                      'ID {trans} failed: {err}'
+                      .format(trans=self.transaction_id, err=err))
+            raise msg.DevMessage(msg.NOTICE_EXCEPTION)
 
-def _prepare_notice(notice, request):
-    trans_id = notice.transaction_id
-    session_trans_id = request.session.get('trans_id')
+        log.info('reference payment notice check result={result}; '
+                 'trans_id={trans}'.format(trans=self.transaction_id,
+                                            result=response['result']))
 
-    if not trans_id:
-        log.info('Provider={pr} did not provide a transaction ID on the query '
-                 'string'.format(pr=notice.provider))
-        return msg.NO_ACTIVE_TRANS
-    if trans_id != session_trans_id:
-        log.info('Provider={pr} transaction {tr} is not in the '
-                 'active session'.format(pr=notice.provider, tr=trans_id))
-        return msg.NO_ACTIVE_TRANS
-
-    # TODO: verify notice.token. bug 936138
-
-    return PREPARED_OK
+        if response['result'] != 'OK':
+            raise msg.DevMessage(msg.NOTICE_ERROR)
