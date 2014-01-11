@@ -13,6 +13,7 @@ BAD_REQUEST = 'BAD_REQUEST'
 BAD_SIM_RESULT = 'BAD_SIM_RESULT'
 BANGO_ERROR = 'BANGO_ERROR'
 EXPIRED_JWT = 'EXPIRED_JWT'
+EXT_ERROR = 'EXT_ERROR'
 INTERNAL_TIMEOUT = 'INTERNAL_TIMEOUT'
 INVALID_JWT = 'INVALID_JWT'
 INVALID_JWT_OBJ = 'INVALID_JWT_OBJ'
@@ -92,6 +93,9 @@ def _build_legend():
         # L10n: JWT stands for JSON Web Token and does not need to be
         # localized.
         EXPIRED_JWT: _('The JWT has expired.'),
+        EXT_ERROR:
+            _('The external payment processor returned an error while '
+              'handling the payment'),
         INTERNAL_TIMEOUT: _('An internal web request timed out.'),
         INVALID_JWT:
             # L10n: JWT stands for JSON Web Token and does not need to be
