@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-08 09:43-0700\n"
-"PO-Revision-Date: 2014-01-11 11:50+0000\n"
+"PO-Revision-Date: 2014-01-11 11:51+0000\n"
 "Last-Translator: Ton <tonnes.mb@gmail.com>\n"
 "Language-Team: none\n"
 "Language: nl\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1389441046.0\n"
+"X-POOTLE-MTIME: 1389441066.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10
 #: webpay/base/templates/base.html:35
@@ -165,7 +165,9 @@ msgstr ""
 #: webpay/base/dev_messages.py:134
 msgid ""
 "The purchase cannot be started because the transaction started too long ago"
-msgstr "test (commit fail)"
+msgstr ""
+"De aankoop kan niet worden gestart, omdat de transactie te lang geleden is "
+"gestart"
 
 #: webpay/base/dev_messages.py:137
 msgid "The system timed out while waiting for a transaction to start."
