@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 
 import mock
 from nose.tools import eq_
+from slumber.exceptions import HttpClientError
 
 from webpay.base import dev_messages as msg
 from webpay.base.tests import BasicSessionCase
@@ -25,13 +26,17 @@ class TestProviderSuccess(BasicSessionCase):
         self.save_session()
 
         # TODO: Add this when verifying tokens. bug 936138
-        #p = mock.patch('webpay.provider.views.client.slumber')
-        #self.slumber = p.start()
-        #self.addCleanup(p.stop)
+        p = mock.patch('webpay.provider.views.client.slumber')
+        self.slumber = p.start()
+        self.addCleanup(p.stop)
 
         p = mock.patch('webpay.provider.views.tasks.payment_notify')
         self.notify = p.start()
         self.addCleanup(p.stop)
+
+    def trust_notice(self):
+        post = self.slumber.provider.reference.notices.post
+        post.return_value = {'result': 'OK'}
 
     def callback(self, data=None, clear_qs=False, view=None):
         assert view, 'not sure which view to use'
@@ -51,11 +56,12 @@ class TestProviderSuccess(BasicSessionCase):
         return self.callback(**kw)
 
     def test_missing_ext_trans(self):
+        self.trust_notice()
         res = self.success(clear_qs=True)
-        self.assertContains(res, msg.NO_ACTIVE_TRANS,
-                            status_code=400)
+        self.assertContains(res, msg.TRANS_MISSING, status_code=400)
 
     def test_missing_session_trans(self):
+        self.trust_notice()
         del self.session['trans_id']
         self.save_session()
         res = self.success()
@@ -63,14 +69,37 @@ class TestProviderSuccess(BasicSessionCase):
                             status_code=400)
 
     def test_success(self):
+        self.trust_notice()
         res = self.success()
         eq_(res.status_code, 200)
         self.notify.delay.assert_called_with(self.trans_id)
         self.assertTemplateUsed(res, 'provider/success.html')
 
     def test_error(self):
+        self.trust_notice()
         res = self.error()
         eq_(res.status_code, 400)
         assert not self.notify.delay.called, (
                 'did not expect a notification on error')
         self.assertTemplateUsed(res, 'error.html')
+
+    def test_invalid_notice_on_success(self):
+        post = self.slumber.provider.reference.notices.post
+        post.return_value = {'result': 'FAIL'}
+
+        res = self.success()
+        eq_(res.status_code, 400)
+
+    def test_notice_failure(self):
+        post = self.slumber.provider.reference.notices.post
+        post.side_effect = HttpClientError('bad stuff')
+
+        res = self.success()
+        eq_(res.status_code, 400)
+
+    def test_invalid_notice_on_error(self):
+        post = self.slumber.provider.reference.notices.post
+        post.return_value = {'result': 'FAIL'}
+
+        res = self.error()
+        eq_(res.status_code, 400)

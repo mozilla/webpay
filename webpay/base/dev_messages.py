@@ -25,12 +25,14 @@ NO_ACTIVE_TRANS = 'NO_ACTIVE_TRANS'
 NO_DEFAULT_LOC = 'NO_DEFAULT_LOC'
 NO_SIM_REASON = 'NO_SIM_REASON'
 NOTICE_ERROR = 'NOTICE_ERROR'
+NOTICE_EXCEPTION = 'NOTICE_EXCEPTION'
 PAY_DISABLED = 'PAY_DISABLED'
 RESOURCE_MODIFIED = 'RESOURCE_MODIFIED'
 SIM_DISABLED = 'SIM_DISABLED'
 SIM_ONLY_KEY = 'SIM_ONLY_KEY'
 TRANS_ENDED = 'TRANS_ENDED'
 TRANS_EXPIRED = 'TRANS_EXPIRED'
+TRANS_MISSING = 'TRANS_MISSING'
 TRANS_TIMEOUT = 'TRANS_TIMEOUT'
 UNSUPPORTED_PAY = 'UNSUPPORTED_PAY'
 # This string is used to determine the message on Marketplace;
@@ -69,6 +71,16 @@ def legend(locale=None):
         return _build_legend()
     finally:
         tower.activate(old_locale)
+
+
+class DevMessage(Exception):
+    """
+    A catchable developer message exception.
+    """
+    def __init__(self, msg_code):
+        self.code = msg_code
+        super(Exception, self).__init__('Developer message: {msg}'
+                                        .format(msg=msg_code))
 
 
 def _build_legend():
@@ -124,6 +136,9 @@ def _build_legend():
               "the key '{0}'.").format('reason'),
         NOTICE_ERROR: _('The notification service responded with an '
                         'error while verifying the payment notice'),
+        NOTICE_EXCEPTION: _('The notification service raised an '
+                            'unexpected exception while verifying the '
+                            'payment notice'),
         PAY_DISABLED: _('Payments are temporarily disabled'),
         RESOURCE_MODIFIED:
             _('The resource has been modified within the timing of the '
@@ -137,6 +152,7 @@ def _build_legend():
         TRANS_EXPIRED:
             _('The purchase cannot be started because the transaction '
               'started too long ago'),
+        TRANS_MISSING: _('No transaction ID could be found.'),
         TRANS_TIMEOUT:
             _('The system timed out while waiting for a transaction '
               'to start.'),
