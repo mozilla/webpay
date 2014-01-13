@@ -220,7 +220,6 @@ number of keys logged and the time spent in views::
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
 .. _`nightly desktop B2G build`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-b2g18/
 .. _`Gaia Hacking`: https://wiki.mozilla.org/Gaia/Hacking
-.. _homebrew: http://mxcl.github.com/homebrew/
 .. _virtualenvwrapper: http://pypi.python.org/pypi/virtualenvwrapper
 .. _less: http://lesscss.org/
 .. _npm: https://npmjs.org/
