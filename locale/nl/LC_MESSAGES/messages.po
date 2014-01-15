@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-15 09:08-0700\n"
-"PO-Revision-Date: 2014-01-11 12:38+0000\n"
+"PO-Revision-Date: 2014-01-15 18:34+0000\n"
 "Last-Translator: Ton <tonnes.mb@gmail.com>\n"
 "Language-Team: none\n"
 "Language: nl\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1389443907.0\n"
+"X-POOTLE-MTIME: 1389810898.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -62,6 +62,8 @@ msgstr "De JWT is verlopen."
 #: webpay/base/dev_messages.py:109
 msgid "The external payment processor returned an error while handling the payment"
 msgstr ""
+"De externe betalingsverwerker heeft een fout gemeld tijdens het behandelen "
+"van de betaling"
 
 #: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
@@ -119,6 +121,8 @@ msgstr "De meldingsservice reageerde met een fout bij de verificatie van de beta
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr ""
+"De meldingsservice initieerde een onverwachte uitzondering tijdens het "
+"verifiëren van de betalingskennisgeving"
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
@@ -146,7 +150,7 @@ msgstr "De aankoop kan niet worden gestart, omdat de transactie te lang geleden 
 
 #: webpay/base/dev_messages.py:155
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "Er is geen transactie-ID gevonden."
 
 #: webpay/base/dev_messages.py:157
 msgid "The system timed out while waiting for a transaction to start."
