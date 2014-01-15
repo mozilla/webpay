@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-15 09:08-0700\n"
-"PO-Revision-Date: 2014-01-15 18:34+0000\n"
+"PO-Revision-Date: 2014-01-15 20:03+0000\n"
 "Last-Translator: Ton <tonnes.mb@gmail.com>\n"
 "Language-Team: none\n"
 "Language: nl\n"
@@ -11,8 +11,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Translate Toolkit 1.9.0\n"
-"X-POOTLE-MTIME: 1389810898.0\n"
+"X-Generator: Pootle 2.5.0\n"
+"X-POOTLE-MTIME: 1389816207.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10
 #: webpay/base/templates/base.html:35
@@ -73,7 +73,7 @@ msgstr "De JWT is verlopen."
 msgid ""
 "The external payment processor returned an error while handling the payment"
 msgstr ""
-"De externe betalingsverwerker heeft een fout gemeld tijdens het behandelen "
+"De externe betalingsverwerker heeft een fout gemeld tijdens het verwerken "
 "van de betaling"
 
 #: webpay/base/dev_messages.py:111
