@@ -61,9 +61,7 @@ msgstr "Das JWT ist abgelaufen."
 
 #: webpay/base/dev_messages.py:109
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
-"Der externe Zahlungsverarbeiter hat bei der Bearbeitung der Zahlung einen "
-"Fehler gemeldet"
+msgstr "Der externe Zahlungsverarbeiter hat bei der Bearbeitung der Zahlung einen Fehler gemeldet"
 
 #: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
@@ -120,9 +118,7 @@ msgstr "Der Benachrichtigungsdienst hat einen Fehler beim Bestätigen der Zahlun
 
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr ""
-"Der Benachrichtigungsdienst hat einen unerwarteten Fehler bei der "
-"Verifizierung der Zahlungsbenachrichtigung gemeldet"
+msgstr "Der Benachrichtigungsdienst hat einen unerwarteten Fehler bei der Verifizierung der Zahlungsbenachrichtigung gemeldet"
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
