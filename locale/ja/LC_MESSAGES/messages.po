@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-15 09:08-0700\n"
-"PO-Revision-Date: 2014-01-10 23:36-0500\n"
+"PO-Revision-Date: 2014-01-15 12:44-0500\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -60,7 +60,7 @@ msgstr "JWT が期限切れです。"
 
 #: webpay/base/dev_messages.py:109
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
+msgstr "決済処理中に外部決済代行業者がエラーを返しました"
 
 #: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
@@ -117,7 +117,7 @@ msgstr "決済通知の検証中に通知サービスがエラーを返しまし
 
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr ""
+msgstr "決済通知の検証中に通知サービスが予期せぬ例外を投げました"
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
@@ -145,7 +145,7 @@ msgstr "トランザクションの開始から時間が経っているため、
 
 #: webpay/base/dev_messages.py:155
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "トランザクション ID が見つかりませんでした。"
 
 #: webpay/base/dev_messages.py:157
 msgid "The system timed out while waiting for a transaction to start."
