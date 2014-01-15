@@ -149,9 +149,6 @@ def _build_legend():
         TRANS_ENDED:
             _('The purchase cannot be completed because the current '
               'transaction has already ended.'),
-        TRANS_EXPIRED:
-            _('The purchase cannot be started because the transaction '
-              'started too long ago'),
         TRANS_MISSING: _('No transaction ID could be found.'),
         TRANS_TIMEOUT:
             _('The system timed out while waiting for a transaction '
