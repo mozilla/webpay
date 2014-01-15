@@ -134,11 +134,11 @@ msgstr "No se puede completar la compra porque la transacción actual ha finaliz
 
 #: webpay/base/dev_messages.py:134
 msgid "The purchase cannot be started because the transaction started too long ago"
-msgstr ""
+msgstr "No se puede iniciar la compra porque la transacción comenzó hace demasiado tiempo."
 
 #: webpay/base/dev_messages.py:137
 msgid "The system timed out while waiting for a transaction to start."
-msgstr "El sistema agotó el tiempo de espera esperando a que se iniciara una transacción."
+msgstr "El sistema agotó el tiempo de espera mientras se iniciaba la transacción."
 
 #: webpay/base/dev_messages.py:140
 msgid "The payment method or price point is not supported for this region or operator."
