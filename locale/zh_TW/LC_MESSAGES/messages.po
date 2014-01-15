@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-08 09:43-0700\n"
+"POT-Creation-Date: 2014-01-15 09:08-0700\n"
 "PO-Revision-Date: 2014-01-09 12:13+0000\n"
 "Last-Translator: Peter <petercpg@mail.moztw.org>\n"
 "Language-Team: MozTW <petercpg@mail.moztw.org>\n"
@@ -22,135 +22,147 @@ msgstr "已取消付款。"
 msgid "Your payment is complete."
 msgstr "已完成您的付款。"
 
-#: webpay/base/dev_messages.py:76
+#: webpay/base/dev_messages.py:89
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
 msgstr "Mozilla 處理付款時收到了來自付款服務供應商 (Bango) 的無效代碼"
 
 #. L10n: First argument is an example of the proper key format.
-#: webpay/base/dev_messages.py:80
+#: webpay/base/dev_messages.py:93
 msgid "An image icon key was not an object. Correct example: {0}"
 msgstr "圖示鍵值不是物件。正確的例子: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:84
+#: webpay/base/dev_messages.py:97
 msgid "No one has been registered for this JWT issuer."
 msgstr "還沒有人註冊此 JWT 發行者。"
 
-#: webpay/base/dev_messages.py:85
+#: webpay/base/dev_messages.py:98
 msgid "The price point is unknown or invalid."
 msgstr "價格點無效或未知。"
 
-#: webpay/base/dev_messages.py:86
+#: webpay/base/dev_messages.py:99
 msgid "The request to begin payment was invalid."
 msgstr "開始付費的請求無效。"
 
-#: webpay/base/dev_messages.py:88
+#: webpay/base/dev_messages.py:101
 msgid "The requested payment simulation result is not supported."
 msgstr "不支援所請求的模擬付款結果。"
 
-#: webpay/base/dev_messages.py:90
+#: webpay/base/dev_messages.py:103
 msgid "The payment provider (Bango) returned an error while processing the payment"
 msgstr "處理付款時，付款服務供應商 (Bango) 回傳了錯誤"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:94
+#: webpay/base/dev_messages.py:107
 msgid "The JWT has expired."
 msgstr "JWT 已經過期。"
 
-#: webpay/base/dev_messages.py:95
+#: webpay/base/dev_messages.py:109
+msgid "The external payment processor returned an error while handling the payment"
+msgstr ""
+
+#: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
 msgstr "發生內部網頁操作逾時。"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:99
+#: webpay/base/dev_messages.py:115
 msgid "The JWT signature is invalid or the JWT is malformed."
 msgstr "JWT 簽章無效，或是變形的 JWT。"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:102
+#: webpay/base/dev_messages.py:118
 msgid "The JWT did not decode to a JSON object."
 msgstr "JWT 無法被解碼為 JSON 物件。"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:105
+#: webpay/base/dev_messages.py:121
 msgid "Error decoding JWT."
 msgstr "JWT 解碼錯誤。"
 
-#: webpay/base/dev_messages.py:106
+#: webpay/base/dev_messages.py:122
 msgid "The system timed out while trying to log in."
 msgstr "嘗試登入時系統逾時。"
 
-#: webpay/base/dev_messages.py:107
+#: webpay/base/dev_messages.py:123
 msgid "The system timed out while trying to log out."
 msgstr "嘗試登出時系統逾時。"
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
-#: webpay/base/dev_messages.py:109
+#: webpay/base/dev_messages.py:125
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
 msgstr "網址已變形，這可能是 postback URL 或圖示 URL。"
 
-#: webpay/base/dev_messages.py:111
+#: webpay/base/dev_messages.py:127
 msgid "The transaction ID was missing from the session when processing a payment return."
 msgstr "處理付款回傳資訊時，session 中的交易 ID 無效。"
 
 #. L10n: First and second arguements are the names of keys.
-#: webpay/base/dev_messages.py:115
+#: webpay/base/dev_messages.py:131
 msgid "If {0} is defined, then you must also define {1}."
 msgstr "若您定義了 {0}，那麼也必須定義 {1}。"
 
 #. L10n: First argument is the name of the key, 'reason'.
-#: webpay/base/dev_messages.py:119
+#: webpay/base/dev_messages.py:135
 msgid "The requested chargeback simulation is missing the key '{0}'."
 msgstr "模擬退款請求缺少金鑰「{0}」。"
 
-#: webpay/base/dev_messages.py:121
+#: webpay/base/dev_messages.py:137
 msgid "The notification service responded with an error while verifying the payment notice"
 msgstr "確認付款通知時，通知服務回應了錯誤"
 
-#: webpay/base/dev_messages.py:123
+#: webpay/base/dev_messages.py:139
+msgid "The notification service raised an unexpected exception while verifying the payment notice"
+msgstr ""
+
+#: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
 msgstr "已暫時停用付款功能"
 
-#: webpay/base/dev_messages.py:125
+#: webpay/base/dev_messages.py:144
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
 msgstr "在上一個請求中的資源已被修改。請重新操作。"
 
-#: webpay/base/dev_messages.py:127
+#: webpay/base/dev_messages.py:146
 msgid "Payment simulations are disabled at this time."
 msgstr "模擬付款目前暫時停用。"
 
-#: webpay/base/dev_messages.py:129
+#: webpay/base/dev_messages.py:148
 msgid "This payment key can only be used to simulate purchases."
 msgstr "付費金鑰僅能用來模擬付款流程。"
 
-#: webpay/base/dev_messages.py:131
+#: webpay/base/dev_messages.py:150
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr "因為目前的交易已結束，無法完成付款。"
 
-#: webpay/base/dev_messages.py:134
+#: webpay/base/dev_messages.py:153
 msgid "The purchase cannot be started because the transaction started too long ago"
 msgstr "因為是太久以前開始的交易，無法進行付款"
 
-#: webpay/base/dev_messages.py:137
+#: webpay/base/dev_messages.py:155
+msgid "No transaction ID could be found."
+msgstr ""
+
+#: webpay/base/dev_messages.py:157
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "等候交易開始時發生系統逾時。"
 
-#: webpay/base/dev_messages.py:140
+#: webpay/base/dev_messages.py:160
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr "此區域或電信業者不支援此付款方式或價格點。"
 
-#: webpay/base/dev_messages.py:142
+#: webpay/base/dev_messages.py:162
 msgid "The user cancelled the payment."
 msgstr "使用者取消付款。"
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:149
+#: webpay/base/dev_messages.py:169
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "鍵值「{0}」超過了最大長度 {1}"
 
