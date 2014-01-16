@@ -145,11 +145,6 @@ def lobby(request):
                          .format(trans=sess.get('trans_id'), exc=exc))
             return system_error(request, code=msg.BAD_REQUEST)
 
-        if (gmtime() - trans['created']) > settings.TRANSACTION_TIME_LIMIT:
-            log.info('Transaction {trans} is out of date'
-                     .format(trans=sess.get('trans_id')))
-            return system_error(request, code=msg.TRANS_EXPIRED)
-
         log.info('Re-used existing transaction ID: {tx}'
                  .format(tx=sess.get('trans_id')))
 
