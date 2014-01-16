@@ -61,7 +61,7 @@ msgstr "El JWT ha caducado."
 
 #: webpay/base/dev_messages.py:109
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
+msgstr "El procesador de pagos externo devolvió un error durante la gestión del pago"
 
 #: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
@@ -118,7 +118,7 @@ msgstr "El servicio de notificaciones respondió con un error durante la verific
 
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr ""
+msgstr "El servicio de notificaciones alegó una excepción inesperada durante la verificación del aviso de pago"
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
@@ -146,7 +146,7 @@ msgstr "No se puede iniciar la compra porque la transacción comenzó hace demas
 
 #: webpay/base/dev_messages.py:155
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "No se pudo encontrar ninguna ID de la transacción."
 
 #: webpay/base/dev_messages.py:157
 msgid "The system timed out while waiting for a transaction to start."
