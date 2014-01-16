@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-15 09:08-0700\n"
-"PO-Revision-Date: 2014-01-09 13:10+0000\n"
+"PO-Revision-Date: 2014-01-16 20:07+0000\n"
 "Last-Translator: Vlado <valastiak@mozilla.sk>\n"
 "Language-Team: Mozilla.sk <l10n@mozilla.sk>\n"
 "Language: sk\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1389273037.0\n"
+"X-POOTLE-MTIME: 1389902842.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -61,7 +61,7 @@ msgstr "JWT vypršalo."
 
 #: webpay/base/dev_messages.py:109
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
+msgstr "Externý spracovateľ platby pri jej spracovaní vrátil chybu."
 
 #: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
@@ -119,6 +119,8 @@ msgstr "Pri overovaní oznámenia o platbe vrátila služba pre upozornenia chyb
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr ""
+"Služba upozornení vyvolala pri overovaní upozornenia o platbe neočakávanú "
+"výnimku."
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
@@ -146,7 +148,7 @@ msgstr "Platba nemôže byť spustená, pretože aktuálna transakcia bola odšt
 
 #: webpay/base/dev_messages.py:155
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "Nebol nájdený žiadny identifikátor transakcie."
 
 #: webpay/base/dev_messages.py:157
 msgid "The system timed out while waiting for a transaction to start."
