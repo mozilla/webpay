@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-15 09:08-0700\n"
-"PO-Revision-Date: 2014-01-08 22:49+0000\n"
+"PO-Revision-Date: 2014-01-18 20:03+0000\n"
 "Last-Translator: Gábor <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n !=1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1389221352.0\n"
+"X-POOTLE-MTIME: 1390075403.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -62,7 +62,7 @@ msgstr "A JWT lejárt."
 
 #: webpay/base/dev_messages.py:109
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
+msgstr "A külső fizetésfeldolgozó hibát adott vissza a fizetés kezelése közben"
 
 #: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
@@ -120,6 +120,8 @@ msgstr "Az értesítési szolgáltatás hibával válaszolt a fizetési értesí
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr ""
+"Az értesítési szolgáltatás váratlan kivételt dobott a fizetési értesítés "
+"ellenőrzésekor"
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
@@ -147,7 +149,7 @@ msgstr "A vásárlás nem indítható el, mert a tranzakció túl régen kezdőd
 
 #: webpay/base/dev_messages.py:155
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "Nem található tranzakcióazonosító."
 
 #: webpay/base/dev_messages.py:157
 msgid "The system timed out while waiting for a transaction to start."
