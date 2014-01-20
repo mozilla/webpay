@@ -9,8 +9,9 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 
 import mock
+from curling.lib import HttpServerError
 from mozpay.exc import RequestExpired
-from nose.tools import eq_, ok_
+from nose.tools import eq_, ok_, raises
 from pyquery import PyQuery as pq
 
 from lib.marketplace.api import UnknownPricePoint
@@ -337,8 +338,14 @@ class TestVerify(Base):
         payload = self.request(payload=self.payload())
         res = self.get(payload)
         assert price.called
-        self.assertContains(res, msg.BAD_PRICE_POINT,
-                            status_code=400)
+        self.assertContains(res, msg.BAD_PRICE_POINT, status_code=400)
+
+    @raises(HttpServerError)
+    def test_internal_error(self):
+        price = self.mkt.get_price
+        price.side_effect = HttpServerError
+        payload = self.request(payload=self.payload())
+        self.get(payload)
 
 
 @mock.patch('lib.solitude.api.client.get_transaction')

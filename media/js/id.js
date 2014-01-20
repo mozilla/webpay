@@ -37,7 +37,6 @@ define('id', ['cli', 'format', 'l10n'], function(cli, format, l10n) {
                 loggedInUser: user || undefined
             };
             var params = $.extend({}, defaults, arguments[0]);
-
             navigator.id.watch(params);
         }
     };

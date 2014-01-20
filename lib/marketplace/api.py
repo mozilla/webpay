@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 
 from ..utils import SlumberWrapper
@@ -12,12 +13,20 @@ class MarketplaceAPI(SlumberWrapper):
     errors = {}
 
     def get_price(self, point):
-        # TODO: cache this.
+        key = 'marketplace.api.get_price:{0}'.format(point)
+        cached = cache.get(key)
+        if cached:
+            return cached
+
         try:
-            return (self.api.webpay.prices()
-                    .get_object(provider='bango', pricePoint=point))
+            res = (self.api.webpay.prices()
+                   .get_object(provider='bango', pricePoint=point))
         except ObjectDoesNotExist:
             raise UnknownPricePoint(point)
+
+        cache.set(key, res)
+        return res
+
 
 if not settings.MARKETPLACE_URL:
     raise ValueError('MARKETPLACE_URL is required')
