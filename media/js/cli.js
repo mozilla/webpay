@@ -148,9 +148,15 @@ define('cli', ['settings', 'longtext', 'tracking'], function(settings, checkLong
         }
     };
 
-    console.log('[cli] mozPaymentProvider.iccIds?', cli.mozPaymentProvider.iccIds);
-    console.log('[cli] mozPaymentProvider.mcc?', cli.mozPaymentProvider.mcc);
-    console.log('[cli] mozPaymentProvider.mnc?', cli.mozPaymentProvider.mnc);
+    if (cli.mozPaymentProvider.iccInfo) {
+      console.log('[cli] mozPaymentProvider.iccInfo?', JSON.stringify(cli.mozPaymentProvider.iccInfo));
+    } else if (cli.mozPaymentProvider.iccIds) {
+      console.log('[cli] mozPaymentProvider.iccIds?', cli.mozPaymentProvider.iccIds);
+      console.log('[cli] mozPaymentProvider.mcc?', cli.mozPaymentProvider.mcc);
+      console.log('[cli] mozPaymentProvider.mnc?', cli.mozPaymentProvider.mnc);
+    } else {
+      console.log('[cli] No ICC info available');
+    }
     console.log('[cli] mozPaymentProvider.sendSilentSms?', cli.mozPaymentProvider.sendSilentSms);
 
     return cli;
