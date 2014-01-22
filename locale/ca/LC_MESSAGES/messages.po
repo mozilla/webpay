@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-15 09:08-0700\n"
+"POT-Creation-Date: 2014-01-22 09:18-0700\n"
 "PO-Revision-Date: 2013-11-23 15:01+0000\n"
 "Last-Translator: Anna <arosichsoler@gmail.com>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -141,29 +141,25 @@ msgstr "Aquesta clau de pagament només es pot fer servir per simular comandes."
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr "No es pot completar la comanda perquè la transacció actual ja ha finalitzat."
 
-#: webpay/base/dev_messages.py:153
-msgid "The purchase cannot be started because the transaction started too long ago"
-msgstr ""
-
-#: webpay/base/dev_messages.py:155
+#: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
 msgstr ""
 
-#: webpay/base/dev_messages.py:157
+#: webpay/base/dev_messages.py:154
 msgid "The system timed out while waiting for a transaction to start."
 msgstr ""
 
-#: webpay/base/dev_messages.py:160
+#: webpay/base/dev_messages.py:157
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr "No es permet el mètode de pagament o el punt de preu per aquesta regió o aquest operador."
 
-#: webpay/base/dev_messages.py:162
+#: webpay/base/dev_messages.py:159
 msgid "The user cancelled the payment."
 msgstr "L'usuari ha cancel·lat el pagament."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:169
+#: webpay/base/dev_messages.py:166
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "El valor de la clau \"{0}\" excedeix la longitud màxima de {1}"
 
@@ -265,7 +261,7 @@ msgstr "Error"
 msgid "Payments are temporarily disabled."
 msgstr "Els pagaments estan inhabilitats temporalment"
 
-#: webpay/pay/views.py:196 webpay/pin/views.py:93
+#: webpay/pay/views.py:191 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Introduïu el PIN"
 

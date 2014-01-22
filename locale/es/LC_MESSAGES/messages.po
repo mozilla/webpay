@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-15 09:08-0700\n"
+"POT-Creation-Date: 2014-01-22 09:18-0700\n"
 "PO-Revision-Date: 2013-10-22 10:45+0000\n"
 "Last-Translator: Inma <inma.barrios@mozilla-hispano.org>\n"
 "Language-Team: none\n"
@@ -140,29 +140,25 @@ msgstr "Esta clave de pago solo puede usarse para simular compras."
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr "No se puede completar la compra porque la transacción actual ha finalizado ya."
 
-#: webpay/base/dev_messages.py:153
-msgid "The purchase cannot be started because the transaction started too long ago"
-msgstr "No se puede iniciar la compra porque la transacción comenzó hace demasiado tiempo."
-
-#: webpay/base/dev_messages.py:155
+#: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
 msgstr "No se pudo encontrar ninguna ID de la transacción."
 
-#: webpay/base/dev_messages.py:157
+#: webpay/base/dev_messages.py:154
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "El sistema agotó el tiempo de espera mientras se iniciaba la transacción."
 
-#: webpay/base/dev_messages.py:160
+#: webpay/base/dev_messages.py:157
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr "El método de pago o rango de precio no está admitido para esta región u operador."
 
-#: webpay/base/dev_messages.py:162
+#: webpay/base/dev_messages.py:159
 msgid "The user cancelled the payment."
 msgstr "El usuario canceló el pago."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:169
+#: webpay/base/dev_messages.py:166
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "El valor para la clave \"{0}\" excede el tamaño máximo de {1}"
 
@@ -264,7 +260,7 @@ msgstr "Error"
 msgid "Payments are temporarily disabled."
 msgstr "Los pagos están deshabilitados temporalmente."
 
-#: webpay/pay/views.py:196 webpay/pin/views.py:93
+#: webpay/pay/views.py:191 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Escribir PIN"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Czech (cs)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-15 09:08-0700\n"
+"POT-Creation-Date: 2014-01-22 09:18-0700\n"
 "PO-Revision-Date: 2014-01-09 16:27+0000\n"
 "Last-Translator: Pavel <jasnapaka@jasnapaka.com>\n"
 "Language-Team: Czech Mozilla Team <info@mozilla.cz>\n"
@@ -140,29 +140,25 @@ msgstr "Tento platbní klíč může být použit pouze pro zkušební platby."
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr "Platba nemůže být dokončena, protože aktuální transakce již byla ukončena."
 
-#: webpay/base/dev_messages.py:153
-msgid "The purchase cannot be started because the transaction started too long ago"
-msgstr "Nákup nemůže začít, protože transakce již vypršela."
-
-#: webpay/base/dev_messages.py:155
+#: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
 msgstr ""
 
-#: webpay/base/dev_messages.py:157
+#: webpay/base/dev_messages.py:154
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "Vypršel čas při snaze systému provést zahájení transakce."
 
-#: webpay/base/dev_messages.py:160
+#: webpay/base/dev_messages.py:157
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr "Platební metoda nebo cena není podporována pro tento region či operátora."
 
-#: webpay/base/dev_messages.py:162
+#: webpay/base/dev_messages.py:159
 msgid "The user cancelled the payment."
 msgstr "Uživatel zrušil platbu."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:169
+#: webpay/base/dev_messages.py:166
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Hodnota klíče \"{0}\" překročila maximální hodnotu {1}"
 
@@ -264,7 +260,7 @@ msgstr "Chyba"
 msgid "Payments are temporarily disabled."
 msgstr "Platby jsou dočasně zakázány"
 
-#: webpay/pay/views.py:196 webpay/pin/views.py:93
+#: webpay/pay/views.py:191 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Vložte PIN"
 

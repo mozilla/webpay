@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-15 09:49-0700\n"
+"POT-Creation-Date: 2014-01-22 09:18-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -168,21 +168,15 @@ msgstr ""
 "Ŧħḗ ƥŭřƈħȧşḗ ƈȧƞƞǿŧ ƀḗ ƈǿḿƥŀḗŧḗḓ ƀḗƈȧŭşḗ ŧħḗ ƈŭřřḗƞŧ ŧřȧƞşȧƈŧīǿƞ ħȧş ȧŀřḗȧḓẏ "
 "ḗƞḓḗḓ."
 
-#: webpay/base/dev_messages.py:153
-msgid ""
-"The purchase cannot be started because the transaction started too long ago"
-msgstr ""
-"Ŧħḗ ƥŭřƈħȧşḗ ƈȧƞƞǿŧ ƀḗ şŧȧřŧḗḓ ƀḗƈȧŭşḗ ŧħḗ ŧřȧƞşȧƈŧīǿƞ şŧȧřŧḗḓ ŧǿǿ ŀǿƞɠ ȧɠǿ"
-
-#: webpay/base/dev_messages.py:155
+#: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
 msgstr "Ƞǿ ŧřȧƞşȧƈŧīǿƞ ĪḒ ƈǿŭŀḓ ƀḗ ƒǿŭƞḓ."
 
-#: webpay/base/dev_messages.py:157
+#: webpay/base/dev_messages.py:154
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "Ŧħḗ şẏşŧḗḿ ŧīḿḗḓ ǿŭŧ ẇħīŀḗ ẇȧīŧīƞɠ ƒǿř ȧ ŧřȧƞşȧƈŧīǿƞ ŧǿ şŧȧřŧ."
 
-#: webpay/base/dev_messages.py:160
+#: webpay/base/dev_messages.py:157
 msgid ""
 "The payment method or price point is not supported for this region or "
 "operator."
@@ -190,13 +184,13 @@ msgstr ""
 "Ŧħḗ ƥȧẏḿḗƞŧ ḿḗŧħǿḓ ǿř ƥřīƈḗ ƥǿīƞŧ īş ƞǿŧ şŭƥƥǿřŧḗḓ ƒǿř ŧħīş řḗɠīǿƞ ǿř "
 "ǿƥḗřȧŧǿř."
 
-#: webpay/base/dev_messages.py:162
+#: webpay/base/dev_messages.py:159
 msgid "The user cancelled the payment."
 msgstr "Ŧħḗ ŭşḗř ƈȧƞƈḗŀŀḗḓ ŧħḗ ƥȧẏḿḗƞŧ."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:169
+#: webpay/base/dev_messages.py:166
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Ŧħḗ ṽȧŀŭḗ ƒǿř ķḗẏ \"{0}\" ḗẋƈḗḗḓş ŧħḗ ḿȧẋīḿŭḿ ŀḗƞɠŧħ ǿƒ {1}"
 
@@ -316,7 +310,7 @@ msgstr "Ḗřřǿř"
 msgid "Payments are temporarily disabled."
 msgstr "Ƥȧẏḿḗƞŧş ȧřḗ ŧḗḿƥǿřȧřīŀẏ ḓīşȧƀŀḗḓ."
 
-#: webpay/pay/views.py:196
+#: webpay/pay/views.py:191
 #: webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Ḗƞŧḗř Ƥīƞ"

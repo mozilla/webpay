@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-15 09:08-0700\n"
+"POT-Creation-Date: 2014-01-22 09:18-0700\n"
 "PO-Revision-Date: 2014-01-08 21:14+0000\n"
 "Last-Translator: Sara <sara.todaro@mozillaitalia.org>\n"
 "Language-Team: mozillaitalia\n"
@@ -140,29 +140,25 @@ msgstr "Questa chiave pagamenti può essere utilizzata solo per la simulazione d
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr "L’acquisto non può essere completato in quanto la corrente transazione è già terminata."
 
-#: webpay/base/dev_messages.py:153
-msgid "The purchase cannot be started because the transaction started too long ago"
-msgstr "Impossibile avviare l’acquisto in quanto è trascorso troppo tempo dall’inizio della transazione"
-
-#: webpay/base/dev_messages.py:155
+#: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
 msgstr ""
 
-#: webpay/base/dev_messages.py:157
+#: webpay/base/dev_messages.py:154
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "Durante l’attesa per l’avvio di una transazione il sistema è andato fuori tempo massimo."
 
-#: webpay/base/dev_messages.py:160
+#: webpay/base/dev_messages.py:157
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr "Questo metodo di pagamento o prezzo di vendita non è supportato dalla regione o dall’operatore."
 
-#: webpay/base/dev_messages.py:162
+#: webpay/base/dev_messages.py:159
 msgid "The user cancelled the payment."
 msgstr "L’utente ha annullato il pagamento."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:169
+#: webpay/base/dev_messages.py:166
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Il valore per la chiave “{0}” supera la lunghezza consentita di {1}"
 
@@ -264,7 +260,7 @@ msgstr "Errore"
 msgid "Payments are temporarily disabled."
 msgstr "I pagamenti sono momentaneamente disattivati."
 
-#: webpay/pay/views.py:196 webpay/pin/views.py:93
+#: webpay/pay/views.py:191 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Inserisci il codice PIN"
 

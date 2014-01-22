@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-15 09:08-0700\n"
+"POT-Creation-Date: 2014-01-22 09:18-0700\n"
 "PO-Revision-Date: 2013-12-11 13:32+0000\n"
 "Last-Translator: Goce <goce.mitevski@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -139,29 +139,25 @@ msgstr "Клучот на плаќањето може да се користи �
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr "Плаќањето не може да се изврши бидејќи тековната трансакција е веќе спроведена."
 
-#: webpay/base/dev_messages.py:153
-msgid "The purchase cannot be started because the transaction started too long ago"
-msgstr ""
-
-#: webpay/base/dev_messages.py:155
+#: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
 msgstr ""
 
-#: webpay/base/dev_messages.py:157
+#: webpay/base/dev_messages.py:154
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "Истече времето предвидено за почеток на трансакцијата."
 
-#: webpay/base/dev_messages.py:160
+#: webpay/base/dev_messages.py:157
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr "Начинот на плаќање или стапката на цената не е поддржана за оваа област или оператор."
 
-#: webpay/base/dev_messages.py:162
+#: webpay/base/dev_messages.py:159
 msgid "The user cancelled the payment."
 msgstr "Корисникот го откажа плаќањето."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:169
+#: webpay/base/dev_messages.py:166
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Вредноста на клучот \"{0}\" ја надминува максималната должина од {1}"
 
@@ -263,7 +259,7 @@ msgstr "Грешка"
 msgid "Payments are temporarily disabled."
 msgstr "Плаќањата се привремено оневозможени."
 
-#: webpay/pay/views.py:196 webpay/pin/views.py:93
+#: webpay/pay/views.py:191 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Внесете пин"
 

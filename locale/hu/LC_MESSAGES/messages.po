@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-15 09:08-0700\n"
+"POT-Creation-Date: 2014-01-22 09:18-0700\n"
 "PO-Revision-Date: 2014-01-18 20:03+0000\n"
 "Last-Translator: Gábor <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -119,9 +119,7 @@ msgstr "Az értesítési szolgáltatás hibával válaszolt a fizetési értesí
 
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr ""
-"Az értesítési szolgáltatás váratlan kivételt dobott a fizetési értesítés "
-"ellenőrzésekor"
+msgstr "Az értesítési szolgáltatás váratlan kivételt dobott a fizetési értesítés ellenőrzésekor"
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
@@ -143,29 +141,25 @@ msgstr "A fizetési kulcs csak szimulációhoz használható."
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr "A vásárlás nem fejezhető be, mert a jelenlegi tranzakció már befejeződött."
 
-#: webpay/base/dev_messages.py:153
-msgid "The purchase cannot be started because the transaction started too long ago"
-msgstr "A vásárlás nem indítható el, mert a tranzakció túl régen kezdődött el"
-
-#: webpay/base/dev_messages.py:155
+#: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
 msgstr "Nem található tranzakcióazonosító."
 
-#: webpay/base/dev_messages.py:157
+#: webpay/base/dev_messages.py:154
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "Időtúllépés a tranzakció indításakor."
 
-#: webpay/base/dev_messages.py:160
+#: webpay/base/dev_messages.py:157
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr "A fizetési módszer vagy az irányár nem támogatott ehhez a régióhoz vagy szolgáltatóhoz."
 
-#: webpay/base/dev_messages.py:162
+#: webpay/base/dev_messages.py:159
 msgid "The user cancelled the payment."
 msgstr "A felhasználó megszakította a fizetést."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:169
+#: webpay/base/dev_messages.py:166
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "A(z) „{0}” kulcshoz tartozó érték elérte a maximális hosszúságot: {1}"
 
@@ -267,7 +261,7 @@ msgstr "Hiba"
 msgid "Payments are temporarily disabled."
 msgstr "A fizetés átmenetileg szünetel."
 
-#: webpay/pay/views.py:196 webpay/pin/views.py:93
+#: webpay/pay/views.py:191 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Adja meg a PIN-kódot"
 

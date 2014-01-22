@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-15 09:08-0700\n"
+"POT-Creation-Date: 2014-01-22 09:18-0700\n"
 "PO-Revision-Date: 2014-01-15 12:44-0500\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -139,29 +139,25 @@ msgstr "この決済キーはシミュレーション購入専用です。"
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr "現在のトランザクションは既に終了しているため、購入を完了できません。"
 
-#: webpay/base/dev_messages.py:153
-msgid "The purchase cannot be started because the transaction started too long ago"
-msgstr "トランザクションの開始から時間が経っているため、購入を開始できません。"
-
-#: webpay/base/dev_messages.py:155
+#: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
 msgstr "トランザクション ID が見つかりませんでした。"
 
-#: webpay/base/dev_messages.py:157
+#: webpay/base/dev_messages.py:154
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "トランザクションの開始を待っている間にシステムがタイムアウトしました。"
 
-#: webpay/base/dev_messages.py:160
+#: webpay/base/dev_messages.py:157
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr "この地域もしくは事業者では、指定された決済方法または販売価格に対応していません。"
 
-#: webpay/base/dev_messages.py:162
+#: webpay/base/dev_messages.py:159
 msgid "The user cancelled the payment."
 msgstr "ユーザが決済をキャンセルしました。"
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:169
+#: webpay/base/dev_messages.py:166
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "キー「{0}」の値が最大文字数 {1} を超えています"
 
@@ -263,7 +259,7 @@ msgstr "エラー"
 msgid "Payments are temporarily disabled."
 msgstr "決済は一時的に無効化されています。"
 
-#: webpay/pay/views.py:196 webpay/pin/views.py:93
+#: webpay/pay/views.py:191 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "暗証番号を入力"
 
