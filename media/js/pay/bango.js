@@ -8,9 +8,29 @@ define('bango', ['cli'], function(cli) {
             var lastIcc;
 
             // Compare the last used SIM(s) to the current SIM(s).
-            // TODO: when we have multiple SIMs, how do we know which one is active?
-            if (cli.mozPaymentProvider.iccIds) {
-                iccKey = cli.mozPaymentProvider.iccIds.join(';');
+
+            // TODO: Bug 942361 Implement algorithm proposed at
+            // https://wiki.mozilla.org/WebAPI/WebPayment/Multi-SIM#Firefox_OS_v1.4
+
+            // Since Firefox OS 1.4 the mozPaymentProvider API does not include
+            // separated properties for the ICC ID, MCC and MNC values anymore,
+            // but an 'iccInfo' object containing these values and extra
+            // information that allows the payment provider to deliver an
+            // improved logic for the multi-SIM scenario.
+            if (cli.mozPaymentProvider.iccInfo) {
+              // Firefox OS version >= 1.4
+              // Until Bug 942361 is done, we just take the iccInfo of the
+              // first SIM.
+              var paymentServiceId = '0';
+              if (cli.mozPaymentProvider.iccInfo[paymentServiceId]) {
+                iccKey = cli.mozPaymentProvider.iccInfo[paymentServiceId].iccId;
+              }
+            } else if (cli.mozPaymentProvider.iccIds) {
+              // Firefox OS version < 1.4
+              iccKey = cli.mozPaymentProvider.iccIds.join(';');
+            }
+
+            if (iccKey) {
                 lastIcc = window.localStorage.getItem('lastIcc');
                 window.localStorage.setItem('lastIcc', iccKey);
                 if (lastIcc && lastIcc !== iccKey) {
@@ -23,7 +43,7 @@ define('bango', ['cli'], function(cli) {
                     console.log('[bango] sim did not change');
                 }
             } else {
-                console.log('[bango] iccIds unavailable');
+                console.log('[bango] iccKey unavailable');
             }
 
             return changed;
