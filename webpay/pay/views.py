@@ -13,7 +13,7 @@ from mozpay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
-from curling.lib import HttpClientError, HttpServerError
+from curling.lib import HttpClientError
 
 from webpay import provider
 from webpay.auth.decorators import user_can_simulate, user_verified
@@ -21,7 +21,7 @@ from webpay.auth import utils as auth_utils
 from webpay.base import dev_messages as msg
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
-from webpay.base.utils import app_error, custom_error, gmtime, system_error
+from webpay.base.utils import app_error, custom_error, system_error
 from webpay.pin.forms import VerifyPinForm
 from webpay.pin.utils import check_pin_status
 from webpay.spa.views import index as spa
@@ -95,8 +95,8 @@ def process_pay_req(request):
     # Assert pricePoint is valid.
     try:
         marketplace.get_price(pay_req['request']['pricePoint'])
-    except (HttpServerError, UnknownPricePoint), exc:
-        log.exception('calling get price_price()')
+    except UnknownPricePoint:
+        log.exception('UnknownPricePoint calling get price_price()')
         return app_error(request, code=msg.BAD_PRICE_POINT)
 
     _trim_pay_request(pay_req)
@@ -345,7 +345,7 @@ def _callback_url(request, is_success):
             statsd.incr('purchase.payment_{0}_callback.incomplete'
                         ''.format(status))
             log.error('Callback {0} token was incomplete: '
-                     '{1}'.format(status, querystring))
+                      '{1}'.format(status, querystring))
     else:
         statsd.incr('purchase.payment_{0}_callback.fail'.format(status))
         log.error('Callback {0} token was invalid: '

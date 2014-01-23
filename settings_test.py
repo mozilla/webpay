@@ -54,4 +54,10 @@ PAY_URLS = {
     },
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
+
 ENABLE_SPA = False
