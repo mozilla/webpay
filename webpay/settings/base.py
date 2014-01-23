@@ -223,7 +223,7 @@ LOGGING = {
             '()': 'webpay.base.logger.WebpayFormatter',
             'format':
                 '%(name)s:%(levelname)s '
-                '%(REMOTE_ADDR)s:%(TRANSACTION_ID)s '
+                '%(REMOTE_ADDR)s:%(TRANSACTION_ID)s:%(CLIENT_ID)s '
                 '%(message)s :%(pathname)s:%(lineno)s'
         }
     },
