@@ -50,8 +50,16 @@ SETTINGS
 echo "Starting tests..." `date`
 export FORCE_DB='yes sir'
 
+# Run Django Tests
 python manage.py test -v 2 --noinput --logging-clear-handlers --with-xunit
-rv=$?
+rv_pytests=$?
+
+# Lint PO translation files
+dennis-cmd lint locale/
+rv_dennis=$?
+
+# Collect all of the exit statuses
+rv_all=`expr $rv_pytests + $rv_dennis`
 
 echo 'shazam!'
-exit $rv
+exit $rv_all
