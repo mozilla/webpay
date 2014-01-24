@@ -6,3 +6,4 @@ cssselect==0.8
 supervisor==3.0
 meld3==0.6.10
 dennis==0.3.10
+polib==1.0.3
