@@ -75,9 +75,12 @@ MINIFY_BUNDLES = {
             'js/lib/format.js',
             'js/lib/longtext.js',
             'js/lib/tracking.js',
+            'js/lib/raven.min.js',
+            'js/lib/raven-proxy.js',
 
             # These are modules used by others.
             # The order is important, do not alphabetize.
+            'js/raven-init.js',
             'js/cli.js',
             'js/id.js',
             'js/auth.js',
@@ -498,6 +501,12 @@ JS_SETTINGS = {
     'ajax_timeout': 45000,
     # Wait timeout (Default 60s).
     'wait_timeout': 60000,
+    # Raven error logging
+    # ex: http://none@zamboni.localhost/api/v1/fireplace/report_error/12345
+    # Please note that the leading 'none@' is required
+    # The trailing integer '12345' is the sentry account id which is found in a sentry DSN
+    # ex: https://<user>:<pass>@app.getsentry.com/<sentry_account_id>
+    'zamboni_raven_url': '',
 }
 
 # New Relic is configured here.

@@ -116,3 +116,4 @@ BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
 BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN
 
 base.JS_SETTINGS['tracking_enabled'] = True
+base.JS_SETTINGS['zamboni_raven_url'] = ''
