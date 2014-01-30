@@ -49,8 +49,7 @@ PAY_URLS = {
     'reference': {
         'base': 'https://zippy.paas.allizom.org',
         'pay': '/?tx={uid_pay}',
-        # TODO: bug 942330
-        'logout': '/logout',
+        'logout': '/users/reset',
     },
 }
 
