@@ -11,7 +11,6 @@ from django.core.urlresolvers import reverse
 from slumber.exceptions import HttpClientError
 from webpay.base.helpers import absolutify
 
-from webpay.base.helpers import absolutify
 from ..utils import SlumberWrapper
 from . import constants as solitude_const
 from .errors import ERROR_STRINGS
@@ -281,6 +280,7 @@ class SolitudeAPI(SlumberWrapper):
                                       args=[provider])),
             'error_url': absolutify(reverse('provider.error',
                                     args=[provider])),
+            'product_image_url': icon_url,
         })
         log.info('made provider trans {trans}'.format(trans=provider_trans))
 
