@@ -91,7 +91,7 @@ PAY_URLS = {
     },
     'reference': {
         'base': 'https://zippy.paas.allizom.org',
-        'pay': '/?tx={uid_pay}',
+        'pay': '/payment/start?tx={uid_pay}',
         'logout': '/users/reset',
     },
 }
