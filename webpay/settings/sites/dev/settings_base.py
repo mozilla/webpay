@@ -121,3 +121,6 @@ ALLOW_ADMIN_SIMULATIONS = True
 base.JS_SETTINGS['tracking_enabled'] = True
 
 NEWRELIC_INI = '/etc/newrelic.d/marketplace-dev.allizom.org-webpay.ini'
+
+PAYMENT_PROVIDER = 'reference'
+UNIVERSAL_PROVIDER = True
