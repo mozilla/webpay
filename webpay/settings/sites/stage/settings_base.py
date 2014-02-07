@@ -112,6 +112,8 @@ ENCRYPTED_COOKIE_KEY = private.ENCRYPTED_COOKIE_KEY
 ALLOW_ADMIN_SIMULATIONS = True
 
 base.JS_SETTINGS['tracking_enabled'] = True
+base.JS_SETTINGS['zamboni_raven_url'] = ''
+
 NEWRELIC_INI = '/etc/newrelic.d/marketplace.allizom.org-webpay.ini'
 
 USAGE_WARNING = True
