@@ -492,4 +492,5 @@ else:
         log.info('Using universal SolitudeAPI')
         client = SolitudeAPI(*args)
     else:
+        log.info('Using BangoSolitudeAPI')
         client = BangoSolitudeAPI(*args)
