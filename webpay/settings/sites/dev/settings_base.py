@@ -126,3 +126,18 @@ NEWRELIC_INI = '/etc/newrelic.d/marketplace-dev.allizom.org-webpay.ini'
 # Uncomment this to activate Zippy.
 #PAYMENT_PROVIDER = 'reference'
 #UNIVERSAL_PROVIDER = True
+
+
+PAY_URLS = {
+    # Talk to Bango Test.
+    'bango': {
+        'base': 'http://mozilla.test.bango.org',
+        'pay': '/mozpayments/?bcid={uid_pay}',
+        'logout': '/mozpayments/logout/',
+    },
+    'reference': {
+        'base': 'https://zippy.paas.allizom.org',
+        'pay': '/payment/start?tx={uid_pay}',
+        'logout': '/users/reset',
+    },
+}
