@@ -61,9 +61,7 @@ msgstr "Il token JWT è scaduto."
 
 #: webpay/base/dev_messages.py:109
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
-"L’elaboratore esterno dei pagamenti ha restituito un errore durante "
-"l’elaborazione del pagamento."
+msgstr "L’elaboratore esterno dei pagamenti ha restituito un errore durante l’elaborazione del pagamento."
 
 #: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
@@ -120,9 +118,7 @@ msgstr "Il servizio di notifica ha riportato un errore durante la verifica della
 
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr ""
-"Il servizio notifiche ha sollevato un’eccezione non prevista durante la "
-"verifica della notifica di pagamento."
+msgstr "Il servizio notifiche ha sollevato un’eccezione non prevista durante la verifica della notifica di pagamento."
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
