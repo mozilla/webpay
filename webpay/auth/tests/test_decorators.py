@@ -1,6 +1,6 @@
 import json
 
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import HttpRequest
 
@@ -41,9 +41,8 @@ class TestBuyerHasPin(Base):
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_no_user(self, slumber):
-        slumber.generic.buyer.get.return_value = {
-            'meta': {'total_count': 0}
-        }
+        slumber.generic.buyer.get_object_or_404.side_effect = (
+            ObjectDoesNotExist)
         data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), False)
         eq_(data['needs_redirect'], True)
@@ -51,12 +50,8 @@ class TestBuyerHasPin(Base):
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_no_pin(self, slumber):
-        slumber.generic.buyer.get.return_value = {
-            'meta': {'total_count': 1},
-            'objects': [{'pin': False,
-                         'pin_confirmed': False,
-                         'needs_pin_reset': False}]
-        }
+        slumber.generic.buyer.get_object_or_404.return_value = {
+            'pin': False, 'pin_confirmed': False, 'needs_pin_reset': False}
         data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), False)
         eq_(self.client.session.get('uuid_has_confirmed_pin'), False)
@@ -65,12 +60,8 @@ class TestBuyerHasPin(Base):
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_with_unconfirmed_pin(self, slumber):
-        slumber.generic.buyer.get.return_value = {
-            'meta': {'total_count': 1},
-            'objects': [{'pin': True,
-                         'pin_confirmed': False,
-                         'needs_pin_reset': False}]
-        }
+        slumber.generic.buyer.get_object_or_404.return_value = {
+            'pin': True, 'pin_confirmed': False, 'needs_pin_reset': False}
         data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), False)
         eq_(self.client.session.get('uuid_has_confirmed_pin'), False)
@@ -79,12 +70,8 @@ class TestBuyerHasPin(Base):
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_with_confirmed_pin(self, slumber):
-        slumber.generic.buyer.get.return_value = {
-            'meta': {'total_count': 1},
-            'objects': [{'pin': True,
-                         'pin_confirmed': True,
-                         'needs_pin_reset': False}]
-        }
+        slumber.generic.buyer.get_object_or_404.return_value = {
+            'pin': True, 'pin_confirmed': True, 'needs_pin_reset': False}
         data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), True)
         eq_(self.client.session.get('uuid_has_confirmed_pin'), True)
@@ -106,29 +93,22 @@ class TestBuyerHasResetFlag(Base):
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_no_user(self, slumber):
-        slumber.generic.buyer.get.return_value = {
-            'meta': {'total_count': 0}
-        }
+        slumber.generic.buyer.get_object_or_404.side_effect = (
+            ObjectDoesNotExist)
         self.do_auth()
         eq_(self.client.session.get('uuid_needs_pin_reset'), False)
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_no_reset_pin_flag(self, slumber):
-        slumber.generic.buyer.get.return_value = {
-            'meta': {'total_count': 1},
-            'objects': [{'pin': True,
-                         'needs_pin_reset': False}]
-        }
+        slumber.generic.buyer.get_object_or_404.return_value = {
+            'pin': True, 'needs_pin_reset': False}
         self.do_auth()
         eq_(self.client.session.get('uuid_needs_pin_reset'), False)
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_with_reset_pin_flag(self, slumber):
-        slumber.generic.buyer.get.return_value = {
-            'meta': {'total_count': 1},
-            'objects': [{'pin': True,
-                         'needs_pin_reset': True}]
-        }
+        slumber.generic.buyer.get_object_or_404.return_value = {
+            'pin': True, 'needs_pin_reset': True}
         self.do_auth()
         eq_(self.client.session.get('uuid_needs_pin_reset'), True)
 
@@ -147,21 +127,16 @@ class TestBuyerLockedPinFlags(Base):
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_is_locked_out(self, slumber):
-        slumber.generic.buyer.get.return_value = {
-            'meta': {'total_count': 1},
-            'objects': [{'pin': True,
-                         'pin_is_locked_out': True}]
-        }
+        slumber.generic.buyer.get_object_or_404.return_value = {
+            'pin': True, 'pin_is_locked_out': True}
+
         self.do_auth()
         eq_(self.client.session.get('uuid_pin_is_locked'), True)
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_user_was_locked_out(self, slumber):
-        slumber.generic.buyer.get.return_value = {
-            'meta': {'total_count': 1},
-            'objects': [{'pin': True,
-                         'pin_was_locked_out': True}]
-        }
+        slumber.generic.buyer.get_object_or_404.return_value = {
+            'pin': True, 'pin_was_locked_out': True}
         self.do_auth()
         eq_(self.client.session.get('uuid_pin_was_locked'), True)
 

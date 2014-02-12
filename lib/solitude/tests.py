@@ -39,23 +39,24 @@ class SolitudeAPITest(TestCase):
         return error_response
 
     def test_get_buyer(self, slumber):
-        slumber.generic.buyer.get.return_value = self.buyer_data
+        slumber.generic.buyer.get_object_or_404.return_value = self.buyer_data
         buyer = client.get_buyer(self.uuid)
         eq_(buyer.get('uuid'), self.uuid)
         assert buyer.get('pin')
-        assert buyer.get('id')
+        assert buyer.get('resource_pk')
         assert buyer.get('etag')
 
     def test_get_buyer_with_etag(self, slumber):
-        slumber.generic.buyer.get.return_value = self.buyer_data
+        slumber.generic.buyer.get_object_or_404.return_value = self.buyer_data
         buyer = client.get_buyer(self.uuid)
         eq_(buyer.get('uuid'), self.uuid)
-        slumber.generic.buyer.get.side_effect = ResourceNotModified()
+        slumber.generic.buyer.get_object_or_404.side_effect = (
+            ResourceNotModified())
         buyer2 = client.get_buyer(self.uuid)
         eq_(buyer.get('etag'), buyer2.get('etag'))
 
     def test_non_existent_get_buyer(self, slumber):
-        slumber.generic.buyer.get.side_effect = HttpClientError(
+        slumber.generic.buyer.get_object_or_404.side_effect = HttpClientError(
             response=self.create_error_response())
         buyer = client.get_buyer('something-that-does-not-exist')
         assert 'errors' in buyer
@@ -68,7 +69,7 @@ class SolitudeAPITest(TestCase):
         buyer = client.create_buyer(uuid)
         eq_(buyer.get('uuid'), uuid)
         assert not buyer.get('pin')
-        assert buyer.get('id')
+        assert buyer.get('resource_pk')
 
     def test_create_buyer_with_pin(self, slumber):
         uuid = 'with_pin'
@@ -77,7 +78,7 @@ class SolitudeAPITest(TestCase):
         buyer = client.create_buyer(uuid, self.pin)
         eq_(buyer.get('uuid'), uuid)
         assert buyer.get('pin')
-        assert buyer.get('id')
+        assert buyer.get('resource_pk')
 
     def test_create_buyer_with_alpha_pin(self, slumber):
         slumber.generic.buyer.post.side_effect = HttpClientError(
@@ -279,6 +280,8 @@ class SolitudeAPITest(TestCase):
             client.set_needs_pin_reset(self.uuid, False, etag=wrong_etag)
 
 
+@mock.patch.object(settings, 'UNIVERSAL_PROVIDER', False)
+@mock.patch.object(settings, 'PAYMENT_PROVIDER', 'bango')
 class CreateBangoTest(TestCase):
     uuid = 'some:pin'
     seller = {'bango': {'seller': 's', 'resource_uri': 'r',
@@ -305,27 +308,28 @@ class CreateBangoTest(TestCase):
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_no_seller(self, slumber):
-        slumber.generic.seller.get_object.side_effect = ObjectDoesNotExist
+        slumber.generic.seller.get_object_or_404.side_effect = (
+            ObjectDoesNotExist)
         with self.assertRaises(SellerNotConfigured):
             client.configure_product_for_billing(*range(0, 8))
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_no_bango(self, slumber):
-        slumber.generic.seller.get_object.return_value = self.seller
+        slumber.generic.seller.get_object_or_404.return_value = self.seller
         slumber.bango.billing.post.return_value = {
             'billingConfigurationId': 'bar'}
-        slumber.bango.product.get_object.side_effect = ObjectDoesNotExist
+        slumber.bango.product.get_object_or_404.side_effect = (
+            ObjectDoesNotExist)
         eq_(client.configure_product_for_billing(*range(0, 8)),
             ('bar', 'foo'))
 
     @mock.patch('lib.solitude.api.client.slumber')
     def test_has_bango(self, slumber):
-        slumber.generic.seller.get_object.return_value = self.seller
+        slumber.generic.seller.get_object_or_404.return_value = self.seller
         slumber.bango.billing.post.return_value = {
             'billingConfigurationId': 'bar'}
         slumber.bango.product.get_object.return_value = {
-            'resource_uri': 'foo'
-        }
+            'resource_uri': 'foo'}
         eq_(client.configure_product_for_billing(*range(0, 8)),
             ('bar', 'foo'))
 
