@@ -37,8 +37,9 @@ from .utils import clear_messages, trans_id, verify_urls
 log = getLogger('w.pay')
 
 
-def process_pay_req(request):
-    form = VerifyForm(request.GET)
+def process_pay_req(request, data=None):
+    data = request.GET if data is None else data
+    form = VerifyForm(data)
     if not form.is_valid():
         codes = []
         for erlist in form.errors.values():
