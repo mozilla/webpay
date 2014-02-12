@@ -59,4 +59,6 @@ CACHES = {
     }
 }
 
+CACHE_PREFIX = 'webpay:test'
+
 ENABLE_SPA = False
