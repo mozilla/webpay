@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'webpay.pay',
     'webpay.provider',
     'webpay.pin',
-    'webpay.spa',  # Single page app view.
     'webpay.services',
     'raven.contrib.django',
     'jingo_minify',

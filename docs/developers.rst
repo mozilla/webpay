@@ -151,29 +151,6 @@ in your ``webpay/settings/local.py``::
 
 Then load the front page: http://localhost:8001/mozpay/
 
-
-Running the single page app: SPARTACUS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The single page app is included in the tree. It's currently under development but will
-eventually replace the server-side version of webpay.
-
-The single page uses some npm deps that aren't in the tree so for now use `npm install`
-to get them.
-
-This app code-named "SPArtacus" will be powered by an API rather than having server-side
-views. To play with this now you'll need to set `ENABLE_SPA=True` in your
-`webpay/settings/local.py` and then you will run the webpay server as normal. In order to
-build the CSS you'll need to run `grunt start` in a separate tab.
-
-The SPA is served at `/mozpay/` when `ENABLE_SPA=True`
-
-Right now there's not much to see but it should start to resemble webpay more in due course.
-
-Currently the urls are using fragment identifiers. When  we release this the plan will be
-to use the history API and webpay will be able to server all the urls in the SPA.
-
-
 Overriding JS settings from Django settings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
