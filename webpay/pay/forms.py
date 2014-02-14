@@ -16,6 +16,10 @@ log = getLogger('w.pay')
 
 class VerifyForm(ParanoidForm):
     req = forms.CharField()
+    # If mcc or mnc are given, we'll accept any value that conforms to the
+    # format. We'll then whitelist actions on particular values.
+    mcc = forms.RegexField(regex='^\d{3}$', required=False)
+    mnc = forms.RegexField(regex='^\d{3}$', required=False)
     key = settings.KEY
     secret = settings.SECRET
     is_simulation = False

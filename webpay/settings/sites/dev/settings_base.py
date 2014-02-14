@@ -141,3 +141,5 @@ PAY_URLS = {
         'logout': '/users/reset',
     },
 }
+
+ENABLE_SPA = True

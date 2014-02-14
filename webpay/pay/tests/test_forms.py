@@ -57,6 +57,18 @@ class TestVerifyForm(Base):
     def test_unicode(self):
         self.failed(VerifyForm({'req': u'Հ'}))
 
+    def test_not_mcc(self):
+        form = VerifyForm({'mcc': 'fooo', 'mnc': '1'})
+        form.is_valid()
+        assert 'mcc' in form.errors
+        assert 'mnc' in form.errors
+
+    def test_mcc(self):
+        form = VerifyForm({'mcc': '123', 'mnc': '456'})
+        form.is_valid()
+        assert 'mcc' not in form.errors
+        assert 'mnc' not in form.errors
+
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     def test_non_existant(self, get_active_product):
         get_active_product.side_effect = ObjectDoesNotExist

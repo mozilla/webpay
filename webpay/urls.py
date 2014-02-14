@@ -19,23 +19,13 @@ urlpatterns = patterns('',
     #url('^mozpay/jsi18n.js$',
     #    cache_page(60 * 60 * 24 * 365)(javascript_catalog),
     #    {'domain': 'javascript', 'packages': ['webpay']}, name='jsi18n'),
-    url(r'^mozpay/pin/', include('webpay.pin.urls')),
-    # This is served by marketplace.
-    # (r'^robots\.txt$',
-    #  lambda r: HttpResponse(
-    #      "User-agent: *\n%s: /" % (
-    #          'Allow' if settings.ENGAGE_ROBOTS else 'Disallow'
-    #      ),
-    #      mimetype="text/plain"
-    #  )
-    # ),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # (r'^admin/', include(admin.site.urls)),
+    url(r'^mozpay/pin/', include('webpay.pin.urls'))
 )
+
+if settings.ENABLE_SPA:
+    urlpatterns += patterns('',
+        url(r'^mozpay/v1/api/', include('webpay.api.urls', namespace='api'))
+    )
 
 # Test/Development only urls.
 if settings.TEMPLATE_DEBUG:

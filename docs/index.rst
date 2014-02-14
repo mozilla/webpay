@@ -27,6 +27,7 @@ Contents
 
    use_hosted_webpay
    developers
+   api
    solitude_api
    localization_testing
    services
