@@ -91,13 +91,6 @@ class TestBangoReturn(BasicSessionCase):
         self.call(overrides={'ResponseCode': 'NOT_OK'}, url='bango.success',
                   expected_status=400)
 
-    @mock.patch('webpay.bango.views.tasks.fake_payment_notify')
-    def test_fake_notice(self, fake_notify, pay_notify, slumber):
-        with self.settings(FAKE_PAYMENTS=True):
-            self.call()
-        fake_notify.delay.assert_called_with(ANY, '<request>', '<issuer>')
-        assert not pay_notify.called
-
 
 class TestNotification(TestCase):
 

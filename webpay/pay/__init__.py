@@ -21,9 +21,7 @@ def get_payment_url(request):
     except PermissionDenied:
         can_simulate = False
 
-    if settings.FAKE_PAYMENTS:
-        return reverse('pay.fakepay')
-    elif can_simulate:
+    if can_simulate:
         return reverse('pay.super_simulate')
     else:
         request.session['payment_start'] = time.time()

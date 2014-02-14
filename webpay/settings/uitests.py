@@ -5,7 +5,6 @@ BROWSERID_JS_URL = '/include.js'
 BROWSERID_VERIFICATION_URL = 'http://%s/verify' % BROWSERID_DOMAIN
 DATABASES = { 'default': {} }
 DEBUG = DEV = TEMPLATE_DEBUG = True
-FAKE_PAYMENTS = True
 HMAC_KEYS = { '2012-06-06': 'some secret', }
 MARKETPLACE_URL = 'http://localhost:9765'
 MEDIA_URL = '/mozpay/media/'

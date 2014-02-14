@@ -803,11 +803,6 @@ class TestConfigureTrans(test.TestCase):
                 'notes should be deleted from session after '
                 'passing it to start_pay')
 
-    def test_skip_when_fake(self):
-        with self.settings(FAKE_PAYMENTS=True):
-            self.configure()
-        assert not self.start_pay.delay.called
-
     def test_skip_when_simulating(self):
         self.request.session['is_simulation'] = True
         self.configure()

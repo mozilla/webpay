@@ -33,10 +33,6 @@ def configure_transaction(request, trans=None):
     """
     Begins a background task to configure a payment transaction.
     """
-    if settings.FAKE_PAYMENTS:
-        log.info('FAKE_PAYMENTS: skipping configure payments step')
-        return False
-
     if request.session.get('is_simulation', False):
         log.info('is_simulation: skipping configure payments step')
         return False
@@ -210,22 +206,6 @@ def start_pay(transaction_uuid, notes, user_uuid, **kw):
         log.exception('while configuring for payment')
         etype, val, tb = sys.exc_info()
         raise exc, None, tb
-
-
-@task(**notify_kw)
-def fake_payment_notify(transaction_uuid, pay_request, issuer_key, **kw):
-    if not settings.FAKE_PAYMENTS:
-        raise ValueError(
-            'Cannot call this task when fake payments are disabled')
-    log.info('Sending fake payment notice for {0}'
-             .format(transaction_uuid))
-    trans = {'uuid': transaction_uuid,
-             'type': constants.TYPE_PAYMENT,
-             'notes': {'pay_request': pay_request,
-                       'issuer_key': issuer_key}}
-    trans.update(_fake_amount(pay_request['request']['pricePoint']))
-    _notify(fake_payment_notify, trans,
-            task_args=[transaction_uuid, pay_request, issuer_key])
 
 
 @task(**notify_kw)

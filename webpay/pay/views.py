@@ -236,14 +236,6 @@ def super_simulate(request):
     return render(request, 'pay/super_simulate.html')
 
 
-@anonymous_csrf_exempt
-@require_GET
-def fakepay(request):
-    if not settings.FAKE_PAYMENTS:
-        return http.HttpResponseForbidden()
-    return render(request, 'pay/fakepay.html')
-
-
 @user_verified
 @require_GET
 def fake_bango_url(request):
