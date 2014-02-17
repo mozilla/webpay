@@ -122,3 +122,6 @@ MARKETPLACE_URL = 'http://localhost:8000'
 
 # Add the single page app for local dev.
 ENABLE_SPA = True
+
+# Ensure that cache_nuggets can import correctly.
+CACHE_PREFIX = 'webpay'
