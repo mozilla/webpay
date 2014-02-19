@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-22 09:18-0700\n"
+"POT-Creation-Date: 2014-02-19 09:05-0700\n"
 "PO-Revision-Date: 2014-02-19 04:03+0000\n"
 "Last-Translator: Gábor <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -163,11 +163,11 @@ msgstr "A felhasználó megszakította a fizetést."
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "A(z) „{0}” kulcshoz tartozó érték elérte a maximális hosszúságot: {1}"
 
-#: webpay/base/utils.py:47
+#: webpay/base/utils.py:49
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr "Hiba történt a fizetés beállításánál. Próbálja újra vagy vegye fel a kapcsolatot az alkalmazással, ha a probléma továbbra is fennáll."
 
-#: webpay/base/utils.py:53
+#: webpay/base/utils.py:55
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr "Belső hiba a fizetés feldolgozása során. Próbálja újra, vagy keresse meg a Mozillát, ha tartósan fennáll."
 
@@ -205,7 +205,7 @@ msgid "Please try again in a few moments."
 msgstr "Próbálja meg pár perc múlva."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
+#: webpay/base/templates/base.html:9
 msgid "Web Pay"
 msgstr "Web Pay"
 
@@ -261,7 +261,7 @@ msgstr "Hiba"
 msgid "Payments are temporarily disabled."
 msgstr "A fizetés átmenetileg szünetel."
 
-#: webpay/pay/views.py:191 webpay/pin/views.py:93
+#: webpay/pay/views.py:187 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Adja meg PIN-kódját"
 

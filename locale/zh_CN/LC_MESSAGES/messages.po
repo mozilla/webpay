@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-22 09:18-0700\n"
+"POT-Creation-Date: 2014-02-19 09:05-0700\n"
 "PO-Revision-Date: 2014-01-30 07:39+0000\n"
 "Last-Translator: yfdyh000 <yfdyh000@gmail.com>\n"
 "Language-Team: Chinese Simplified, China <LL@li.org>\n"
@@ -162,11 +162,11 @@ msgstr "用户取消付款。"
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "键值 \"{0}\" 超过了最大允许长度 {1}"
 
-#: webpay/base/utils.py:47
+#: webpay/base/utils.py:49
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr "设置付款时发生错误，请重试，如果问题持续存在请联络 app 开发者。"
 
-#: webpay/base/utils.py:53
+#: webpay/base/utils.py:55
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr "处理付款时发生内部错误。请重试一次，如果问题持续存在，请联系 Mozilla。"
 
@@ -204,7 +204,7 @@ msgid "Please try again in a few moments."
 msgstr "请稍候重试。"
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
+#: webpay/base/templates/base.html:9
 msgid "Web Pay"
 msgstr "Web Pay"
 
@@ -260,7 +260,7 @@ msgstr "错误"
 msgid "Payments are temporarily disabled."
 msgstr "目前暂时停用付款功能。"
 
-#: webpay/pay/views.py:191 webpay/pin/views.py:93
+#: webpay/pay/views.py:187 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "输入 Pin 码"
 
