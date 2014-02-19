@@ -386,9 +386,6 @@ PIN_UNLOCK_LENGTH = 300
 # that decision. See bug 862588.
 ALLOWED_CALLBACK_SCHEMES = ['http', 'https']
 
-# When we are ready to having curling format lists for us, flip this to True.
-CURLING_FORMAT_LISTS = False
-
 # Number of retries on a payment postback.
 POSTBACK_ATTEMPTS = 5
 

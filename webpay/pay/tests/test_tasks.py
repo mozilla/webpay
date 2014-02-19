@@ -511,7 +511,7 @@ class TestStartPay(BaseStartPay):
         self.start()
 
         # Check that the seller_uuid was switched to that of the app seller.
-        solitude.generic.seller.get_object.assert_called_with(
+        solitude.generic.seller.get_object_or_404.assert_called_with(
             uuid=app_seller_uuid)
 
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')

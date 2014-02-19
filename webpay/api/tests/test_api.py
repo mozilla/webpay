@@ -1,6 +1,7 @@
 import json
 
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 
 import mock
@@ -48,9 +49,6 @@ class BaseCase(BasicSessionCase):
         error.response = Response(404)
         return error
 
-    def wrap(self, data):
-        return {'objects': [data]}
-
 
 class PIN(BaseCase):
 
@@ -75,15 +73,17 @@ class TestGet(PIN):
         eq_(self.client.get(self.url).status_code, 403)
 
     def test_no_pin(self):
-        self.solitude.generic.buyer.get.side_effect = self.error(404)
+        self.solitude.generic.buyer.get_object_or_404.side_effect = (
+            ObjectDoesNotExist)
         res = self.client.get(self.url)
         eq_(res.status_code, 404)
 
     def test_some_pin(self):
-        self.solitude.generic.buyer.get.return_value = self.wrap({'pin': True})
+        self.solitude.generic.buyer.get_object_or_404.return_value = {
+            'pin': True}
         res = self.client.get(self.url)
-        self.solitude.generic.buyer.get.assert_called_with(headers={},
-                                                           uuid='a')
+        self.solitude.generic.buyer.get_object_or_404.assert_called_with(
+            headers={}, uuid='a')
         eq_(json.loads(res.content)['pin'], True)
 
 
@@ -98,22 +98,23 @@ class TestPost(PIN):
         eq_(res.status_code, 400)
 
     def test_no_user(self):
-        self.solitude.generic.buyer.get.side_effect = self.error(404)
+        self.solitude.generic.buyer.get_object_or_404.side_effect = (
+            ObjectDoesNotExist)
         res = self.client.post(self.url, {'pin': '1234'})
         self.solitude.generic.buyer.post.assert_called_with({'uuid': 'a',
                                                              'pin': '1234'})
         eq_(res.status_code, 201)
 
     def test_user(self):
-        self.solitude.generic.buyer.get.return_value = self.wrap(
-            {'pin': False, 'resource_pk': 'abc'})
+        self.solitude.generic.buyer.get_object_or_404.return_value = {
+            'pin': False, 'resource_pk': 'abc'}
         res = self.client.post(self.url, {'pin': '1234'})
         eq_(res.status_code, 201)
         self.solitude.generic.buyer.assert_called_with(id='abc')
 
     def test_user_with_pin(self):
-        self.solitude.generic.buyer.get.return_value = self.wrap(
-            {'pin': True, 'resource_pk': 'abc'})
+        self.solitude.generic.buyer.get_object_or_404.return_value = {
+            'pin': True, 'resource_pk': 'abc'}
         res = self.client.post(self.url, {'pin': '1234'})
         eq_(res.status_code, 400)
 
@@ -151,8 +152,8 @@ class TestPatch(PIN):
         eq_(res.status_code, 400)
 
     def test_change(self):
-        self.solitude.generic.buyer.get.return_value = self.wrap(
-            {'pin': True, 'resource_pk': 'abc'})
+        self.solitude.generic.buyer.get_object_or_404.return_value = {
+            'pin': True, 'resource_pk': 'abc'}
         res = self.patch(self.url, data={'pin': '1234'})
         eq_(res.status_code, 204)
         # TODO: figure out how to check that patch was called.
@@ -160,8 +161,8 @@ class TestPatch(PIN):
         eq_(res.status_code, 204)
 
     def test_reverified(self):
-        self.solitude.generic.buyer.get.return_value = self.wrap(
-            {'pin': True, 'resource_pk': 'abc'})
+        self.solitude.generic.buyer.get_object_or_404.return_value = {
+            'pin': True, 'resource_pk': 'abc'}
         res = self.patch(self.url, data={'pin': '1234'})
         eq_(res.status_code, 204)
         # A cheap way to confirm that was_reverified was flipped.

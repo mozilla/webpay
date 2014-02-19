@@ -46,23 +46,6 @@ class SolitudeAPI(SlumberWrapper):
         self._provider = provider or settings.PAYMENT_PROVIDER
         return self._provider
 
-    def _object_from_response(self, res):
-        obj = {}
-        if res.get('errors'):
-            return res
-        elif res.get('objects'):
-            obj = res['objects'][0]
-            obj['id'] = res['objects'][0].get('resource_pk')
-        elif res.get('resource_pk'):
-            obj = res
-            obj['id'] = res.get('resource_pk')
-        try:
-            if obj:
-                obj['etag'] = res['meta']['headers'].get('etag', '')
-        except KeyError:
-            pass
-        return obj
-
     def create_buyer(self, uuid, pin=None):
         """Creates a buyer with an optional PIN in solitude.
 
@@ -70,9 +53,8 @@ class SolitudeAPI(SlumberWrapper):
         :param pin: Optional PIN that will be hashed.
         :rtype: dictionary
         """
-        res = self.safe_run(self.slumber.generic.buyer.post,
+        obj = self.safe_run(self.slumber.generic.buyer.post,
                             {'uuid': uuid, 'pin': pin})
-        obj = self._object_from_response(res)
         if 'etag' in obj:
             etag = obj['etag']
             cache.set('etag:%s' % uuid, etag)
@@ -89,12 +71,13 @@ class SolitudeAPI(SlumberWrapper):
         etag = cache.get(cache_key) if use_etags else None
         headers = {'If-None-Match': etag} if etag else {}
         try:
-            res = self.safe_run(self.slumber.generic.buyer.get,
+            obj = self.safe_run(self.slumber.generic.buyer.get_object_or_404,
                                 headers=headers, uuid=uuid)
         except ResourceNotModified:
             return (cache.get('buyer:%s' % etag)
                     or self.get_buyer(uuid, use_etags=False))
-        obj = self._object_from_response(res)
+        except ObjectDoesNotExist:
+            obj = {}
         if 'etag' in obj:
             etag = obj['etag']
             cache.set(cache_key, etag)
@@ -109,8 +92,8 @@ class SolitudeAPI(SlumberWrapper):
                       not, defaults to True
         :rtype: dictionary
         """
-        buyer = self.get_buyer(uuid)
-        res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
+        id_ = self.get_buyer(uuid).get('resource_pk')
+        res = self.safe_run(self.slumber.generic.buyer(id=id_).patch,
                             {'needs_pin_reset': value, 'new_pin': None},
                             headers={'If-Match': etag})
         if 'errors' in res:
@@ -123,8 +106,8 @@ class SolitudeAPI(SlumberWrapper):
         :param uuid: String to identify the buyer by.
         :rtype: dictionary
         """
-        buyer = self.get_buyer(uuid)
-        res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
+        id_ = self.get_buyer(uuid).get('resource_pk')
+        res = self.safe_run(self.slumber.generic.buyer(id=id_).patch,
                             {'pin_was_locked_out': False},
                             headers={'If-Match': etag})
         if 'errors' in res:
@@ -140,8 +123,8 @@ class SolitudeAPI(SlumberWrapper):
         :param pin: PIN the user would like to change to.
         :rtype: dictionary
         """
-        buyer = self.get_buyer(uuid)
-        res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
+        id_ = self.get_buyer(uuid).get('resource_pk')
+        res = self.safe_run(self.slumber.generic.buyer(id=id_).patch,
                             {'pin': pin},
                             headers={'If-Match': etag})
         # Empty string is a good thing from tastypie for a PATCH.
@@ -157,8 +140,8 @@ class SolitudeAPI(SlumberWrapper):
         :param pin: PIN the user would like to change to.
         :rtype: dictionary
         """
-        buyer = self.get_buyer(uuid)
-        res = self.safe_run(self.slumber.generic.buyer(id=buyer['id']).patch,
+        id_ = self.get_buyer(uuid).get('resource_pk')
+        res = self.safe_run(self.slumber.generic.buyer(id=id_).patch,
                             {'new_pin': new_pin},
                             headers={'If-Match': etag})
         # Empty string is a good thing from tastypie for a PATCH.
@@ -173,7 +156,7 @@ class SolitudeAPI(SlumberWrapper):
         :param public_id: Product public_id.
         :rtype: dictionary
         """
-        return self.slumber.generic.product.get_object(
+        return self.slumber.generic.product.get_object_or_404(
             seller__active=True, public_id=public_id)
 
     def confirm_pin(self, uuid, pin):
@@ -388,7 +371,8 @@ class BangoSolitudeAPI(SolitudeAPI):
         redirect_url_onerror = absolutify(reverse('bango.error'))
 
         try:
-            seller = self.slumber.generic.seller.get_object(uuid=seller_uuid)
+            seller = self.slumber.generic.seller.get_object_or_404(
+                uuid=seller_uuid)
         except ObjectDoesNotExist:
             raise SellerNotConfigured('Seller with uuid %s does not exist'
                                       % seller_uuid)
@@ -397,9 +381,9 @@ class BangoSolitudeAPI(SolitudeAPI):
                                                  seller_id))
 
         try:
-            bango_product = self.slumber.bango.product.get_object(
-                    seller_product__seller=seller_id,
-                    seller_product__external_id=product_id)
+            bango_product = self.slumber.bango.product.get_object_or_404(
+                seller_product__seller=seller_id,
+                seller_product__external_id=product_id)
         except ObjectDoesNotExist:
             bango_product = self.create_product(product_id, product_name,
                                                 seller)
