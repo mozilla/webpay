@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-22 09:18-0700\n"
+"POT-Creation-Date: 2014-02-19 09:05-0700\n"
 "PO-Revision-Date: 2013-09-02 16:55+0200\n"
 "Last-Translator: Mihail Chilyashev <chilyashev@gmail.com>\n"
 "Language-Team: Bulgarian (bg)\n"
@@ -161,11 +161,11 @@ msgstr "Потребителят отказа плащането"
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Стойността за ключ \"{0}\" превишава максималната дължина на {1}"
 
-#: webpay/base/utils.py:47
+#: webpay/base/utils.py:49
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr "Възникна грешка при настройване на плащането. Опитайте отново или се свържете с приложението, ако грешката продължи."
 
-#: webpay/base/utils.py:53
+#: webpay/base/utils.py:55
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr "Възникна грешка при обработване на плащането. Опитайте отново или се свържете с Mozilla, ако грешката продължи."
 
@@ -203,7 +203,7 @@ msgid "Please try again in a few moments."
 msgstr "Моля, опитайте отново след малко."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
+#: webpay/base/templates/base.html:9
 msgid "Web Pay"
 msgstr "Web Pay"
 
@@ -259,7 +259,7 @@ msgstr "Грешка"
 msgid "Payments are temporarily disabled."
 msgstr "Плащанията са временно спрени"
 
-#: webpay/pay/views.py:191 webpay/pin/views.py:93
+#: webpay/pay/views.py:187 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Въведете ПИН"
 

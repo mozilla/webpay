@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-22 09:18-0700\n"
+"POT-Creation-Date: 2014-02-19 09:05-0700\n"
 "PO-Revision-Date: 2014-02-10 09:36+0000\n"
 "Last-Translator: Vanja <vtumbas@mozilla.rs>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -162,11 +162,11 @@ msgstr "Korisnik je obustavio uplatu."
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Vrednost ključa \"{0}\" prekoračuje maksimalnu vrednost od {1}"
 
-#: webpay/base/utils.py:47
+#: webpay/base/utils.py:49
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr "Došlo je do greške prilikom uspostavljanja uplate. Pokušajte ponovo ili kontaktirajte programera aplikacije ukoliko se problem nastavi."
 
-#: webpay/base/utils.py:53
+#: webpay/base/utils.py:55
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr "Došlo je do interne greške prilikom obrade uplate. Pokušajte ponovo ili kontaktirajte Mozilla-u ukoliko se i dalje javlja."
 
@@ -204,7 +204,7 @@ msgid "Please try again in a few moments."
 msgstr "Molimo Vas pokušajte ponovo za par trenutaka."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
+#: webpay/base/templates/base.html:9
 msgid "Web Pay"
 msgstr "Veb plaćanje"
 
@@ -260,7 +260,7 @@ msgstr "Greška"
 msgid "Payments are temporarily disabled."
 msgstr "Uplate su privremeno onemogućene."
 
-#: webpay/pay/views.py:191 webpay/pin/views.py:93
+#: webpay/pay/views.py:187 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Unesi PIN"
 

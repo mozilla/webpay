@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-22 09:18-0700\n"
+"POT-Creation-Date: 2014-02-19 09:05-0700\n"
 "PO-Revision-Date: 2014-01-15 20:03+0000\n"
 "Last-Translator: Ton <tonnes.mb@gmail.com>\n"
 "Language-Team: none\n"
@@ -162,11 +162,11 @@ msgstr "De gebruiker heeft de betaling geannuleerd."
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "De waarde voor sleutel “{0}” is langer dan het maximum van {1}"
 
-#: webpay/base/utils.py:47
+#: webpay/base/utils.py:49
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr "Er is een fout opgetreden bij het instellen van de betaling. Probeer het opnieuw of neem contact op met de app als het probleem aanhoudt."
 
-#: webpay/base/utils.py:53
+#: webpay/base/utils.py:55
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr "Er is een interne fout opgetreden tijdens het verwerken van de betaling. Probeer het opnieuw of neem contact op met Mozilla als het probleem aanhoudt."
 
@@ -204,7 +204,7 @@ msgid "Please try again in a few moments."
 msgstr "Probeer het over enkele ogenblikken nog eens."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
+#: webpay/base/templates/base.html:9
 msgid "Web Pay"
 msgstr "Webbetaling"
 
@@ -260,7 +260,7 @@ msgstr "Fout"
 msgid "Payments are temporarily disabled."
 msgstr "Betalingen zijn tijdelijk uitgeschakeld."
 
-#: webpay/pay/views.py:191 webpay/pin/views.py:93
+#: webpay/pay/views.py:187 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Voer pincode in"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-22 09:18-0700\n"
+"POT-Creation-Date: 2014-02-19 09:05-0700\n"
 "PO-Revision-Date: 2014-01-16 20:07+0000\n"
 "Last-Translator: Vlado <valastiak@mozilla.sk>\n"
 "Language-Team: Mozilla.sk <l10n@mozilla.sk>\n"
@@ -162,11 +162,11 @@ msgstr "Používateľ platbu zrušil."
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Hodnota kľúča \"{0}\" presahuje maximálnu povolenú dĺžku {1}"
 
-#: webpay/base/utils.py:47
+#: webpay/base/utils.py:49
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr "Pri nastavení platby sa vyskytla chyba. Skúste to neskôr alebo kontaktujte autora aplikácie, ak problém pretrváva."
 
-#: webpay/base/utils.py:53
+#: webpay/base/utils.py:55
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr "Pri spracovaní platby nastala interná chyba. Skúste to znovu, alebo ak problém pretrváva kontaktujte Mozillu."
 
@@ -204,7 +204,7 @@ msgid "Please try again in a few moments."
 msgstr "Skúste to znova o chvíľu."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9 webpay/spa/templates/spa.html:8
+#: webpay/base/templates/base.html:9
 msgid "Web Pay"
 msgstr "Webová platba"
 
@@ -260,7 +260,7 @@ msgstr "Chyba"
 msgid "Payments are temporarily disabled."
 msgstr "Platby sú dočasne nedostupné."
 
-#: webpay/pay/views.py:191 webpay/pin/views.py:93
+#: webpay/pay/views.py:187 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Zadajte PIN"
 
