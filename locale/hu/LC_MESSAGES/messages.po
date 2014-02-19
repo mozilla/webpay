@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-22 09:18-0700\n"
-"PO-Revision-Date: 2014-01-18 20:03+0000\n"
+"PO-Revision-Date: 2014-02-19 04:03+0000\n"
 "Last-Translator: Gábor <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n !=1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1390075403.0\n"
+"X-POOTLE-MTIME: 1392782621.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -21,7 +21,7 @@ msgstr "Fizetés törölve."
 
 #: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
-msgstr "A fizetés megtörtént."
+msgstr "Sikeres vásárlás."
 
 #: webpay/base/dev_messages.py:89
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
@@ -227,7 +227,7 @@ msgstr "Betöltés"
 
 #: webpay/base/templates/base.html:32
 msgid "Beginning payment&hellip;"
-msgstr "Fizetés megkezdése&hellip;"
+msgstr "Vásárlás elindítása&hellip;"
 
 #: webpay/base/templates/base.html:33
 msgid "Connecting to Persona"
@@ -235,7 +235,7 @@ msgstr "Kapcsolódás a Personahoz"
 
 #: webpay/base/templates/base.html:34
 msgid "Payment complete"
-msgstr "A fizetés megtörtént"
+msgstr "Sikeres vásárlás"
 
 #: webpay/base/templates/base.html:41
 msgid "Oops&hellip;"
@@ -263,7 +263,7 @@ msgstr "A fizetés átmenetileg szünetel."
 
 #: webpay/pay/views.py:191 webpay/pin/views.py:93
 msgid "Enter Pin"
-msgstr "Adja meg a PIN-kódot"
+msgstr "Adja meg PIN-kódját"
 
 #: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign In"
