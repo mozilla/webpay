@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-19 09:05-0700\n"
-"PO-Revision-Date: 2013-11-04 00:18+0000\n"
+"PO-Revision-Date: 2014-02-27 11:12+0000\n"
 "Last-Translator: Håvar <havar@firefox.no>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nb_NO\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1383524334.0\n"
+"X-POOTLE-MTIME: 1393499548.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -57,27 +57,29 @@ msgstr "Betalingensleverandør (Bango) returnerte en feil under behandlingen av 
 #. localized.
 #: webpay/base/dev_messages.py:107
 msgid "The JWT has expired."
-msgstr "Den JWT-en er utløpt."
+msgstr "JWT-en har utløpt."
 
 #: webpay/base/dev_messages.py:109
 msgid "The external payment processor returned an error while handling the payment"
 msgstr ""
+"Den eksterne betalingsformidleren returnerte en feil under behandling av "
+"betalingen"
 
 #: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "En intern nettforespørsel fikk tidsavbrudd."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:115
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr "Den JWT-signaturen er ugyldig eller JWT-en er feilformet."
+msgstr "JWT-signaturen er ugyldig eller JWT-en er feilformet."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:118
 msgid "The JWT did not decode to a JSON object."
-msgstr "Den JWT-en ble ikke dekodet til et JSON-objekt."
+msgstr "JWT-en ble ikke dekodet til et JSON-objekt."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -87,11 +89,11 @@ msgstr "Feil ved dekoding av JWT."
 
 #: webpay/base/dev_messages.py:122
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Systemet fikk tidsavbrudd mens du forsøkte å logge inn."
 
 #: webpay/base/dev_messages.py:123
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "Systemet fikk tidsavbrudd mens du forsøkte å logge ut."
 
 # Postback på norsk?
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
@@ -120,6 +122,8 @@ msgstr "Varslingstjenesten svarte med en feil under verifisering av betalingsvar
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr ""
+"Varslingstjenesten fikk et uventet unntak under verifisering av "
+"betalingsvarselet"
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
@@ -143,11 +147,11 @@ msgstr "Kjøpet kan ikke fullføres fordi gjeldende transaksjonen er allerede av
 
 #: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "Ingen transaksjons-ID ble funnet."
 
 #: webpay/base/dev_messages.py:154
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "Systemet fikk tidsavbrudd i påvente av transaksjonsstart."
 
 #: webpay/base/dev_messages.py:157
 msgid "The payment method or price point is not supported for this region or operator."
@@ -219,7 +223,7 @@ msgstr "Sikkerhetskoden kan kun inneholde siffer."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
+msgstr "Du logget inn som en annen bruker, du må starte betalingen på nytt."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -247,7 +251,7 @@ msgstr "Dette tar lengre tid enn forventet. Prøv igjen?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "Noe gikk galt. Prøv igjen?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -340,6 +344,7 @@ msgstr "Tilbakestilling av sikkerhetskode"
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
 msgstr ""
+"Bare for testing. Marketplace-brukere <b>må ikke</b> bruke dette nettstedet."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
