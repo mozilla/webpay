@@ -3,15 +3,17 @@ msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-19 09:05-0700\n"
-"PO-Revision-Date: 2014-01-19 00:39+0400\n"
-"Last-Translator: Alexander L. Slovesnik <unghost@mozilla-russia.org>\n"
+"PO-Revision-Date: 2014-02-28 18:29+0000\n"
+"Last-Translator: Ladislas <chy-vladislav@yandex.ru>\n"
 "Language-Team: none\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.3\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Pootle 2.5.0\n"
+"X-POOTLE-MTIME: 1393612159.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -113,7 +115,7 @@ msgstr "В симуляции запрошенного возврата отсу
 
 #: webpay/base/dev_messages.py:137
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr "При проверке уведомления о платеже служба уведомлений ответила ошибкой"
+msgstr "Служба уведомлений ответила ошибкой при проверке уведомления платежа"
 
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
@@ -137,7 +139,8 @@ msgstr "Этот ключ платежа может быть использов�
 
 #: webpay/base/dev_messages.py:150
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr "Процесс покупки не может быть завершён, так как текущая транзакция уже закончилась."
+msgstr ""
+"Покупка не может быть завершена, так как текущая транзакция уже закончилась."
 
 #: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
@@ -153,7 +156,7 @@ msgstr "Метод платежа или стандартная цена не п
 
 #: webpay/base/dev_messages.py:159
 msgid "The user cancelled the payment."
-msgstr "Платёж отменен пользователем."
+msgstr "Пользователь отменил платёж."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -241,7 +244,7 @@ msgstr "Ой&hellip;"
 
 #: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
-msgstr "Это занимает больше времени, чем ожидалось. Повторить?"
+msgstr "Это занимает больше времени, чем ожидалось. Попробовать еще раз?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
