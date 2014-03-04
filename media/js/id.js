@@ -10,8 +10,7 @@ define('id', ['cli', 'format', 'l10n'], function(cli, format, l10n) {
             var defaults = {
                 experimental_allowUnverified: true,
                 experimental_forceIssuer: cli.bodyData.unverifiedIssuer,
-                // Re-enable when bug 940023 is fixed on persona.
-                //experimental_emailHint: cli.bodyData.loggedInUser,
+                experimental_emailHint: cli.bodyData.loggedInUser,
                 privacyPolicy: cli.bodyData.privacyPolicy,
                 termsOfService: cli.bodyData.termsOfService
             };
