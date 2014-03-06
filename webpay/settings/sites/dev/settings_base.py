@@ -119,7 +119,7 @@ ENCRYPTED_COOKIE_KEY = private.ENCRYPTED_COOKIE_KEY
 ALLOW_ADMIN_SIMULATIONS = True
 
 base.JS_SETTINGS['tracking_enabled'] = True
-base.JS_SETTINGS['zamboni_raven_url'] = ''
+base.JS_SETTINGS['zamboni_raven_url'] = 'https://none@marketplace-dev.allizom.org/api/v1/fireplace/report_error/3'
 
 NEWRELIC_INI = '/etc/newrelic.d/marketplace-dev.allizom.org-webpay.ini'
 
