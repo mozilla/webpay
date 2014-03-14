@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-19 09:05-0700\n"
-"PO-Revision-Date: 2013-12-10 07:54+0000\n"
-"Last-Translator: Selim <selim@sum.lu>\n"
+"PO-Revision-Date: 2014-03-14 07:11+0000\n"
+"Last-Translator: Servet <servet.cebeci@hotmail.com>\n"
 "Language-Team: Mozilla Turkey <bilgi@mozilla.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1386662044.0\n"
+"X-POOTLE-MTIME: 1394781115.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -142,19 +142,20 @@ msgstr "Geçerli işlem zaten sona erdiği için satın alma tamamlanamadı."
 
 #: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "Hiçbir işlem kimliği bulunamadı."
 
 #: webpay/base/dev_messages.py:154
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "Bir işlemin başlamasını beklerken sistem zaman aşımına uğradı."
 
 #: webpay/base/dev_messages.py:157
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr ""
+"Ödeme yöntemi veya fiyat noktası bu bölge veya operatör için desteklenmiyor."
 
 #: webpay/base/dev_messages.py:159
 msgid "The user cancelled the payment."
-msgstr ""
+msgstr "Kullanıcı ödemeyi iptal etti."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -165,10 +166,14 @@ msgstr "\"{0}\" anahtarının değeri maksimum uzunluk olan {1} değerinden fazl
 #: webpay/base/utils.py:49
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr ""
+"Ödeme ayarlanırken bir hata oluştu. Tekrar deneyin veya devam ederse "
+"uygulama sahibine başvurun."
 
 #: webpay/base/utils.py:55
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr ""
+"Ödeme işlenirken bir iç hata oluştu. Tekrar deneyin veya devam ederse "
+"Mozilla'ya başvurun."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -219,6 +224,8 @@ msgstr "PIN sadece rakamlardan oluşabilir."
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
 msgstr ""
+"Farklı bir kullanıcı olarak oturum açmışsınız, ödemeyi yeniden başlatmanız "
+"gerekiyor."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -242,11 +249,11 @@ msgstr "Hata&hellip;"
 
 #: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
-msgstr ""
+msgstr "Bu beklenenden uzun sürüyor. Tekrar denensin mi?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "Bir şeyler yanlış gitti. Tekrar denensin mi?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
@@ -339,6 +346,8 @@ msgstr "PIN sıfırlama"
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
 msgstr ""
+"Sadece test için. Marketplace kullanıcıları bu siteyi "
+"<b>kullanmamalıdır</b>."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
