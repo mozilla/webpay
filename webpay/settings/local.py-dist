@@ -121,7 +121,13 @@ MARKETPLACE_URL = 'http://localhost:8000'
 #SECRET = 'this must match APP_PURCHASE_SECRET in zamboni'
 
 # Add the single page app for local dev.
-ENABLE_SPA = True
+# ENABLE_SPA = True
+# ENABLE_SPA_URLS = True
+
+# Set full path to the static dir that
+# is serving the contents of public in the
+# Spartacus project.
+# SPARTACUS_STATIC = 'http://localhost:7777'
 
 # Ensure that cache_nuggets can import correctly.
 CACHE_PREFIX = 'webpay'

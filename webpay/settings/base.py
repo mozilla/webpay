@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'webpay.provider',
     'webpay.pin',
     'webpay.services',
+    'webpay.spa',
     'raven.contrib.django',
     'jingo_minify',
 ]
@@ -542,8 +543,6 @@ PAY_URLS = {
 # Warning that this server is really only for testing.
 USAGE_WARNING = False
 
-# Enable the Single Page App
-ENABLE_SPA = False
 
 ALLOW_ANDROID_PAYMENTS = True
 ALLOW_TARAKO_PAYMENTS = False
@@ -553,3 +552,20 @@ ALLOW_TARAKO_PAYMENTS = False
 # Example: {'mcc': '123', 'mnc': '45'}
 # Use this setting carefully!
 SIMULATED_NETWORK = None
+
+# Enable/Disable the Single Page App
+ENABLE_SPA = False
+ENABLE_SPA_URLS = False
+
+# Spartacus path settings.
+BASE_SPA_URL = '/mozpay/spa/'
+SPA_URLS = [
+    'create-pin',
+    'enter-pin',
+    'locked',
+    'login',
+    'reset-pin',
+    'reset-start',
+    'wait-for-tx',
+    'was-locked'
+]

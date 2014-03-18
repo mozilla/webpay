@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.conf.urls.defaults import patterns, include, url
 
+from webpay.spa.views import index as spa_index
+
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
@@ -14,16 +16,13 @@ urlpatterns = patterns('',
     (r'^mozpay/bango/', include('webpay.bango.urls')),
     (r'^mozpay/provider/', include('webpay.provider.urls')),
     (r'^mozpay/services/', include('webpay.services.urls')),
-    (r'^mozpay/', include('webpay.pay.urls')),
-    # When jsi18n is ready, re-enable this.
-    #url('^mozpay/jsi18n.js$',
-    #    cache_page(60 * 60 * 24 * 365)(javascript_catalog),
-    #    {'domain': 'javascript', 'packages': ['webpay']}, name='jsi18n'),
-    url(r'^mozpay/pin/', include('webpay.pin.urls'))
+    (r'^mozpay/pin/', include('webpay.pin.urls')),
+    (r'^mozpay/', include('webpay.pay.urls'))
 )
 
-if settings.ENABLE_SPA:
+if settings.ENABLE_SPA_URLS:
     urlpatterns += patterns('',
+        url(r'^mozpay/spa/(?:' + '|'.join(settings.SPA_URLS) + ')$', spa_index),
         url(r'^mozpay/v1/api/', include('webpay.api.urls', namespace='api'))
     )
 

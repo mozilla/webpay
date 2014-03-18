@@ -163,6 +163,15 @@ def configure_transaction(request):
         return {'status': 'ok'}
 
 
+def index(request):
+    """Hand off either lobby or serving Spartacus depending on settings."""
+    if settings.ENABLE_SPA:
+        from webpay.spa.views import index as spa_index
+        return spa_index(request)
+    else:
+        return lobby(request)
+
+
 @anonymous_csrf_exempt
 @require_GET
 def lobby(request):
