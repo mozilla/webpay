@@ -150,8 +150,7 @@ msgstr "Bir işlemin başlamasını beklerken sistem zaman aşımına uğradı."
 
 #: webpay/base/dev_messages.py:157
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
-"Ödeme yöntemi veya fiyat noktası bu bölge veya operatör için desteklenmiyor."
+msgstr "Ödeme yöntemi veya fiyat noktası bu bölge veya operatör için desteklenmiyor."
 
 #: webpay/base/dev_messages.py:159
 msgid "The user cancelled the payment."
@@ -165,15 +164,11 @@ msgstr "\"{0}\" anahtarının değeri maksimum uzunluk olan {1} değerinden fazl
 
 #: webpay/base/utils.py:49
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr ""
-"Ödeme ayarlanırken bir hata oluştu. Tekrar deneyin veya devam ederse "
-"uygulama sahibine başvurun."
+msgstr "Ödeme ayarlanırken bir hata oluştu. Tekrar deneyin veya devam ederse uygulama sahibine başvurun."
 
 #: webpay/base/utils.py:55
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
-"Ödeme işlenirken bir iç hata oluştu. Tekrar deneyin veya devam ederse "
-"Mozilla'ya başvurun."
+msgstr "Ödeme işlenirken bir iç hata oluştu. Tekrar deneyin veya devam ederse Mozilla'ya başvurun."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -223,9 +218,7 @@ msgstr "PIN sadece rakamlardan oluşabilir."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
-"Farklı bir kullanıcı olarak oturum açmışsınız, ödemeyi yeniden başlatmanız "
-"gerekiyor."
+msgstr "Farklı bir kullanıcı olarak oturum açmışsınız, ödemeyi yeniden başlatmanız gerekiyor."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -345,9 +338,7 @@ msgstr "PIN sıfırlama"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
-"Sadece test için. Marketplace kullanıcıları bu siteyi "
-"<b>kullanmamalıdır</b>."
+msgstr "Sadece test için. Marketplace kullanıcıları bu siteyi <b>kullanmamalıdır</b>."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.

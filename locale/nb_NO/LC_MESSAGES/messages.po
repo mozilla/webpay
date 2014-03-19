@@ -61,9 +61,7 @@ msgstr "JWT-en har utløpt."
 
 #: webpay/base/dev_messages.py:109
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
-"Den eksterne betalingsformidleren returnerte en feil under behandling av "
-"betalingen"
+msgstr "Den eksterne betalingsformidleren returnerte en feil under behandling av betalingen"
 
 #: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
@@ -121,9 +119,7 @@ msgstr "Varslingstjenesten svarte med en feil under verifisering av betalingsvar
 
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr ""
-"Varslingstjenesten fikk et uventet unntak under verifisering av "
-"betalingsvarselet"
+msgstr "Varslingstjenesten fikk et uventet unntak under verifisering av betalingsvarselet"
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
@@ -343,8 +339,7 @@ msgstr "Tilbakestilling av sikkerhetskode"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
-"Bare for testing. Marketplace-brukere <b>må ikke</b> bruke dette nettstedet."
+msgstr "Bare for testing. Marketplace-brukere <b>må ikke</b> bruke dette nettstedet."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
