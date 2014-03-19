@@ -19,8 +19,9 @@ class Base(BasicSessionCase, JWTtester):
         self.key = 'public.key'
         self.secret = 'private.secret'
 
-    def get(self, payload):
-        return self.client.get('%s?req=%s' % (self.url, payload))
+    def get(self, payload, **kw):
+        return self.client.get(
+            u'{url}?req={req}'.format(url=self.url, req=payload), **kw)
 
     def payload(self, **kw):
         kw.setdefault('iss', settings.KEY)

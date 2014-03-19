@@ -1,3 +1,4 @@
+import re
 import time
 
 from django import http
@@ -50,10 +51,10 @@ def process_pay_req(request, data=None):
         codes = ', '.join(codes)
         return app_error(request, code=codes)
 
-    if settings.ONLY_SIMULATIONS and not form.is_simulation:
-        # Real payments are currently disabled.
-        # Only simulated payments are allowed.
-        return custom_error(request, _('Payments are temporarily disabled.'),
+    if (disabled_by_user_agent(request.META.get('HTTP_USER_AGENT', None)) or
+            (settings.ONLY_SIMULATIONS and not form.is_simulation)):
+        return custom_error(request,
+                            _('Payments are temporarily disabled.'),
                             code=msg.PAY_DISABLED, status=503)
 
     exc = er = None
@@ -286,7 +287,7 @@ def wait_to_start(request):
         clear_messages(request)
         # The transaction is ready; no need to wait for it.
         return http.HttpResponseRedirect(
-                        provider.get_start_url(trans['uid_pay']))
+            provider.get_start_url(trans['uid_pay']))
     return render(request, 'pay/wait-to-start.html')
 
 
@@ -375,3 +376,22 @@ def _trim_pay_request(req):
         for k, v in req['request']['locales'].items():
             d = _trim(v['description'])
             req['request']['locales'][k]['description'] = d
+
+
+_android_user_agent = re.compile(r'^Mozilla.*Android.*Mobile.*Gecko.*Firefox')
+
+
+def disabled_by_user_agent(user_agent):
+    """
+    Returns True if payments are disabled for this user agent.
+    """
+    if not user_agent:
+        user_agent = ''
+
+    if not settings.ALLOW_ANDROID_PAYMENTS:
+        if _android_user_agent.search(user_agent):
+            log.info('Disabling payments for this user agent: {ua}'
+                     .format(ua=user_agent))
+            return True
+
+    return False
