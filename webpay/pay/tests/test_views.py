@@ -185,6 +185,22 @@ class TestVerify(Base):
         doc = pq(res.content)
         eq_(doc('body').attr('data-error-code'), msg.MALFORMED_URL)
 
+    @mock.patch.object(settings, 'ALLOW_ANDROID_PAYMENTS', False)
+    def test_disallow_android_payments(self):
+        # Android Nightly agent:
+        ua = 'Mozilla/5.0 (Android; Mobile; rv:31.0) Gecko/31.0 Firefox/31.0'
+        res = self.get(self.request(), HTTP_USER_AGENT=ua)
+        self.assertContains(res, msg.PAY_DISABLED, status_code=503)
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-error-code'), msg.PAY_DISABLED)
+
+    @mock.patch.object(settings, 'ALLOW_ANDROID_PAYMENTS', False)
+    def test_allow_non_android_payments(self):
+        # B2G agent:
+        ua = 'Mozilla/5.0 (Mobile; rv:18.1) Gecko/20131009 Firefox/18.1'
+        res = self.get(self.request(), HTTP_USER_AGENT=ua)
+        eq_(res.status_code, 200)
+
     @mock.patch.object(settings, 'ALLOWED_CALLBACK_SCHEMES', ['https'])
     def test_non_https_url_ok_for_simulation(self):
         payjwt = self.payload()

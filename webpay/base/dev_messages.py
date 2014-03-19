@@ -139,7 +139,7 @@ def _build_legend():
         NOTICE_EXCEPTION: _('The notification service raised an '
                             'unexpected exception while verifying the '
                             'payment notice'),
-        PAY_DISABLED: _('Payments are temporarily disabled'),
+        PAY_DISABLED: _('Payments are temporarily disabled.'),
         RESOURCE_MODIFIED:
             _('The resource has been modified within the timing of the '
               'previous request. The action should be performed again.'),
