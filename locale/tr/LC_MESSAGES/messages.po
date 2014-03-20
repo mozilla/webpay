@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-19 09:05-0700\n"
-"PO-Revision-Date: 2014-03-20 09:44+0000\n"
+"PO-Revision-Date: 2014-03-20 09:45+0000\n"
 "Last-Translator: Selim <selim@sum.lu>\n"
 "Language-Team: Mozilla Turkey <bilgi@mozilla.org.tr>\n"
 "Language: tr\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1395308687.0\n"
+"X-POOTLE-MTIME: 1395308752.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -39,7 +39,7 @@ msgstr "Bu JWT sağlayıcısı için hiç kimse kaydedilmiş."
 
 #: webpay/base/dev_messages.py:98
 msgid "The price point is unknown or invalid."
-msgstr "Fiyat noktası geçersiz ya da bilinmiyor."
+msgstr "Fiyat noktası geçersiz veya bilinmiyor."
 
 #: webpay/base/dev_messages.py:99
 msgid "The request to begin payment was invalid."
