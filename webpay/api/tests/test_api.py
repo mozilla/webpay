@@ -3,6 +3,7 @@ import json
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
+from django.test.client import Client
 
 import mock
 from curling.lib import HttpClientError
@@ -21,6 +22,25 @@ class Response():
     def __init__(self, code, content=''):
         self.status_code = code
         self.content = content
+
+
+class APIClient(Client):
+
+    def _set(self, **kw):
+        kw.setdefault('content_type', 'application/json')
+        kw.setdefault('HTTP_ACCEPT', 'application/json')
+        return kw
+
+    def get(self, url, data={}, **kw):
+        return super(APIClient, self).get(url, data, self._wrap(**kw))
+
+    def post(self, url, data, **kw):
+        data = json.dumps(data)
+        return super(APIClient, self).get(url, data, self._wrap(**kw))
+
+    def patch(self, url, data, **kw):
+        data = json.dumps(data)
+        return super(APIClient, self).get(url, data, self._wrap(**kw))
 
 
 class BaseCase(BasicSessionCase):
@@ -168,6 +188,54 @@ class TestPatch(PIN):
         # A cheap way to confirm that was_reverified was flipped.
         res = self.patch(self.url, data={'pin': '1234'})
         eq_(res.status_code, 400)
+
+
+class TestCheck(PIN):
+
+    def setUp(self):
+        super(TestCheck, self).setUp()
+        self.url = reverse('api:pin.check')
+
+    def test_anon(self):
+        self.set_session(uuid=None)
+        eq_(self.client.post(self.url).status_code, 403)
+
+    def test_no_data(self):
+        res = self.client.post(self.url, data={})
+        eq_(res.status_code, 400)
+
+    def test_good(self):
+        self.solitude.generic.verify_pin.post.return_value = {'valid': True}
+        res = self.client.post(self.url, data={'pin': 1234})
+        eq_(res.status_code, 200)
+
+    def test_locked(self):
+        self.solitude.generic.verify_pin.post.return_value = {'locked': True}
+        res = self.client.post(self.url, data={'pin': 1234})
+        eq_(res.status_code, 400)
+
+    def test_wrong(self):
+        self.solitude.generic.verify_pin.post.return_value = {'valid': False}
+        self.solitude.generic.buyer.get_object_or_404.return_value = {
+            'pin': True, 'resource_pk': 'abc'}
+        res = self.client.post(self.url, data={'pin': 1234})
+        eq_(res.status_code, 400)
+
+    def test_404(self):
+        self.solitude.generic.verify_pin.post.side_effect = (
+            ObjectDoesNotExist)
+        res = self.client.post(self.url, data={'pin': 1234})
+        eq_(res.status_code, 404)
+
+    def test_output(self):
+        self.solitude.generic.verify_pin.post.return_value = {'valid': False}
+        self.solitude.generic.buyer.get_object_or_404.return_value = {
+            'pin': True, 'resource_pk': 'abc'}
+        res = self.client.post(self.url, data={'pin': 1234})
+        eq_(res.status_code, 400)
+        data = json.loads(res.content)
+        eq_(data, {'pin': True, 'pin_locked_out': None,
+                   'pin_is_locked_out': None, 'pin_was_locked_out': None})
 
 
 # TODO: this could be made smaller.

@@ -1,13 +1,14 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 
-from lib.solitude.api import client
-
 from rest_framework import permissions, response, serializers, viewsets
+
+from lib.solitude.api import client
 
 from webpay.auth.utils import set_user_has_pin
 from webpay.base.utils import app_error
 from webpay.pay.views import process_pay_req
-from webpay.pin.forms import CreatePinForm, ResetPinForm
+from webpay.pin.forms import CreatePinForm, ResetPinForm, VerifyPinForm
 
 
 class Permission(permissions.IsAuthenticated):
@@ -23,13 +24,7 @@ class PinSerializer(serializers.Serializer):
     pin_was_locked_out = serializers.BooleanField()
 
 
-class Flag(object):
-
-    def dispatch(self, request, *args, **kwargs):
-        return super(Flag, self).dispatch(request, *args, **kwargs)
-
-
-class PinViewSet(Flag, viewsets.ViewSet):
+class PinViewSet(viewsets.ViewSet):
     permission_classes = (Permission,)
     serializer_class = PinSerializer
 
@@ -73,7 +68,22 @@ class PinViewSet(Flag, viewsets.ViewSet):
         return app_error(request)
 
 
-class PayViewSet(Flag, viewsets.ViewSet):
+class PinCheckViewSet(viewsets.ViewSet):
+    permission_classes = (Permission,)
+    serializer_class = PinSerializer
+
+    def check(self, request):
+        form = VerifyPinForm(uuid=request.session['uuid'], data=request.DATA)
+        try:
+            status = 200 if form.is_valid() else 400
+        except ObjectDoesNotExist:
+            raise Http404
+        res = client.get_buyer(request.session['uuid'])
+        serial = PinSerializer(res)
+        return response.Response(serial.data, status=status)
+
+
+class PayViewSet(viewsets.ViewSet):
     permission_classes = (Permission,)
 
     def create(self, request):
