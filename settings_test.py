@@ -58,3 +58,4 @@ CACHES = {
 CACHE_PREFIX = 'webpay:test'
 
 ENABLE_SPA = True
+ALLOW_ANDROID_PAYMENTS = True

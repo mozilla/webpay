@@ -538,3 +538,5 @@ USAGE_WARNING = False
 
 # Enable the Single Page App
 ENABLE_SPA = False
+
+ALLOW_ANDROID_PAYMENTS = True
