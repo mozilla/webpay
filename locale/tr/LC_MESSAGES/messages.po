@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-19 09:05-0700\n"
-"PO-Revision-Date: 2014-03-14 07:11+0000\n"
-"Last-Translator: Servet <servet.cebeci@hotmail.com>\n"
+"PO-Revision-Date: 2014-03-20 09:44+0000\n"
+"Last-Translator: Selim <selim@sum.lu>\n"
 "Language-Team: Mozilla Turkey <bilgi@mozilla.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1394781115.0\n"
+"X-POOTLE-MTIME: 1395308687.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -61,7 +61,7 @@ msgstr "JWT zaman aşımına uğradı."
 
 #: webpay/base/dev_messages.py:109
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
+msgstr "Dış ödeme işlemcisi ödemeyi işlerken bir hata verdi"
 
 #: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
@@ -119,6 +119,8 @@ msgstr "Ödeme bildirimi doğrulanırken bildirim servisi hata verdi"
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr ""
+"Bildirim servisi, ödeme bildirimini doğrularken beklenmeyen bir hatayla "
+"karşılaştı"
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
@@ -306,7 +308,7 @@ msgstr "Gerçek ödeme yap"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
-msgstr ""
+msgstr "Ödeme ayarlanıyor&hellip;"
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
