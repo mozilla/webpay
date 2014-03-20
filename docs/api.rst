@@ -74,6 +74,38 @@ The PIN API lets you check, create and update the PIN through Webpay.
     :status 400: invalid form data.
     :status 403: not authenticated.
 
+Pin Check
+---------
+
+.. http:post:: /mozpay/v1/api/pin/check/
+
+    Checks a posted PIN against a stored pin.
+
+    **Request**
+
+    :param pin: 4 numbers in the range 0-9 as a string
+    :type pin: string
+
+    **Response**
+
+    Example:
+
+    .. code-block:: json
+
+        {
+            "pin": true,
+            "pin_locked_out": null,
+            "pin_is_locked_out": null,
+            "pin_was_locked_out": null
+        }
+
+    :status 200: successfully completed.
+    :status 400: incorrect PIN.
+    :status 403: not authenticated.
+    :status 404: no user exists.
+
+    The response is the same as for the PIN API.
+
 Pay
 ---
 
