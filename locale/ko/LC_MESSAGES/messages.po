@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-19 09:05-0700\n"
-"PO-Revision-Date: 2013-12-07 04:50+0000\n"
+"PO-Revision-Date: 2014-03-22 09:00+0000\n"
 "Last-Translator: Channy <channy@mozilla.or.kr>\n"
 "Language-Team: none\n"
 "Language: ko\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1386391820.0\n"
+"X-POOTLE-MTIME: 1395478825.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -61,7 +61,7 @@ msgstr "JWT가 만료되었습니다."
 
 #: webpay/base/dev_messages.py:109
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
+msgstr "외부 지불 프로세스 과정에서 오류 발생"
 
 #: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
@@ -118,7 +118,7 @@ msgstr "지불 알림 확인 중 오류가 발생하였음"
 
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr ""
+msgstr "지불 알림을 확인하는 과정에서 알림 서비스에 알 수 없는 오류가 발생 "
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
@@ -142,7 +142,7 @@ msgstr "현재 트랜잭션이 완료되어 구매과정을 완료할 수 없습
 
 #: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "트랜잭션 ID가 없습니다."
 
 #: webpay/base/dev_messages.py:154
 msgid "The system timed out while waiting for a transaction to start."
@@ -160,208 +160,209 @@ msgstr "키 값이 최대값을 초과하였습니다."
 #. argument is a number.
 #: webpay/base/dev_messages.py:166
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
+msgstr "\"{0}\"키에 대한 값이 최대 길이  {1}를 초과"
 
 #: webpay/base/utils.py:49
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr ""
+msgstr "지불 설정 과정에서 오류가 있었습니다. 다시 시도하거나 앱 개발자에게 문의하십시오."
 
 #: webpay/base/utils.py:55
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
+msgstr "지불 과정에서 내부 오류가 발생하였습니다. 다시 시도하거나 계속 지속되면 Mozilla에 문의하십시오."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "허가 안됨"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "죄송합니다. 작업을 허가할 수 없습니다."
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
-msgstr ""
+msgstr "취소"
 
 #: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
 msgid "Page not found"
-msgstr ""
+msgstr "페이지 없음"
 
 #: webpay/base/templates/404.html:5
 msgid "Sorry, but we couldn't find the page you're looking for."
-msgstr ""
+msgstr "죄송합니다. 원하시는 페이지를 찾을 수 없습니다."
 
 #: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
-msgstr ""
+msgstr "무언가 잘못 되었습니다."
 
 #: webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
-msgstr ""
+msgstr "요청 처리 과정에서 오류가 있었습니다."
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
-msgstr ""
+msgstr "잠시 후 다시 시도하십시오."
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9
 msgid "Web Pay"
-msgstr ""
+msgstr "웹 지불"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr ""
+msgstr "비밀번호는 4자리 숫자입니다."
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr ""
+msgstr "비밀번호는 숫자로 입력하세요."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
+msgstr "다른 사용자로 로그인하였다면, 지불 과정을 다시 하셔야 합니다."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
-msgstr ""
+msgstr "불러오는 중"
 
 #: webpay/base/templates/base.html:32
 msgid "Beginning payment&hellip;"
-msgstr ""
+msgstr "지불 시작&hellip;"
 
 #: webpay/base/templates/base.html:33
 msgid "Connecting to Persona"
-msgstr ""
+msgstr "Persona 연결 중"
 
 #: webpay/base/templates/base.html:34
 msgid "Payment complete"
-msgstr ""
+msgstr "지불 완료"
 
 #: webpay/base/templates/base.html:41
 msgid "Oops&hellip;"
-msgstr ""
+msgstr "문제 발생&hellip;"
 
 #: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
-msgstr ""
+msgstr "생각 보다 시간이 오래 걸리고 있습니다. 다시 하시겠습니까?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "무언가 잘못된 것 같습니다. 다시 하시겠습니까?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "확인"
 
 #: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
-msgstr ""
+msgstr "오류"
 
 #: webpay/pay/views.py:56
 msgid "Payments are temporarily disabled."
-msgstr ""
+msgstr "지불이 일시적으로 중단되었습니다."
 
 #: webpay/pay/views.py:187 webpay/pin/views.py:93
 msgid "Enter Pin"
-msgstr ""
+msgstr "비밀번호 입력"
 
 #: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign In"
-msgstr ""
+msgstr "로그인"
 
 #: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in to continue with the payment"
-msgstr ""
+msgstr "로그인 후 지불 하기"
 
 #: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in"
-msgstr ""
+msgstr "로그인"
 
 #: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
-msgstr ""
+msgstr "지불 과정 미리보기"
 
 #: webpay/pay/templates/pay/simulate.html:8
 msgid "You will not be charged."
-msgstr ""
+msgstr "실제 결제가 일어나지 않습니다."
 
 #: webpay/pay/templates/pay/simulate.html:10
 msgid "result"
-msgstr ""
+msgstr "결과"
 
 #: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
-msgstr ""
+msgstr "계속"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "지불 테스트 가능"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr ""
+msgstr "지불 과정 미리 보기"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr ""
+msgstr "실제 지불 하기"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
-msgstr ""
+msgstr "지불 설정&hellip;"
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
-msgstr ""
+msgstr "이미 비밀번호를 만들었습니다."
 
 #: webpay/pin/forms.py:111
 msgid "Wrong pin"
-msgstr ""
+msgstr "맞지 않는 비밀번호"
 
 #: webpay/pin/forms.py:123 webpay/pin/forms.py:146
 msgid "Pins do not match."
-msgstr ""
+msgstr "비밀번호가 맞지 않습니다."
 
 #: webpay/pin/views.py:46
 msgid "Create a Pin"
-msgstr ""
+msgstr "비밀번호 입력"
 
 #: webpay/pin/views.py:68 webpay/pin/views.py:185
 msgid "Confirm Pin"
-msgstr ""
+msgstr "비밀번호 확인"
 
 #: webpay/pin/views.py:131 webpay/pin/views.py:157 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
-msgstr ""
+msgstr "비밀번호 재성정"
 
 #: webpay/pin/views.py:178
 msgid "Pin reset"
-msgstr ""
+msgstr "비밀번호 재설정"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
+msgstr "테스트를 위해 마켓플레이스 사용자는 현재 사이트를 <b>사용할 수 없습니다</b>."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
-msgstr ""
+msgstr "비밀번호를 잃어버리셨습니까?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr ""
+msgstr "틀린 비밀번호를 너무 많이 입력했습니다. 현재 계정이 잠깁니다. 5분후에 다시 구매를 시도하세요."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
-msgstr ""
+msgstr "비밀번호 잠김"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
 msgstr ""
+"틀린 비밀번호를 여러 번 입력함으로서 비밀번호 입력이 잠금 상태로 바뀌어습니다. 잠시 후 비밀번호 입력을 다시하거나 재설정하십시오."
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr ""
+msgstr "비밀번호를 재설정하시겠습니까? Persona 로그인을 다시 하셔야 합니다."
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
-msgstr ""
+msgstr "재설정"
