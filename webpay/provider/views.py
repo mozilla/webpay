@@ -18,7 +18,7 @@ NoticeClasses = {}
 def success(request, provider):
     if provider != 'reference':
         raise NotImplementedError(
-                'only the reference provider is implemented so far')
+            'only the reference provider is implemented so far')
 
     notice = NoticeClasses[provider](request)
     try:
@@ -34,7 +34,7 @@ def success(request, provider):
 def error(request, provider):
     if provider != 'reference':
         raise NotImplementedError(
-                'only the reference provider is implemented so far')
+            'only the reference provider is implemented so far')
 
     notice = NoticeClasses[provider](request)
     try:
@@ -111,13 +111,6 @@ class Notice(object):
         """
         raise NotImplementedError
 
-    @property
-    def token(self):
-        """
-        Returns the notice token for verification.
-        """
-        raise NotImplementedError
-
     def verify_signature(self):
         """
         Returns without raising an exception if the signagture
@@ -144,7 +137,7 @@ class RefNotice(Notice):
 
         log.info('reference payment notice check result={result}; '
                  'trans_id={trans}'.format(trans=self.transaction_id,
-                                            result=response['result']))
+                                           result=response['result']))
 
         if response['result'] != 'OK':
             raise msg.DevMessage(msg.NOTICE_ERROR)
