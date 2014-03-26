@@ -118,9 +118,7 @@ msgstr "Ödeme bildirimi doğrulanırken bildirim servisi hata verdi"
 
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr ""
-"Bildirim servisi, ödeme bildirimini doğrularken beklenmeyen bir hatayla "
-"karşılaştı"
+msgstr "Bildirim servisi, ödeme bildirimini doğrularken beklenmeyen bir hatayla karşılaştı"
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
