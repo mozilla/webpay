@@ -512,10 +512,6 @@ PAYMENT_PROVIDERS = ('bango', 'reference')
 # or something.
 PAYMENT_PROVIDER = 'bango'
 
-# When True, Webpay uses a universal payment provider API for the active
-# PAYMENT_PROVIDER.
-UNIVERSAL_PROVIDER = False
-
 # The pay URL is the starting page of the payment screen.
 # It will receive one substitution: the uid_pay value. For example, this is the
 # Billing Configuration ID in Bangoland.

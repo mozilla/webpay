@@ -123,9 +123,8 @@ base.JS_SETTINGS['zamboni_raven_url'] = 'https://none@marketplace-dev.allizom.or
 
 NEWRELIC_INI = '/etc/newrelic.d/marketplace-dev.allizom.org-webpay.ini'
 
-# Uncomment this to activate Zippy.
+# reference == Zippy.
 PAYMENT_PROVIDER = 'reference'
-UNIVERSAL_PROVIDER = True
 
 
 PAY_URLS = {
