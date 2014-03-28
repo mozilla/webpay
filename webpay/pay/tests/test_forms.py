@@ -6,9 +6,9 @@ from django.core.exceptions import ObjectDoesNotExist
 
 import mock
 from nose import SkipTest
-from nose.tools import eq_
+from nose.tools import eq_, ok_
 
-from webpay.pay.forms import VerifyForm
+from webpay.pay.forms import VerifyForm, NetCodeForm
 
 from . import Base, sample
 
@@ -35,6 +35,25 @@ class TestForm(Base):
 
     def test_broken(self):
         self.failed(VerifyForm({'req': 'foo'}))
+
+
+class TestNetCodeForm(Base):
+
+    def test_not_mcc(self):
+        form = NetCodeForm({'mcc': 'fooo', 'mnc': '1'})
+        form.is_valid()
+        ok_('mcc' in form.errors, form.errors)
+        ok_('mnc' in form.errors, form.errors)
+
+    def test_mcc(self):
+        form = NetCodeForm({'mcc': '123', 'mnc': '456'})
+        form.is_valid()
+        ok_('mcc' not in form.errors, form.errors)
+        ok_('mnc' not in form.errors, form.errors)
+
+    def test_no_data(self):
+        form = NetCodeForm({'mcc': '', 'mnc': ''})
+        eq_(form.is_valid(), False)
 
 
 @mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')

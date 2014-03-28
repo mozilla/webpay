@@ -30,6 +30,7 @@ PAY_DISABLED = 'PAY_DISABLED'
 RESOURCE_MODIFIED = 'RESOURCE_MODIFIED'
 SIM_DISABLED = 'SIM_DISABLED'
 SIM_ONLY_KEY = 'SIM_ONLY_KEY'
+TRANS_CONFIG_FAILED = 'TRANS_CONFIG_FAILED'
 TRANS_ENDED = 'TRANS_ENDED'
 TRANS_EXPIRED = 'TRANS_EXPIRED'
 TRANS_MISSING = 'TRANS_MISSING'
@@ -146,6 +147,8 @@ def _build_legend():
         SIM_DISABLED: _('Payment simulations are disabled at this time.'),
         SIM_ONLY_KEY:
             _('This payment key can only be used to simulate purchases.'),
+        TRANS_CONFIG_FAILED:
+            _('The configuration of the payment transaction failed.'),
         TRANS_ENDED:
             _('The purchase cannot be completed because the current '
               'transaction has already ended.'),

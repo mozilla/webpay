@@ -112,6 +112,7 @@ require(['cli', 'id', 'auth', 'bango', 'longtext', 'settings', 'tracking'], func
                     console.log('[pay] user is not at pin entry step, redirecting to: ' + data.redirect_url);
                     window.location = data.redirect_url;
                 } else {
+                    cli.startTransaction();
                     console.log('[pay] requesting focus on pin (login success)');
                     cli.focusOnPin({ $toHide: $('#login'), $toShow: $('#enter-pin') });
                 }
@@ -130,6 +131,7 @@ require(['cli', 'id', 'auth', 'bango', 'longtext', 'settings', 'tracking'], func
 
                     console.log('[pay] Probably logged in, Persona never called back');
                     bango.prepareSim().done(function _simDoneReady() {
+                        cli.startTransaction();
                         console.log('[pay] Requesting focus on pin');
                         cli.focusOnPin({ $toHide: $('#login'), $toShow: $('#enter-pin') });
                     });

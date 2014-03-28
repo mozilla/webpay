@@ -14,12 +14,17 @@ from .utils import lookup_issuer, UnknownIssuer
 log = getLogger('w.pay')
 
 
+class NetCodeForm(ParanoidForm):
+    mcc = forms.RegexField(regex='^\d{2,3}$', required=True)
+    mnc = forms.RegexField(regex='^\d{2,3}$', required=True)
+
+
 class VerifyForm(ParanoidForm):
     req = forms.CharField()
     # If mcc or mnc are given, we'll accept any value that conforms to the
     # format. We'll then whitelist actions on particular values.
-    mcc = forms.RegexField(regex='^\d{3}$', required=False)
-    mnc = forms.RegexField(regex='^\d{3}$', required=False)
+    mcc = forms.RegexField(regex='^\d{2,3}$', required=False)
+    mnc = forms.RegexField(regex='^\d{2,3}$', required=False)
     key = settings.KEY
     secret = settings.SECRET
     is_simulation = False

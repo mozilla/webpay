@@ -103,14 +103,6 @@ def verify(request):
 
             redirect_url = check_pin_status(request)
 
-            # Before we verify the user's PIN let's save some
-            # time and get the transaction configured via Bango in the
-            # background.
-            log.info('configuring transaction {0} from auth'
-                     .format(request.session.get('trans_id')))
-            if not pay_tasks.configure_transaction(request):
-                log.error('Configuring transaction failed.')
-
             return {
                 'needs_redirect': redirect_url is not None,
                 'redirect_url': redirect_url,

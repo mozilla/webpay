@@ -4,6 +4,7 @@ import views
 
 urlpatterns = patterns('',
     url(r'^$', views.lobby, name='pay.lobby'),
+    url(r'^configure-transaction$', views.configure_transaction, name='pay.configure_transaction'),
     # Be careful if you change this because it could be hard
     # coded into settings. See settings.PAY_URLS.
     url(r'^fake-bango-url$', views.fake_bango_url,

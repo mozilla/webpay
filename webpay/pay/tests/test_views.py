@@ -51,11 +51,6 @@ class TestVerify(Base):
         eq_(self.client.post(self.url).status_code, 405)
 
     @mock.patch('webpay.pay.views.solitude')
-    def test_get(self, solitude):
-        solitude.get_transaction.side_effect = ObjectDoesNotExist
-        eq_(self.client.get(self.url).status_code, 400)
-
-    @mock.patch('webpay.pay.views.solitude')
     def test_get_no_req(self, solitude):
         # Setting this is the minimum needed to simulate that you've already
         # started a transaction.
@@ -240,22 +235,6 @@ class TestVerify(Base):
         assert not self.configure_transaction.called, (
             'configure_transaction should not be called when simulating')
 
-    @mock.patch('webpay.auth.utils.client')
-    @mock.patch('webpay.pay.views.check_pin_status')
-    @mock.patch('webpay.pay.views.solitude')
-    def test_start_pay_when_logged_in(self, api, check_pin, client):
-        client.get_buyer.return_value = defaultdict(lambda: '<stub>')
-        check_pin.return_value = None
-        # This is a repeat purchase scenario. We call start_pay because login
-        # will not call it for this scenario.
-        self.session['uuid'] = 'some-email-token'
-        self.save_session()
-        payload = self.request(payload=self.payload())
-        res = self.get(payload)
-        eq_(res.status_code, 200)
-        assert self.configure_transaction.called, (
-            'lobby should configure_transaction when user is logged in')
-
     def test_begin_simulation_when_payments_disabled(self):
         payjwt = self.payload()
         payjwt['request']['simulate'] = {'result': 'postback'}
@@ -362,6 +341,58 @@ class TestVerify(Base):
         price.side_effect = HttpServerError
         payload = self.request(payload=self.payload())
         self.get(payload)
+
+
+@mock.patch('webpay.pay.tasks.configure_transaction')
+class TestConfigureTX(Base):
+
+    def test_configure_transaction_error(self, configure_trans):
+        configure_trans.return_value = False
+        resp = self.client.post(reverse('pay.configure_transaction'),
+                                HTTP_ACCEPT='application/json')
+        eq_(resp.status_code, 400)
+        eq_(resp.get('Content-Type'), 'application/json; charset=utf-8')
+        ok_('TRANS_CONFIG_FAILED' in resp.content)
+
+    def test_configure_tran_fail_still_sets_mnc_mcc(self, configure_trans):
+        configure_trans.return_value = False
+        self.client.post(reverse('pay.configure_transaction'),
+                         {'mcc': '234', 'mnc': '23'})
+        network_codes = self.client.session.get('notes', {}).get('network', {})
+        eq_(network_codes.get('mcc'), '234', 'mcc should be 234')
+        eq_(network_codes.get('mnc'), '23', 'mnc should be 23')
+
+    def test_configure_transaction(self, configure_trans):
+        self.client.post(reverse('pay.configure_transaction'))
+        ok_(configure_trans.called,
+            'POST should call configure_transaction')
+
+    def test_setup_mcc_mnc(self, configure_trans):
+        resp = self.client.post(reverse('pay.configure_transaction'),
+                                {'mcc': '123', 'mnc': '45'},
+                                HTTP_ACCEPT='application/json')
+        network_codes = self.client.session.get('notes', {}).get('network', {})
+        eq_(network_codes.get('mcc'), '123', 'mcc should be 123')
+        eq_(network_codes.get('mnc'), '45', 'mnc should be 45')
+        eq_(resp.status_code, 200)
+        eq_(resp.get('Content-Type'), 'application/json; charset=utf-8')
+
+    def test_setup_invalid_mcc_mnc(self, configure_trans):
+        self.client.post(reverse('pay.configure_transaction'),
+                         {'mcc': 'abc', 'mnc': '45'})
+        ok_('network' not in self.client.session.get('notes', {}),
+            'network should not be set')
+
+    def test_setup_invalid_mcc_mnc_single_digit(self, configure_trans):
+        self.client.post(reverse('pay.configure_transaction'),
+                         {'mcc': '123', 'mnc': '2'})
+        ok_('network' not in self.client.session.get('notes', {}),
+            'network should not be set')
+
+    def test_no_mcc_mnc(self, configure_trans):
+        self.client.post(reverse('pay.configure_transaction'), {})
+        ok_('network' not in self.client.session.get('notes', {}),
+            'network should not be set')
 
 
 @mock.patch('lib.solitude.api.client.get_transaction')

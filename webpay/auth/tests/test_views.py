@@ -45,8 +45,6 @@ class TestAuth(SessionTestCase):
         data = json.loads(res.content)
         eq_(data['user_hash'], '<user_hash>')
         set_user_mock.assert_called_with(mock.ANY, 'a@a.com')
-        assert self.config_trans.called, (
-                'After login, transaction should be configured in background')
         assert store_mkt.called, (
                 'After login, marketplace permissions should be stored')
 
