@@ -4,364 +4,397 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-19 09:05-0700\n"
-"PO-Revision-Date: 2013-08-31 17:53+0100\n"
-"Last-Translator: Sara Todaro <todaro.sr@gmail.com>\n"
+"PO-Revision-Date: 2014-03-28 11:29+0000\n"
+"Last-Translator: Romi <romihardiyanto@gmail.com>\n"
 "Language-Team: mozillaitalia\n"
-"Language: it\n"
+"Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.7\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.0\n"
+"X-POOTLE-MTIME: 1396006177.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
-msgstr "Il pagamento è stato annullato."
+msgstr "Pembayaran dibatalkan."
 
 #: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
-msgstr "Il pagamento è stato effettuato."
+msgstr "Proses pembayaran Anda selesai."
 
 #: webpay/base/dev_messages.py:89
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
 msgstr ""
+"Mozilla menerima kode yang tidak valid dari jasa penyedia pembayaran (Bango) "
+"ketika memroses pembayaran"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:93
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr "Una delle chiavi delle icone non è un oggetto. Un esempio corretto è: {0}"
+msgstr "Kunci ikon gambar bukan objek. Contoh yang benar: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:97
 msgid "No one has been registered for this JWT issuer."
-msgstr "Nessuno è stato registrato come emittente per questo token JWT."
+msgstr "Tidak ada yang terdaftar untuk token JWT ini."
 
 #: webpay/base/dev_messages.py:98
 msgid "The price point is unknown or invalid."
-msgstr ""
+msgstr "Setelan harga tidak dikenal atau tidak valid."
 
 #: webpay/base/dev_messages.py:99
 msgid "The request to begin payment was invalid."
-msgstr ""
+msgstr "Permintaan untuk memulai pembayaran tidak valid."
 
 #: webpay/base/dev_messages.py:101
 msgid "The requested payment simulation result is not supported."
-msgstr "Il risultato della simulazione di pagamento richiesto non è supportato."
+msgstr "Hasil simulasi pembayaran yang diminta tidak didukung."
 
 #: webpay/base/dev_messages.py:103
 msgid "The payment provider (Bango) returned an error while processing the payment"
 msgstr ""
+"Jasa penyedia pembayaran (Bango) mengembalikan kesalahan saat memroses "
+"pembayaran"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:107
 msgid "The JWT has expired."
-msgstr "Il token JWT è scaduto."
+msgstr "Token JWT kedaluwarsa."
 
 #: webpay/base/dev_messages.py:109
 msgid "The external payment processor returned an error while handling the payment"
 msgstr ""
+"Pemroses pembayaran eksternal mengembalikan kesalahan saat menangani "
+"pembayaran"
 
 #: webpay/base/dev_messages.py:111
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Tenggang waktu permintaan web internal habis."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:115
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr "La firma o il formato del token JWT non sono validi."
+msgstr "Token JWT tidak valid atau rusak."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:118
 msgid "The JWT did not decode to a JSON object."
-msgstr "Il token JWT non può essere decodificato in un oggetto JSON."
+msgstr "Token JWT tidak dapat didekodekan menjadi objek JSON."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:121
 msgid "Error decoding JWT."
-msgstr "Errore durante la decodifica del token JWT."
+msgstr "Kesalahan saat mendekode token JWT."
 
 #: webpay/base/dev_messages.py:122
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Tenggang waktu sistem habis saat mencoba masuk."
 
 #: webpay/base/dev_messages.py:123
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "Tenggang waktu sistem habis saat mencoba keluar."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:125
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr "Rilevato URL non valido. Può trattarsi di un URL postback o dell'URL di un'icona."
+msgstr "URL rusak. Ini dapat berupa URL pemanggilan kembali atau URL ikon."
 
 #: webpay/base/dev_messages.py:127
 msgid "The transaction ID was missing from the session when processing a payment return."
 msgstr ""
+"ID transaksi tidak tersedia pada sesi saat memroses pengembalian pembayaran."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:131
 msgid "If {0} is defined, then you must also define {1}."
-msgstr "Se è stata definita la chiave {0} è necessario definire anche {1}."
+msgstr "Jika {0} ditentukan, maka Anda harus menentukan {1}."
 
 #. L10n: First argument is the name of the key, 'reason'.
 #: webpay/base/dev_messages.py:135
 msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr "La simulazione di riaccredito richiesta non dispone della chiave '{0}'."
+msgstr "Simulasi pengembalian dana yang diminta tidak menyediakan kunci '{0}'."
 
 #: webpay/base/dev_messages.py:137
 msgid "The notification service responded with an error while verifying the payment notice"
 msgstr ""
+"Layanan pemberitahuan memberikan balasan kesalahan saat memverifikasi "
+"pemberitahuan pembayaran"
 
 #: webpay/base/dev_messages.py:139
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr ""
+"Layanan pemberitahuan memberikan kesalahan eksepsi yang tidak diharapkan "
+"saat memverifikasi pemberitahuan pembayaran"
 
 #: webpay/base/dev_messages.py:142
 msgid "Payments are temporarily disabled"
-msgstr ""
+msgstr "Pembayaran untuk sementara dimatikan"
 
 #: webpay/base/dev_messages.py:144
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
 msgstr ""
+"Sumber daya telah dimodifikasi dalam jangka waktu permintaan sebelumnya. "
+"Tindakan harus dilakukan kembali."
 
 #: webpay/base/dev_messages.py:146
 msgid "Payment simulations are disabled at this time."
-msgstr "Le simulazioni di pagamento sono attualmente disattivate."
+msgstr "Simulasi pembayaran sedang dinonaktifkan saat ini."
 
 #: webpay/base/dev_messages.py:148
 msgid "This payment key can only be used to simulate purchases."
-msgstr "Questa chiave pagamenti può essere utilizzata solo per la simulazione di un acquisto."
+msgstr ""
+"Kunci pembayaran ini hanya dapat digunakan untuk menyimulasikan pemesanan."
 
 #: webpay/base/dev_messages.py:150
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr ""
+"Pembelian tidak dapat diselesaikan karena transaksi saat ini sudah berakhir."
 
 #: webpay/base/dev_messages.py:152
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "Tidak ada ID Transaksi yang dapat ditemukan."
 
 #: webpay/base/dev_messages.py:154
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "Tenggang waktu sistem habis saat menunggu transaksi dimulai."
 
 #: webpay/base/dev_messages.py:157
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr ""
+"Metode pembayaran atau setelan harga tidak didukung untuk wilayah atau "
+"operator ini."
 
 #: webpay/base/dev_messages.py:159
 msgid "The user cancelled the payment."
-msgstr ""
+msgstr "Pengguna telah membatalkan pembayaran."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
 #: webpay/base/dev_messages.py:166
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr "Il valore per la chiave \"{0}\" supera la lunghezza consentita di {1}"
+msgstr "Nilai untuk kunci \"{0}\" melebihi batas panjang maksimum {1}"
 
 #: webpay/base/utils.py:49
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr "Si è verificato un errore durante l'impostazione del pagamento. Se il problema persiste prova a contattare l'autore dell'app."
+msgstr ""
+"Terjadi kesalahan saat menyiapkan pembayaran. Mohon coba lagi atau hubungi "
+"penerbit aplikasi jika tetap terjadi."
 
 #: webpay/base/utils.py:55
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr ""
+"Terjadi kesalahan internal saat memroses pembayaran. Mohon coba lagi atau "
+"hubungi Mozilla jika tetap terjadi."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr "Non consentito"
+msgstr "Tidak Diizinkan"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr "Spiacenti, non possiedi le autorizzazioni necessarie per effettuare quanto richiesto."
+msgstr "Maaf, Anda tidak diizinkan untuk melakukan hal ini."
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
-msgstr "Annulla"
+msgstr "Batalkan"
 
 #: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
 msgid "Page not found"
-msgstr "Pagina non trovata"
+msgstr "Laman tidak ditemukan"
 
 #: webpay/base/templates/404.html:5
 msgid "Sorry, but we couldn't find the page you're looking for."
-msgstr "Spiacenti, ma non è stato possibile trovare la pagina che stavi cercando."
+msgstr "Maaf, kami tidak menemukan laman yang Anda minta."
 
 #: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
-msgstr "Qualcosa è andato storto."
+msgstr "Ada masalah!"
 
 #: webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
-msgstr "Si è verificato un errore durante l'elaborazione di questa richiesta."
+msgstr "Terjadi kesalahan saat memroses permintaan Anda."
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
-msgstr "Riprova tra un attimo."
+msgstr "Mohon coba lagi dalam beberapa saat."
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9
 msgid "Web Pay"
-msgstr "Web Pay"
+msgstr "Pembayaran Web"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr "Il codice PIN deve essere di quattro cifre."
+msgstr "Panjang PIN harus 4 angka."
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr "Per il codice PIN è possibile utilizzare solo caratteri numerici."
+msgstr "PIN hanya dapat mengandung angka."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
 msgstr ""
+"Anda masuk sebagai pengguna yang berbeda, Anda harus memulai proses "
+"pembayaran dari awal."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
-msgstr "Caricamento in corso…"
+msgstr "Memuat..."
 
 #: webpay/base/templates/base.html:32
 msgid "Beginning payment&hellip;"
-msgstr "Inizio del pagamento in corso&hellip;"
+msgstr "Memulai pembayaran&hellip;"
 
 #: webpay/base/templates/base.html:33
 msgid "Connecting to Persona"
-msgstr "Connessione a Persona in corso…"
+msgstr "Tersambung ke Persona…"
 
 #: webpay/base/templates/base.html:34
 msgid "Payment complete"
-msgstr "Pagamento effettuato"
+msgstr "Pembayaran selesai"
 
 #: webpay/base/templates/base.html:41
 msgid "Oops&hellip;"
-msgstr "Oops&hellip;"
+msgstr "Ups&hellip;"
 
 #: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
-msgstr ""
+msgstr "Ini memakan waktu lebih lama dari yang diperkirakan. Coba lagi?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "Terjadi kesalahan. Coba lagi?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr "OK"
+msgstr "Oke"
 
 #: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
-msgstr "Errore"
+msgstr "Kesalahan"
 
 #: webpay/pay/views.py:56
 msgid "Payments are temporarily disabled."
-msgstr "I pagamenti sono momentaneamente disattivati."
+msgstr "Sistem pembayaran sedang dinonaktifkan sementara."
 
 #: webpay/pay/views.py:187 webpay/pin/views.py:93
 msgid "Enter Pin"
-msgstr "Inserisci il codice PIN"
+msgstr "Masukkan PIN"
 
 #: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign In"
-msgstr "Accedi"
+msgstr "Masuk"
 
 #: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in to continue with the payment"
-msgstr "Accedi per effettuare il pagamento"
+msgstr "Masuk untuk melanjutkan proses pembayaran"
 
 #: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in"
-msgstr "Accedi"
+msgstr "Masuk"
 
 #: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
-msgstr "Simula pagamento"
+msgstr "Simulasi Pembayaran"
 
 #: webpay/pay/templates/pay/simulate.html:8
 msgid "You will not be charged."
-msgstr "Il pagamento della simulazione non ti verrà addebitato."
+msgstr "Anda tidak akan dikenakan biaya."
 
 #: webpay/pay/templates/pay/simulate.html:10
 msgid "result"
-msgstr "Risultato"
+msgstr "hasil"
 
 #: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
-msgstr "Procedi"
+msgstr "Lanjutkan"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr "Hai dei super poteri a tua disposizione."
+msgstr "Anda memiliki kekuasaan paling digdaya"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr "Simula un pagamento"
+msgstr "Simulasikan pembayaran"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr "Effettua un vero pagamento"
+msgstr "Lakukan pembayaran yang sebenarnya"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
-msgstr ""
+msgstr "Menyiapkan pembayaran&hellip;"
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
-msgstr "Hai già creato un PIN."
+msgstr "Anda telah membuat PIN."
 
 #: webpay/pin/forms.py:111
 msgid "Wrong pin"
-msgstr "Codice PIN non valido"
+msgstr "PIN salah"
 
 #: webpay/pin/forms.py:123 webpay/pin/forms.py:146
 msgid "Pins do not match."
-msgstr "Il codice PIN non corrisponde."
+msgstr "PIN tidak cocok."
 
 #: webpay/pin/views.py:46
 msgid "Create a Pin"
-msgstr "Crea un codice PIN"
+msgstr "Buat PIN"
 
 #: webpay/pin/views.py:68 webpay/pin/views.py:185
 msgid "Confirm Pin"
-msgstr "Verifica codice PIN"
+msgstr "Konfirmasukan PIN"
 
 #: webpay/pin/views.py:131 webpay/pin/views.py:157 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
-msgstr "Reimposta codice PIN"
+msgstr "Setel Ulang PIN"
 
 #: webpay/pin/views.py:178
 msgid "Pin reset"
-msgstr "Reimpostazione del codice PIN"
+msgstr "Penyetelan ulang PIN"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
 msgstr ""
+"Hanya untuk uji coba. Pengguna Marketplace <b>tidak seharusnya</b> "
+"menggunakan situs ini."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
-msgstr "Hai dimenticato il codice PIN?"
+msgstr "Lupa PIN Anda?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr "Hai digitato troppe volte un codice PIN non valido. Il tuo account è stato bloccato. Riprova a effettuare l'acquisto fra 5 minuti."
+msgstr ""
+"Anda terlalu banyak memasukkan PIN yang salah. Akun Anda terkunci. Mohon "
+"coba melakukan pemesanan lagi setelah 5 menit."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
-msgstr "Il tuo codice PIN è stato bloccato"
+msgstr "PIN Anda terkunci"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
-msgstr "Il tuo codice PIN è stato bloccato in quanto hai effettuato troppi tentativi errati di inserimento. Puoi effettuare altri tentativi oppure reimpostarlo."
+msgstr ""
+"PIN Anda terkunci karena Anda terlalu banyak memasukkan PIN yang salah. Anda "
+"dapat melanjutkan dan mencoba memasukkan PIN Anda lagi atau setel ulang PIN "
+"Anda."
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr "Sei sicuro di voler reimpostare il tuo codice PIN? Dovrai effettuare l'accesso con Persona per completare questa operazione."
+msgstr ""
+"Yakin ingin menyetel ulang PIN Anda? Anda harus masuk ke Persona untuk "
+"menyetel ulang PIN Anda."
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
-msgstr "Reimposta"
+msgstr "Setel Ulang"
