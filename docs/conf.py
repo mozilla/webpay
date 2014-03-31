@@ -251,10 +251,3 @@ class Mock(object):
 MOCK_MODULES = ['django.conf']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
-
-
-
-import mdn_theme
-
-html_theme_path = [mdn_theme.get_theme_dir()]
-html_theme = 'mdn'
