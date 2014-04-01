@@ -27,7 +27,8 @@ class SellerNotConfigured(Exception):
 
 class SolitudeAPI(SlumberWrapper):
     """
-    A Solitude API that connects to the universal payment provider API.
+    A Solitude facade that works with a payment provider or the
+    generic Solitude API.
 
     :param url: URL of the solitude endpoint.
     """
@@ -40,10 +41,11 @@ class SolitudeAPI(SlumberWrapper):
     @property
     def provider(self):
         assert self._provider, 'self._provider has not been set'
-        return getattr(self.slumber.provider, self._provider)
+        return self._provider
 
     def set_provider(self, provider=None):
-        self._provider = provider or settings.PAYMENT_PROVIDER
+        ProviderClass = provider_cls(provider or settings.PAYMENT_PROVIDER)
+        self._provider = ProviderClass(self.slumber)
         return self._provider
 
     def create_buyer(self, uuid, pin=None):
@@ -195,32 +197,30 @@ class SolitudeAPI(SlumberWrapper):
                             {'uuid': uuid, 'pin': pin})
         return res
 
-    def configure_product_for_billing(self, transaction_uuid,
-                                      seller_uuid,
-                                      product_id, product_name,
-                                      prices, icon_url,
-                                      user_uuid, application_size,
-                                      source='unknown',
-                                      provider=None):
+    def start_transaction(self, transaction_uuid,
+                          seller_uuid,
+                          product_id, product_name,
+                          prices, icon_url,
+                          user_uuid, application_size,
+                          source='unknown',
+                          provider=None):
         """
         Start a payment provider transaction to begin the purchase flow.
-
-        TODO(Kumar): rename this function when we no longer need to
-        maintain the Bango one.
         """
-        provider = self.set_provider(provider)
+        self.set_provider(provider)
         try:
             seller = self.slumber.generic.seller.get_object_or_404(
-                                                    uuid=seller_uuid)
+                uuid=seller_uuid)
         except ObjectDoesNotExist:
-            raise SellerNotConfigured('Seller with uuid %s does not exist'
-                                      % seller_uuid)
+            raise SellerNotConfigured(
+                '{pr}: Seller with uuid {u} does not exist'
+                .format(u=seller_uuid, pr=self.provider.name))
         seller_id = seller['resource_pk']
-        log.info('transaction %s: seller: %s' % (transaction_uuid,
-                                                 seller_id))
-        log.info('{provider}: get product for '
-                 'seller_uuid={uuid} external_id={ext}'
-                 .format(provider=provider,
+        log.info('{pr}: transaction {tr}: seller: {sel}'
+                 .format(tr=transaction_uuid, sel=seller_id,
+                         pr=self.provider.name))
+        log.info('{pr}: get product for seller_uuid={uuid} external_id={ext}'
+                 .format(pr=self.provider.name,
                          uuid=seller_uuid, ext=product_id))
 
         product = None
@@ -229,62 +229,30 @@ class SolitudeAPI(SlumberWrapper):
                 external_id=product_id,
                 seller=seller_id,
             )
-            log.info('found product {pr}'.format(pr=product))
-            provider_product = self.provider.products.get_object_or_404(
-                                                seller_id=seller_uuid,
-                                                external_id=product_id)
-            log.info('found provider product {pr}'.format(pr=provider_product))
+            log.info('{pr}: found generic product {prod}'
+                     .format(pr=self.provider.name, prod=product))
+            provider_product = self.provider.get_product(seller, product)
+            log.info('{pr}: found provider product {prod}'
+                     .format(prod=provider_product, pr=self.provider.name))
         except ObjectDoesNotExist:
             product, provider_product = self.create_product(
-                                product_id, product_name,
-                                seller, provider=provider,
-                                generic_product=product)
+                product_id, product_name,
+                seller, provider=self.provider.name,
+                generic_product=product)
 
-        # TODO: Make these real values. See bug 941952.
-        carrier = 'USA_TMOBILE'
-        region = '123'
-        pay_method = 'OPERATOR'
-        price = '0.99'
-        currency = 'EUR'
+        trans_token = self.provider.create_transaction(product,
+                                                       provider_product,
+                                                       product_name,
+                                                       transaction_uuid,
+                                                       prices,
+                                                       user_uuid,
+                                                       application_size,
+                                                       source,
+                                                       icon_url)
+        log.info('{pr}: made provider trans {trans}'
+                 .format(trans=trans_token, pr=self.provider.name))
 
-        provider_trans = self.provider.transactions.post({
-            'product_id': provider_product['resource_pk'],
-            'region': region,
-            'carrier': carrier,
-            'price': price,
-            'currency': currency,
-            'pay_method': pay_method,
-            'callback_success_url': absolutify(
-                                        reverse('pay.callback_success_url')),
-            'callback_error_url': absolutify(
-                                        reverse('pay.callback_error_url')),
-            'ext_transaction_id': transaction_uuid,
-            'success_url': absolutify(reverse('provider.success',
-                                      args=[provider])),
-            'error_url': absolutify(reverse('provider.error',
-                                    args=[provider])),
-            'product_image_url': icon_url,
-        })
-        log.info('made provider trans {trans}'.format(trans=provider_trans))
-
-        # Note that the old Bango code used to do get-or-create
-        # but I can't tell if we need that or not. Let's wait until it breaks.
-        # See solitude/lib/transactions/models.py
-        trans = self.slumber.generic.transaction.post({
-            'uuid': transaction_uuid,
-            'status': solitude_const.STATUS_PENDING,
-            'provider': solitude_const.PROVIDERS[provider],
-            'seller_product': product['resource_uri'],
-            'source': solitude_const.PROVIDERS[provider],
-            'region': region,
-            'carrier': carrier,
-            'type': solitude_const.TYPE_PAYMENT,
-            'amount': price,
-            'currency': currency,
-        })
-        log.info('made solitude trans {trans}'.format(trans=trans))
-
-        return provider_trans['token'], seller_id
+        return trans_token, seller_id
 
     def create_product(self, external_id, product_name, generic_seller,
                        provider=None, generic_product=None):
@@ -296,10 +264,11 @@ class SolitudeAPI(SlumberWrapper):
         """
         provider = self.set_provider(provider)
 
-        log.info(('creating product with name: {name}, '
-                  'external_id: {ext_id}, seller: {seller}')
-                  .format(name=product_name, ext_id=external_id,
-                          seller=generic_seller))
+        log.info('{pr}: creating product with name: {name}, '
+                 'external_id: {ext_id}, seller: {seller}'
+                 .format(name=product_name, ext_id=external_id,
+                         seller=generic_seller,
+                         pr=self.provider.name))
 
         if not generic_product:
             generic_product = self.slumber.generic.product.post({
@@ -308,21 +277,18 @@ class SolitudeAPI(SlumberWrapper):
                 'public_id': str(uuid.uuid4()),
                 'access': solitude_const.ACCESS_PURCHASE,
             })
-            log.info('created generic product {pr}'
-                     .format(pr=generic_product))
+            log.info('{pr}: created generic product {prod}'
+                     .format(prod=generic_product, pr=self.provider.name))
 
         # If there is no provider seller it means the billing account has
-        # not yet been set up in Devhub.
-        provider_seller = self.provider.sellers.get_object_or_404(
-                                        uuid=generic_seller['resource_pk'])
+        # not yet been set up in Devhub. Thus, we're not caching an exception
+        # here.
+        provider_seller = self.provider.get_seller(generic_seller)
 
-        provider_product = self.provider.products.post({
-            'external_id': external_id,
-            'seller_id': provider_seller['resource_pk'],
-            'name': product_name,
-        })
-        log.info('created provider product {pr}'
-                 .format(pr=provider_product))
+        provider_product = self.provider.create_product(
+            generic_product, provider_seller, external_id, product_name)
+        log.info('{pr}: created provider product {prod}'
+                 .format(prod=provider_product, pr=self.provider.name))
 
         return generic_product, provider_product
 
@@ -337,110 +303,168 @@ class SolitudeAPI(SlumberWrapper):
     def is_callback_token_valid(self, querystring, provider=None):
         provider = self.set_provider(provider)
         try:
-            response = self.provider.notices.post({'qs': querystring})
+            response = self.provider.create_notice(querystring)
         except HttpClientError as e:
-            log.error(('Notice creation with querystring {querystring} failed:'
-                       ' {error}').format(querystring=querystring, error=e))
+            log.error('{pr}: Notice creation with querystring {querystring} '
+                      'failed: {error}'
+                      .format(querystring=querystring, error=e,
+                              pr=self.provider.name))
             return False
-        log.info('validation of the token against the provider {response}'
-                 .format(response=response))
+        log.info('{pr}: validation of the token against the provider '
+                 '{response}'.format(response=response,
+                                     pr=self.provider.name))
         return response['result'] == 'OK'
 
 
-class BangoSolitudeAPI(SolitudeAPI):
+_registry = {}
+
+
+def provider_cls(name):
+    return _registry[name]
+
+
+def register_provider(cls):
+    _registry[cls.name] = cls
+
+
+class PayProvider:
     """
-    DEPRECATED Solitude API that connects to Bango directly.
+    Abstract payment provider
 
-    :param url: URL of the solitude endpoint.
+    This encapsulates some API logic specific to payment providers
+    such as configuring a new payment, creating products, etc.
     """
+    name = None
 
-    def configure_product_for_billing(self, transaction_uuid,
-                                      seller_uuid,
-                                      product_id, product_name,
-                                      prices, icon_url,
-                                      user_uuid, application_size,
-                                      source='unknown'):
-        """
-        Get the billing configuration ID for a Bango transaction.
-        """
+    def __init__(self, slumber):
+        self.slumber = slumber
 
-        # TODO: remove this.
-        # Do not edit this code. Add new logic to the SolitudeAPI.
+    @property
+    def api(self):
+        # This gets a connection to the actual provider API
+        # such as /provider/reference/:
+        return getattr(self.slumber.provider, self.name)
 
-        redirect_url_onsuccess = absolutify(reverse('bango.success'))
-        redirect_url_onerror = absolutify(reverse('bango.error'))
+    def get_product(self, generic_seller, generic_product):
+        return self.api.products.get_object_or_404(
+            seller_id=generic_seller['uuid'],
+            external_id=generic_product['external_id'])
 
-        try:
-            seller = self.slumber.generic.seller.get_object_or_404(
-                uuid=seller_uuid)
-        except ObjectDoesNotExist:
-            raise SellerNotConfigured('Seller with uuid %s does not exist'
-                                      % seller_uuid)
-        seller_id = seller['resource_pk']
-        log.info('transaction %s: seller: %s' % (transaction_uuid,
-                                                 seller_id))
-
-        try:
-            bango_product = self.slumber.bango.product.get_object_or_404(
-                seller_product__seller=seller_id,
-                seller_product__external_id=product_id)
-        except ObjectDoesNotExist:
-            bango_product = self.create_product(product_id, product_name,
-                                                seller)
-
-        log.info('transaction %s: bango product: %s'
-                 % (transaction_uuid, bango_product['resource_uri']))
-
-        res = self.slumber.bango.billing.post({
-            'pageTitle': product_name,
-            'prices': prices,
-            'transaction_uuid': transaction_uuid,
-            'seller_product_bango': bango_product['resource_uri'],
-            'redirect_url_onsuccess': redirect_url_onsuccess,
-            'redirect_url_onerror': redirect_url_onerror,
-            'icon_url': icon_url,
-            'user_uuid': user_uuid,
-            'application_size': application_size,
-            'source': source
-        })
-        bill_id = res['billingConfigurationId']
-        log.info('transaction %s: billing config ID: %s; '
-                 'prices: %s'
-                 % (transaction_uuid, bill_id, prices))
-
-        return bill_id, seller_id
-
-    def create_product(self, external_id, product_name, seller):
-        """
-        Creates a product and a Bango ID on the fly in solitude.
-        """
-
-        # TODO: remove this.
-        # Do not edit this code. Add new logic to the SolitudeAPI.
-
-        log.info(('creating product with  name: %s, external_id: %s , '
-                  'seller: %s') % (product_name, external_id, seller))
-        if not seller['bango']:
-            raise ValueError('No bango account set up for %s' %
-                             seller['resource_pk'])
-
-        product = self.slumber.generic.product.post({
+    def create_product(self, generic_product, provider_seller, external_id,
+                       product_name):
+        return self.api.products.post({
             'external_id': external_id,
-            'seller': seller['bango']['seller'],
-            'public_id': str(uuid.uuid4()),
-            'access': solitude_const.ACCESS_PURCHASE,
+            'seller_id': provider_seller['resource_pk'],
+            'name': product_name,
         })
-        bango = self.slumber.bango.product.post({
-            'seller_bango': seller['bango']['resource_uri'],
-            'seller_product': product['resource_uri'],
+
+    def get_seller(self, generic_seller):
+        return self.api.sellers.get_object_or_404(
+            uuid=generic_seller['resource_pk'])
+
+    def create_transaction(self, generic_product, provider_product,
+                           product_name, transaction_uuid,
+                           prices, user_uuid, application_size, source,
+                           icon_url):
+
+        # TODO: Maybe make these real values. See bug 941952.
+        # In the case of Zippy, it does not detect any of these values
+        # itself. All other providers will detect these values without
+        # help from Webpay.
+        carrier = 'USA_TMOBILE'
+        region = '123'
+        pay_method = 'OPERATOR'
+        # Note: most providers will use the prices array.
+        price = '0.99'
+        currency = 'EUR'
+
+        provider_trans = self.api.transactions.post({
+            'product_id': provider_product['resource_pk'],
+            'region': region,
+            'carrier': carrier,
+            'price': price,
+            'currency': currency,
+            'pay_method': pay_method,
+            'callback_success_url': absolutify(
+                reverse('pay.callback_success_url')),
+            'callback_error_url': absolutify(
+                reverse('pay.callback_error_url')),
+            'ext_transaction_id': transaction_uuid,
+            'success_url': absolutify(reverse('provider.success',
+                                      args=[self.name])),
+            'error_url': absolutify(reverse('provider.error',
+                                    args=[self.name])),
+            'product_image_url': icon_url,
+        })
+
+        # Note that the old Bango code used to do get-or-create
+        # but I can't tell if we need that or not. Let's wait until it breaks.
+        # See solitude/lib/transactions/models.py
+        trans = self.slumber.generic.transaction.post({
+            'uuid': transaction_uuid,
+            'status': solitude_const.STATUS_PENDING,
+            'provider': solitude_const.PROVIDERS[self.name],
+            'seller_product': generic_product['resource_uri'],
+            'source': solitude_const.PROVIDERS[self.name],
+            'region': region,
+            'carrier': carrier,
+            'type': solitude_const.TYPE_PAYMENT,
+            'amount': price,
+            'currency': currency,
+        })
+        log.info('made solitude trans {trans}'.format(trans=trans))
+
+        return provider_trans['token']
+
+    def create_notice(self, querystring):
+        return self.api.notices.post({'qs': querystring})
+
+
+@register_provider
+class ReferenceProvider(PayProvider):
+    """
+    A reference payment provider
+
+    Our current reference implementation is known as Zippy.
+
+    This is our ideal API. If possible, other payment providers
+    should follow this API.
+
+    If this provider is fully compliant it probably shouldn't need
+    to override any of the inherited methods.
+    """
+    name = 'reference'
+
+
+@register_provider
+class BangoProvider(PayProvider):
+    """
+    Bango payment provider
+    """
+    name = 'bango'
+
+    @property
+    def api(self):
+        return self.slumber.bango
+
+    def get_product(self, generic_seller, generic_product):
+        return self.api.product.get_object_or_404(
+            seller_product__seller=generic_seller['resource_pk'],
+            seller_product__external_id=generic_product['external_id'])
+
+    def create_product(self, generic_product, provider_seller, external_id,
+                       product_name):
+        bango_product = self.api.product.post({
+            'seller_bango': provider_seller['resource_uri'],
+            'seller_product': generic_product['resource_uri'],
             'name': product_name,
             'categoryId': 1,
-            'packageId': seller['bango']['package_id'],
+            'packageId': provider_seller['package_id'],
             'secret': 'n'  # This is likely going to be removed.
         })
-        self.slumber.bango.premium.post({
-            'bango': bango['bango_id'],
-            'seller_product_bango': bango['resource_uri'],
+        self.api.premium.post({
+            'bango': bango_product['bango_id'],
+            'seller_product_bango': bango_product['resource_uri'],
             # TODO(Kumar): why do we still need this?
             # The array of all possible prices/currencies is
             # set in the configure billing call.
@@ -449,21 +473,59 @@ class BangoSolitudeAPI(SolitudeAPI):
             'currencyIso': 'USD',
         })
 
-        self.slumber.bango.rating.post({
-            'bango': bango['bango_id'],
+        self.api.rating.post({
+            'bango': bango_product['bango_id'],
             'rating': 'UNIVERSAL',
             'ratingScheme': 'GLOBAL',
-            'seller_product_bango': bango['resource_uri']
+            'seller_product_bango': bango_product['resource_uri']
         })
         # Bug 836865.
-        self.slumber.bango.rating.post({
-            'bango': bango['bango_id'],
+        self.api.rating.post({
+            'bango': bango_product['bango_id'],
             'rating': 'GENERAL',
             'ratingScheme': 'USA',
-            'seller_product_bango': bango['resource_uri']
+            'seller_product_bango': bango_product['resource_uri']
         })
 
-        return bango
+        return bango_product
+
+    def get_seller(self, generic_seller):
+        if not generic_seller['bango']:
+            raise ValueError('No bango account set up for {sel}'
+                             .format(sel=generic_seller['resource_pk']))
+        return generic_seller['bango']
+
+    def create_transaction(self, generic_product, provider_product,
+                           product_name, transaction_uuid,
+                           prices, user_uuid, application_size, source,
+                           icon_url):
+        log.info('transaction {tr}: bango product: {pr}'
+                 .format(tr=transaction_uuid,
+                         pr=provider_product['resource_uri']))
+
+        redirect_url_onsuccess = absolutify(reverse('bango.success'))
+        redirect_url_onerror = absolutify(reverse('bango.error'))
+
+        # This API call also creates a generic
+        # transaction automatically.
+        res = self.api.billing.post({
+            'pageTitle': product_name,
+            'prices': prices,
+            'transaction_uuid': transaction_uuid,
+            'seller_product_bango': provider_product['resource_uri'],
+            'redirect_url_onsuccess': redirect_url_onsuccess,
+            'redirect_url_onerror': redirect_url_onerror,
+            'icon_url': icon_url,
+            'user_uuid': user_uuid,
+            'application_size': application_size,
+            'source': source
+        })
+        bill_id = res['billingConfigurationId']
+        log.info('transaction {tr}: billing config ID: {bill}; '
+                 'prices: {pr}'
+                 .format(tr=transaction_uuid, bill=bill_id, pr=prices))
+
+        return bill_id
 
 
 if not settings.SOLITUDE_URL:
@@ -471,10 +533,5 @@ if not settings.SOLITUDE_URL:
     warnings.warn('SOLITUDE_URL not found, not setting up client')
     client = None
 else:
-    args = (settings.SOLITUDE_URL, settings.SOLITUDE_OAUTH)
-    if settings.UNIVERSAL_PROVIDER:
-        log.info('Using universal SolitudeAPI')
-        client = SolitudeAPI(*args)
-    else:
-        log.info('Using BangoSolitudeAPI')
-        client = BangoSolitudeAPI(*args)
+    log.info('Using universal SolitudeAPI')
+    client = SolitudeAPI(settings.SOLITUDE_URL, settings.SOLITUDE_OAUTH)

@@ -280,21 +280,23 @@ class SolitudeAPITest(TestCase):
             client.set_needs_pin_reset(self.uuid, False, etag=wrong_etag)
 
 
-@mock.patch.object(settings, 'UNIVERSAL_PROVIDER', False)
 @mock.patch.object(settings, 'PAYMENT_PROVIDER', 'bango')
 class CreateBangoTest(TestCase):
     uuid = 'some:pin'
     seller = {'bango': {'seller': 's', 'resource_uri': 'r',
                         'package_id': '1234'},
-              'resource_pk': 'foo'}
+              'resource_uri': '/seller/1',
+              'resource_pk': 'seller_pk'}
 
-    def test_create_no_bango(self):
+    def test_create_without_bango_seller(self):
         with self.assertRaises(ValueError):
-            client.create_product('ext:id', None,
-                                  {'bango': None, 'resource_pk': 'foo'})
+            client.create_product('ext:id', 'product name',
+                                  {'bango': None, 'resource_pk': '1',
+                                   'resource_uri': '/seller/1'},
+                                  generic_product={'resource_pk': '2'})
 
     @mock.patch('lib.solitude.api.client.slumber')
-    def test_create_bango(self, slumber):
+    def test_create_bango_product(self, slumber):
         # Temporary mocking. Remove when this is mocked properly.
         slumber.bango.generic.post.return_value = {'product': 'some:uri'}
         slumber.bango.product.post.return_value = {'resource_uri': 'some:uri',
@@ -311,36 +313,35 @@ class CreateBangoTest(TestCase):
         slumber.generic.seller.get_object_or_404.side_effect = (
             ObjectDoesNotExist)
         with self.assertRaises(SellerNotConfigured):
-            client.configure_product_for_billing(*range(0, 8))
+            client.start_transaction(*range(0, 8))
 
     @mock.patch('lib.solitude.api.client.slumber')
-    def test_no_bango(self, slumber):
+    def test_no_bango_product(self, slumber):
         slumber.generic.seller.get_object_or_404.return_value = self.seller
         slumber.bango.billing.post.return_value = {
-            'billingConfigurationId': 'bar'}
+            'billingConfigurationId': 'bill_id'}
         slumber.bango.product.get_object_or_404.side_effect = (
             ObjectDoesNotExist)
-        eq_(client.configure_product_for_billing(*range(0, 8)),
-            ('bar', 'foo'))
+        eq_(client.start_transaction(*range(0, 8)),
+            ('bill_id', 'seller_pk'))
 
     @mock.patch('lib.solitude.api.client.slumber')
-    def test_has_bango(self, slumber):
+    def test_with_bango_product(self, slumber):
         slumber.generic.seller.get_object_or_404.return_value = self.seller
         slumber.bango.billing.post.return_value = {
-            'billingConfigurationId': 'bar'}
+            'billingConfigurationId': 'bill_id'}
         slumber.bango.product.get_object.return_value = {
             'resource_uri': 'foo'}
-        eq_(client.configure_product_for_billing(*range(0, 8)),
-            ('bar', 'foo'))
+        eq_(client.start_transaction(*range(0, 8)),
+            ('bill_id', 'seller_pk'))
 
 
-@mock.patch.object(settings, 'UNIVERSAL_PROVIDER', True)
 @mock.patch.object(settings, 'PAYMENT_PROVIDER', 'reference')
 class TestConfigureRefTrans(TestCase):
 
     def setUp(self):
         self.api = SolitudeAPI(settings.SOLITUDE_URL, settings.SOLITUDE_OAUTH)
-        self.api.slumber = mock.Mock()
+        self.api.slumber = mock.MagicMock()
         self.slumber = self.api.slumber
 
     def configure(self, trans_uuid='trans-xyz', seller_uuid='seller-xyz',
@@ -350,7 +351,7 @@ class TestConfigureRefTrans(TestCase):
                   prices=[{'price': 1, 'currency': 'EUR'}],
                   icon_url='/todo/icons', user_uuid='user-xyz',
                   app_size=1024 * 5, provider='reference'):
-        return self.api.configure_product_for_billing(
+        return self.api.start_transaction(
             trans_uuid,
             seller_uuid,
             product_uuid,
@@ -406,17 +407,28 @@ class TestConfigureRefTrans(TestCase):
                 api.side_effect = conf['side_effect']
             else:
                 api.return_value = conf.get('return', {
+                    'uuid': 1,
                     'resource_pk': 1,
                     'resource_uri': '/something/1',
                 })
 
     def test_with_existing_prod(self):
         seller_uuid = 'seller-xyz'
+        product_uuid = 'app-xyz'
+
         self.set_mocks({
             'generic.seller': {
                 'return': {
+                    'uuid': seller_uuid,
                     'resource_pk': seller_uuid,
                     'resource_uri': '/seller/' + seller_uuid,
+                }
+            },
+            'generic.product': {
+                'return': {
+                    'resource_uri': '/product/' + product_uuid,
+                    'uuid': product_uuid,
+                    'external_id': product_uuid,
                 }
             },
             'provider.reference.transactions': {
@@ -426,8 +438,6 @@ class TestConfigureRefTrans(TestCase):
                 }
             },
         })
-
-        product_uuid = 'app-xyz'
 
         result = self.configure(seller_uuid=seller_uuid,
                                 product_uuid=product_uuid)
@@ -448,9 +458,13 @@ class TestConfigureRefTrans(TestCase):
         self.set_mocks({
             'generic.seller': {
                 'return': {
+                    'uuid': seller_uuid,
                     'resource_pk': seller_uuid,
                     'resource_uri': '/seller/' + seller_uuid,
                 }
+            },
+            'generic.product': {
+                'side_effect': ObjectDoesNotExist,
             },
             'provider.reference.transactions': {
                 'method': 'post',
@@ -485,12 +499,19 @@ class TestConfigureRefTrans(TestCase):
         eq_(kw['product_id'], new_product_id)
         eq_(kw['product_image_url'], '/todo/icons')
         assert kw['success_url'].endswith('/provider/reference/success'), (
-                'Unexpected: {0}'.format(kw['success_url']))
+            'Unexpected: {0}'.format(kw['success_url']))
         assert kw['error_url'].endswith('/provider/reference/error'), (
-                'Unexpected: {0}'.format(kw['error_url']))
+            'Unexpected: {0}'.format(kw['error_url']))
 
     def test_callback_validation_success(self):
         self.set_mocks({
+            'generic.product': {
+                'return': {
+                    'resource_uri': '/product/1',
+                    'uuid': '1',
+                    'external_id': '1',
+                }
+            },
             'provider.reference.notices': {
                 'method': 'post',
                 'return': {
@@ -513,6 +534,13 @@ class TestConfigureRefTrans(TestCase):
 
     def test_callback_validation_failure(self):
         self.set_mocks({
+            'generic.product': {
+                'return': {
+                    'resource_uri': '/product/1',
+                    'uuid': '1',
+                    'external_id': '1',
+                }
+            },
             'provider.reference.notices': {
                 'method': 'post',
                 'return': {

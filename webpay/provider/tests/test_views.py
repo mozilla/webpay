@@ -9,7 +9,6 @@ from webpay.base import dev_messages as msg
 from webpay.base.tests import BasicSessionCase
 
 
-@mock.patch.object(settings, 'UNIVERSAL_PROVIDER', True)
 @mock.patch.object(settings, 'PAYMENT_PROVIDER', 'reference')
 class TestProviderSuccess(BasicSessionCase):
 
@@ -80,7 +79,7 @@ class TestProviderSuccess(BasicSessionCase):
         res = self.error()
         eq_(res.status_code, 400)
         assert not self.notify.delay.called, (
-                'did not expect a notification on error')
+            'did not expect a notification on error')
         self.assertTemplateUsed(res, 'error.html')
 
     def test_invalid_notice_on_success(self):
