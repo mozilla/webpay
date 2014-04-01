@@ -1,4 +1,8 @@
 # This script should be called from within Jenkins
+if [ -f /opt/rh/python27/enable ]; then
+  source /opt/rh/python27/enable
+fi
+PYTHON=python2.7
 
 cd $WORKSPACE
 VENV=$WORKSPACE/venv
@@ -12,7 +16,7 @@ find . -name '*.pyc' | xargs rm
 
 if [ ! -d "$VENV/bin" ]; then
   echo "No virtualenv found.  Making one..."
-  virtualenv $VENV --system-site-packages
+  virtualenv $VENV --system-site-packages --python=$PYTHON
 fi
 
 source $VENV/bin/activate
@@ -51,7 +55,7 @@ echo "Starting tests..." `date`
 export FORCE_DB='yes sir'
 
 # Run Django Tests
-python manage.py test -v 2 --noinput --logging-clear-handlers --with-xunit
+$PYTHON manage.py test -v 2 --noinput --logging-clear-handlers --with-xunit
 rv_pytests=$?
 
 # Lint PO translation files
