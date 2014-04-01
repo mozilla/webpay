@@ -4,6 +4,7 @@
 if [ -f /opt/rh/python27/enable ]; then
   source /opt/rh/python27/enable
 fi
+PYTHON=python2.7
 
 set -e
 
@@ -20,7 +21,7 @@ find . -name '*.pyc' -exec rm {} \;
 
 if [ ! -d "$VENV/bin" ]; then
   echo "No virtualenv found.  Making one..."
-  virtualenv $VENV --no-site-packages --python=python
+  virtualenv $VENV --no-site-packages --python=$PYTHON
   source $VENV/bin/activate
   pip install --upgrade pip
 fi
@@ -66,6 +67,6 @@ echo "CREATE DATABASE IF NOT EXISTS ${JOB_NAME}"|mysql -u $DB_USER -h $DB_HOST
 
 echo "Starting tests..."
 export FORCE_DB=1
-python manage.py test --noinput --with-xunit --with-blockage
+$PYTHON manage.py test --noinput --with-xunit --with-blockage
 
 echo "FIN"
