@@ -3,9 +3,10 @@ from django.conf.urls.defaults import patterns, url
 import views
 
 
-urlpatterns = patterns('',
-    url(r'^(?P<provider>[^/]+)/success$', views.success,
+urlpatterns = patterns(
+    '',
+    url(r'^(?P<provider_name>[^/]+)/success$', views.success,
         name='provider.success'),
-    url(r'^(?P<provider>[^/]+)/error$', views.error,
+    url(r'^(?P<provider_name>[^/]+)/error$', views.error,
         name='provider.error'),
 )

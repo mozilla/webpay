@@ -28,7 +28,7 @@ from webpay.pin.utils import check_pin_status
 
 from lib.marketplace.api import client as marketplace, UnknownPricePoint
 from lib.solitude import constants
-from lib.solitude.api import client as solitude
+from lib.solitude.api import client as solitude, ProviderHelper
 from lib.solitude.exceptions import ResourceModified
 
 from . import tasks
@@ -319,7 +319,10 @@ def _callback_url(request, is_success):
     status = is_success and 'success' or 'error'
     signed_notice = request.POST['signed_notice']
     statsd.incr('purchase.payment_{0}_callback.received'.format(status))
-    if solitude.is_callback_token_valid(signed_notice):
+
+    provider = ProviderHelper.from_request(request)
+
+    if provider.is_callback_token_valid(signed_notice):
         statsd.incr('purchase.payment_{0}_callback.ok'.format(status))
         log.info('Callback {0} token was valid.'.format(status))
         querystring = http.QueryDict(signed_notice)

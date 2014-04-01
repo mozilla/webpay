@@ -12,7 +12,7 @@ from celeryutils import task
 import jwt
 from lib.marketplace.api import client as mkt_client, UnknownPricePoint
 from lib.solitude import constants
-from lib.solitude.api import client
+from lib.solitude.api import client, ProviderHelper
 from multidb.pinning import use_master
 
 from webpay.base.utils import gmtime
@@ -70,9 +70,13 @@ def configure_transaction(request, trans=None):
 
     log.info('configuring payment in background for trans {0} (status={1})'
              .format(request.session['trans_id'], trans.get('trans_id')))
+
+    provider = ProviderHelper.from_request(request)
+
     start_pay.delay(request.session['trans_id'],
                     request.session['notes'],
-                    request.session['uuid'])
+                    request.session['uuid'],
+                    provider.name)
 
     # We passed notes to start_pay (which saves it to the transaction
     # object), so delete it from the session to save cookie space.
@@ -155,16 +159,33 @@ def is_marketplace(issuer_key):
 @task
 @use_master
 @transaction.commit_on_success
-def start_pay(transaction_uuid, notes, user_uuid, **kw):
+def start_pay(transaction_uuid, notes, user_uuid, provider_name, **kw):
     """
-    Work with Solitude to begin a Bango payment.
+    Work with Solitude to begin a payment.
 
     This puts the transaction in a state where it's
-    ready to be fulfilled by Bango.
+    ready to be fulfilled by the payment provider.
+
+    Arguments:
+
+    **transaction_uuid**
+        Unique identifier for a new transaction.
+
+    **notes**
+        Dict of notes about this transaction.
+
+    **user_uuid**
+        Unique identifier for the buyer user.
+
+    **provider_name**
+        One of a predefined strings to activate a payment provider.
+        Example: 'bango' or 'reference'
+
     """
     key = notes['issuer_key']
     pay = notes['pay_request']
     product_data = urlparse.parse_qs(pay['request'].get('productData', ''))
+    provider = ProviderHelper(provider_name)
     try:
         seller_uuid = get_seller_uuid(key, product_data)
         try:
@@ -184,7 +205,7 @@ def start_pay(transaction_uuid, notes, user_uuid, **kw):
             icon_url = None
         log.info('icon URL for %s: %s' % (transaction_uuid, icon_url))
 
-        bill_id, seller_id = client.start_transaction(
+        bill_id, seller_id = provider.start_transaction(
             transaction_uuid,
             seller_uuid,
             pay['request']['id'],
