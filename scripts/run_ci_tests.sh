@@ -63,6 +63,9 @@ export FORCE_DB='yes sir'
 $PYTHON manage.py test -v 2 --noinput --logging-clear-handlers --with-xunit
 rv_pytests=$?
 
+# Remove any previously compressed assets.
+find media/ -name '*-all.*' -delete
+
 # Compress assets.
 $PYTHON manage.py compress_assets
 rv_compress=$?
