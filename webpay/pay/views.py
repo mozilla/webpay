@@ -1,3 +1,4 @@
+import json
 import re
 import time
 
@@ -32,7 +33,7 @@ from lib.solitude.api import client as solitude
 from lib.solitude.exceptions import ResourceModified
 
 from . import tasks
-from .forms import VerifyForm
+from .forms import VerifyForm, NetCodeForm
 from .utils import clear_messages, trans_id, verify_urls
 
 log = getLogger('w.pay')
@@ -107,18 +108,53 @@ def process_pay_req(request, data=None):
     # This is an ephemeral session value, do not rely on it.
     # It gets saved to the solitude transaction so you can access it there.
     # Otherwise it is used for simulations and fake payments.
-    request.session['notes'] = {'pay_request': pay_req,
-                                'issuer_key': form.key}
+    notes = request.session.get('notes', {})
+    notes['pay_request'] = pay_req
+    notes['issuer_key'] = form.key
+    request.session['notes'] = notes
     tx = trans_id()
     log.info('Generated new transaction ID: {tx}'.format(tx=tx))
     request.session['trans_id'] = tx
+
+
+@require_POST
+@json_view
+def configure_transaction(request):
+    """Configures the transaction to save time later.
+
+    This is called from the client so that it can provide
+    MCC/MNC at the same time.
+
+    * When configure_transaction fails this will return a 400 TRANS_CONFIG_FAILED
+
+    """
+
+    form = NetCodeForm(request.POST)
+    sess = request.session
+
+    if form.is_valid():
+        mcc = form.cleaned_data['mcc']
+        mnc = form.cleaned_data['mnc']
+        notes = sess.get('notes', {})
+        notes['network'] = {'mnc': mnc, 'mcc': mcc}
+        sess['notes'] = notes
+        log.info('Added mcc/mnc to session: '
+                 '{network}'.format(network=notes['network']))
+
+    log.info('configuring transaction {0} from client'
+             .format(sess.get('trans_id')))
+
+    if not tasks.configure_transaction(request):
+        log.error('Configuring transaction failed.')
+        return system_error(request, code=msg.TRANS_CONFIG_FAILED)
+    else:
+        return {'status': 'ok'}
 
 
 @anonymous_csrf_exempt
 @require_GET
 def lobby(request):
     sess = request.session
-    trans = None
     have_jwt = bool(request.GET.get('req'))
 
     log.info('starting from JWT? {have_jwt}'.format(have_jwt=have_jwt))
@@ -132,31 +168,11 @@ def lobby(request):
         # This won't get you very far but it lets you create/enter PINs
         # and stops a traceback after that.
         sess['trans_id'] = trans_id()
-    elif not sess.get('is_simulation', False):
-        try:
-            trans = solitude.get_transaction(sess.get('trans_id'))
-        except (ObjectDoesNotExist, HttpClientError), exc:
-            if sess.get('trans_id'):
-                log.info('Attempted to restart non-existent transaction '
-                         '{trans}; exc={exc}'
-                         .format(trans=sess.get('trans_id'), exc=exc))
-            return system_error(request, code=msg.BAD_REQUEST)
-
-        log.info('Re-used existing transaction ID: {tx}'
-                 .format(tx=sess.get('trans_id')))
 
     pin_form = VerifyPinForm()
 
     if sess.get('uuid'):
         auth_utils.update_session(request, sess.get('uuid'), False)
-
-        # Before we continue with the buy flow, let's save some
-        # time and get the transaction configured via Bango in the
-        # background.
-        log.info('configuring transaction {0} from lobby'
-                 .format(sess.get('trans_id')))
-        if not tasks.configure_transaction(request, trans=trans):
-            log.error('Configuring transaction failed.')
 
         redirect_url = check_pin_status(request)
         if redirect_url is not None:

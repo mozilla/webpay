@@ -14,7 +14,7 @@ def json_view(f=None, status_code=200):
             else:
                 return http.HttpResponse(
                     json.dumps(response),
-                    content_type='application/json',
+                    content_type='application/json; charset=utf-8',
                     status=status_code)
         return wrapper
     if f:

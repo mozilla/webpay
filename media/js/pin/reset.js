@@ -25,6 +25,7 @@ require(['cli', 'id', 'bango', 'settings'], function(cli, id, bango, settings) {
                     success: function _resetLoginSuccess(data, textStatus, jqXHR) {
                         console.log('[reset] login success');
                         bango.prepareAll(data.user_hash).done(function _forceAuthReady() {
+                            cli.startTransaction();
                             cli.trackWebpayEvent({'action': 'reset force auth',
                                                   'label': 'Login Success'});
                             _onSuccess.apply(this);

@@ -24,6 +24,7 @@ define('cli', ['settings', 'longtext', 'tracking'], function(settings, checkLong
     var $fullErrorConfirm = $fullError.find('.confirm');
     var $fullErrorFooter = $fullError.find('footer');
     var gaTrackingCategory = settings.ga_tracking_category;
+    var netCodeRX = /^[0-9]{2,3}$/;
 
     var cli = {
         win: $win,
@@ -45,6 +46,75 @@ define('cli', ['settings', 'longtext', 'tracking'], function(settings, checkLong
             if ($progress.length) {
                 $progress.hide();
             }
+        },
+        getNetworkCodes: function() {
+            // Returns mcc/mnc if available.
+            var mpp = cli.mozPaymentProvider;
+            var networkCodes = {};
+            var mcc;
+            var mnc;
+
+            // Pre 1.4
+            if (mpp.mcc && mpp.mnc) {
+                mcc = mpp.mcc[0];
+                console.log('[cli] mcc: ' + mpp.mcc);
+                mnc = mpp.mnc[0];
+                console.log('[cli] mnc: ' + mpp.mnc);
+            // 1.4+ multi-sim support
+            } else if (mpp.iccInfo) {
+                var values = _.values(mpp.iccInfo);
+                for (var i=0, j=values.length; i<j; i++) {
+                    if (values[i].dataPrimary === true) {
+                        mcc = values[i].mcc;
+                        mnc = values[i].mnc;
+                    }
+                }
+            } else {
+                console.log('[cli] mnc/mcc not available');
+            }
+
+            if (netCodeRX.test(mcc) && netCodeRX.test(mnc)) {
+                networkCodes.mcc = mcc;
+                networkCodes.mnc = mnc;
+            }
+
+            return networkCodes;
+        },
+        startTransaction: function startTransaction() {
+            // Here we make a request to kick off configuration of the payment
+            // transaction. Failures are logged but otherwise do not stop the flow.
+            // At the point of requesting the tx configuration we also send the mnc/mcc
+            // If we have them. These should be stored in the session irrespective
+            // of whether the TX part shows a failure.
+            var networkCodes = this.getNetworkCodes();
+            console.log('[pay] networkCodes: ' + JSON.stringify(networkCodes));
+            var requestData = {
+                url: this.bodyData.configureTransaction,
+                type: 'POST',
+                data: networkCodes,
+                headers: {
+                    'Accept': "application/json",
+                    'X-CSRFToken': $('meta[name=csrf]').attr('content')
+                }
+            };
+            var req = $.ajax(requestData);
+            req.done(_.bind(function(data, textStatus, $xhr) {
+                console.log('[pay] Transaction config started. Status returned: ' + $xhr.status);
+                this.trackWebpayEvent({'action': 'payment',
+                                       'label': 'Transaction Config Started'});
+            }, this)).fail(_.bind(function($xhr) {
+                console.log('[pay] Transaction config failed. Status returned: ' + $xhr.status);
+                this.trackWebpayEvent({'action': 'payment',
+                                       'label': 'Transaction Config Failed'});
+                if ($xhr.responseText) {
+                    try {
+                        var error = JSON.parse($xhr.responseText);
+                        console.log('[pay] Error message: ' + error.error_code);
+                    } catch (e) {
+                        console.log('Unable to parse JSON');
+                    }
+                }
+            }, this));
         },
         focusOnPin: function(config) {
             // Ensure the trusted-ui is currently in focus
