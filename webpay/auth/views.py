@@ -146,7 +146,8 @@ def store_mkt_permissions(request, email, assertion, audience):
     permissions = {}
     try:
         result = (mkt_client.api.account.login()
-                  .post(dict(assertion=assertion, audience=audience)))
+                  .post(dict(assertion=assertion, audience=audience,
+                             is_mobile=True)))
         # e.g. {u'admin': False, u'localizer': False, u'lookup': False,
         #       u'webpay': False, u'reviewer': False, u'developer': False}
         permissions = result['permissions']
