@@ -7,13 +7,18 @@ from curling.lib import HttpServerError
 from nose.tools import eq_, raises
 
 from lib.marketplace.api import client, UnknownPricePoint
+from lib.solitude.constants import PROVIDER_BOKU
 
 
 sample_price = {
     u'name': u'Tier 0',
     u'pricePoint': '0',
-    u'prices': [{u'amount': u'1.00', u'currency': u'USD'},
-                {u'amount': u'3.00', u'currency': u'JPY'}],
+    u'prices': [
+        {u'amount': u'1.00', u'currency': u'USD', 'region': 2},
+        {u'amount': u'3.00', u'currency': u'JPY', 'region': 1},
+        {u'amount': u'3.00', u'currency': u'MXN', 'region': 12,
+         'provider': PROVIDER_BOKU}
+    ],
     u'resource_uri': u'/api/v1/webpay/prices/1/'
 }
 
@@ -25,12 +30,21 @@ class SolitudeAPITest(TestCase):
         super(SolitudeAPITest, self)._pre_setup()
         cache.clear()
 
-    def test_get_prices(self, slumber):
+    def mock(self, slumber):
         sample = mock.Mock()
         sample.get_object.return_value = sample_price
         slumber.webpay.prices.return_value = sample
+
+    def test_get_prices(self, slumber):
+        self.mock(slumber)
         prices = client.get_price(1)
         eq_(prices['name'], sample_price['name'])
+
+    def test_get_prices_country(self, slumber):
+        self.mock(slumber)
+        # 334 is the MCC for Mexico.
+        prices = client.get_price_country(1, PROVIDER_BOKU, 334)
+        eq_(prices, (u'3.00', 'MXN'))
 
     @raises(UnknownPricePoint)
     def test_invalid_price_point(self, slumber):

@@ -1,3 +1,5 @@
+from webpay.base.utils import invert
+
 # These come from solitude. Go there for detailed comments.
 SOURCE_BANGO = 1
 
@@ -31,3 +33,5 @@ PROVIDERS = {
     'reference': PROVIDER_REFERENCE,
     'boku': PROVIDER_BOKU
 }
+
+PROVIDERS_INVERTED = dict(invert(PROVIDERS))

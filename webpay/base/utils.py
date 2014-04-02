@@ -15,6 +15,13 @@ from webpay.base.logger import getLogger
 log = getLogger('w.cef')
 
 
+def invert(data):
+    """
+    Helper to turn a dict of constants into a choices tuple.
+    """
+    return [(v, k) for k, v in data.items()]
+
+
 def gmtime():
     return calendar.timegm(time.gmtime())
 
