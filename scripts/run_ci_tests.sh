@@ -14,6 +14,11 @@ echo "Setup..." `date`
 # Make sure there's no old pyc files around.
 find . -name '*.pyc' | xargs rm
 
+# Install node modules.
+npm install
+# Get some binaries on our path.
+export PATH="./node_modules/.bin:${PATH}"
+
 if [ ! -d "$VENV/bin" ]; then
   echo "No virtualenv found.  Making one..."
   virtualenv $VENV --system-site-packages --python=$PYTHON
@@ -58,12 +63,16 @@ export FORCE_DB='yes sir'
 $PYTHON manage.py test -v 2 --noinput --logging-clear-handlers --with-xunit
 rv_pytests=$?
 
+# Compress assets.
+$PYTHON manage.py compress_assets
+rv_compress=$?
+
 # Lint PO translation files
 dennis-cmd lint locale/
 rv_dennis=$?
 
 # Collect all of the exit statuses
-rv_all=`expr $rv_pytests + $rv_dennis`
+rv_all=`expr $rv_pytests + $rv_dennis + $rv_compress`
 
 echo 'shazam!'
 exit $rv_all
