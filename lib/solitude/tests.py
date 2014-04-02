@@ -1,6 +1,5 @@
 import json
 
-from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 
@@ -8,7 +7,7 @@ import mock
 from nose.tools import eq_
 from slumber.exceptions import HttpClientError
 
-from lib.solitude.api import client, SellerNotConfigured, SolitudeAPI
+from lib.solitude.api import client, ProviderHelper, SellerNotConfigured
 from lib.solitude.errors import ERROR_STRINGS
 from lib.solitude.exceptions import ResourceModified, ResourceNotModified
 
@@ -280,7 +279,6 @@ class SolitudeAPITest(TestCase):
             client.set_needs_pin_reset(self.uuid, False, etag=wrong_etag)
 
 
-@mock.patch.object(settings, 'PAYMENT_PROVIDER', 'bango')
 class CreateBangoTest(TestCase):
     uuid = 'some:pin'
     seller = {'bango': {'seller': 's', 'resource_uri': 'r',
@@ -288,61 +286,65 @@ class CreateBangoTest(TestCase):
               'resource_uri': '/seller/1',
               'resource_pk': 'seller_pk'}
 
+    def setUp(self):
+        super(CreateBangoTest, self).setUp()
+        self.slumber = mock.MagicMock()
+        self.provider = ProviderHelper('bango', slumber=self.slumber)
+
     def test_create_without_bango_seller(self):
         with self.assertRaises(ValueError):
-            client.create_product('ext:id', 'product name',
-                                  {'bango': None, 'resource_pk': '1',
-                                   'resource_uri': '/seller/1'},
-                                  generic_product={'resource_pk': '2'})
+            self.provider.create_product(
+                'ext:id', 'product name',
+                {'bango': None, 'resource_pk': '1',
+                 'resource_uri': '/seller/1'},
+                generic_product={'resource_pk': '2'})
 
-    @mock.patch('lib.solitude.api.client.slumber')
-    def test_create_bango_product(self, slumber):
-        # Temporary mocking. Remove when this is mocked properly.
+    def test_create_bango_product(self):
+        slumber = self.slumber
         slumber.bango.generic.post.return_value = {'product': 'some:uri'}
         slumber.bango.product.post.return_value = {'resource_uri': 'some:uri',
                                                    'bango_id': '5678'}
-        assert client.create_product('ext:id', 'product:name', self.seller)
+        assert self.provider.create_product('ext:id', 'product:name',
+                                            self.seller)
         assert slumber.generic.product.post.called
         kw = slumber.generic.product.post.call_args[0][0]
         eq_(kw['external_id'], 'ext:id')
         eq_(slumber.bango.rating.post.call_count, 2)
         assert slumber.bango.premium.post.called
 
-    @mock.patch('lib.solitude.api.client.slumber')
-    def test_no_seller(self, slumber):
+    def test_no_seller(self):
+        slumber = self.slumber
         slumber.generic.seller.get_object_or_404.side_effect = (
             ObjectDoesNotExist)
         with self.assertRaises(SellerNotConfigured):
-            client.start_transaction(*range(0, 8))
+            self.provider.start_transaction(*range(0, 8))
 
-    @mock.patch('lib.solitude.api.client.slumber')
-    def test_no_bango_product(self, slumber):
+    def test_no_bango_product(self):
+        slumber = self.slumber
         slumber.generic.seller.get_object_or_404.return_value = self.seller
         slumber.bango.billing.post.return_value = {
             'billingConfigurationId': 'bill_id'}
         slumber.bango.product.get_object_or_404.side_effect = (
             ObjectDoesNotExist)
-        eq_(client.start_transaction(*range(0, 8)),
+        eq_(self.provider.start_transaction(*range(0, 8)),
             ('bill_id', 'seller_pk'))
 
-    @mock.patch('lib.solitude.api.client.slumber')
-    def test_with_bango_product(self, slumber):
+    def test_with_bango_product(self):
+        slumber = self.slumber
         slumber.generic.seller.get_object_or_404.return_value = self.seller
         slumber.bango.billing.post.return_value = {
             'billingConfigurationId': 'bill_id'}
         slumber.bango.product.get_object.return_value = {
             'resource_uri': 'foo'}
-        eq_(client.start_transaction(*range(0, 8)),
+        eq_(self.provider.start_transaction(*range(0, 8)),
             ('bill_id', 'seller_pk'))
 
 
-@mock.patch.object(settings, 'PAYMENT_PROVIDER', 'reference')
 class TestConfigureRefTrans(TestCase):
 
     def setUp(self):
-        self.api = SolitudeAPI(settings.SOLITUDE_URL, settings.SOLITUDE_OAUTH)
-        self.api.slumber = mock.MagicMock()
-        self.slumber = self.api.slumber
+        self.slumber = mock.MagicMock()
+        self.provider = ProviderHelper('reference', slumber=self.slumber)
 
     def configure(self, trans_uuid='trans-xyz', seller_uuid='seller-xyz',
                   product_uuid='product-xyz', product_name='Shiny App',
@@ -350,8 +352,8 @@ class TestConfigureRefTrans(TestCase):
                   error_redirect='/todo/chargeback',
                   prices=[{'price': 1, 'currency': 'EUR'}],
                   icon_url='/todo/icons', user_uuid='user-xyz',
-                  app_size=1024 * 5, provider='reference'):
-        return self.api.start_transaction(
+                  app_size=1024 * 5):
+        return self.provider.start_transaction(
             trans_uuid,
             seller_uuid,
             product_uuid,
@@ -360,7 +362,6 @@ class TestConfigureRefTrans(TestCase):
             icon_url,
             user_uuid,
             app_size,
-            provider=provider,
         )
 
     def set_mocks(self, returns={},
@@ -527,7 +528,7 @@ class TestConfigureRefTrans(TestCase):
         })
 
         self.configure(seller_uuid='seller-xyz', product_uuid='app-xyz')
-        is_valid = self.api.is_callback_token_valid({'foo': 'bar'})
+        is_valid = self.provider.is_callback_token_valid({'foo': 'bar'})
         eq_(is_valid, True)
         eq_(self.slumber.provider.reference.notices.post.call_args[0][0],
             {'qs': {'foo': 'bar'}})
@@ -557,7 +558,7 @@ class TestConfigureRefTrans(TestCase):
         })
 
         self.configure(seller_uuid='seller-xyz', product_uuid='app-xyz')
-        is_valid = self.api.is_callback_token_valid({'foo': 'bar'})
+        is_valid = self.provider.is_callback_token_valid({'foo': 'bar'})
         eq_(is_valid, False)
 
 

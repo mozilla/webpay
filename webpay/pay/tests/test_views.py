@@ -514,7 +514,9 @@ class TestPostback(Base):
         super(TestPostback, self).setUp()
         self.callback_success = reverse('pay.callback_success_url')
         self.callback_error = reverse('pay.callback_error_url')
-        p = mock.patch('lib.solitude.api.client.is_callback_token_valid')
+
+        path = 'lib.solitude.api.ProviderHelper.is_callback_token_valid'
+        p = mock.patch(path)
         self.tok_check = p.start()
         self.addCleanup(p.stop)
 

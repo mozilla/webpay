@@ -47,13 +47,13 @@ class TestNotifyApp(NotifyTest):
     @mock.patch('lib.solitude.api.client.get_transaction')
     def do_chargeback(self, reason, get_transaction):
         get_transaction.return_value = {
-                'amount': 1,
-                'currency': 'USD',
-                'status': constants.STATUS_COMPLETED,
-                'notes': {'pay_request': self.payload(),
-                          'issuer_key': 'k'},
-                'type': constants.TYPE_REFUND,
-                'uuid': self.trans_uuid
+            'amount': 1,
+            'currency': 'USD',
+            'status': constants.STATUS_COMPLETED,
+            'notes': {'pay_request': self.payload(),
+                      'issuer_key': 'k'},
+            'type': constants.TYPE_REFUND,
+            'uuid': self.trans_uuid
         }
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             tasks.chargeback_notify(self.trans_uuid, reason=reason)
@@ -61,13 +61,13 @@ class TestNotifyApp(NotifyTest):
     @mock.patch('lib.solitude.api.client.get_transaction')
     def notify(self, get_transaction):
         get_transaction.return_value = {
-                'amount': 1,
-                'currency': 'USD',
-                'status': constants.STATUS_COMPLETED,
-                'notes': {'pay_request': self.payload(),
-                          'issuer_key': 'k'},
-                'type': constants.TYPE_PAYMENT,
-                'uuid': self.trans_uuid,
+            'amount': 1,
+            'currency': 'USD',
+            'status': constants.STATUS_COMPLETED,
+            'notes': {'pay_request': self.payload(),
+                      'issuer_key': 'k'},
+            'type': constants.TYPE_PAYMENT,
+            'uuid': self.trans_uuid,
         }
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             tasks.payment_notify('some:uuid')
@@ -235,9 +235,9 @@ class TestNotifyApp(NotifyTest):
             eq_(data['request']['chargebackURL'], 'http://foo.url/charge')
             eq_(data['response']['transactionID'], 'some:uuid')
             assert data['iat'] <= gmtime() + 60, (
-                                'Expected iat to be about now')
+                'Expected iat to be about now')
             assert data['exp'] > gmtime() + 3500, (
-                                'Expected exp to be about an hour from now')
+                'Expected exp to be about an hour from now')
             return True
 
         (fake_req.expects('post').with_args(arg.any(),
@@ -254,8 +254,8 @@ class TestSimulatedNotifications(NotifyTest):
 
     @mock.patch.object(client, 'get_price')
     def notify(self, payload, get_price, prices=None):
-        get_price.return_value = (prices or
-            {'prices': [{'price': '0.99', 'currency': 'USD'}]})
+        get_price.return_value = (
+            prices or {'prices': [{'price': '0.99', 'currency': 'USD'}]})
         tasks.simulate_notify('issuer-key', payload,
                               trans_uuid=self.trans_uuid)
 
@@ -371,32 +371,44 @@ class BaseStartPay(test_utils.TestCase):
         self.issue = 'some-seller-uuid'
         self.user_uuid = 'some-user-uuid'
         self.transaction_uuid = 'webpay:some-id'
-        self.notes = {'issuer_key': self.issue,
-                      'pay_request': {
-                            'iss': 'some-seller-key',
-                            'request': {'pricePoint': 1,
-                                        'id': 'generated-product-uuid',
-                                        'icons': {'64': 'http://app/i.png'},
-                                        'name': 'Virtual Sword',
-                                        'description': 'A fancy sword'}}}
+        self.notes = {
+            'issuer_key': self.issue,
+            'pay_request': {
+                'iss': 'some-seller-key',
+                'request': {'pricePoint': 1,
+                            'id': 'generated-product-uuid',
+                            'icons': {'64': 'http://app/i.png'},
+                            'name': 'Virtual Sword',
+                            'description': 'A fancy sword'}}}
         self.prices = {'prices': [{'price': 1, 'currency': 'EUR'}]}
 
 
 class TestStartPay(BaseStartPay):
 
-    @mock.patch('lib.solitude.api.client')
-    @mock.patch('lib.marketplace.api.client.api')
-    def start(self, marketplace, solitude):
+    def setUp(self):
+        super(TestStartPay, self).setUp()
+
+        p = mock.patch('lib.solitude.api.client.slumber')
+        self.solitude = p.start()
+        self.addCleanup(p.stop)
+
+        p = mock.patch('lib.marketplace.api.client.api')
+        self.mkt = p.start()
+        self.addCleanup(p.stop)
+
+    def start(self):
         prices = mock.Mock()
         prices.get_object.return_value = self.prices
-        marketplace.webpay.prices.return_value = prices
-        solitude.get_transaction.return_value = {
+        self.mkt.webpay.prices.return_value = prices
+        self.solitude.get_transaction.return_value = {
             'status': constants.STATUS_CANCELLED,
             'notes': self.notes,
             'type': constants.TYPE_PAYMENT,
             'uuid': self.transaction_uuid
         }
-        tasks.start_pay(self.transaction_uuid, self.notes, self.user_uuid)
+        provider = 'bango'
+        tasks.start_pay(self.transaction_uuid, self.notes, self.user_uuid,
+                        provider)
 
     def set_billing_id(self, slumber, num):
         slumber.bango.billing.post.return_value = {
@@ -408,87 +420,74 @@ class TestStartPay(BaseStartPay):
         }
 
     @raises(api.SellerNotConfigured)
-    @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.api')
-    def test_no_seller(self, marketplace, solitude):
+    def test_no_seller(self):
         raise SkipTest
-        marketplace.webpay.prices.return_value = self.prices
-        solitude.generic.seller.get.return_value = {'meta': {'total_count': 0}}
+        self.mkt.webpay.prices.return_value = self.prices
+        self.solitude.generic.seller.get.return_value = {
+            'meta': {'total_count': 0}
+        }
         self.start()
         #eq_(self.get_trans().status, TRANS_STATE_FAILED)
 
-    @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.api')
-    def test_transaction_called(self, marketplace, solitude):
-        solitude.generic.transaction.get_object.return_value = {
+    def test_transaction_called(self):
+        self.solitude.generic.transaction.get_object.return_value = {
             'status': 'not-pending',
             'resource_pk': 5}
         self.start()
-        solitude.generic.transaction.assert_called_with(5)
+        self.solitude.generic.transaction.assert_called_with(5)
 
-    @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.api')
-    def test_price_used(self, marketplace, solitude):
+    def test_price_used(self):
         prices = mock.Mock()
         prices.get.return_value = self.prices
-        marketplace.webpay.prices.return_value = prices
-        self.set_billing_id(solitude, 123)
+        self.mkt.webpay.prices.return_value = prices
+        self.set_billing_id(self.solitude, 123)
         self.start()
-        eq_(solitude.bango.billing.post.call_args[0][0]['prices'],
+        eq_(self.solitude.bango.billing.post.call_args[0][0]['prices'],
             self.prices['prices'])
 
-    @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.get_icon_url')
-    @mock.patch('lib.marketplace.api.client.api')
-    def test_icon_url_sent(self, mkt, get_icon_url, solitude):
+    def test_icon_url_sent(self, get_icon_url):
         url = 'http://mkt-cdn/media/icon.png'
         get_icon_url.return_value = url
         self.start()
-        eq_(solitude.bango.billing.post.call_args[0][0]['icon_url'], url)
+        eq_(self.solitude.bango.billing.post.call_args[0][0]['icon_url'], url)
 
-    @mock.patch('lib.solitude.api.client.slumber')
-    def test_marketplace_other(self, solitude):
+    def test_marketplace_other(self):
         self.start()
-        eq_(solitude.bango.billing.post.call_args[0][0]['source'], 'other')
+        eq_(self.solitude.bango.billing.post.call_args[0][0]['source'],
+            'other')
 
-    @mock.patch('lib.solitude.api.client.slumber')
-    def test_marketplace_found(self, solitude):
+    def test_marketplace_found(self):
         self.notes['pay_request']['request']['productData'] = (
-            urlencode({'seller_uuid':self.notes['issuer_key']}))
+            urlencode({'seller_uuid': self.notes['issuer_key']}))
         self.notes['issuer_key'] = settings.KEY
         self.start()
-        eq_(solitude.bango.billing.post.call_args[0][0]['source'],
+        eq_(self.solitude.bango.billing.post.call_args[0][0]['source'],
             'marketplace')
 
-    @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.get_icon_url')
-    @mock.patch('lib.marketplace.api.client.api')
-    def test_icon_url_disabled(self, mkt, get_icon_url, solitude):
+    def test_icon_url_disabled(self, get_icon_url):
         with self.settings(USE_PRODUCT_ICONS=False):
             self.start()
-        eq_(solitude.bango.billing.post.call_args[0][0]['icon_url'], None)
+        eq_(self.solitude.bango.billing.post.call_args[0][0]['icon_url'],
+            None)
         assert not get_icon_url.called
 
-    @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.get_icon_url')
-    @mock.patch('lib.marketplace.api.client.api')
-    def test_catch_icon_exceptions(self, mkt, get_icon_url, solitude):
+    def test_catch_icon_exceptions(self, get_icon_url):
         get_icon_url.side_effect = ValueError('just some exception')
         self.start()
 
-    @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.tasks.mkt_client.get_price')
-    def test_price_fails(self, get_price, solitude):
+    def test_price_fails(self, get_price):
         get_price.side_effect = UnknownPricePoint
         with self.assertRaises(UnknownPricePoint):
             self.start()
 
-    @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.api')
     @raises(RuntimeError)
-    def test_exception_fails_transaction(self, marketplace, slumber):
+    def test_exception_fails_transaction(self):
         raise SkipTest
-        slumber.generic.seller.get.side_effect = RuntimeError
+        self.solitude.slumber.generic.seller.get.side_effect = RuntimeError
         self.start()
         #trans = self.get_trans()
         # Currently solitude doesn't have the concept of a failed transaction.
@@ -496,11 +495,9 @@ class TestStartPay(BaseStartPay):
         #eq_(trans.status, TRANS_STATE_FAILED)
 
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
-    @mock.patch('lib.solitude.api.client.slumber')
-    @mock.patch('lib.marketplace.api.client.api')
-    def test_marketplace_seller_switch(self, marketplace, solitude):
-        marketplace.webpay.prices.get.return_value = self.prices
-        self.set_billing_id(solitude, 123)
+    def test_marketplace_seller_switch(self):
+        self.mkt.webpay.prices.get.return_value = self.prices
+        self.set_billing_id(self.solitude, 123)
 
         # Simulate how the Marketplace would add
         # a custom seller_uuid to the product data in the JWT.
@@ -511,12 +508,11 @@ class TestStartPay(BaseStartPay):
         self.start()
 
         # Check that the seller_uuid was switched to that of the app seller.
-        solitude.generic.seller.get_object_or_404.assert_called_with(
+        self.solitude.generic.seller.get_object_or_404.assert_called_with(
             uuid=app_seller_uuid)
 
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
-    @mock.patch('lib.solitude.api.client.slumber')
-    def test_marketplace_application_size(self, solitude):
+    def test_marketplace_application_size(self):
         # Simulate how the Marketplace would add
         # a custom seller_uuid and application_size
         # to the product data in the JWT.
@@ -527,16 +523,15 @@ class TestStartPay(BaseStartPay):
             'application_size': application_size})
         self.notes['issuer_key'] = 'marketplace-domain'
         self.notes['pay_request']['request']['productData'] = data
-        solitude.bango.product.get_object.side_effect = ObjectDoesNotExist
+        self.solitude.bango.product.get_object.side_effect = ObjectDoesNotExist
         self.start()
 
         # Check that the application size is the one submitted in productData.
-        eq_(solitude.bango.billing.post.call_args[0][0]['application_size'],
-            application_size)
+        args = self.solitude.bango.billing.post.call_args
+        eq_(args[0][0]['application_size'], application_size)
 
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
-    @mock.patch('lib.solitude.api.client.slumber')
-    def test_marketplace_wrong_application_size(self, solitude):
+    def test_marketplace_wrong_application_size(self):
         app_seller_uuid = 'some-seller-uuid'
         application_size = 'foo'
         data = urlencode({
@@ -544,18 +539,17 @@ class TestStartPay(BaseStartPay):
             'application_size': application_size})
         self.notes['issuer_key'] = 'marketplace-domain'
         self.notes['pay_request']['request']['productData'] = data
-        solitude.bango.product.get_object.side_effect = ObjectDoesNotExist
+        self.solitude.bango.product.get_object.side_effect = ObjectDoesNotExist
         self.start()
 
         # Check that the application size fallbacks to None if invalid.
-        eq_(solitude.bango.billing.post.call_args[0][0]['application_size'],
-            None)
+        args = self.solitude.bango.billing.post.call_args
+        eq_(args[0][0]['application_size'], None)
 
     @raises(ValueError)
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
-    @mock.patch('lib.solitude.api.client.api')
     @mock.patch('webpay.pay.tasks.client')
-    def test_marketplace_missing_seller_uuid(self, cli, slumber):
+    def test_marketplace_missing_seller_uuid(self, cli):
         self.notes['issuer_key'] = settings.KEY
         self.notes['pay_request']['request']['productData'] = 'foo-bar'
         self.start()
@@ -800,8 +794,8 @@ class TestConfigureTrans(test.TestCase):
         ok_(self.configure())
         assert self.start_pay.delay.called
         assert 'notes' not in self.request.session, (
-                'notes should be deleted from session after '
-                'passing it to start_pay')
+            'notes should be deleted from session after '
+            'passing it to start_pay')
 
     def test_skip_when_simulating(self):
         self.request.session['is_simulation'] = True

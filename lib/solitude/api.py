@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 
 from slumber.exceptions import HttpClientError
+from webpay.base import dev_messages as msg
 from webpay.base.helpers import absolutify
 
 from ..utils import SlumberWrapper
@@ -36,17 +37,6 @@ class SolitudeAPI(SlumberWrapper):
 
     def __init__(self, *args, **kw):
         super(SolitudeAPI, self).__init__(*args, **kw)
-        self._provider = None
-
-    @property
-    def provider(self):
-        assert self._provider, 'self._provider has not been set'
-        return self._provider
-
-    def set_provider(self, provider=None):
-        ProviderClass = provider_cls(provider or settings.PAYMENT_PROVIDER)
-        self._provider = ProviderClass(self.slumber)
-        return self._provider
 
     def create_buyer(self, uuid, pin=None):
         """Creates a buyer with an optional PIN in solitude.
@@ -197,17 +187,40 @@ class SolitudeAPI(SlumberWrapper):
                             {'uuid': uuid, 'pin': pin})
         return res
 
+    def get_transaction(self, uuid):
+        transaction = self.slumber.generic.transaction.get_object(uuid=uuid)
+        # Notes may contain some JSON, including the original pay request.
+        notes = transaction['notes']
+        if notes:
+            transaction['notes'] = json.loads(notes)
+        return transaction
+
+
+class ProviderHelper:
+    """
+    A common interface to all payment providers.
+    """
+    def __init__(self, name, slumber=None):
+        self.slumber = slumber or client.slumber
+        ProviderClass = provider_cls(name)
+        self.provider = ProviderClass(self.slumber)
+        self.name = self.provider.name
+
+    @classmethod
+    def from_request(Klass, request):
+        # TODO: get this from the session instead of settings. See bug 987824.
+        provider_name = settings.PAYMENT_PROVIDER
+        return Klass(provider_name)
+
     def start_transaction(self, transaction_uuid,
                           seller_uuid,
                           product_id, product_name,
                           prices, icon_url,
                           user_uuid, application_size,
-                          source='unknown',
-                          provider=None):
+                          source='unknown'):
         """
         Start a payment provider transaction to begin the purchase flow.
         """
-        self.set_provider(provider)
         try:
             seller = self.slumber.generic.seller.get_object_or_404(
                 uuid=seller_uuid)
@@ -237,8 +250,7 @@ class SolitudeAPI(SlumberWrapper):
         except ObjectDoesNotExist:
             product, provider_product = self.create_product(
                 product_id, product_name,
-                seller, provider=self.provider.name,
-                generic_product=product)
+                seller, generic_product=product)
 
         trans_token = self.provider.create_transaction(product,
                                                        provider_product,
@@ -255,15 +267,13 @@ class SolitudeAPI(SlumberWrapper):
         return trans_token, seller_id
 
     def create_product(self, external_id, product_name, generic_seller,
-                       provider=None, generic_product=None):
+                       generic_product=None):
         """
         Creates a generic product and provider product on the fly.
 
         This is for scenarios like adhoc in-app payments where the
         system might be selling a product for the first time.
         """
-        provider = self.set_provider(provider)
-
         log.info('{pr}: creating product with name: {name}, '
                  'external_id: {ext_id}, seller: {seller}'
                  .format(name=product_name, ext_id=external_id,
@@ -292,16 +302,7 @@ class SolitudeAPI(SlumberWrapper):
 
         return generic_product, provider_product
 
-    def get_transaction(self, uuid):
-        transaction = self.slumber.generic.transaction.get_object(uuid=uuid)
-        # Notes may contain some JSON, including the original pay request.
-        notes = transaction['notes']
-        if notes:
-            transaction['notes'] = json.loads(notes)
-        return transaction
-
-    def is_callback_token_valid(self, querystring, provider=None):
-        provider = self.set_provider(provider)
+    def is_callback_token_valid(self, querystring):
         try:
             response = self.provider.create_notice(querystring)
         except HttpClientError as e:
@@ -314,6 +315,42 @@ class SolitudeAPI(SlumberWrapper):
                  '{response}'.format(response=response,
                                      pr=self.provider.name))
         return response['result'] == 'OK'
+
+    def prepare_notice(self, request):
+        qs = request.GET
+        if request.GET:
+            raw_qs = request.get_full_path().split('?')[1]
+        else:
+            raw_qs = ''
+
+        trans_id = self.provider.transaction_from_notice(qs)
+        session_trans_id = request.session.get('trans_id')
+
+        if not trans_id:
+            log.info('Provider={pr} did not provide a transaction ID '
+                     'on the query string'.format(pr=self.name))
+            raise msg.DevMessage(msg.TRANS_MISSING)
+        if trans_id != session_trans_id:
+            log.info('Provider={pr} transaction {tr} is not in the '
+                     'active session'.format(pr=self.name, tr=trans_id))
+            raise msg.DevMessage(msg.NO_ACTIVE_TRANS)
+
+        try:
+            response = self.provider.get_notice_result(qs, raw_qs)
+        except HttpClientError, err:
+            log.error('post to reference payment notice for transaction '
+                      'ID {trans} failed: {err}'
+                      .format(trans=trans_id, err=err))
+            raise msg.DevMessage(msg.NOTICE_EXCEPTION)
+
+        log.info('reference payment notice check result={result}; '
+                 'trans_id={trans}'.format(trans=trans_id,
+                                           result=response['result']))
+
+        if response['result'] != 'OK':
+            raise msg.DevMessage(msg.NOTICE_ERROR)
+
+        return trans_id
 
 
 _registry = {}
@@ -418,6 +455,12 @@ class PayProvider:
 
     def create_notice(self, querystring):
         return self.api.notices.post({'qs': querystring})
+
+    def transaction_from_notice(self, parsed_qs):
+        return parsed_qs.get('ext_transaction_id')
+
+    def get_notice_result(self, parsed_qs, raw_qs):
+        return self.api.notices.post({'qs': raw_qs})
 
 
 @register_provider

@@ -25,7 +25,7 @@ class TestProviderSuccess(BasicSessionCase):
         self.save_session()
 
         # TODO: Add this when verifying tokens. bug 936138
-        p = mock.patch('webpay.provider.views.client.slumber')
+        p = mock.patch('lib.solitude.api.client.slumber')
         self.slumber = p.start()
         self.addCleanup(p.stop)
 
