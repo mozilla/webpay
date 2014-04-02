@@ -129,16 +129,18 @@ footer button[type=submit] {
         border: 0;
         display: block;
         font-size: 2.5em;
-        opacity: 0;
         position: absolute;
         text-align: center;
-        top: 0;
+        top: -100px;
         width: 100%;
+        z-index: -1;
+
         &::-moz-placeholder {
           color: #888;
           font-family: monospace;
           text-shadow: 0 1px #fff;
         }
+
         &:-moz-placeholder {
           color: #888;
           font-family: monospace;
