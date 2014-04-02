@@ -182,12 +182,19 @@ class TestVerify(Base):
 
     @mock.patch.object(settings, 'ALLOW_ANDROID_PAYMENTS', False)
     def test_disallow_android_payments(self):
-        # Android Nightly agent:
+        # Android Nightly agent on a phone:
         ua = 'Mozilla/5.0 (Android; Mobile; rv:31.0) Gecko/31.0 Firefox/31.0'
         res = self.get(self.request(), HTTP_USER_AGENT=ua)
         self.assertContains(res, msg.PAY_DISABLED, status_code=503)
         doc = pq(res.content)
         eq_(doc('body').attr('data-error-code'), msg.PAY_DISABLED)
+
+    @mock.patch.object(settings, 'ALLOW_ANDROID_PAYMENTS', False)
+    def test_disallow_android_tablet_payments(self):
+        # Android Nightly agent on a tablet:
+        ua = 'Mozilla/5.0 (Android; Tablet; rv:31.0) Gecko/31.o Firefox/31.0'
+        res = self.get(self.request(), HTTP_USER_AGENT=ua)
+        self.assertContains(res, msg.PAY_DISABLED, status_code=503)
 
     @mock.patch.object(settings, 'ALLOW_ANDROID_PAYMENTS', False)
     def test_allow_non_android_payments(self):

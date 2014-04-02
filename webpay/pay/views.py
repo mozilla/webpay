@@ -397,7 +397,7 @@ def _trim_pay_request(req):
             req['request']['locales'][k]['description'] = d
 
 
-_android_user_agent = re.compile(r'^Mozilla.*Android.*Mobile.*Gecko.*Firefox')
+_android_user_agent = re.compile(r'^Mozilla.*Android.*Gecko.*Firefox')
 
 
 def disabled_by_user_agent(user_agent):
