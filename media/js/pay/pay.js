@@ -152,6 +152,7 @@ require(['cli', 'id', 'auth', 'bango', 'longtext', 'settings', 'tracking'], func
                 if (!calledBack && cli.bodyData.loggedInUser) {
                     console.log('[pay] Probably logged in, Persona never called back');
                     bango.prepareSim().done(function _bounceAfterSim() {
+                        cli.startTransaction();
                         console.log('[pay] Forwarding the user to ' + next);
                         window.location = next;
                     });
@@ -163,6 +164,7 @@ require(['cli', 'id', 'auth', 'bango', 'longtext', 'settings', 'tracking'], func
         // A specific flow was not forced. For example, the user may be creating a PIN.
         bango.prepareSim().done(function _defaultReady() {
             var $entry = $('#enter-pin');
+            cli.startTransaction();
             if ($entry.length && !$entry.hasClass('hidden')) {
                 console.log('[pay] Requesting focus on pin');
                 cli.focusOnPin({ $toShow: $entry });
