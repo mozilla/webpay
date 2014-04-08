@@ -374,6 +374,22 @@ class ProviderHelper:
 
         return trans_id
 
+    def server_notification(self, request):
+        """
+        Handles the server to server notification that is sent after
+        a transaction is completed.
+        """
+        # Get the notification data from the incoming request.
+        data = self.provider.get_notification_data(request)
+
+        try:
+            # Post the result to solitude.
+            self.provider.get_notification_result(data)
+        except HttpClientError, err:
+            log.error('Provider={pr} post failed: {err}'
+                      .format(pr=self.name, err=err))
+            raise msg.DevMessage(msg.NOTICE_ERROR)
+
 
 _registry = {}
 
@@ -485,6 +501,12 @@ class PayProvider:
     def get_notice_result(self, parsed_qs, raw_qs):
         return self.api.notices.post({'qs': raw_qs})
 
+    def get_notification_data(self, request):
+        raise NotImplementedError
+
+    def get_notification_result(self, data):
+        return NotImplementedError
+
 
 @register_provider
 class ReferenceProvider(PayProvider):
@@ -513,6 +535,12 @@ class BokuProvider(PayProvider):
         # MCC, MNC
         ('334', '020'),  # Mexico + AMX
     ])
+
+    def get_notification_data(self, request):
+        return request.GET
+
+    def get_notification_result(self, data):
+        return self.api.event.post(data)
 
 
 @register_provider

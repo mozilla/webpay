@@ -1,8 +1,9 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.test import TestCase
 
 import mock
-from nose.tools import eq_
+from nose.tools import eq_, raises
 from slumber.exceptions import HttpClientError
 
 from webpay.base import dev_messages as msg
@@ -102,3 +103,27 @@ class TestProviderSuccess(BasicSessionCase):
 
         res = self.error()
         eq_(res.status_code, 400)
+
+
+class TestNotification(TestCase):
+
+    def setUp(self):
+        p = mock.patch('lib.solitude.api.client.slumber')
+        self.slumber = p.start()
+        self.addCleanup(p.stop)
+        self.url = reverse('provider.notification', args=['boku'])
+
+    def test_good(self):
+        eq_(self.client.get(self.url + '?f=b').status_code, 200)
+        self.slumber.provider.boku.event.post.assert_called_with({'f': ['b']})
+
+    @raises(NotImplementedError)
+    def test_not_implemented(self):
+        self.url = reverse('provider.notification', args=['bango'])
+        self.client.get(self.url)
+
+    def test_fail(self):
+        self.slumber.provider.boku.event.post.side_effect = HttpClientError
+        res = self.client.get(self.url)
+        eq_(res.status_code, 502)
+        eq_(res.content, 'NOTICE_ERROR')
