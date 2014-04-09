@@ -1,4 +1,3 @@
-import json
 import re
 import time
 
@@ -15,8 +14,6 @@ from mozpay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
-from curling.lib import HttpClientError
-
 from webpay import provider
 from webpay.auth.decorators import user_can_simulate, user_verified
 from webpay.auth import utils as auth_utils
@@ -29,7 +26,7 @@ from webpay.pin.utils import check_pin_status
 
 from lib.marketplace.api import client as marketplace, UnknownPricePoint
 from lib.solitude import constants
-from lib.solitude.api import client as solitude, ProviderHelper
+from lib.solitude.api import BangoProvider, client as solitude, ProviderHelper
 from lib.solitude.exceptions import ResourceModified
 
 from . import tasks
@@ -125,7 +122,8 @@ def configure_transaction(request):
     This is called from the client so that it can provide
     MCC/MNC at the same time.
 
-    * When configure_transaction fails this will return a 400 TRANS_CONFIG_FAILED
+    * When configure_transaction fails this will return a 400
+      TRANS_CONFIG_FAILED
 
     """
 
@@ -336,7 +334,9 @@ def _callback_url(request, is_success):
     signed_notice = request.POST['signed_notice']
     statsd.incr('purchase.payment_{0}_callback.received'.format(status))
 
-    provider = ProviderHelper.from_request(request)
+    # This is a legacy view for Bango only. Future payment providers use
+    # the /providers notice URLs.
+    provider = ProviderHelper(BangoProvider.name)
 
     if provider.is_callback_token_valid(signed_notice):
         statsd.incr('purchase.payment_{0}_callback.ok'.format(status))

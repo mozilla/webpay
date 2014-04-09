@@ -71,7 +71,9 @@ def configure_transaction(request, trans=None):
     log.info('configuring payment in background for trans {0} (status={1})'
              .format(request.session['trans_id'], trans.get('trans_id')))
 
-    provider = ProviderHelper.from_request(request)
+    network = request.session['notes'].get('network', {})
+    provider = ProviderHelper.choose(mcc=network.get('mcc'),
+                                     mnc=network.get('mnc'))
 
     start_pay.delay(request.session['trans_id'],
                     request.session['notes'],

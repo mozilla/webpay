@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 
@@ -7,7 +8,8 @@ import mock
 from nose.tools import eq_
 from slumber.exceptions import HttpClientError
 
-from lib.solitude.api import client, ProviderHelper, SellerNotConfigured
+from lib.solitude.api import (BangoProvider, BokuProvider, client,
+                              ProviderHelper, SellerNotConfigured)
 from lib.solitude.errors import ERROR_STRINGS
 from lib.solitude.exceptions import ResourceModified, ResourceNotModified
 
@@ -571,3 +573,32 @@ class TransactionTest(TestCase):
         }
         trans = client.get_transaction('x')
         eq_(trans['notes'], {'foo': 'bar'})
+
+
+@mock.patch.object(settings, 'PAYMENT_PROVIDER', 'bango')
+class TestProviderHelper(TestCase):
+
+    def test_from_boku_operator(self):
+        mcc = '334'  # Mexico
+        mnc = '020'  # AMX
+
+        provider = ProviderHelper.choose(mcc=mcc, mnc=mnc)
+        eq_(provider.name, BokuProvider.name)
+
+    def test_from_wrong_mexican_operator(self):
+        mcc = '334'  # Mexico
+        mnc = '03'  # Movistar
+
+        provider = ProviderHelper.choose(mcc=mcc, mnc=mnc)
+        eq_(provider.name, BangoProvider.name)
+
+    def test_not_from_mexico(self):
+        mcc = '214'  # Spain
+        mnc = '01'  # Vodaphone
+
+        provider = ProviderHelper.choose(mcc=mcc, mnc=mnc)
+        eq_(provider.name, BangoProvider.name)
+
+    def test_no_network(self):
+        provider = ProviderHelper.choose()
+        eq_(provider.name, BangoProvider.name)
