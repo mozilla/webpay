@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-19 09:05-0700\n"
+"POT-Creation-Date: 2014-04-09 09:18-0700\n"
 "PO-Revision-Date: 2014-03-22 09:00+0000\n"
 "Last-Translator: Channy <channy@mozilla.or.kr>\n"
 "Language-Team: none\n"
@@ -22,151 +22,155 @@ msgstr "지불을 취소했습니다."
 msgid "Your payment is complete."
 msgstr "결제가 정상 처리되었습니다."
 
-#: webpay/base/dev_messages.py:89
+#: webpay/base/dev_messages.py:90
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
 msgstr "지불 처리 중 지불 제공자(Bango)로 부터 유효하지 않은 코드를 받음"
 
 #. L10n: First argument is an example of the proper key format.
-#: webpay/base/dev_messages.py:93
+#: webpay/base/dev_messages.py:94
 msgid "An image icon key was not an object. Correct example: {0}"
 msgstr "이미지 아이콘 키가 객체가 아닙니다. 예를 정확히 입력하세요: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:97
+#: webpay/base/dev_messages.py:98
 msgid "No one has been registered for this JWT issuer."
 msgstr "현재 JWT 이슈에 등록한 사람이 없습니다."
 
-#: webpay/base/dev_messages.py:98
+#: webpay/base/dev_messages.py:99
 msgid "The price point is unknown or invalid."
 msgstr "가격을 알수 없거나 유효하지 않습니다."
 
-#: webpay/base/dev_messages.py:99
+#: webpay/base/dev_messages.py:100
 msgid "The request to begin payment was invalid."
 msgstr "지불 시작 요청이 유효하지 않습니다."
 
-#: webpay/base/dev_messages.py:101
+#: webpay/base/dev_messages.py:102
 msgid "The requested payment simulation result is not supported."
 msgstr "요청한 지불 시뮬레이션 결과를 지원하지 않습니다."
 
-#: webpay/base/dev_messages.py:103
+#: webpay/base/dev_messages.py:104
 msgid "The payment provider (Bango) returned an error while processing the payment"
 msgstr "지불 처리 중 지불 제공자(Bango)가 오류를 반환했습니다."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:107
+#: webpay/base/dev_messages.py:108
 msgid "The JWT has expired."
 msgstr "JWT가 만료되었습니다."
 
-#: webpay/base/dev_messages.py:109
+#: webpay/base/dev_messages.py:110
 msgid "The external payment processor returned an error while handling the payment"
 msgstr "외부 지불 프로세스 과정에서 오류 발생"
 
-#: webpay/base/dev_messages.py:111
+#: webpay/base/dev_messages.py:112
 msgid "An internal web request timed out."
 msgstr "내부 웹 요청 시간이 만료되었습니다."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:115
+#: webpay/base/dev_messages.py:116
 msgid "The JWT signature is invalid or the JWT is malformed."
 msgstr "JWT 서명이 유효하지 않거나 잘못된 형식입니다."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:118
+#: webpay/base/dev_messages.py:119
 msgid "The JWT did not decode to a JSON object."
 msgstr "JWT는 JSON 객체로 변환하지 않았습니다."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:121
+#: webpay/base/dev_messages.py:122
 msgid "Error decoding JWT."
 msgstr "JWT 변환 중 오류입니다."
 
-#: webpay/base/dev_messages.py:122
+#: webpay/base/dev_messages.py:123
 msgid "The system timed out while trying to log in."
 msgstr "로그인 중 시간이 만료되었습니다."
 
-#: webpay/base/dev_messages.py:123
+#: webpay/base/dev_messages.py:124
 msgid "The system timed out while trying to log out."
 msgstr "로그아웃 중 시간이 만료되었습니다."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
-#: webpay/base/dev_messages.py:125
+#: webpay/base/dev_messages.py:126
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
 msgstr "URL이 유효하지 않습니다. 재호출 URL이거나 아이콘 URL입니다."
 
-#: webpay/base/dev_messages.py:127
+#: webpay/base/dev_messages.py:128
 msgid "The transaction ID was missing from the session when processing a payment return."
 msgstr "지불 중 되돌아가는 중 세션에서 트랜잭션 ID가 누락되었습니다."
 
 #. L10n: First and second arguements are the names of keys.
-#: webpay/base/dev_messages.py:131
+#: webpay/base/dev_messages.py:132
 msgid "If {0} is defined, then you must also define {1}."
 msgstr "만약 {0}을 정의했다면, {1}도 정의해야 합니다."
 
 #. L10n: First argument is the name of the key, 'reason'.
-#: webpay/base/dev_messages.py:135
+#: webpay/base/dev_messages.py:136
 msgid "The requested chargeback simulation is missing the key '{0}'."
 msgstr "요청한 환불 시뮬레이션에서 '{0}'키를 누락했습니다."
 
-#: webpay/base/dev_messages.py:137
+#: webpay/base/dev_messages.py:138
 msgid "The notification service responded with an error while verifying the payment notice"
 msgstr "지불 알림 확인 중 오류가 발생하였음"
 
-#: webpay/base/dev_messages.py:139
+#: webpay/base/dev_messages.py:140
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "지불 알림을 확인하는 과정에서 알림 서비스에 알 수 없는 오류가 발생 "
 
-#: webpay/base/dev_messages.py:142
-msgid "Payments are temporarily disabled"
-msgstr "지불 처리가 일시적으로 중단되었음"
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+msgid "Payments are temporarily disabled."
+msgstr "지불이 일시적으로 중단되었습니다."
 
-#: webpay/base/dev_messages.py:144
+#: webpay/base/dev_messages.py:145
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
 msgstr "이전 요청을 처리하는 중 내용이 변경되었습니다. 다시 처리되어야 합니다."
 
-#: webpay/base/dev_messages.py:146
+#: webpay/base/dev_messages.py:147
 msgid "Payment simulations are disabled at this time."
 msgstr "지불 시뮬레이션을 지금 중단합니다."
 
-#: webpay/base/dev_messages.py:148
+#: webpay/base/dev_messages.py:149
 msgid "This payment key can only be used to simulate purchases."
 msgstr "이 결제정보 키는 테스트 구매에만 사용할 수 있습니다."
 
-#: webpay/base/dev_messages.py:150
+#: webpay/base/dev_messages.py:151
+msgid "The configuration of the payment transaction failed."
+msgstr ""
+
+#: webpay/base/dev_messages.py:153
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr "현재 트랜잭션이 완료되어 구매과정을 완료할 수 없습니다."
 
-#: webpay/base/dev_messages.py:152
+#: webpay/base/dev_messages.py:155
 msgid "No transaction ID could be found."
 msgstr "트랜잭션 ID가 없습니다."
 
-#: webpay/base/dev_messages.py:154
+#: webpay/base/dev_messages.py:157
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "트랜잭션 시작을 기다리는 시간을 초과하였습니다."
 
-#: webpay/base/dev_messages.py:157
+#: webpay/base/dev_messages.py:160
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr "지불 방법 및 가격이 현재 지역 및 제공자를 지원하지 않습니다."
 
-#: webpay/base/dev_messages.py:159
+#: webpay/base/dev_messages.py:162
 msgid "The user cancelled the payment."
 msgstr "키 값이 최대값을 초과하였습니다."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:166
+#: webpay/base/dev_messages.py:169
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "\"{0}\"키에 대한 값이 최대 길이  {1}를 초과"
 
-#: webpay/base/utils.py:49
+#: webpay/base/utils.py:56
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr "지불 설정 과정에서 오류가 있었습니다. 다시 시도하거나 앱 개발자에게 문의하십시오."
 
-#: webpay/base/utils.py:55
+#: webpay/base/utils.py:62
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr "지불 과정에서 내부 오류가 발생하였습니다. 다시 시도하거나 계속 지속되면 Mozilla에 문의하십시오."
 
@@ -256,11 +260,7 @@ msgstr "확인"
 msgid "Error"
 msgstr "오류"
 
-#: webpay/pay/views.py:56
-msgid "Payments are temporarily disabled."
-msgstr "지불이 일시적으로 중단되었습니다."
-
-#: webpay/pay/views.py:187 webpay/pin/views.py:93
+#: webpay/pay/views.py:204 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "비밀번호 입력"
 

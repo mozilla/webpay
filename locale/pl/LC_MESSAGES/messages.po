@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-19 09:05-0700\n"
+"POT-Creation-Date: 2014-04-09 09:18-0700\n"
 "PO-Revision-Date: 2014-03-01 20:59+0100\n"
 "Last-Translator: Wojciech Szczęsny\n"
 "Language-Team: Polish <>\n"
@@ -22,151 +22,155 @@ msgstr "Anulowano płatność."
 msgid "Your payment is complete."
 msgstr "Twoja płatność jest zakończona."
 
-#: webpay/base/dev_messages.py:89
+#: webpay/base/dev_messages.py:90
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
 msgstr "Mozilla otrzymała nieprawidłowy kod od dostawcy płatności (Bango) podczas przetwarzania płatności"
 
 #. L10n: First argument is an example of the proper key format.
-#: webpay/base/dev_messages.py:93
+#: webpay/base/dev_messages.py:94
 msgid "An image icon key was not an object. Correct example: {0}"
 msgstr "Klucz obrazka ikony nie jest obiektem. Prawidłowy przykład: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:97
+#: webpay/base/dev_messages.py:98
 msgid "No one has been registered for this JWT issuer."
 msgstr "Nikt nie został zarejestrowany dla tego emitenta JWT."
 
-#: webpay/base/dev_messages.py:98
+#: webpay/base/dev_messages.py:99
 msgid "The price point is unknown or invalid."
 msgstr "Cena bazowa jest nieznana lub nieprawidłowa."
 
-#: webpay/base/dev_messages.py:99
+#: webpay/base/dev_messages.py:100
 msgid "The request to begin payment was invalid."
 msgstr "Żądanie rozpoczęcia płatności jest nieprawidłowe."
 
-#: webpay/base/dev_messages.py:101
+#: webpay/base/dev_messages.py:102
 msgid "The requested payment simulation result is not supported."
 msgstr "Żądany wynik symulacji płatności nie jest obsługiwany."
 
-#: webpay/base/dev_messages.py:103
+#: webpay/base/dev_messages.py:104
 msgid "The payment provider (Bango) returned an error while processing the payment"
 msgstr "Dostawca płatności (Bango) zwrócił błąd podczas przetwarzania płatności."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:107
+#: webpay/base/dev_messages.py:108
 msgid "The JWT has expired."
 msgstr "JWT wygasło."
 
-#: webpay/base/dev_messages.py:109
+#: webpay/base/dev_messages.py:110
 msgid "The external payment processor returned an error while handling the payment"
 msgstr "Zewnętrzny procesor zwrócił błąd podczas obsługi płatności"
 
-#: webpay/base/dev_messages.py:111
+#: webpay/base/dev_messages.py:112
 msgid "An internal web request timed out."
 msgstr "Upłynął wewnętrzny limit czasu żądania."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:115
+#: webpay/base/dev_messages.py:116
 msgid "The JWT signature is invalid or the JWT is malformed."
 msgstr "Podpis JWT jest nieprawidłowy lub JWT jest zniekształcone."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:118
+#: webpay/base/dev_messages.py:119
 msgid "The JWT did not decode to a JSON object."
 msgstr "JWT nie zostało zdekodowane do obiektu JSON."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:121
+#: webpay/base/dev_messages.py:122
 msgid "Error decoding JWT."
 msgstr "Błąd dekodowania JWT."
 
-#: webpay/base/dev_messages.py:122
+#: webpay/base/dev_messages.py:123
 msgid "The system timed out while trying to log in."
 msgstr "Upłynął limit czasu systemu podczas próby logowania."
 
-#: webpay/base/dev_messages.py:123
+#: webpay/base/dev_messages.py:124
 msgid "The system timed out while trying to log out."
 msgstr "Upłynął limit czasu systemu podczas próby wylogowania."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
-#: webpay/base/dev_messages.py:125
+#: webpay/base/dev_messages.py:126
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
 msgstr "Adres URL jest zniekształcony. Może to być URL typu postback lub ikony."
 
-#: webpay/base/dev_messages.py:127
+#: webpay/base/dev_messages.py:128
 msgid "The transaction ID was missing from the session when processing a payment return."
 msgstr "ID transakcji zostało utracone w sesji podczas przetwarzania zwrotu płatności."
 
 #. L10n: First and second arguements are the names of keys.
-#: webpay/base/dev_messages.py:131
+#: webpay/base/dev_messages.py:132
 msgid "If {0} is defined, then you must also define {1}."
 msgstr "Jeśli zdefiniowano {0}, należy również zdefiniować {1}."
 
 #. L10n: First argument is the name of the key, 'reason'.
-#: webpay/base/dev_messages.py:135
+#: webpay/base/dev_messages.py:136
 msgid "The requested chargeback simulation is missing the key '{0}'."
 msgstr "W żądanej symulacji obciążenia zwrotnego brakuje klucza '{0}'."
 
-#: webpay/base/dev_messages.py:137
+#: webpay/base/dev_messages.py:138
 msgid "The notification service responded with an error while verifying the payment notice"
 msgstr "Usługa powiadomień zwróciła błąd podczas weryfikacji zawiadomienia o płatności"
 
-#: webpay/base/dev_messages.py:139
+#: webpay/base/dev_messages.py:140
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "Usługa powiadamiania zgłosiła nieoczekiwany wyjątek podczas weryfikacja zawiadomienia płatności"
 
-#: webpay/base/dev_messages.py:142
-msgid "Payments are temporarily disabled"
-msgstr "Płatności są chwilowo wyłączone"
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+msgid "Payments are temporarily disabled."
+msgstr "Płatności są czasowo niedostępne."
 
-#: webpay/base/dev_messages.py:144
+#: webpay/base/dev_messages.py:145
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
 msgstr "Zasób został zmodyfikowany od czasu poprzedniego żądania. Należy ponownie wykonać czynność."
 
-#: webpay/base/dev_messages.py:146
+#: webpay/base/dev_messages.py:147
 msgid "Payment simulations are disabled at this time."
 msgstr "Symulacje płatności są w tej chwili niedostępne."
 
-#: webpay/base/dev_messages.py:148
+#: webpay/base/dev_messages.py:149
 msgid "This payment key can only be used to simulate purchases."
 msgstr "Ten klucz płatności może być wykorzystywany tylko do symulacji zakupów."
 
-#: webpay/base/dev_messages.py:150
+#: webpay/base/dev_messages.py:151
+msgid "The configuration of the payment transaction failed."
+msgstr ""
+
+#: webpay/base/dev_messages.py:153
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr "Nie można dokonać zakupu, ponieważ aktualna transakcja jest już zakończona."
 
-#: webpay/base/dev_messages.py:152
+#: webpay/base/dev_messages.py:155
 msgid "No transaction ID could be found."
 msgstr "Nie można było znaleźć ID transakcji."
 
-#: webpay/base/dev_messages.py:154
+#: webpay/base/dev_messages.py:157
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "Upłynął limit czasu systemu podczas oczekiwania na rozpoczęcie transakcji."
 
-#: webpay/base/dev_messages.py:157
+#: webpay/base/dev_messages.py:160
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr "Metoda płatności lub cena bazowa nie jest wspierana dla tego regionu lub operatora."
 
-#: webpay/base/dev_messages.py:159
+#: webpay/base/dev_messages.py:162
 msgid "The user cancelled the payment."
 msgstr "Użytkownik anulował płatność."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:166
+#: webpay/base/dev_messages.py:169
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Wartość klucza „{0}” przekracza maksymalną długość {1}"
 
-#: webpay/base/utils.py:49
+#: webpay/base/utils.py:56
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr "Wystąpił błąd podczas konfigurowania płatności. Spróbuj ponownie lub skontaktuj się z autorem aplikacji, jeśli błąd się powtarza."
 
-#: webpay/base/utils.py:55
+#: webpay/base/utils.py:62
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr "Wystąpił wewnętrzny błąd podczas przetwarzania płatności. Spróbuj ponownie lub skontaktuj się z Mozillą, jeśli występuje nadal."
 
@@ -256,11 +260,7 @@ msgstr "OK"
 msgid "Error"
 msgstr "Błąd"
 
-#: webpay/pay/views.py:56
-msgid "Payments are temporarily disabled."
-msgstr "Płatności są czasowo niedostępne."
-
-#: webpay/pay/views.py:187 webpay/pin/views.py:93
+#: webpay/pay/views.py:204 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Wprowadź PIN"
 
