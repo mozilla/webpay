@@ -26,7 +26,7 @@ from webpay.pin.utils import check_pin_status
 
 from lib.marketplace.api import client as marketplace, UnknownPricePoint
 from lib.solitude import constants
-from lib.solitude.api import BangoProvider, client as solitude, ProviderHelper
+from lib.solitude.api import client as solitude, ProviderHelper
 from lib.solitude.exceptions import ResourceModified
 
 from . import tasks
@@ -334,9 +334,10 @@ def _callback_url(request, is_success):
     signed_notice = request.POST['signed_notice']
     statsd.incr('purchase.payment_{0}_callback.received'.format(status))
 
-    # This is a legacy view for Bango only. Future payment providers use
-    # the /providers notice URLs.
-    provider = ProviderHelper(BangoProvider.name)
+    # This is currently only used by Bango and Zippy.
+    # Future providers should probably get added to the notification
+    # abstraction in provider/views.py
+    provider = ProviderHelper.choose()
 
     if provider.is_callback_token_valid(signed_notice):
         statsd.incr('purchase.payment_{0}_callback.ok'.format(status))
