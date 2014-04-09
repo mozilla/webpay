@@ -207,10 +207,32 @@ class ProviderHelper:
         self.name = self.provider.name
 
     @classmethod
-    def from_request(Klass, request):
-        # TODO: get this from the session instead of settings. See bug 987824.
-        provider_name = settings.PAYMENT_PROVIDER
-        return Klass(provider_name)
+    def choose(cls, mcc=None, mnc=None):
+        """
+        Given the user's mobile network (when available) return a suitable
+        provider helper object.
+
+        Keyword arguments:
+
+        **mcc**
+            The user's mobile carrier code, if known.
+
+        **mnc**
+            The user's mobile network code, if known.
+        """
+        # Switch to Boku when on one of their networks.
+        if (mcc, mnc) in BokuProvider.networks:
+            provider_name = BokuProvider.name
+        else:
+            provider_name = settings.PAYMENT_PROVIDER
+
+        log.info('choosing payment provider "{pr}" for mcc {mcc}, mnc {mnc}'
+                 .format(pr=provider_name, mcc=mcc, mnc=mnc))
+
+        # TODO: fall back to a payment provider *supported* by the
+        # seller. bug 993691.
+
+        return cls(provider_name)
 
     def start_transaction(self, transaction_uuid,
                           seller_uuid,
@@ -362,6 +384,7 @@ def provider_cls(name):
 
 def register_provider(cls):
     _registry[cls.name] = cls
+    return cls
 
 
 class PayProvider:
@@ -477,6 +500,19 @@ class ReferenceProvider(PayProvider):
     to override any of the inherited methods.
     """
     name = 'reference'
+
+
+@register_provider
+class BokuProvider(PayProvider):
+    """
+    The Boku payment provider.
+    """
+    name = 'boku'
+    # Boku will be selected if the user is on one of these networks:
+    networks = set([
+        # MCC, MNC
+        ('334', '020'),  # Mexico + AMX
+    ])
 
 
 @register_provider
