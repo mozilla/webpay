@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-04-09 09:18-0700\n"
-"PO-Revision-Date: 2014-01-15 12:44-0500\n"
+"PO-Revision-Date: 2014-04-09 12:33-0500\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -137,7 +137,7 @@ msgstr "この決済キーはシミュレーション購入専用です。"
 
 #: webpay/base/dev_messages.py:151
 msgid "The configuration of the payment transaction failed."
-msgstr ""
+msgstr "決済トランザクションの設定に失敗しました。"
 
 #: webpay/base/dev_messages.py:153
 msgid "The purchase cannot be completed because the current transaction has already ended."
