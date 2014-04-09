@@ -4,8 +4,9 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 
+import mobile_codes
 import mock
-from nose.tools import eq_
+from nose.tools import eq_, raises
 from slumber.exceptions import HttpClientError
 
 from lib.solitude.api import (BangoProvider, BokuProvider, client,
@@ -342,19 +343,16 @@ class CreateBangoTest(TestCase):
             ('bill_id', 'seller_pk'))
 
 
-class TestConfigureRefTrans(TestCase):
-
-    def setUp(self):
-        self.slumber = mock.MagicMock()
-        self.provider = ProviderHelper('reference', slumber=self.slumber)
+class ProviderTestCase(TestCase):
 
     def configure(self, trans_uuid='trans-xyz', seller_uuid='seller-xyz',
                   product_uuid='product-xyz', product_name='Shiny App',
                   success_redirect='/todo/postback',
                   error_redirect='/todo/chargeback',
-                  prices=[{'price': 1, 'currency': 'EUR'}],
+                  prices=[{'price': '0.89', 'currency': 'EUR'},
+                          {'price': '55.00', 'currency': 'MXN'}],
                   icon_url='/todo/icons', user_uuid='user-xyz',
-                  app_size=1024 * 5):
+                  app_size=1024 * 5, mcc=None, mnc=None):
         return self.provider.start_transaction(
             trans_uuid,
             seller_uuid,
@@ -364,14 +362,14 @@ class TestConfigureRefTrans(TestCase):
             icon_url,
             user_uuid,
             app_size,
+            mcc=mcc,
+            mnc=mnc
         )
 
-    def set_mocks(self, returns={},
-                  keys=('generic.seller',
-                        'generic.product',
-                        'generic.buyer',
-                        'provider.reference.products',
-                        'provider.reference.transactions',)):
+    def set_mocks(self, returns={}, keys=('generic.seller',
+                                          'generic.product',
+                                          'generic.buyer'),
+                  seller_uuid=None, product_uuid=None):
         """
         Set mock object returns, for example:
 
@@ -393,6 +391,23 @@ class TestConfigureRefTrans(TestCase):
         By default, get_object_or_404 will be mocked with a resource_pk and
         resource_uri
         """
+        if seller_uuid and 'generic.seller' not in returns:
+            returns['generic.seller'] = {
+                'return': {
+                    'uuid': seller_uuid,
+                    'resource_pk': seller_uuid,
+                    'resource_uri': '/seller/' + seller_uuid,
+                }
+            }
+        if product_uuid and 'generic.product' not in returns:
+            returns['generic.product'] = {
+                'return': {
+                    'resource_uri': '/product/' + product_uuid,
+                    'uuid': product_uuid,
+                    'external_id': product_uuid,
+                }
+            }
+
         keys = set(list(keys) + returns.keys())
         for k in keys:
             attr_path = k.split('.')
@@ -415,32 +430,37 @@ class TestConfigureRefTrans(TestCase):
                     'resource_uri': '/something/1',
                 })
 
+
+class TestConfigureRefTrans(ProviderTestCase):
+
+    def setUp(self):
+        self.slumber = mock.MagicMock()
+        self.provider = ProviderHelper('reference', slumber=self.slumber)
+
+    def set_mocks(self, returns={}, keys=None, **kw):
+        if not keys:
+            keys = ('generic.seller',
+                    'generic.product',
+                    'generic.buyer',
+                    'provider.reference.products',
+                    'provider.reference.transactions',)
+        return super(TestConfigureRefTrans, self).set_mocks(
+            returns=returns, keys=keys, **kw)
+
     def test_with_existing_prod(self):
         seller_uuid = 'seller-xyz'
         product_uuid = 'app-xyz'
 
         self.set_mocks({
-            'generic.seller': {
-                'return': {
-                    'uuid': seller_uuid,
-                    'resource_pk': seller_uuid,
-                    'resource_uri': '/seller/' + seller_uuid,
-                }
-            },
-            'generic.product': {
-                'return': {
-                    'resource_uri': '/product/' + product_uuid,
-                    'uuid': product_uuid,
-                    'external_id': product_uuid,
-                }
-            },
             'provider.reference.transactions': {
                 'method': 'post',
                 'return': {
                     'token': 'zippy-trans-token',
                 }
-            },
-        })
+            }},
+            seller_uuid=seller_uuid,
+            product_uuid=product_uuid
+        )
 
         result = self.configure(seller_uuid=seller_uuid,
                                 product_uuid=product_uuid)
@@ -459,13 +479,6 @@ class TestConfigureRefTrans(TestCase):
         seller_uuid = 'seller-xyz'
 
         self.set_mocks({
-            'generic.seller': {
-                'return': {
-                    'uuid': seller_uuid,
-                    'resource_pk': seller_uuid,
-                    'resource_uri': '/seller/' + seller_uuid,
-                }
-            },
             'generic.product': {
                 'side_effect': ObjectDoesNotExist,
             },
@@ -482,8 +495,9 @@ class TestConfigureRefTrans(TestCase):
                 'return': {
                     'resource_pk': seller_uuid,
                 }
-            },
-        })
+            }},
+            seller_uuid=seller_uuid
+        )
 
         self.slumber.provider.reference.products.post.return_value = {
             'resource_pk': new_product_id,
@@ -508,13 +522,6 @@ class TestConfigureRefTrans(TestCase):
 
     def test_callback_validation_success(self):
         self.set_mocks({
-            'generic.product': {
-                'return': {
-                    'resource_uri': '/product/1',
-                    'uuid': '1',
-                    'external_id': '1',
-                }
-            },
             'provider.reference.notices': {
                 'method': 'post',
                 'return': {
@@ -526,8 +533,9 @@ class TestConfigureRefTrans(TestCase):
                 'return': {
                     'token': 'zippy-trans-token',
                 }
-            },
-        })
+            }},
+            product_uuid='XYZ'
+        )
 
         self.configure(seller_uuid='seller-xyz', product_uuid='app-xyz')
         is_valid = self.provider.is_callback_token_valid({'foo': 'bar'})
@@ -537,13 +545,6 @@ class TestConfigureRefTrans(TestCase):
 
     def test_callback_validation_failure(self):
         self.set_mocks({
-            'generic.product': {
-                'return': {
-                    'resource_uri': '/product/1',
-                    'uuid': '1',
-                    'external_id': '1',
-                }
-            },
             'provider.reference.notices': {
                 'method': 'post',
                 'return': {
@@ -556,12 +557,73 @@ class TestConfigureRefTrans(TestCase):
                 'return': {
                     'token': 'zippy-trans-token',
                 }
-            },
-        })
+            }},
+            product_uuid='XYZ'
+        )
 
         self.configure(seller_uuid='seller-xyz', product_uuid='app-xyz')
         is_valid = self.provider.is_callback_token_valid({'foo': 'bar'})
         eq_(is_valid, False)
+
+
+class TestBoku(ProviderTestCase):
+
+    def setUp(self):
+        self.slumber = mock.MagicMock()
+        self.provider = ProviderHelper('boku', slumber=self.slumber)
+
+    def set_mocks(self, returns={}, keys=None, **kw):
+        if not keys:
+            keys = ('generic.seller',
+                    'generic.product',
+                    'generic.buyer',
+                    'boku.transactions',)
+        return super(TestBoku, self).set_mocks(
+            returns=returns, keys=keys, **kw)
+
+    def configure(self, **kw):
+        kw.setdefault('mcc', mobile_codes.alpha2('MX').mcc)
+        kw.setdefault('mnc', '020')  # AMX
+        return super(TestBoku, self).configure(**kw)
+
+    def test_start_transaction(self):
+        seller_uuid = 'seller-xyz'
+        user_uuid = 'user-xyz'
+
+        self.set_mocks({
+            'boku.transactions': {
+                'method': 'post',
+                'return': {
+                    'buy_url': 'https://site/buy',
+                    'transaction_id': 'boku-trans-id',
+                }
+            }},
+            seller_uuid=seller_uuid,
+            product_uuid='XYZ'
+        )
+
+        result = self.configure(seller_uuid=seller_uuid,
+                                user_uuid=user_uuid)
+
+        eq_(result[0], 'boku-trans-id')
+        eq_(result[1], seller_uuid)
+
+        kw = self.slumber.boku.transactions.post.call_args[0][0]
+        eq_(kw['price'], '55.00')
+        eq_(kw['country'], 'MX')
+        eq_(kw['seller_uuid'], seller_uuid)
+        eq_(kw['user_uuid'], user_uuid)
+        assert 'transaction_uuid' in kw, 'Missing keys: {kw}'.format(kw=kw)
+        assert self.slumber.generic.transaction.post.called
+
+    @raises(BokuProvider.TransactionError)
+    def test_unknown_network(self):
+        self.configure(mcc=None, mnc=None)
+
+    @raises(BokuProvider.TransactionError)
+    def test_unknown_price(self):
+        # Simulate when a network is mapped to a currency that doesn't exist.
+        self.configure(prices=[])
 
 
 @mock.patch('lib.solitude.api.client.slumber')

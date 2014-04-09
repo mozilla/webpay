@@ -8,6 +8,7 @@ from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 
+import mobile_codes
 from slumber.exceptions import HttpClientError
 from webpay.base import dev_messages as msg
 from webpay.base.helpers import absolutify
@@ -221,7 +222,7 @@ class ProviderHelper:
             The user's mobile network code, if known.
         """
         # Switch to Boku when on one of their networks.
-        if (mcc, mnc) in BokuProvider.networks:
+        if (mcc, mnc) in BokuProvider.network_data:
             provider_name = BokuProvider.name
         else:
             provider_name = settings.PAYMENT_PROVIDER
@@ -239,7 +240,8 @@ class ProviderHelper:
                           product_id, product_name,
                           prices, icon_url,
                           user_uuid, application_size,
-                          source='unknown'):
+                          source='unknown',
+                          mcc=None, mnc=None):
         """
         Start a payment provider transaction to begin the purchase flow.
         """
@@ -274,7 +276,8 @@ class ProviderHelper:
                 product_id, product_name,
                 seller, generic_product=product)
 
-        trans_token = self.provider.create_transaction(product,
+        trans_token = self.provider.create_transaction(seller,
+                                                       product,
                                                        provider_product,
                                                        product_name,
                                                        transaction_uuid,
@@ -282,7 +285,9 @@ class ProviderHelper:
                                                        user_uuid,
                                                        application_size,
                                                        source,
-                                                       icon_url)
+                                                       icon_url,
+                                                       mcc=mcc,
+                                                       mnc=mnc)
         log.info('{pr}: made provider trans {trans}'
                  .format(trans=trans_token, pr=self.provider.name))
 
@@ -422,10 +427,10 @@ class PayProvider:
         return self.api.sellers.get_object_or_404(
             uuid=generic_seller['resource_pk'])
 
-    def create_transaction(self, generic_product, provider_product,
-                           product_name, transaction_uuid,
+    def create_transaction(self, generic_seller, generic_product,
+                           provider_product, product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
-                           icon_url):
+                           icon_url, mcc=None, mnc=None):
 
         # TODO: Maybe make these real values. See bug 941952.
         # In the case of Zippy, it does not detect any of these values
@@ -508,11 +513,84 @@ class BokuProvider(PayProvider):
     The Boku payment provider.
     """
     name = 'boku'
-    # Boku will be selected if the user is on one of these networks:
-    networks = set([
+    # Boku has specific data associated with its supported networks.
+    network_data = {
         # MCC, MNC
-        ('334', '020'),  # Mexico + AMX
-    ])
+        # Mexico + AMX
+        ('334', '020'): {'currency': 'MXN'},
+    }
+
+    class TransactionError(Exception):
+        """Error relating to a Boku transaction."""
+
+    @property
+    def api(self):
+        return self.slumber.boku
+
+    def get_product(self, generic_seller, generic_product):
+        # Boku doesn't have products. I think.
+        return None
+
+    def create_product(self, generic_product, provider_seller, external_id,
+                       product_name):
+        # Boku doesn't have products. I think.
+        return None
+
+    def get_seller(self, generic_seller):
+        raise NotImplementedError()
+
+    def create_transaction(self, generic_seller, generic_product,
+                           provider_product, product_name, transaction_uuid,
+                           prices, user_uuid, application_size, source,
+                           icon_url, mcc=None, mnc=None):
+        try:
+            data = self.network_data[(mcc, mnc)]
+        except KeyError:
+            raise self.TransactionError('Unknown network: mcc={mcc}; mnc={mnc}'
+                                        .format(mcc=mcc, mnc=mnc))
+        country = mobile_codes.mcc(mcc)
+
+        price = None
+        for pr in prices:
+            # Given a list of all prices + currencies for this price point,
+            # send Boku the one that matches the user's network.
+            if pr['currency'] == data['currency']:
+                price = pr['price']
+                break
+        if not price:
+            raise self.TransactionError(
+                'Could not find a price for currency {cur}; '
+                'mcc={mcc}; mnc={mnc}'.format(cur=data['currency'],
+                                              mcc=mcc, mnc=mnc))
+
+        provider_trans = self.api.transactions.post({
+            'callback_url': absolutify(reverse('provider.success',
+                                               args=[self.name])),
+            'country': country.alpha2,
+            # TODO: figure out error callbacks in bug 987843.
+            #'error_url': absolutify(reverse('provider.error',
+            #                                args=[self.name])),
+            'price': price,
+            'seller_uuid': generic_seller['uuid'],
+            'transaction_uuid': transaction_uuid,
+            'user_uuid': user_uuid,
+        })
+        log.info('{pr}: made provider trans {trans}'
+                 .format(pr=self.name, trans=provider_trans))
+
+        trans = self.slumber.generic.transaction.post({
+            'provider': solitude_const.PROVIDERS[self.name],
+            'seller_product': generic_product['resource_uri'],
+            'source': solitude_const.PROVIDERS[self.name],
+            'status': solitude_const.STATUS_PENDING,
+            'type': solitude_const.TYPE_PAYMENT,
+            'uuid': transaction_uuid,
+        })
+        log.info('{pr}: made solitude trans {trans}'
+                 .format(pr=self.name, trans=trans))
+
+        # TODO: deal with buy_url from response in bug 987839.
+        return provider_trans['transaction_id']
 
 
 @register_provider
@@ -574,10 +652,10 @@ class BangoProvider(PayProvider):
                              .format(sel=generic_seller['resource_pk']))
         return generic_seller['bango']
 
-    def create_transaction(self, generic_product, provider_product,
-                           product_name, transaction_uuid,
+    def create_transaction(self, generic_seller, generic_product,
+                           provider_product, product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
-                           icon_url):
+                           icon_url, mcc=None, mnc=None):
         log.info('transaction {tr}: bango product: {pr}'
                  .format(tr=transaction_uuid,
                          pr=provider_product['resource_uri']))
