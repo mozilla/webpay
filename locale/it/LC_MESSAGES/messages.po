@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-04-09 09:18-0700\n"
-"PO-Revision-Date: 2014-01-27 19:11+0000\n"
+"PO-Revision-Date: 2014-04-09 19:15+0000\n"
 "Last-Translator: Sandro <gialloporpora@mozillaitalia.org>\n"
 "Language-Team: mozillaitalia\n"
 "Language: it\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1390849865.0\n"
+"X-POOTLE-MTIME: 1397070929.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -138,7 +138,7 @@ msgstr "Questa chiave pagamenti può essere utilizzata solo per la simulazione d
 
 #: webpay/base/dev_messages.py:151
 msgid "The configuration of the payment transaction failed."
-msgstr ""
+msgstr "È fallita la configurazione della transazione di pagamento."
 
 #: webpay/base/dev_messages.py:153
 msgid "The purchase cannot be completed because the current transaction has already ended."
