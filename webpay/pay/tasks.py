@@ -186,6 +186,7 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_name, **kw):
     """
     key = notes['issuer_key']
     pay = notes['pay_request']
+    network = notes.get('network', {})
     product_data = urlparse.parse_qs(pay['request'].get('productData', ''))
     provider = ProviderHelper(provider_name)
     try:
@@ -216,7 +217,9 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_name, **kw):
             icon_url,
             user_uuid,
             application_size,
-            source='marketplace' if is_marketplace(key) else 'other'
+            source='marketplace' if is_marketplace(key) else 'other',
+            mcc=network.get('mcc'),
+            mnc=network.get('mnc')
         )
         trans_pk = client.slumber.generic.transaction.get_object(
             uuid=transaction_uuid)['resource_pk']
