@@ -208,7 +208,7 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_name, **kw):
             icon_url = None
         log.info('icon URL for %s: %s' % (transaction_uuid, icon_url))
 
-        bill_id, seller_id = provider.start_transaction(
+        bill_id, pay_url, seller_id = provider.start_transaction(
             transaction_uuid,
             seller_uuid,
             pay['request']['id'],
@@ -226,6 +226,7 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_name, **kw):
         client.slumber.generic.transaction(trans_pk).patch({
             'notes': json.dumps(notes),
             'uid_pay': bill_id,
+            'pay_url': pay_url,
             'status': constants.STATUS_PENDING
         })
     except Exception, exc:

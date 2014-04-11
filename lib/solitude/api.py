@@ -276,22 +276,24 @@ class ProviderHelper:
                 product_id, product_name,
                 seller, generic_product=product)
 
-        trans_token = self.provider.create_transaction(seller,
-                                                       product,
-                                                       provider_product,
-                                                       product_name,
-                                                       transaction_uuid,
-                                                       prices,
-                                                       user_uuid,
-                                                       application_size,
-                                                       source,
-                                                       icon_url,
-                                                       mcc=mcc,
-                                                       mnc=mnc)
+        trans_token, pay_url = self.provider.create_transaction(
+            generic_seller=seller,
+            generic_product=product,
+            provider_product=provider_product,
+            product_name=product_name,
+            transaction_uuid=transaction_uuid,
+            prices=prices,
+            user_uuid=user_uuid,
+            application_size=application_size,
+            source=source,
+            icon_url=icon_url,
+            mcc=mcc,
+            mnc=mnc,
+        )
         log.info('{pr}: made provider trans {trans}'
                  .format(trans=trans_token, pr=self.provider.name))
 
-        return trans_token, seller_id
+        return trans_token, pay_url, seller_id
 
     def create_product(self, external_id, product_name, generic_seller,
                        generic_product=None):
@@ -447,6 +449,56 @@ class PayProvider:
                            provider_product, product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
                            icon_url, mcc=None, mnc=None):
+        """
+        Create a provider specific transaction and a generic Solitude
+        transaction.
+
+        Return the provider a tuple of:
+
+        (transaction ID, payment start URL)
+        """
+        raise NotImplementedError()
+
+    def create_notice(self, querystring):
+        return self.api.notices.post({'qs': querystring})
+
+    def transaction_from_notice(self, parsed_qs):
+        return parsed_qs.get('ext_transaction_id')
+
+    def get_notice_result(self, parsed_qs, raw_qs):
+        return self.api.notices.post({'qs': raw_qs})
+
+    def get_notification_data(self, request):
+        raise NotImplementedError
+
+    def get_notification_result(self, data):
+        return NotImplementedError
+
+    def _formatted_payment_url(self, transaction_uuid):
+        """Return a URL from a template using the transaction ID."""
+        config = settings.PAY_URLS[self.name]
+        return config['base'] + config['pay'].format(uid_pay=transaction_uuid)
+
+
+@register_provider
+class ReferenceProvider(PayProvider):
+    """
+    A reference payment provider
+
+    Our current reference implementation is known as Zippy.
+
+    This is our ideal API. If possible, other payment providers
+    should follow this API.
+
+    If this provider is fully compliant it probably shouldn't need
+    to override any of the inherited methods.
+    """
+    name = 'reference'
+
+    def create_transaction(self, generic_seller, generic_product,
+                           provider_product, product_name, transaction_uuid,
+                           prices, user_uuid, application_size, source,
+                           icon_url, mcc=None, mnc=None):
 
         # TODO: Maybe make these real values. See bug 941952.
         # In the case of Zippy, it does not detect any of these values
@@ -495,38 +547,8 @@ class PayProvider:
         })
         log.info('made solitude trans {trans}'.format(trans=trans))
 
-        return provider_trans['token']
-
-    def create_notice(self, querystring):
-        return self.api.notices.post({'qs': querystring})
-
-    def transaction_from_notice(self, parsed_qs):
-        return parsed_qs.get('ext_transaction_id')
-
-    def get_notice_result(self, parsed_qs, raw_qs):
-        return self.api.notices.post({'qs': raw_qs})
-
-    def get_notification_data(self, request):
-        raise NotImplementedError
-
-    def get_notification_result(self, data):
-        return NotImplementedError
-
-
-@register_provider
-class ReferenceProvider(PayProvider):
-    """
-    A reference payment provider
-
-    Our current reference implementation is known as Zippy.
-
-    This is our ideal API. If possible, other payment providers
-    should follow this API.
-
-    If this provider is fully compliant it probably shouldn't need
-    to override any of the inherited methods.
-    """
-    name = 'reference'
+        token = provider_trans['token']
+        return token, self._formatted_payment_url(token)
 
 
 @register_provider
@@ -611,8 +633,7 @@ class BokuProvider(PayProvider):
         log.info('{pr}: made solitude trans {trans}'
                  .format(pr=self.name, trans=trans))
 
-        # TODO: deal with buy_url from response in bug 987839.
-        return provider_trans['transaction_id']
+        return provider_trans['transaction_id'], provider_trans['buy_url']
 
     def get_notification_data(self, request):
         return request.GET
@@ -710,7 +731,7 @@ class BangoProvider(PayProvider):
                  'prices: {pr}'
                  .format(tr=transaction_uuid, bill=bill_id, pr=prices))
 
-        return bill_id
+        return bill_id, self._formatted_payment_url(bill_id)
 
 
 if not settings.SOLITUDE_URL:
