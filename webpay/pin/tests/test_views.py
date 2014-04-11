@@ -9,7 +9,7 @@ from lib.solitude import constants
 from lib.solitude.api import client
 from lib.solitude.errors import ERROR_STRINGS
 from webpay.auth.tests import SessionTestCase
-from webpay.pay import get_payment_url
+from webpay.pay import get_wait_url
 
 
 class PinViewTestCase(SessionTestCase):
@@ -114,7 +114,7 @@ class VerifyPinViewTest(PinViewTestCase):
                                                       'valid': True})
     def test_good_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        assert res['Location'].endswith(get_payment_url(Mock(session={})))
+        assert res['Location'].endswith(get_wait_url(Mock(session={})))
 
     @patch.object(client, 'verify_pin', lambda x, y: {'locked': False,
                                                       'valid': False})
@@ -178,7 +178,7 @@ class ConfirmPinViewTest(PinViewTestCase):
     def test_good_pin(self, set_user_has_confirmed_pin):
         res = self.client.post(self.url, data={'pin': '1234'})
         set_user_has_confirmed_pin.assert_called_with(ANY, True)
-        assert res['Location'].endswith(get_payment_url(Mock(session={})))
+        assert res['Location'].endswith(get_wait_url(Mock(session={})))
 
     @patch.object(client, 'confirm_pin', lambda x, y: False)
     @patch('webpay.pin.views.set_user_has_confirmed_pin', auto_spec=True)
@@ -388,7 +388,7 @@ class ResetConfirmPinViewTest(ResetPinTest):
     @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
     def test_good_pin(self):
         res = self.client.post(self.url, data={'pin': '1234'})
-        assert res['Location'].endswith(get_payment_url(Mock(session={})))
+        assert res['Location'].endswith(get_wait_url(Mock(session={})))
         # Make sure the reverification flag was cleared out.
         eq_(res.client.session['was_reverified'], False)
 
@@ -410,12 +410,11 @@ class ResetConfirmPinViewTest(ResetPinTest):
 
     @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
     @patch('lib.solitude.api.client.get_transaction', auto_spec=True)
-    @patch('webpay.provider.get_start_url', auto_spec=True)
-    def test_messages_cleared_in_pin_reset(self, get_start_url,
-                                           get_transaction):
-        get_start_url.return_value = self.url
-        get_transaction.return_value = {'status': constants.STATUS_PENDING,
-                                        'uid_pay': 1}
+    def test_messages_cleared_in_pin_reset(self, get_transaction):
+        get_transaction.return_value = {
+            'status': constants.STATUS_PENDING, 'uid_pay': 1,
+            'pay_url': 'https://bango/pay'
+        }
         self.add_fake_trans_id_to_session()
         res = self.client.post(self.url, data={'pin': '1234'}, follow=True)
         eq_([], [msg.message for msg in res.context['messages']])

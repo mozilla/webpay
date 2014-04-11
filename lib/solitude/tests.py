@@ -282,7 +282,7 @@ class SolitudeAPITest(TestCase):
             client.set_needs_pin_reset(self.uuid, False, etag=wrong_etag)
 
 
-class CreateBangoTest(TestCase):
+class TestBango(TestCase):
     uuid = 'some:pin'
     seller = {'bango': {'seller': 's', 'resource_uri': 'r',
                         'package_id': '1234'},
@@ -290,7 +290,7 @@ class CreateBangoTest(TestCase):
               'resource_pk': 'seller_pk'}
 
     def setUp(self):
-        super(CreateBangoTest, self).setUp()
+        super(TestBango, self).setUp()
         self.slumber = mock.MagicMock()
         self.provider = ProviderHelper('bango', slumber=self.slumber)
 
@@ -329,8 +329,9 @@ class CreateBangoTest(TestCase):
             'billingConfigurationId': 'bill_id'}
         slumber.bango.product.get_object_or_404.side_effect = (
             ObjectDoesNotExist)
-        eq_(self.provider.start_transaction(*range(0, 8)),
-            ('bill_id', 'seller_pk'))
+        trans_id, pay_url, seller_uuid = self.provider.start_transaction(
+            *range(0, 8))
+        eq_(trans_id, 'bill_id')
 
     def test_with_bango_product(self):
         slumber = self.slumber
@@ -339,8 +340,24 @@ class CreateBangoTest(TestCase):
             'billingConfigurationId': 'bill_id'}
         slumber.bango.product.get_object.return_value = {
             'resource_uri': 'foo'}
-        eq_(self.provider.start_transaction(*range(0, 8)),
-            ('bill_id', 'seller_pk'))
+        trans_id, pay_url, seller_uuid = self.provider.start_transaction(
+            *range(0, 8))
+        eq_(trans_id, 'bill_id')
+
+    def test_pay_url(self):
+        bill_id = '123'
+        slumber = self.slumber
+        slumber.generic.seller.get_object_or_404.return_value = self.seller
+        slumber.bango.billing.post.return_value = {
+            'billingConfigurationId': bill_id}
+
+        with self.settings(
+            PAY_URLS={'bango': {'base': 'http://bango',
+                                'pay': '/pay?bcid={uid_pay}'}}):
+            trans_id, pay_url, seller_uuid = self.provider.start_transaction(
+                *range(0, 8))
+
+        eq_(pay_url, 'http://bango/pay?bcid={b}'.format(b=bill_id))
 
 
 class ProviderTestCase(TestCase):
@@ -431,7 +448,7 @@ class ProviderTestCase(TestCase):
                 })
 
 
-class TestConfigureRefTrans(ProviderTestCase):
+class TestReferenceProvider(ProviderTestCase):
 
     def setUp(self):
         self.slumber = mock.MagicMock()
@@ -444,10 +461,10 @@ class TestConfigureRefTrans(ProviderTestCase):
                     'generic.buyer',
                     'provider.reference.products',
                     'provider.reference.transactions',)
-        return super(TestConfigureRefTrans, self).set_mocks(
+        return super(TestReferenceProvider, self).set_mocks(
             returns=returns, keys=keys, **kw)
 
-    def test_with_existing_prod(self):
+    def test_start_with_existing_prod(self):
         seller_uuid = 'seller-xyz'
         product_uuid = 'app-xyz'
 
@@ -462,11 +479,13 @@ class TestConfigureRefTrans(ProviderTestCase):
             product_uuid=product_uuid
         )
 
-        result = self.configure(seller_uuid=seller_uuid,
-                                product_uuid=product_uuid)
+        trans_id, pay_url, seller_uuid = self.configure(
+            seller_uuid=seller_uuid, product_uuid=product_uuid)
 
-        eq_(result[0], 'zippy-trans-token')
-        eq_(result[1], seller_uuid)
+        eq_(trans_id, 'zippy-trans-token')
+        eq_(seller_uuid, seller_uuid)
+        assert pay_url.endswith('tx={t}'.format(t=trans_id)), (
+            'Unexpected: {url}'.format(url=pay_url))
 
         kw = self.slumber.provider.reference.products\
                                             .get_object_or_404.call_args[1]
@@ -589,12 +608,13 @@ class TestBoku(ProviderTestCase):
     def test_start_transaction(self):
         seller_uuid = 'seller-xyz'
         user_uuid = 'user-xyz'
+        boku_pay_url = 'https://site/buy'
 
         self.set_mocks({
             'boku.transactions': {
                 'method': 'post',
                 'return': {
-                    'buy_url': 'https://site/buy',
+                    'buy_url': boku_pay_url,
                     'transaction_id': 'boku-trans-id',
                 }
             }},
@@ -602,11 +622,12 @@ class TestBoku(ProviderTestCase):
             product_uuid='XYZ'
         )
 
-        result = self.configure(seller_uuid=seller_uuid,
-                                user_uuid=user_uuid)
+        trans_id, pay_url, seller_uuid = self.configure(
+            seller_uuid=seller_uuid, user_uuid=user_uuid)
 
-        eq_(result[0], 'boku-trans-id')
-        eq_(result[1], seller_uuid)
+        eq_(trans_id, 'boku-trans-id')
+        eq_(pay_url, boku_pay_url)
+        eq_(seller_uuid, seller_uuid)
 
         kw = self.slumber.boku.transactions.post.call_args[0][0]
         eq_(kw['price'], '55.00')

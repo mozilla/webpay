@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from lib.solitude.exceptions import ResourceModified
 from webpay.base import dev_messages as msg
 from webpay.base.utils import system_error
-from webpay.pay import get_payment_url
+from webpay.pay import get_wait_url
 
 from lib.solitude.api import client
 
@@ -21,7 +21,7 @@ def check_pin_status(request):
     last_success = request.session.get('last_pin_success')
     if (last_success and ((datetime.now() - last_success).seconds <
                           settings.PIN_UNLOCK_LENGTH)):
-        return get_payment_url(request)
+        return get_wait_url(request)
 
     if request.session.get('uuid_has_pin'):
         if request.session.get('uuid_has_confirmed_pin'):

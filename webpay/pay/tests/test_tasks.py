@@ -511,6 +511,20 @@ class TestStartPay(BaseStartPay):
         self.solitude.generic.seller.get_object_or_404.assert_called_with(
             uuid=app_seller_uuid)
 
+    def test_pay_url_saved(self):
+        bill_id = '123'
+        self.mkt.webpay.prices.get.return_value = self.prices
+        self.set_billing_id(self.solitude, bill_id)
+        mock_trans = mock.Mock()
+        self.solitude.generic.transaction.return_value = mock_trans
+
+        self.start()
+
+        assert mock_trans.patch.called
+        post = mock_trans.patch.call_args[0][0]
+        assert post['pay_url'].endswith('?bcid={b}'.format(b=bill_id)), (
+            'Unexpected: {p}'.format(p=post['pay_url']))
+
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
     def test_marketplace_application_size(self):
         # Simulate how the Marketplace would add
