@@ -115,7 +115,7 @@ class TestNotification(TestCase):
 
     def test_good(self):
         eq_(self.client.get(self.url + '?f=b').status_code, 200)
-        self.slumber.provider.boku.event.post.assert_called_with({'f': ['b']})
+        self.slumber.boku.event.post.assert_called_with({'f': ['b']})
 
     @raises(NotImplementedError)
     def test_not_implemented(self):
@@ -123,7 +123,7 @@ class TestNotification(TestCase):
         self.client.get(self.url)
 
     def test_fail(self):
-        self.slumber.provider.boku.event.post.side_effect = HttpClientError
+        self.slumber.boku.event.post.side_effect = HttpClientError
         res = self.client.get(self.url)
         eq_(res.status_code, 502)
         eq_(res.content, 'NOTICE_ERROR')
