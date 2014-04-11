@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from django_paranoia.decorators import require_GET
@@ -47,3 +48,18 @@ def error(request, provider_name):
                       code=request.GET.get('ResponseCode'),
                       qs=request.GET))
     return system_error(request, code=msg.EXT_ERROR)
+
+
+@require_GET
+def notification(request, provider_name):
+    """
+    Handle server to server notification responses.
+    """
+    provider = ProviderHelper(provider_name)
+
+    try:
+        provider.server_notification(request)
+    except msg.DevMessage as m:
+        return HttpResponse(m.code, status=502)
+
+    return HttpResponse('OK')
