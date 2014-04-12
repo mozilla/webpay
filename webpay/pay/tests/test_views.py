@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
 import time
-from collections import defaultdict
 from datetime import datetime
 
 from django.conf import settings
@@ -19,7 +18,7 @@ from lib.solitude import constants
 
 from webpay.base import dev_messages as msg
 from webpay.base.tests import BasicSessionCase
-from webpay.pay import get_payment_url
+from webpay.pay import get_wait_url
 from webpay.pay.samples import JWTtester
 
 from . import Base, sample
@@ -77,7 +76,7 @@ class TestVerify(Base):
         res = self.get(payload)
         eq_(res.status_code, 302)
         assert res['Location'].endswith(
-            '?next={0}'.format(get_payment_url(mock.Mock(session={})))
+            '?next={0}'.format(get_wait_url(mock.Mock(session={})))
         ), res['Location']
 
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
@@ -416,64 +415,31 @@ class TestWaitToStart(Base):
         self.session['trans_id'] = 'some:trans'
         self.save_session()
 
-    @mock.patch.object(settings, 'PAY_URLS',
-                       {'bango': {'base': 'http://bango',
-                                  'pay': '/pay?bcid={uid_pay}'}})
     def test_redirect_when_ready(self, get_transaction):
+        pay_url = 'https://bango/pay'
         get_transaction.return_value = {
             'status': constants.STATUS_PENDING,
             'uid_pay': 123,
+            'pay_url': pay_url
         }
         self.session['payment_start'] = time.time()
         self.save_session()
         res = self.client.get(self.wait)
-        eq_(res['Location'], 'http://bango/pay?bcid=123')
+        eq_(res['Location'], pay_url)
 
-    @mock.patch.object(settings, 'PAYMENT_PROVIDER', 'reference')
-    def test_universal_redirect_when_ready(self, get_transaction):
-        get_transaction.return_value = {
-            'status': constants.STATUS_PENDING,
-            'uid_pay': 123,
-        }
-        self.session['payment_start'] = time.time()
-        self.save_session()
-        with mock.patch.object(settings, 'PAY_URLS',
-                               {'reference': {'base': 'http://base',
-                                              'pay': '/pay?t={uid_pay}'}}):
-            res = self.client.get(self.wait)
-        eq_(res['Location'], 'http://base/pay?t=123')
-
-    @mock.patch.object(settings, 'PAY_URLS',
-                       {'bango': {'base': 'http://bango',
-                                  'pay': '/pay?bcid={uid_pay}'}})
     def test_start_ready(self, get_transaction):
+        pay_url = 'https://bango/pay'
         get_transaction.return_value = {
             'status': constants.STATUS_PENDING,
             'uid_pay': 123,
+            'pay_url': pay_url,
         }
         self.session['payment_start'] = time.time()
         self.save_session()
         res = self.client.get(self.start)
         eq_(res.status_code, 200, res.content)
         data = json.loads(res.content)
-        eq_(data['url'], 'http://bango/pay?bcid=123')
-        eq_(data['status'], constants.STATUS_PENDING)
-
-    @mock.patch.object(settings, 'PAYMENT_PROVIDER', 'reference')
-    def test_universal_start_ready(self, get_transaction):
-        get_transaction.return_value = {
-            'status': constants.STATUS_PENDING,
-            'uid_pay': 123,
-        }
-        self.session['payment_start'] = time.time()
-        self.save_session()
-        with mock.patch.object(settings, 'PAY_URLS',
-                               {'reference': {'base': 'http://base',
-                                              'pay': '/pay?t={uid_pay}'}}):
-            res = self.client.get(self.start)
-        eq_(res.status_code, 200, res.content)
-        data = json.loads(res.content)
-        eq_(data['url'], 'http://base/pay?t=123')
+        eq_(data['url'], pay_url)
         eq_(data['status'], constants.STATUS_PENDING)
 
     def test_start_not_there(self, get_transaction):
@@ -488,6 +454,7 @@ class TestWaitToStart(Base):
         get_transaction.return_value = {
             'status': constants.STATUS_RECEIVED,
             'uid_pay': 123,
+            'pay_url': 'https://bango/pay',
         }
         res = self.client.get(self.start)
         eq_(res.status_code, 200, res.content)
@@ -500,6 +467,7 @@ class TestWaitToStart(Base):
             get_transaction.return_value = {
                 'status': status,
                 'uid_pay': 123,
+                'pay_url': 'https://bango/pay',
             }
             res = self.client.get(self.wait)
             self.assertContains(res, msg.TRANS_ENDED,

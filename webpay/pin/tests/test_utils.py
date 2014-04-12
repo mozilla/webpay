@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 import mock
 from nose.tools import eq_
 
-from webpay.pay import get_payment_url
+from webpay.pay import get_wait_url
 from webpay.pin import utils
 
 
@@ -33,7 +33,7 @@ class CheckPinStatusTestCase(TestCase):
     def test_pin_recently_entered_successfully(self):
         self.request.session['last_pin_success'] = datetime.now()
         eq_(utils.check_pin_status(self.request),
-            get_payment_url(mock.Mock(session={})))
+            get_wait_url(mock.Mock(session={})))
 
     def test_locked_out_but_pin_recently_entered_successfully(self):
         self.request.session['last_pin_success'] = datetime.now()

@@ -14,7 +14,6 @@ from mozpay.verify import verify_jwt
 from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
-from webpay import provider
 from webpay.auth.decorators import user_can_simulate, user_verified
 from webpay.auth import utils as auth_utils
 from webpay.base import dev_messages as msg
@@ -277,7 +276,8 @@ def wait_to_start(request):
         # This seems like a seriously problem but maybe there is just a race
         # condition. If we see a lot of these in the logs it means the
         # payment will never complete so we should keep an eye on it.
-        log.error('wait_to_start() session trans_id was None')
+        log.error('wait_to_start() session trans_id {t} was None'
+                  .format(t=trans_id))
     try:
         statsd.incr('purchase.payment_time.retry')
         with statsd.timer('purchase.payment_time.get_transation'):
@@ -300,8 +300,7 @@ def wait_to_start(request):
         # Dump any messages so we don't show them later.
         clear_messages(request)
         # The transaction is ready; no need to wait for it.
-        return http.HttpResponseRedirect(
-            provider.get_start_url(trans['uid_pay']))
+        return http.HttpResponseRedirect(get_payment_url(trans))
     return render(request, 'pay/wait-to-start.html')
 
 
@@ -317,7 +316,10 @@ def trans_start_url(request):
         with statsd.timer('purchase.payment_time.get_transation'):
             trans = solitude.get_transaction(request.session['trans_id'])
     except ObjectDoesNotExist:
+        log.error('trans_start_url() transaction does not exist: {t}'
+                  .format(t=request.session['trans_id']))
         trans = {'status': None}
+
     data = {'url': None, 'status': trans['status']}
     if trans['status'] == constants.STATUS_PENDING:
         statsd.incr('purchase.payment_time.success')
@@ -325,7 +327,7 @@ def trans_start_url(request):
         if payment_start:
             delta = int((time.time() - float(payment_start)) * 1000)
             statsd.timing('purchase.payment_time.duration', delta)
-        data['url'] = provider.get_start_url(trans['uid_pay'])
+        data['url'] = get_payment_url(trans)
     return data
 
 
@@ -415,3 +417,18 @@ def disabled_by_user_agent(user_agent):
             return True
 
     return False
+
+
+def get_payment_url(transaction):
+    """
+    Given a Solitude transaction object, return a URL to start the payment
+    flow for this provider.
+    """
+    # A transaction pay_url is configured at the time that a
+    # transaction is started.
+    url = transaction['pay_url']
+    log.info('Start pay provider payflow "{pr}" for '
+             'transaction {tr} at: {url}'
+             .format(pr=transaction.get('provider'), url=url,
+                     tr=transaction.get('uid')))
+    return url

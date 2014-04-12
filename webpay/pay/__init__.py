@@ -2,7 +2,6 @@ import time
 
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
-from django.conf import settings
 
 from webpay.auth.decorators import user_can_simulate
 from webpay.base.logger import getLogger
@@ -10,9 +9,12 @@ from webpay.base.logger import getLogger
 log = getLogger('w.pay')
 
 
-def get_payment_url(request):
+def get_wait_url(request):
     """
-    After all authentication, get the URL to start the payment flow.
+    Get the URL to wait for the start of payment.
+
+    This is essentially the start of payment but we may need to wait until the
+    transaction is ready.
     """
     try:
         # Re-use the view decorator.
