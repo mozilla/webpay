@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-04-09 09:18-0700\n"
-"PO-Revision-Date: 2014-04-12 00:07+0000\n"
+"PO-Revision-Date: 2014-04-12 01:18+0000\n"
 "Last-Translator: Gábor <kelemeng@ubuntu.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -13,11 +13,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n !=1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1397261244.0\n"
+"X-POOTLE-MTIME: 1397265485.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
-msgstr "Fizetés törölve."
+msgstr "Vásárlás törölve."
 
 #: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
@@ -25,7 +25,9 @@ msgstr "Sikeres vásárlás."
 
 #: webpay/base/dev_messages.py:90
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr "A Mozilla érvénytelen kódot kapott a fizetésszolgáltatótól (Bango) a fizetés feldolgozásakor"
+msgstr ""
+"A Mozilla érvénytelen kódot kapott a vásárlásszolgáltatótól (Bango) a "
+"vásárlás feldolgozásakor"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:94
@@ -44,15 +46,16 @@ msgstr "Az irányár ismeretlen vagy érvénytelen."
 
 #: webpay/base/dev_messages.py:100
 msgid "The request to begin payment was invalid."
-msgstr "A fizetés megkezdésére vonatkozó kérés érvénytelen volt."
+msgstr "A vásárlás megkezdésére vonatkozó kérés érvénytelen volt."
 
 #: webpay/base/dev_messages.py:102
 msgid "The requested payment simulation result is not supported."
-msgstr "A kért fizetési szimulációs eredmény nem támogatott."
+msgstr "A kért vásárlási szimulációs eredmény nem támogatott."
 
 #: webpay/base/dev_messages.py:104
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr "A fizetésszolgáltató (Bango) a fizetés feldolgozásakor hibát adott vissza"
+msgstr ""
+"A vásárlásszolgáltató (Bango) a vásárlás feldolgozásakor hibát adott vissza"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -62,7 +65,8 @@ msgstr "A JWT lejárt."
 
 #: webpay/base/dev_messages.py:110
 msgid "The external payment processor returned an error while handling the payment"
-msgstr "A külső fizetésfeldolgozó hibát adott vissza a fizetés kezelése közben"
+msgstr ""
+"A külső vásárlásfeldolgozó hibát adott vissza a vásárlás kezelése közben"
 
 #: webpay/base/dev_messages.py:112
 msgid "An internal web request timed out."
@@ -101,7 +105,9 @@ msgstr "Az URL hibás. Ez egy postback vagy egy ikon URL lehet."
 
 #: webpay/base/dev_messages.py:128
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr "A tranzakcióazonosító hiányzott a munkamenetből a fizetés-visszatérítés feldolgozásakor."
+msgstr ""
+"A tranzakcióazonosító hiányzott a munkamenetből egy vásárlás "
+"visszatérítésének feldolgozásakor."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:132
@@ -111,19 +117,23 @@ msgstr "Ha a(z) {0} kulcs meg van adva, akkor a(z) {1} kulcsot is meg kell adnia
 #. L10n: First argument is the name of the key, 'reason'.
 #: webpay/base/dev_messages.py:136
 msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr "A kért visszafizetési szimuláció hiányolja a(z) „{0}” kulcsot."
+msgstr "A kért visszafizetési szimulációból hiányzik a „{0}” kulcs."
 
 #: webpay/base/dev_messages.py:138
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr "Az értesítési szolgáltatás hibával válaszolt a fizetési értesítés ellenőrzésekor"
+msgstr ""
+"Az értesítési szolgáltatás hibával válaszolt a vásárlási értesítés "
+"ellenőrzésekor"
 
 #: webpay/base/dev_messages.py:140
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr "Az értesítési szolgáltatás váratlan kivételt dobott a fizetési értesítés ellenőrzésekor"
+msgstr ""
+"Az értesítési szolgáltatás váratlan kivételt dobott a vásárlási értesítés "
+"ellenőrzésekor"
 
 #: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
 msgid "Payments are temporarily disabled."
-msgstr "A fizetés átmenetileg szünetel."
+msgstr "A vásárlás átmenetileg szünetel."
 
 #: webpay/base/dev_messages.py:145
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
@@ -131,11 +141,11 @@ msgstr "Az erőforrás módosításra került az előző kérés idején belül.
 
 #: webpay/base/dev_messages.py:147
 msgid "Payment simulations are disabled at this time."
-msgstr "A fizetés szimulációja jelenleg le van tiltva."
+msgstr "A vásárlás szimulációja jelenleg le van tiltva."
 
 #: webpay/base/dev_messages.py:149
 msgid "This payment key can only be used to simulate purchases."
-msgstr "A fizetési kulcs csak szimulációhoz használható."
+msgstr "Ez a vásárlási kulcs csak szimulációhoz használható."
 
 #: webpay/base/dev_messages.py:151
 msgid "The configuration of the payment transaction failed."
@@ -155,11 +165,13 @@ msgstr "Időtúllépés a tranzakció indításakor."
 
 #: webpay/base/dev_messages.py:160
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr "A fizetési módszer vagy az irányár nem támogatott ehhez a régióhoz vagy szolgáltatóhoz."
+msgstr ""
+"A vásárlási módszer vagy az irányár nem támogatott ehhez a régióhoz vagy "
+"szolgáltatóhoz."
 
 #: webpay/base/dev_messages.py:162
 msgid "The user cancelled the payment."
-msgstr "A felhasználó megszakította a fizetést."
+msgstr "A felhasználó megszakította a vásárlást."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -169,11 +181,15 @@ msgstr "A(z) „{0}” kulcshoz tartozó érték elérte a maximális hosszúsá
 
 #: webpay/base/utils.py:56
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr "Hiba történt a fizetés beállításánál. Próbálja újra vagy vegye fel a kapcsolatot az alkalmazással, ha a probléma továbbra is fennáll."
+msgstr ""
+"Hiba történt a vásárlás beállításánál. Próbálja újra, vagy vegye fel a "
+"kapcsolatot az app szerzőivel, ha tartósan fennáll."
 
 #: webpay/base/utils.py:62
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr "Belső hiba a fizetés feldolgozása során. Próbálja újra, vagy keresse meg a Mozillát, ha tartósan fennáll."
+msgstr ""
+"Belső hiba a vásárlás feldolgozása során. Próbálja újra, vagy keresse meg a "
+"Mozillát, ha tartósan fennáll."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -223,7 +239,9 @@ msgstr "A PIN csak számokból állhat."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr "Másik felhasználóként volt bejelentkezve, a fizetési folyamatot újra kell indítani."
+msgstr ""
+"Másik felhasználóként volt bejelentkezve, a vásárlási folyamatot újra kell "
+"indítani."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -271,7 +289,7 @@ msgstr "Bejelentkezés"
 
 #: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in to continue with the payment"
-msgstr "Jelentkezzen be a fizetés folytatásához"
+msgstr "Jelentkezzen be a vásárlás folytatásához"
 
 #: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in"
@@ -279,7 +297,7 @@ msgstr "Bejelentkezés"
 
 #: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
-msgstr "Fizetés szimulációja"
+msgstr "Vásárlás szimulációja"
 
 #: webpay/pay/templates/pay/simulate.html:8
 msgid "You will not be charged."
@@ -299,15 +317,15 @@ msgstr "Szuperereje van"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr "Fizetés szimulációja"
+msgstr "Vásárlás szimulációja"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr "Valós fizetés"
+msgstr "Valós vásárlás"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
-msgstr "Fizetés beállítása&hellip;"
+msgstr "Vásárlás beállítása&hellip;"
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
