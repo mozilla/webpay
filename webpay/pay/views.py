@@ -313,7 +313,7 @@ def trans_start_url(request):
     """
     try:
         statsd.incr('purchase.payment_time.retry')
-        with statsd.timer('purchase.payment_time.get_transation'):
+        with statsd.timer('purchase.payment_time.get_transaction'):
             trans = solitude.get_transaction(request.session['trans_id'])
     except ObjectDoesNotExist:
         log.error('trans_start_url() transaction does not exist: {t}'
