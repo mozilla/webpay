@@ -13,6 +13,7 @@ from slumber.exceptions import HttpClientError
 from webpay.base import dev_messages as msg
 from webpay.base.helpers import absolutify
 
+from lib.marketplace.constants import COUNTRIES
 from ..utils import SlumberWrapper
 from . import constants as solitude_const
 from .errors import ERROR_STRINGS
@@ -587,25 +588,37 @@ class BokuProvider(PayProvider):
                            provider_product, product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
                            icon_url, mcc=None, mnc=None):
+        # This is a temporary hack, because it will try and do
+        # network data on None and then fail.
+        if settings.MCC_OVERRIDE:
+            log.warning('MCC changed from {0} to {1} because of MCC_OVERRIDE'.
+                        format(mcc, settings.MCC_OVERRIDE))
+            mcc = settings.MCC_OVERRIDE
+
+        if settings.MNC_OVERRIDE:
+            log.warning('MNC changed from {0} to {1} because of MNC_OVERRIDE'.
+                        format(mnc, settings.MNC_OVERRIDE))
+            mnc = settings.MNC_OVERRIDE
+
         try:
             data = self.network_data[(mcc, mnc)]
         except KeyError:
             raise self.TransactionError('Unknown network: mcc={mcc}; mnc={mnc}'
                                         .format(mcc=mcc, mnc=mnc))
         country = mobile_codes.mcc(mcc)
-
+        # TODO: consider using get_price_country here?
+        marketplace_country = COUNTRIES[mcc]
         price = None
         for pr in prices:
             # Given a list of all prices + currencies for this price point,
             # send Boku the one that matches the user's network.
-            if pr['currency'] == data['currency']:
+            if pr['region'] == marketplace_country:
                 price = pr['price']
                 break
         if not price:
             raise self.TransactionError(
-                'Could not find a price for currency {cur}; '
-                'mcc={mcc}; mnc={mnc}'.format(cur=data['currency'],
-                                              mcc=mcc, mnc=mnc))
+                'Could not find a price for region: mcc={mcc}; mnc={mnc}'
+                .format(mcc=mcc, mnc=mnc))
 
         provider_trans = self.api.transactions.post({
             'callback_url': absolutify(reverse('provider.success',

@@ -527,7 +527,17 @@ PAY_URLS = {
         'pay': '/payment/start?tx={uid_pay}',
         'logout': '/users/reset',
     },
+    'boku': {
+        'base': '',
+        'pay': '',
+        'logout': ''
+    }
 }
+
+
+# Allows you to change the MCC and MNC values.
+MCC_OVERRIDE = None
+MNC_OVERRIDE = None
 
 # Warning that this server is really only for testing.
 USAGE_WARNING = False

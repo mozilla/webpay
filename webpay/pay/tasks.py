@@ -188,7 +188,7 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_name, **kw):
     pay = notes['pay_request']
     network = notes.get('network', {})
     product_data = urlparse.parse_qs(pay['request'].get('productData', ''))
-    provider = ProviderHelper(provider_name)
+    helper = ProviderHelper(provider_name)
     try:
         seller_uuid = get_seller_uuid(key, product_data)
         try:
@@ -197,7 +197,9 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_name, **kw):
             application_size = None
 
         # Ask the marketplace for a valid price point.
-        prices = mkt_client.get_price(pay['request']['pricePoint'])
+        # Note: the get_price_country API might be more helpful.
+        prices = mkt_client.get_price(pay['request']['pricePoint'],
+                                      provider=helper.provider.name)
         log.debug('pricePoint=%s prices=%s' % (pay['request']['pricePoint'],
                                                prices['prices']))
         try:
@@ -208,7 +210,7 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_name, **kw):
             icon_url = None
         log.info('icon URL for %s: %s' % (transaction_uuid, icon_url))
 
-        bill_id, pay_url, seller_id = provider.start_transaction(
+        bill_id, pay_url, seller_id = helper.start_transaction(
             transaction_uuid,
             seller_uuid,
             pay['request']['id'],
