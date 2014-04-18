@@ -383,22 +383,31 @@ class TestConfigureTX(Base):
         eq_(resp.status_code, 200)
         eq_(resp.get('Content-Type'), 'application/json; charset=utf-8')
 
+    @mock.patch.object(settings, 'SIMULATED_NETWORK',
+                       {'mcc': '123', 'mnc': '45'})
+    def test_simulate_network(self, configure_trans):
+        self.client.post(reverse('pay.configure_transaction'),
+                         # Pretend this is the client posting a real
+                         # network or maybe NULLs.
+                         {'mcc': '111', 'mnc': '01'})
+        network_codes = self.client.session.get('notes', {}).get('network', {})
+        # Make sure the posted network was overridden.
+        eq_(network_codes.get('mcc'), '123', 'mcc should be overridden to 123')
+        eq_(network_codes.get('mnc'), '45', 'mnc should be overridden to 45')
+
     def test_setup_invalid_mcc_mnc(self, configure_trans):
         self.client.post(reverse('pay.configure_transaction'),
                          {'mcc': 'abc', 'mnc': '45'})
-        ok_('network' not in self.client.session.get('notes', {}),
-            'network should not be set')
+        eq_(self.client.session.get('notes', {}).get('network', {}), {})
 
     def test_setup_invalid_mcc_mnc_single_digit(self, configure_trans):
         self.client.post(reverse('pay.configure_transaction'),
                          {'mcc': '123', 'mnc': '2'})
-        ok_('network' not in self.client.session.get('notes', {}),
-            'network should not be set')
+        eq_(self.client.session.get('notes', {}).get('network', {}), {})
 
     def test_no_mcc_mnc(self, configure_trans):
         self.client.post(reverse('pay.configure_transaction'), {})
-        ok_('network' not in self.client.session.get('notes', {}),
-            'network should not be set')
+        eq_(self.client.session.get('notes', {}).get('network', {}), {})
 
 
 @mock.patch('lib.solitude.api.client.get_transaction')

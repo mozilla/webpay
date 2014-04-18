@@ -129,14 +129,29 @@ def configure_transaction(request):
     form = NetCodeForm(request.POST)
     sess = request.session
 
+    mcc = None
+    mnc = None
     if form.is_valid():
         mcc = form.cleaned_data['mcc']
         mnc = form.cleaned_data['mnc']
-        notes = sess.get('notes', {})
+        log.info('Client detected network: mcc={mcc}, mnc={mnc}'
+                 .format(mcc=mcc, mnc=mnc))
+
+    if settings.SIMULATED_NETWORK:
+        mcc = settings.SIMULATED_NETWORK['mcc']
+        mnc = settings.SIMULATED_NETWORK['mnc']
+        log.warning('OVERRIDING detected network with: mcc={mcc}, mnc={mnc}'
+                    .format(mcc=mcc, mnc=mnc))
+
+    notes = sess.get('notes', {})
+    if mcc and mnc:
         notes['network'] = {'mnc': mnc, 'mcc': mcc}
-        sess['notes'] = notes
-        log.info('Added mcc/mnc to session: '
-                 '{network}'.format(network=notes['network']))
+    else:
+        # Reset network state to avoid leakage from previous states.
+        notes['network'] = {}
+    sess['notes'] = notes
+    log.info('Added mcc/mnc to session: '
+             '{network}'.format(network=notes['network']))
 
     log.info('configuring transaction {0} from client'
              .format(sess.get('trans_id')))

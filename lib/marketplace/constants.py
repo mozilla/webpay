@@ -3,5 +3,5 @@
 #
 # This is a mapping of MCC to zamboni region id.
 COUNTRIES = {
-    '334': 12,
+    '334': 12,  # Mexico
 }

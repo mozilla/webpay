@@ -227,6 +227,9 @@ class ProviderHelper:
             provider_name = BokuProvider.name
         else:
             provider_name = settings.PAYMENT_PROVIDER
+            if settings.PAYMENT_PROVIDER == BokuProvider.name:
+                raise ValueError('Since Boku is detected by network '
+                                 'use SIMULATED_NETWORK to force it instead')
 
         log.info('choosing payment provider "{pr}" for mcc {mcc}, mnc {mnc}'
                  .format(pr=provider_name, mcc=mcc, mnc=mnc))
@@ -588,37 +591,30 @@ class BokuProvider(PayProvider):
                            provider_product, product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
                            icon_url, mcc=None, mnc=None):
-        # This is a temporary hack, because it will try and do
-        # network data on None and then fail.
-        if settings.MCC_OVERRIDE:
-            log.warning('MCC changed from {0} to {1} because of MCC_OVERRIDE'.
-                        format(mcc, settings.MCC_OVERRIDE))
-            mcc = settings.MCC_OVERRIDE
-
-        if settings.MNC_OVERRIDE:
-            log.warning('MNC changed from {0} to {1} because of MNC_OVERRIDE'.
-                        format(mnc, settings.MNC_OVERRIDE))
-            mnc = settings.MNC_OVERRIDE
-
         try:
-            data = self.network_data[(mcc, mnc)]
+            # Do a sanity check to make sure we're actually on a Boku network.
+            self.network_data[(mcc, mnc)]
         except KeyError:
-            raise self.TransactionError('Unknown network: mcc={mcc}; mnc={mnc}'
+            raise self.TransactionError('Unknown Boku network: '
+                                        'mcc={mcc}; mnc={mnc}'
                                         .format(mcc=mcc, mnc=mnc))
         country = mobile_codes.mcc(mcc)
         # TODO: consider using get_price_country here?
-        marketplace_country = COUNTRIES[mcc]
+        mcc_region = COUNTRIES[mcc]
         price = None
-        for pr in prices:
+        for mktpl_price in prices:
             # Given a list of all prices + currencies for this price point,
-            # send Boku the one that matches the user's network.
-            if pr['region'] == marketplace_country:
-                price = pr['price']
+            # send Boku the one that matches the user's network/region.
+            if mktpl_price['region'] == mcc_region:
+                price = mktpl_price['price']
                 break
         if not price:
+            log.error('No Boku price for region {r}: mcc={mcc}; mnc={mnc} '
+                      'in prices {pr}'.format(mcc=mcc, mnc=mnc,
+                                              r=mcc_region, pr=prices))
             raise self.TransactionError(
-                'Could not find a price for region: mcc={mcc}; mnc={mnc}'
-                .format(mcc=mcc, mnc=mnc))
+                'Could not find a price for region {r}: mcc={mcc}; mnc={mnc}'
+                .format(mcc=mcc, mnc=mnc, r=mcc_region))
 
         provider_trans = self.api.transactions.post({
             'callback_url': absolutify(reverse('provider.success',

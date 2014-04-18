@@ -641,10 +641,6 @@ class TestBoku(ProviderTestCase):
     def test_unknown_network(self):
         self.configure(mcc=None, mnc=None)
 
-    def test_unknown_network(self):
-        with self.settings(MCC_OVERRIDE='334', MNC_OVERRIDE='020'):
-            self.configure(mcc=None, mnc=None)
-
     @raises(BokuProvider.TransactionError)
     def test_unknown_price(self):
         # Simulate when a network is mapped to a currency that doesn't exist.
