@@ -527,6 +527,11 @@ PAY_URLS = {
         'pay': '/payment/start?tx={uid_pay}',
         'logout': '/users/reset',
     },
+    'boku': {
+        'base': '',
+        'pay': '',
+        'logout': ''
+    }
 }
 
 # Warning that this server is really only for testing.
@@ -536,3 +541,9 @@ USAGE_WARNING = False
 ENABLE_SPA = False
 
 ALLOW_ANDROID_PAYMENTS = True
+
+# When not None, this is a dict of mcc and mnc to simulate a specific mobile
+# network. This overrides the client side network detection.
+# Example: {'mcc': '123', 'mnc': '45'}
+# Use this setting carefully!
+SIMULATED_NETWORK = None

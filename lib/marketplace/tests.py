@@ -43,7 +43,7 @@ class SolitudeAPITest(TestCase):
     def test_get_prices_country(self, slumber):
         self.mock(slumber)
         # 334 is the MCC for Mexico.
-        prices = client.get_price_country(1, PROVIDER_BOKU, 334)
+        prices = client.get_price_country(1, PROVIDER_BOKU, '334')
         eq_(prices, (u'3.00', 'MXN'))
 
     @raises(UnknownPricePoint)

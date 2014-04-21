@@ -366,8 +366,8 @@ class ProviderTestCase(TestCase):
                   product_uuid='product-xyz', product_name='Shiny App',
                   success_redirect='/todo/postback',
                   error_redirect='/todo/chargeback',
-                  prices=[{'price': '0.89', 'currency': 'EUR'},
-                          {'price': '55.00', 'currency': 'MXN'}],
+                  prices=[{'price': '0.89', 'currency': 'EUR', 'region': 14},
+                          {'price': '55.00', 'currency': 'MXN', 'region': 12}],
                   icon_url='/todo/icons', user_uuid='user-xyz',
                   app_size=1024 * 5, mcc=None, mnc=None):
         return self.provider.start_transaction(
