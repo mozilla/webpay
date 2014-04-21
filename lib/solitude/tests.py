@@ -1,6 +1,7 @@
 import json
 
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 
@@ -634,6 +635,12 @@ class TestBoku(ProviderTestCase):
         eq_(kw['country'], 'MX')
         eq_(kw['seller_uuid'], seller_uuid)
         eq_(kw['user_uuid'], user_uuid)
+        assert kw['callback_url'].endswith(reverse('provider.notification',
+                                                   args=['boku'])), (
+            'Unexpected: {u}'.format(u=kw['callback_url']))
+        assert kw['forward_url'].endswith(reverse('provider.wait_to_finish',
+                                                  args=['boku'])), (
+            'Unexpected: {u}'.format(u=kw['forward_url']))
         assert 'transaction_uuid' in kw, 'Missing keys: {kw}'.format(kw=kw)
         assert self.slumber.generic.transaction.post.called
 
@@ -645,6 +652,15 @@ class TestBoku(ProviderTestCase):
     def test_unknown_price(self):
         # Simulate when a network is mapped to a currency that doesn't exist.
         self.configure(prices=[])
+
+    def test_transaction_from_notice(self):
+        trans_uuid = '123'
+        qs = {'param': trans_uuid}
+        eq_(self.provider.provider.transaction_from_notice(qs),
+            trans_uuid)
+
+    def test_no_transaction_from_notice(self):
+        eq_(self.provider.provider.transaction_from_notice({}), None)
 
 
 @mock.patch('lib.solitude.api.client.slumber')

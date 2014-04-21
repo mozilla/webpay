@@ -1,4 +1,7 @@
+import json
+
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
@@ -6,15 +9,15 @@ import mock
 from nose.tools import eq_, raises
 from slumber.exceptions import HttpClientError
 
+from lib.solitude.constants import STATUS_PENDING
 from webpay.base import dev_messages as msg
 from webpay.base.tests import BasicSessionCase
 
 
-@mock.patch.object(settings, 'PAYMENT_PROVIDER', 'reference')
-class TestProviderSuccess(BasicSessionCase):
+class ProviderTestCase(BasicSessionCase):
 
     def setUp(self):
-        super(TestProviderSuccess, self).setUp()
+        super(ProviderTestCase, self).setUp()
 
         # Log in.
         self.session['uuid'] = 'verified-user'
@@ -33,6 +36,10 @@ class TestProviderSuccess(BasicSessionCase):
         p = mock.patch('webpay.provider.views.tasks.payment_notify')
         self.notify = p.start()
         self.addCleanup(p.stop)
+
+
+@mock.patch.object(settings, 'PAYMENT_PROVIDER', 'reference')
+class TestProviderSuccess(ProviderTestCase):
 
     def trust_notice(self):
         post = self.slumber.provider.reference.notices.post
@@ -103,6 +110,59 @@ class TestProviderSuccess(BasicSessionCase):
 
         res = self.error()
         eq_(res.status_code, 400)
+
+
+class TestWaitToFinish(ProviderTestCase):
+
+    def setUp(self):
+        super(TestWaitToFinish, self).setUp()
+        self.wait_url = reverse('provider.wait_to_finish', args=['boku'])
+
+    def wait(self, trans_uuid=None):
+        if not trans_uuid:
+            trans_uuid = self.trans_id
+        return self.client.get('{u}?param={t}'.format(u=self.wait_url,
+                                                      t=trans_uuid))
+
+    def test_wait_for_boku_transaction(self):
+        res = self.wait()
+        url = reverse('provider.transaction_status', args=[self.trans_id])
+        eq_(res.context['transaction_status_url'], url)
+        eq_(res.status_code, 200)
+
+    def test_missing_transaction(self):
+        res = self.client.get('{u}?foo=bar'.format(u=self.wait_url))
+        eq_(res.status_code, 404)
+
+
+class TestTransactionStatus(ProviderTestCase):
+
+    def status(self, trans_id=None):
+        if not trans_id:
+            trans_id = self.trans_id
+        return self.client.get(reverse('provider.transaction_status',
+                                       args=[trans_id]))
+
+    def test_not_in_session(self):
+        res = self.status(trans_id='not-my-transaction')
+        eq_(res.status_code, 403)
+
+    def test_pending(self):
+        self.slumber.generic.transaction.get_object.return_value = {
+            'uuid': self.trans_id,
+            'notes': '{}',
+            'status': STATUS_PENDING}
+        res = self.status()
+        eq_(res.status_code, 203)
+        eq_(json.loads(res.content), {'state': STATUS_PENDING, 'url': None})
+        self.slumber.generic.transaction.get_object.assert_called_with(
+            uuid=self.trans_id)
+
+    def test_not_found(self):
+        get = self.slumber.generic.transaction.get_object
+        get.side_effect = ObjectDoesNotExist
+        res = self.status()
+        eq_(res.status_code, 404)
 
 
 class TestNotification(TestCase):

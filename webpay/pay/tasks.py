@@ -56,7 +56,8 @@ def configure_transaction(request, trans=None):
                          trans['status'], new_trans_id))
         request.session['trans_id'] = new_trans_id
 
-    if request.session.get('configured_trans') == request.session['trans_id']:
+    last_configured = request.session.get('configured_trans')
+    if last_configured == request.session['trans_id']:
         log.info('trans %s (status=%r) already configured: '
                  'skipping configure payments step'
                  % (request.session['trans_id'], trans.get('status')))
@@ -68,8 +69,10 @@ def configure_transaction(request, trans=None):
     # Localize the product before sending it off to solitude/bango.
     _localize_pay_request(request)
 
-    log.info('configuring payment in background for trans {0} (status={1})'
-             .format(request.session['trans_id'], trans.get('trans_id')))
+    log.info('configuring payment in background for trans {t} (status={s}); '
+             'Last configured: {c}'.format(t=request.session['trans_id'],
+                                           s=trans.get('status'),
+                                           c=last_configured))
 
     network = request.session['notes'].get('network', {})
     provider = ProviderHelper.choose(mcc=network.get('mcc'),

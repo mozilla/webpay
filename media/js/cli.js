@@ -97,6 +97,7 @@ define('cli', ['settings', 'longtext', 'tracking'], function(settings, checkLong
                     'X-CSRFToken': $('meta[name=csrf]').attr('content')
                 }
             };
+            console.log('[pay] starting transaction: ' + requestData.url);
             var req = $.ajax(requestData);
             req.done(_.bind(function(data, textStatus, $xhr) {
                 console.log('[pay] Transaction config started. Status returned: ' + $xhr.status);

@@ -467,6 +467,10 @@ class PayProvider:
         return self.api.notices.post({'qs': querystring})
 
     def transaction_from_notice(self, parsed_qs):
+        """
+        Get the Solitude transaction ID from the query string on a notification
+        URL.
+        """
         return parsed_qs.get('ext_transaction_id')
 
     def get_notice_result(self, parsed_qs, raw_qs):
@@ -617,7 +621,9 @@ class BokuProvider(PayProvider):
                 .format(mcc=mcc, mnc=mnc, r=mcc_region))
 
         provider_trans = self.api.transactions.post({
-            'callback_url': absolutify(reverse('provider.success',
+            'forward_url': absolutify(reverse('provider.wait_to_finish',
+                                              args=[self.name])),
+            'callback_url': absolutify(reverse('provider.notification',
                                                args=[self.name])),
             'country': country.alpha2,
             # TODO: figure out error callbacks in bug 987843.
@@ -649,6 +655,9 @@ class BokuProvider(PayProvider):
 
     def get_notification_result(self, data):
         return self.api.event.post(data)
+
+    def transaction_from_notice(self, parsed_qs):
+        return parsed_qs.get('param')
 
 
 @register_provider
@@ -741,6 +750,9 @@ class BangoProvider(PayProvider):
                  .format(tr=transaction_uuid, bill=bill_id, pr=prices))
 
         return bill_id, self._formatted_payment_url(bill_id)
+
+    def transaction_from_notice(self, parsed_qs):
+        raise NotImplementedError()
 
 
 if not settings.SOLITUDE_URL:

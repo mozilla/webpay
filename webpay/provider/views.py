@@ -1,16 +1,68 @@
-from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
+from django.http import (HttpResponseForbidden, HttpResponseNotFound,
+                         HttpResponse)
 from django.shortcuts import render
 
 from django_paranoia.decorators import require_GET
 
-from lib.solitude.api import ProviderHelper
+from lib.solitude.api import client, ProviderHelper
 from webpay.base import dev_messages as msg
+from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
-from webpay.base.utils import system_error
+from webpay.base.utils import log_cef, system_error
 from webpay.pay import tasks
 
 log = getLogger('w.provider')
 NoticeClasses = {}
+
+
+@require_GET
+def wait_to_finish(request, provider_name):
+    """
+    After the payment provider finishes the pay flow, wait for completion.
+
+    The provider redirects here so the UI can poll Solitude until the
+    transaction is complete.
+    """
+    helper = ProviderHelper(provider_name)
+    trans_uuid = helper.provider.transaction_from_notice(request.GET)
+    if not trans_uuid:
+        # This could happen if someone is tampering with the URL or if
+        # the payment provider changed their URL parameters.
+        log.info('no transaction found for provider {p}; url: {u}'
+                 .format(p=helper.provider.name, u=request.get_full_path()))
+        return HttpResponseNotFound()
+
+    trans_url = reverse('provider.transaction_status', args=[trans_uuid])
+    return render(request, 'provider/wait-to-finish.html',
+                  {'transaction_status_url': trans_url})
+
+
+@json_view(status_code=203)
+@require_GET
+def transaction_status(request, transaction_uuid):
+    """
+    Given a Solitude transaction UUID, return its status.
+
+    This returns a NULL URL for compatibility with another view that
+    redirects to begin payment.
+    """
+    if request.session.get('trans_id') != transaction_uuid:
+        log.info('Cannot get transaction status for {t}; session: {s}'
+                 .format(t=transaction_uuid, s=repr(request.session)))
+        info = ('Transaction query string param {t} did not match '
+                'transaction in session'.format(t=transaction_uuid))
+        log_cef(info, request, severity=7)
+        return HttpResponseForbidden()
+
+    try:
+        trans = client.get_transaction(transaction_uuid)
+        return {'state': trans['status'], 'url': None}
+    except ObjectDoesNotExist:
+        log.info('Cannot get transaction status; not found: {t}'
+                 .format(t=transaction_uuid))
+        return HttpResponseNotFound()
 
 
 @require_GET

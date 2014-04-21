@@ -493,6 +493,9 @@ JS_SETTINGS = {
     'ajax_timeout': 45000,
     # Wait timeout (Default 60s).
     'wait_timeout': 60000,
+    # This is the poll interval (in milleseconds) used while waiting for
+    # something to happen.
+    'poll_interval': 1000,
     # Raven error logging
     # ex: http://none@zamboni.localhost/api/v1/fireplace/report_error/12345
     # Please note that the leading 'none@' is required
