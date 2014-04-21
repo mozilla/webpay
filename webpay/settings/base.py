@@ -541,6 +541,7 @@ USAGE_WARNING = False
 ENABLE_SPA = False
 
 ALLOW_ANDROID_PAYMENTS = True
+ALLOW_TARAKO_PAYMENTS = False
 
 # When not None, this is a dict of mcc and mnc to simulate a specific mobile
 # network. This overrides the client side network detection.
