@@ -202,6 +202,20 @@ class TestVerify(Base):
         res = self.get(self.request(), HTTP_USER_AGENT=ua)
         eq_(res.status_code, 200)
 
+    @mock.patch.object(settings, 'ALLOW_TARAKO_PAYMENTS', False)
+    def test_disallow_tarako_payments(self):
+        ua = 'Mozilla/5.0 (Mobile; rv:28.1) Gecko/28.1 Firefox 28.1'
+        res = self.get(self.request(), HTTP_USER_AGENT=ua)
+        self.assertContains(res, msg.PAY_DISABLED, status_code=503)
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-error-code'), msg.PAY_DISABLED)
+
+    @mock.patch.object(settings, 'ALLOW_TARAKO_PAYMENTS', True)
+    def test_allow_tarako_payments(self):
+        ua = 'Mozilla/5.0 (Mobile; rv:28.1) Gecko/28.1 Firefox 28.1'
+        res = self.get(self.request(), HTTP_USER_AGENT=ua)
+        eq_(res.status_code, 200)
+
     @mock.patch.object(settings, 'ALLOWED_CALLBACK_SCHEMES', ['https'])
     def test_non_https_url_ok_for_simulation(self):
         payjwt = self.payload()

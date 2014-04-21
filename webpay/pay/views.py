@@ -416,22 +416,31 @@ def _trim_pay_request(req):
 
 
 _android_user_agent = re.compile(r'^Mozilla.*Android.*Gecko.*Firefox')
+# 28.1 is unique to Tarako.
+# See https://bugzilla.mozilla.org/show_bug.cgi?id=987450
+_tarako_user_agent = re.compile(r'Mozilla.*Mobile.*rv:28\.1.*Gecko/28\.1')
 
 
 def disabled_by_user_agent(user_agent):
     """
     Returns True if payments are disabled for this user agent.
     """
+    is_disabled = False
     if not user_agent:
         user_agent = ''
 
     if not settings.ALLOW_ANDROID_PAYMENTS:
         if _android_user_agent.search(user_agent):
-            log.info('Disabling payments for this user agent: {ua}'
-                     .format(ua=user_agent))
-            return True
+            is_disabled = True
+    if not settings.ALLOW_TARAKO_PAYMENTS:
+        if _tarako_user_agent.search(user_agent):
+            is_disabled = True
 
-    return False
+    if is_disabled:
+        log.info('Disabling payments for this user agent: {ua}'
+                 .format(ua=user_agent))
+
+    return is_disabled
 
 
 def get_payment_url(transaction):
