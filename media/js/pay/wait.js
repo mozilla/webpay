@@ -61,7 +61,7 @@ require(['cli', 'settings'], function(cli, settings) {
             url: startUrl,
             timeout: settings.ajax_timeout,
             success: function(data, textStatus, jqXHR) {
-                if (data.state === cli.bodyData.transStatusCompleted) {
+                if (data.status === cli.bodyData.transStatusCompleted) {
                     clearPoll();
                     clearTransactionTimeout();
                     if (data.url) {
@@ -81,7 +81,7 @@ require(['cli', 'settings'], function(cli, settings) {
                 } else {
                     // The transaction is pending or it failed.
                     // TODO(Kumar) check for failed transactions here.
-                    console.log('transaction state: ' + data.state);
+                    console.log('[wait] transaction status: ' + data.status);
                     pollTimeout = window.setTimeout(poll, settings.poll_interval);
                 }
             },

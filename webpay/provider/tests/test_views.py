@@ -154,7 +154,7 @@ class TestTransactionStatus(ProviderTestCase):
             'status': STATUS_PENDING}
         res = self.status()
         eq_(res.status_code, 203)
-        eq_(json.loads(res.content), {'state': STATUS_PENDING, 'url': None})
+        eq_(json.loads(res.content), {'status': STATUS_PENDING, 'url': None})
         self.slumber.generic.transaction.get_object.assert_called_with(
             uuid=self.trans_id)
 

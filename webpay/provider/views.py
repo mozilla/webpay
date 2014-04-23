@@ -58,7 +58,7 @@ def transaction_status(request, transaction_uuid):
 
     try:
         trans = client.get_transaction(transaction_uuid)
-        return {'state': trans['status'], 'url': None}
+        return {'status': trans['status'], 'url': None}
     except ObjectDoesNotExist:
         log.info('Cannot get transaction status; not found: {t}'
                  .format(t=transaction_uuid))
