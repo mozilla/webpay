@@ -393,6 +393,8 @@ class ProviderHelper:
         # Get the notification data from the incoming request.
         data = self.provider.get_notification_data(request)
 
+        log.info('Provider={pr} posting notification: {data}'
+                 .format(pr=self.name, data=data))
         try:
             # Post the result to solitude.
             self.provider.get_notification_result(data)
