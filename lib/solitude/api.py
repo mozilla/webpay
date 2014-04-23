@@ -414,7 +414,7 @@ def register_provider(cls):
     return cls
 
 
-class PayProvider:
+class PayProvider(object):
     """
     Abstract payment provider
 
@@ -575,6 +575,11 @@ class BokuProvider(PayProvider):
     class TransactionError(Exception):
         """Error relating to a Boku transaction."""
 
+    def __init__(self, *args, **kw):
+        super(BokuProvider, self).__init__(*args, **kw)
+        # Don't use this unless you have to. Hopefully we can delete it soon.
+        self.provider_api = self.slumber.provider.boku
+
     @property
     def api(self):
         return self.slumber.boku
@@ -654,7 +659,7 @@ class BokuProvider(PayProvider):
         return request.GET
 
     def get_notification_result(self, data):
-        return self.api.event.post(data)
+        return self.provider_api.event.post(data)
 
     def transaction_from_notice(self, parsed_qs):
         return parsed_qs.get('param')
