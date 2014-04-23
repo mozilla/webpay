@@ -25,9 +25,7 @@ msgstr "Sikeres vásárlás."
 
 #: webpay/base/dev_messages.py:90
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
-"A Mozilla érvénytelen kódot kapott a vásárlásszolgáltatótól (Bango) a "
-"vásárlás feldolgozásakor"
+msgstr "A Mozilla érvénytelen kódot kapott a vásárlásszolgáltatótól (Bango) a vásárlás feldolgozásakor"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:94
@@ -54,8 +52,7 @@ msgstr "A kért vásárlási szimulációs eredmény nem támogatott."
 
 #: webpay/base/dev_messages.py:104
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
-"A vásárlásszolgáltató (Bango) a vásárlás feldolgozásakor hibát adott vissza"
+msgstr "A vásárlásszolgáltató (Bango) a vásárlás feldolgozásakor hibát adott vissza"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -65,8 +62,7 @@ msgstr "A JWT lejárt."
 
 #: webpay/base/dev_messages.py:110
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
-"A külső vásárlásfeldolgozó hibát adott vissza a vásárlás kezelése közben"
+msgstr "A külső vásárlásfeldolgozó hibát adott vissza a vásárlás kezelése közben"
 
 #: webpay/base/dev_messages.py:112
 msgid "An internal web request timed out."
@@ -105,9 +101,7 @@ msgstr "Az URL hibás. Ez egy postback vagy egy ikon URL lehet."
 
 #: webpay/base/dev_messages.py:128
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
-"A tranzakcióazonosító hiányzott a munkamenetből egy vásárlás "
-"visszatérítésének feldolgozásakor."
+msgstr "A tranzakcióazonosító hiányzott a munkamenetből egy vásárlás visszatérítésének feldolgozásakor."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:132
@@ -121,15 +115,11 @@ msgstr "A kért visszafizetési szimulációból hiányzik a „{0}” kulcs."
 
 #: webpay/base/dev_messages.py:138
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
-"Az értesítési szolgáltatás hibával válaszolt a vásárlási értesítés "
-"ellenőrzésekor"
+msgstr "Az értesítési szolgáltatás hibával válaszolt a vásárlási értesítés ellenőrzésekor"
 
 #: webpay/base/dev_messages.py:140
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr ""
-"Az értesítési szolgáltatás váratlan kivételt dobott a vásárlási értesítés "
-"ellenőrzésekor"
+msgstr "Az értesítési szolgáltatás váratlan kivételt dobott a vásárlási értesítés ellenőrzésekor"
 
 #: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
 msgid "Payments are temporarily disabled."
@@ -165,9 +155,7 @@ msgstr "Időtúllépés a tranzakció indításakor."
 
 #: webpay/base/dev_messages.py:160
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
-"A vásárlási módszer vagy az irányár nem támogatott ehhez a régióhoz vagy "
-"szolgáltatóhoz."
+msgstr "A vásárlási módszer vagy az irányár nem támogatott ehhez a régióhoz vagy szolgáltatóhoz."
 
 #: webpay/base/dev_messages.py:162
 msgid "The user cancelled the payment."
@@ -181,15 +169,11 @@ msgstr "A(z) „{0}” kulcshoz tartozó érték elérte a maximális hosszúsá
 
 #: webpay/base/utils.py:56
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr ""
-"Hiba történt a vásárlás beállításánál. Próbálja újra, vagy vegye fel a "
-"kapcsolatot az app szerzőivel, ha tartósan fennáll."
+msgstr "Hiba történt a vásárlás beállításánál. Próbálja újra, vagy vegye fel a kapcsolatot az app szerzőivel, ha tartósan fennáll."
 
 #: webpay/base/utils.py:62
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
-"Belső hiba a vásárlás feldolgozása során. Próbálja újra, vagy keresse meg a "
-"Mozillát, ha tartósan fennáll."
+msgstr "Belső hiba a vásárlás feldolgozása során. Próbálja újra, vagy keresse meg a Mozillát, ha tartósan fennáll."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -239,9 +223,7 @@ msgstr "A PIN csak számokból állhat."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
-"Másik felhasználóként volt bejelentkezve, a vásárlási folyamatot újra kell "
-"indítani."
+msgstr "Másik felhasználóként volt bejelentkezve, a vásárlási folyamatot újra kell indítani."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"

@@ -51,9 +51,7 @@ msgstr "Het gevraagde betalingssimulatieresultaat wordt niet ondersteund."
 
 #: webpay/base/dev_messages.py:104
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
-"De betalingsprovider (Bango) heeft een fout gemeld tijdens het verwerken van "
-"de betaling"
+msgstr "De betalingsprovider (Bango) heeft een fout gemeld tijdens het verwerken van de betaling"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -98,15 +96,11 @@ msgstr "Het systeem heeft een time-out gegeven tijdens het afmelden."
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:126
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr ""
-"Een URL is onjuist. Dit is mogelijk een postback-URL of een URL van een "
-"pictogram."
+msgstr "Een URL is onjuist. Dit is mogelijk een postback-URL of een URL van een pictogram."
 
 #: webpay/base/dev_messages.py:128
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
-"De transactie-id ontbrak in de sessie bij het verwerken van een "
-"terugbetaling."
+msgstr "De transactie-id ontbrak in de sessie bij het verwerken van een terugbetaling."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:132
@@ -120,9 +114,7 @@ msgstr "De aangevraagde restitutiesimulatie mist de sleutel ‘{0}’."
 
 #: webpay/base/dev_messages.py:138
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
-"De meldingsservice reageerde met een fout tijdens het verifiëren van de "
-"betalingskennisgeving"
+msgstr "De meldingsservice reageerde met een fout tijdens het verifiëren van de betalingskennisgeving"
 
 #: webpay/base/dev_messages.py:140
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
@@ -142,8 +134,7 @@ msgstr "Betalingssimulaties zijn momenteel uitgeschakeld."
 
 #: webpay/base/dev_messages.py:149
 msgid "This payment key can only be used to simulate purchases."
-msgstr ""
-"Deze betalingssleutel kan alleen voor aankoopsimulaties worden gebruikt."
+msgstr "Deze betalingssleutel kan alleen voor aankoopsimulaties worden gebruikt."
 
 #: webpay/base/dev_messages.py:151
 msgid "The configuration of the payment transaction failed."
@@ -231,9 +222,7 @@ msgstr "Pincode mag alleen cijfers bevatten."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
-"U bent aangemeld als een andere gebruiker, u moet de betaling opnieuw "
-"starten."
+msgstr "U bent aangemeld als een andere gebruiker, u moet de betaling opnieuw starten."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
