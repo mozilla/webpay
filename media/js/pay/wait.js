@@ -6,7 +6,7 @@ require(['cli', 'settings'], function(cli, settings) {
     var transactionTimeout;
     var request;
 
-    if (cli.bodyData.waitflow) {
+    if (cli.bodyData.flow === 'wait') {
         startWaiting();
     }
 
@@ -27,6 +27,7 @@ require(['cli', 'settings'], function(cli, settings) {
 
     function startGlobalTimer() {
         console.log('[wait] Starting global transaction timer.');
+        clearTransactionTimeout();
         transactionTimeout = window.setTimeout(function() {
             if (request) {
                 request.abort();
@@ -45,16 +46,14 @@ require(['cli', 'settings'], function(cli, settings) {
 
     function startWaiting() {
         startUrl = cli.bodyData.transStartUrl;
+        startGlobalTimer();
         poll();
         cli.trackWebpayEvent({'action': 'payment',
-                              'label': 'Pre-Bango Wait'});
+                              'label': 'Start waiting for provider'});
     }
 
     function poll() {
-        if (!transactionTimeout) {
-            startGlobalTimer();
-        }
-        startUrl = cli.bodyData.transStartUrl;
+        console.log('[wait] polling ' + startUrl);
 
         cli.showProgress();
         request = $.ajax({
@@ -62,17 +61,28 @@ require(['cli', 'settings'], function(cli, settings) {
             url: startUrl,
             timeout: settings.ajax_timeout,
             success: function(data, textStatus, jqXHR) {
-                if (data.url) {
+                if (data.state === cli.bodyData.transStatusCompleted) {
                     clearPoll();
                     clearTransactionTimeout();
-                    cli.trackWebpayEvent({'action': 'payment',
-                                          'label': 'Redirect To Bango'});
-                    window.location = data.url;
+                    if (data.url) {
+                        cli.trackWebpayEvent({'action': 'payment',
+                                              'label': 'Redirect To Pay Flow'});
+                        console.log('[wait] Transaction completed; redirect to ' +
+                                    data.url);
+                        window.location = data.url;
+                    } else {
+                        console.log('[wait] Transaction completed; closing pay flow');
+                        cli.trackWebpayEvent({'action': 'payment',
+                                              'label': 'Closing Pay Flow'});
+                        var paymentSuccess = (cli.mozPaymentProvider.paymentSuccess ||
+                                              window.paymentSuccess);
+                        paymentSuccess();
+                    }
                 } else {
                     // The transaction is pending or it failed.
                     // TODO(Kumar) check for failed transactions here.
                     console.log('transaction state: ' + data.state);
-                    pollTimeout = window.setTimeout(poll, 1000);
+                    pollTimeout = window.setTimeout(poll, settings.poll_interval);
                 }
             },
             error: function(xhr, textStatus) {
@@ -89,7 +99,7 @@ require(['cli', 'settings'], function(cli, settings) {
                     console.log('error checking transaction');
                     cli.trackWebpayEvent({'action': 'payment',
                                           'label': 'Error Checking Transaction'});
-                    pollTimeout = window.setTimeout(poll, 1000);
+                    pollTimeout = window.setTimeout(poll, settings.poll_interval);
                 }
             }
         });
