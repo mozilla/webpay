@@ -28,7 +28,12 @@ class SlumberWrapper(object):
         if res == '':
             return {}
         if isinstance(res, (str, unicode)):
-            return json.loads(res)
+            try:
+                return json.loads(res)
+            except ValueError:
+                log.error('Received unexpected non-JSON error: {res}'
+                          .format(res=res))
+                raise
         return res
 
     def safe_run(self, command, *args, **kwargs):
@@ -45,6 +50,6 @@ class SlumberWrapper(object):
                 res = self.parse_res(e.response.content)
                 for key, value in res.iteritems():
                     res[key] = [self.errors[v] for v in value
-                                                    if v in self.errors]
+                                if v in self.errors]
             return {'errors': res}
         return res

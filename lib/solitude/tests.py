@@ -41,6 +41,14 @@ class SolitudeAPITest(TestCase):
         error_response.content = content
         return error_response
 
+    @mock.patch('lib.utils.log')
+    def test_invalid_json_response(self, fake_log, slumber):
+        slumber.generic.buyer.get_object_or_404.side_effect = HttpClientError(
+            response=self.create_error_response(content='<not valid json>'))
+        with self.assertRaises(ValueError):
+            client.get_buyer('catastrophic-non-json-error')
+        assert fake_log.error.called, 'expected response to be logged'
+
     def test_get_buyer(self, slumber):
         slumber.generic.buyer.get_object_or_404.return_value = self.buyer_data
         buyer = client.get_buyer(self.uuid)
