@@ -163,10 +163,10 @@ require(['cli'], function(cli) {
         box.html(Array(PINLENGTH+1).join('<span'+pinClass+'></span>'));
         $el.prepend(box);
         console.log('[pin] requesting focus on pin');
-        cli.focusOnPin();
-        // TODO: muffinresearch to help me figure out the regressions
-        // this caused.
-        // cli.focusOnPin({ $toShow: $('#enter-pin') });
+        // Required for FFOX 1.3 / FF Android (bug 956959)
+        window.setTimeout(function() {
+            cli.focusOnPin();
+        }, 250);
     });
 
     if (cli.hasTouch) {

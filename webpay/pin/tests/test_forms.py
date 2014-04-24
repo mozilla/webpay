@@ -24,7 +24,7 @@ class PinFormOutputTest(BasePinFormTestCase):
         assert 'type="number"' in form_html
         assert 'autocomplete="off"' in form_html
         assert 'placeholder="****"' in form_html
-        assert 'x-inputmode="digits"' in form_html
+        assert 'x-inputmode="digit"' in form_html
         assert 'max="9999"' in form_html
 
 

@@ -30,7 +30,7 @@ class BasePinForm(ParanoidForm):
             'max': '9999',
             'placeholder': '****',
             # Digit only keyboard for B2G (bug 820268).
-            'x-inputmode': 'digits',
+            'x-inputmode': 'digit',
         })
 
     @property
