@@ -249,10 +249,9 @@ def payment_notify(transaction_uuid, **kw):
     The JWT sent is a mirror of the JWT used by the app to request payment
     except that it includes the following:
 
-    :param response.transactionID: which is the Marketplace transaction ID.
+    :param response.transactionID: which is the Solitude transaction UUID.
     :param response.price: object that contains the amount and currency the
       customer actually paid in.
-    :param trans_id: pk of transaction.
     """
     transaction = client.get_transaction(transaction_uuid)
     _notify(payment_notify, transaction)
