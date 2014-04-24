@@ -110,8 +110,9 @@ def notification(request, provider_name):
     provider = ProviderHelper(provider_name)
 
     try:
-        provider.server_notification(request)
+        transaction_uuid = provider.server_notification(request)
     except msg.DevMessage as m:
         return HttpResponse(m.code, status=502)
 
+    tasks.payment_notify.delay(transaction_uuid)
     return HttpResponse('OK')

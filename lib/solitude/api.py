@@ -389,6 +389,8 @@ class ProviderHelper:
         """
         Handles the server to server notification that is sent after
         a transaction is completed.
+
+        Returns the Solitude transaction UUID.
         """
         # Get the notification data from the incoming request.
         data = self.provider.get_notification_data(request)
@@ -397,11 +399,13 @@ class ProviderHelper:
                  .format(pr=self.name, data=data))
         try:
             # Post the result to solitude.
-            self.provider.get_notification_result(data)
+            transaction_uuid = self.provider.verify_notification(data)
         except HttpClientError, err:
             log.error('Provider={pr} post failed: {err}'
                       .format(pr=self.name, err=err))
             raise msg.DevMessage(msg.NOTICE_ERROR)
+
+        return transaction_uuid
 
 
 _registry = {}
@@ -479,9 +483,26 @@ class PayProvider(object):
         return self.api.notices.post({'qs': raw_qs})
 
     def get_notification_data(self, request):
+        """
+        Given a provider-specific GET/POST request, return a dict of
+        notification data that can be used for verification.
+
+        For example, a provider might notify Webpay of a successful
+        transaction. That request might include a signature that can
+        be used to verify authenticity.
+        """
         raise NotImplementedError
 
-    def get_notification_result(self, data):
+    def verify_notification(self, data):
+        """
+        Verify provider notification using params from get_notification_data().
+
+        This will raise an exception on any kind of verification error.
+        This will also raise an exception if the transaction has already
+        been processed.
+
+        Returns the Solitude transaction UUID.
+        """
         return NotImplementedError
 
     def _formatted_payment_url(self, transaction_uuid):
@@ -660,8 +681,12 @@ class BokuProvider(PayProvider):
     def get_notification_data(self, request):
         return request.GET
 
-    def get_notification_result(self, data):
-        return self.provider_api.event.post(data)
+    def verify_notification(self, data):
+        # This will raise a client error on a non 2xx response.
+        # This gets a 400 response if the transaction has already been
+        # processed so that too will raise an exception.
+        self.provider_api.event.post(data)
+        return data['param']  # Solitude transaction UUID.
 
     def transaction_from_notice(self, parsed_qs):
         return parsed_qs.get('param')

@@ -3,7 +3,6 @@ import json
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-from django.test import TestCase
 
 import mock
 from nose.tools import eq_, raises
@@ -165,17 +164,19 @@ class TestTransactionStatus(ProviderTestCase):
         eq_(res.status_code, 404)
 
 
-class TestNotification(TestCase):
+class TestNotification(ProviderTestCase):
 
     def setUp(self):
-        p = mock.patch('lib.solitude.api.client.slumber')
-        self.slumber = p.start()
-        self.addCleanup(p.stop)
+        super(TestNotification, self).setUp()
         self.url = reverse('provider.notification', args=['boku'])
 
     def test_good(self):
-        eq_(self.client.get(self.url + '?f=b').status_code, 200)
-        self.slumber.provider.boku.event.post.assert_called_with({'f': ['b']})
+        res = self.client.get('{url}?param={tr}'.format(url=self.url,
+                                                        tr=self.trans_id))
+        eq_(res.status_code, 200)
+        self.slumber.provider.boku.event.post.assert_called_with(
+            {'param': [self.trans_id]})
+        self.notify.delay.assert_called_with(self.trans_id)
 
     @raises(NotImplementedError)
     def test_not_implemented(self):
@@ -187,3 +188,5 @@ class TestNotification(TestCase):
         res = self.client.get(self.url)
         eq_(res.status_code, 502)
         eq_(res.content, 'NOTICE_ERROR')
+        assert not self.notify.delay.called, (
+            'A notification should not be sent on failure')
