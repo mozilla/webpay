@@ -454,5 +454,5 @@ def get_payment_url(transaction):
     log.info('Start pay provider payflow "{pr}" for '
              'transaction {tr} at: {url}'
              .format(pr=transaction.get('provider'), url=url,
-                     tr=transaction.get('uid')))
+                     tr=transaction.get('uuid')))
     return url
