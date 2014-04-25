@@ -160,9 +160,11 @@ require(['cli', 'id', 'auth', 'bango', 'longtext', 'settings', 'tracking'], func
             }
         });
 
-    } else if (bodyData.flow === 'wait') {
-        // There's nothing to do here. This logic is handled in pay/wait.js.
-        // This else branch is to prevent startTransaction() from being called.
+    } else if (bodyData.flow === 'wait-to-finish') {
+        // This if branch will stop the transaction from being configured.
+        // We don't need to configure a transaction when waiting to finish.
+        // See pay/wait.js for more about waiting.
+        console.log('[pay] lobby: ignoring flow=wait-to-finish');
     } else {
         // A specific flow was not forced. For example, the user may be creating a PIN.
         bango.prepareSim().done(function _defaultReady() {

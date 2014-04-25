@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block body_attrs -%}
-  data-flow="wait"
+  data-flow="wait-to-finish"
   data-trans-start-url="{{ transaction_status_url }}"
   data-loading-msg="{{ _('Verifying payment&hellip;') }}"
 {%- endblock %}
