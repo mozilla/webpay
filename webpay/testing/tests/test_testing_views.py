@@ -12,6 +12,11 @@ class TestTestingViews(test.TestCase):
         super(TestTestingViews, self).setUp()
         self.client = test.Client()
 
+    @mock.patch.object(settings, 'DEBUG', False)
+    def test_403_test_pin_ui_view(self):
+        url = reverse('test_pin_ui')
+        eq_(self.client.get(url).status_code, 403)
+
     @mock.patch.object(settings, 'DEV', False)
     @mock.patch.object(settings, 'TEST_PIN_UI', True)
     def test_403_include(self):

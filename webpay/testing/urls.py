@@ -5,6 +5,7 @@ from django.views.generic.base import TemplateView
 from urlparse import urlparse
 
 from webpay.testing.persona import fake_include, fake_verify
+from webpay.testing.views import test_pin_ui
 
 # Remove leading and trailing slashes so the regex matches.
 path = urlparse(settings.MEDIA_URL).path
@@ -15,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^500$', server_error, name="error_500"),
     url(r'^include.js$', fake_include, name="fake_include"),
     url(r'^verify$', fake_verify, name="fake_verify"),
+    url(r'^test-pin-ui$', test_pin_ui, name="test_pin_ui"),
     (r'^was-locked/$', TemplateView.as_view(
      template_name='pin/pin_was_locked.html')),
     (r'^is-locked/$', TemplateView.as_view(
