@@ -6,7 +6,7 @@ require(['cli', 'settings'], function(cli, settings) {
     var transactionTimeout;
     var request;
 
-    if (cli.bodyData.flow === 'wait') {
+    if (cli.bodyData.flow === 'wait' || cli.bodyData.flow === 'wait-to-finish') {
         startWaiting();
     }
 
