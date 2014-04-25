@@ -379,7 +379,9 @@ USE_PRODUCT_ICONS = True
 
 # This is the time that a user has to buy more stuff before having to enter
 # their PIN in again in seconds.
-PIN_UNLOCK_LENGTH = 300
+#PIN_UNLOCK_LENGTH = 300
+# Disable PIN unlocking because of bug 1000877.
+PIN_UNLOCK_LENGTH = 0
 
 # The schemes that are allowed in callbacks.
 # Historically, app postbacks were required to be HTTPS in prod but we reversed

@@ -12,6 +12,7 @@ from webpay.pay import get_wait_url
 from webpay.pin import utils
 
 
+@mock.patch.object(settings, 'PIN_UNLOCK_LENGTH', 300)
 class CheckPinStatusTestCase(TestCase):
 
     def setUp(self):

@@ -63,6 +63,7 @@ class TestVerify(Base):
         payload = self.request(iss=self.key, app_secret=self.secret)
         eq_(self.get(payload).status_code, 200)
 
+    @mock.patch.object(settings, 'PIN_UNLOCK_LENGTH', 300)
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     @mock.patch('lib.marketplace.api.MarketplaceAPI.get_price')
     @mock.patch('webpay.auth.utils.update_session')
