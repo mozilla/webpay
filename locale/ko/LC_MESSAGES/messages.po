@@ -158,7 +158,7 @@ msgstr "지불 방법 및 가격이 현재 지역 및 제공자를 지원하지 
 
 #: webpay/base/dev_messages.py:162
 msgid "The user cancelled the payment."
-msgstr "키 값이 최대값을 초과하였습니다."
+msgstr "사용자가 결제를 취소했습니다."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
