@@ -142,7 +142,3 @@ PAY_URLS = {
 }
 
 ENABLE_SPA = True
-
-# This forces the Phantom network for Boku.
-# WARNING: this overrides all client network detection.
-SIMULATED_NETWORK = {'mcc': '334', 'mnc': '020'}
