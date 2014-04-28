@@ -142,8 +142,13 @@ define('cli', ['settings', 'longtext', 'tracking'], function(settings, checkLong
                 console.log('[cli] has nothing toShow');
             }
             if ($pinBox.length && !$pinBox.hasClass('error')) {
-                console.log('[cli] Focusing pin');
-                $input.focus();
+                // Delay required for FFOX 1.3 / FF Android (bug 956959)
+                // Otherwise focus is lost on first load despite the keyboard
+                // being already up.
+                window.setTimeout(function() {
+                    console.log('[cli] Focusing pin');
+                    $input.focus();
+                }, 250);
             }
         },
         trackWebpayClick: function(e) {
