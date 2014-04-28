@@ -60,7 +60,7 @@ msgstr "JWT е изтекъл."
 
 #: webpay/base/dev_messages.py:110
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
+msgstr "Външната услуга за обработване на плащания върна грешка, докато обработваше плащането"
 
 #: webpay/base/dev_messages.py:112
 msgid "An internal web request timed out."
@@ -117,7 +117,7 @@ msgstr "Системата за уведомяване отговори с гр�
 
 #: webpay/base/dev_messages.py:140
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr ""
+msgstr "Възникна неочаквано изключение в услугата за известяване, докато се проверяваше известяването за плащане"
 
 #: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
 msgid "Payments are temporarily disabled."
@@ -137,7 +137,7 @@ msgstr "Този ключ може да се използва само за си
 
 #: webpay/base/dev_messages.py:151
 msgid "The configuration of the payment transaction failed."
-msgstr ""
+msgstr "Конфигурацията на транзакцията за плащане се провали."
 
 #: webpay/base/dev_messages.py:153
 msgid "The purchase cannot be completed because the current transaction has already ended."
@@ -145,7 +145,7 @@ msgstr "Покупката не може да бъде завършена, за�
 
 #: webpay/base/dev_messages.py:155
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "Не е намерен номер на транзакция."
 
 #: webpay/base/dev_messages.py:157
 msgid "The system timed out while waiting for a transaction to start."
