@@ -166,7 +166,7 @@ require(['cli'], function(cli) {
         // Required for FFOX 1.3 / FF Android (bug 956959)
         window.setTimeout(function() {
             cli.focusOnPin();
-        }, 250);
+        }, 500);
     });
 
     if (cli.hasTouch) {
