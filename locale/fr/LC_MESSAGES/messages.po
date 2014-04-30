@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: 2014-04-14 08:27+0000\n"
 "Last-Translator: Benoit <benoit.leseul@gmail.com>\n"
 "Language-Team: français <>\n"
@@ -123,7 +123,7 @@ msgstr "Le service de notification a renvoyé une erreur lors de la vérificatio
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "Le service de notification a rencontré une exception inconnue lors de la vérification de l'avis de paiement"
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "Les paiements sont temporairement désactivés."
 
@@ -263,7 +263,7 @@ msgstr "Ok"
 msgid "Error"
 msgstr "Erreur"
 
-#: webpay/pay/views.py:204 webpay/pin/views.py:93
+#: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Entrez le code PIN"
 
@@ -323,7 +323,7 @@ msgstr "Code PIN erroné"
 msgid "Pins do not match."
 msgstr "Les codes PIN ne correspondent pas."
 
-#: webpay/pin/views.py:46
+#: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "Créer un code PIN"
 
@@ -368,3 +368,7 @@ msgstr "Êtes-vous sûr de vouloir remettre à zéro votre code PIN ? Vous devez
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Remise à zéro"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr ""

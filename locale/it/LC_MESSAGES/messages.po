@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: 2014-04-09 19:15+0000\n"
 "Last-Translator: Sandro <gialloporpora@mozillaitalia.org>\n"
 "Language-Team: mozillaitalia\n"
@@ -120,7 +120,7 @@ msgstr "Il servizio di notifica ha riportato un errore durante la verifica della
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "Il servizio notifiche ha sollevato unâ€™eccezione non prevista durante la verifica della notifica di pagamento."
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "I pagamenti sono momentaneamente disattivati."
 
@@ -260,7 +260,7 @@ msgstr "OK"
 msgid "Error"
 msgstr "Errore"
 
-#: webpay/pay/views.py:204 webpay/pin/views.py:93
+#: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Inserisci il codice PIN"
 
@@ -320,7 +320,7 @@ msgstr "Codice PIN non valido"
 msgid "Pins do not match."
 msgstr "Il codice PIN non corrisponde."
 
-#: webpay/pin/views.py:46
+#: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "Crea un codice PIN"
 
@@ -365,3 +365,7 @@ msgstr "Sei sicuro di voler reimpostare il tuo codice PIN? Dovrai effettuare lâ€
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Reimposta"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr ""

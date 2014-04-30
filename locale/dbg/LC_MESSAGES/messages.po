@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -141,7 +141,7 @@ msgstr ""
 "ƥȧẏḿḗƞŧ ƞǿŧīƈḗ"
 
 #: webpay/base/dev_messages.py:143
-#: webpay/pay/views.py:58
+#: webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "Ƥȧẏḿḗƞŧş ȧřḗ ŧḗḿƥǿřȧřīŀẏ ḓīşȧƀŀḗḓ."
 
@@ -310,7 +310,7 @@ msgstr "ǾĶ"
 msgid "Error"
 msgstr "Ḗřřǿř"
 
-#: webpay/pay/views.py:204
+#: webpay/pay/views.py:216
 #: webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Ḗƞŧḗř Ƥīƞ"
@@ -380,6 +380,7 @@ msgid "Pins do not match."
 msgstr "Ƥīƞş ḓǿ ƞǿŧ ḿȧŧƈħ."
 
 #: webpay/pin/views.py:46
+#: webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "Ƈřḗȧŧḗ ȧ Ƥīƞ"
 
@@ -440,3 +441,8 @@ msgstr ""
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Řḗşḗŧ"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6
+#: webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr "Ṽḗřīƒẏīƞɠ ƥȧẏḿḗƞŧ&hellip;"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: 2013-12-11 13:32+0000\n"
 "Last-Translator: Goce <goce.mitevski@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -119,7 +119,7 @@ msgstr "Известувачкиот сервис одговори со греш
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr ""
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "Плаќањата се привремено оневозможени."
 
@@ -259,7 +259,7 @@ msgstr "Во ред"
 msgid "Error"
 msgstr "Грешка"
 
-#: webpay/pay/views.py:204 webpay/pin/views.py:93
+#: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Внесете пин"
 
@@ -319,7 +319,7 @@ msgstr "Погрешен пин"
 msgid "Pins do not match."
 msgstr "Пиновите не се совпаѓаат."
 
-#: webpay/pin/views.py:46
+#: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "Создај пин"
 
@@ -364,3 +364,7 @@ msgstr "Сигурни сте дека сакате да го ресетират
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Ресетирај"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr ""

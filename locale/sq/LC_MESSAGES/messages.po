@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: 2014-02-13 22:31+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: none\n"
@@ -118,7 +118,7 @@ msgstr "Shërbimi i njoftimeve u përgjigj me një gabim, teksa verifikonte njof
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "Shërbimi i njoftimeve dha një përjashtim të papritur, tesak verifikonte njoftimin e pagesës"
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "Pagesat janë përkohësisht të çaktivizuara."
 
@@ -258,7 +258,7 @@ msgstr "OK"
 msgid "Error"
 msgstr "Gabim"
 
-#: webpay/pay/views.py:204 webpay/pin/views.py:93
+#: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Jepni Pin-in"
 
@@ -318,7 +318,7 @@ msgstr "Pin i gabuar"
 msgid "Pins do not match."
 msgstr "Pin-et nuk përputhen."
 
-#: webpay/pin/views.py:46
+#: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "Krijoni një Pin"
 
@@ -363,3 +363,7 @@ msgstr "Jeni i sigurt se doni të ricaktoni pin-in tuaj? Duhet të keni bërë h
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Ricaktoje"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr ""

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: 2014-04-12 07:56+0000\n"
 "Last-Translator: Ton <tonnes.mb@gmail.com>\n"
 "Language-Team: none\n"
@@ -120,7 +120,7 @@ msgstr "De meldingsservice reageerde met een fout tijdens het verifiëren van de
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "De meldingsservice initieerde een onverwachte uitzondering tijdens het verifiëren van de betalingskennisgeving"
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "Betalingen zijn tijdelijk uitgeschakeld."
 
@@ -260,7 +260,7 @@ msgstr "OK"
 msgid "Error"
 msgstr "Fout"
 
-#: webpay/pay/views.py:204 webpay/pin/views.py:93
+#: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Voer pincode in"
 
@@ -320,7 +320,7 @@ msgstr "Foutieve pincode"
 msgid "Pins do not match."
 msgstr "Pincodes komen niet overeen."
 
-#: webpay/pin/views.py:46
+#: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "Pincode aanmaken"
 
@@ -365,3 +365,7 @@ msgstr "Weet u zeker dat u uw pincode opnieuw wilt instellen? U dient zich bij P
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Opnieuw instellen"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr ""

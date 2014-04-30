@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: 2013-01-08 08:50-0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -119,7 +119,7 @@ msgstr "Η υπηρεσία ειδοποιήσεων αποκρίθηκε με �
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr ""
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "Οι πληρωμές έχουν απενεργοποιηθεί προσωρινά."
 
@@ -259,7 +259,7 @@ msgstr "ΟΚ"
 msgid "Error"
 msgstr "Σφάλμα"
 
-#: webpay/pay/views.py:204 webpay/pin/views.py:93
+#: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Εισάγετε Pin"
 
@@ -319,7 +319,7 @@ msgstr "Λάθος pin"
 msgid "Pins do not match."
 msgstr "Τα pins δεν ταιριάζουν."
 
-#: webpay/pin/views.py:46
+#: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "Δημιουργήστε ένα Pin"
 
@@ -364,3 +364,7 @@ msgstr "Είστε σίγουροι πως θέλετε να επαναφέρε�
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Επαναφορά"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr ""

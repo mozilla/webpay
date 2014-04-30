@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: 2014-04-12 01:18+0000\n"
 "Last-Translator: Gábor <kelemeng@ubuntu.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -121,7 +121,7 @@ msgstr "Az értesítési szolgáltatás hibával válaszolt a vásárlási érte
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "Az értesítési szolgáltatás váratlan kivételt dobott a vásárlási értesítés ellenőrzésekor"
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "A vásárlás átmenetileg szünetel."
 
@@ -261,7 +261,7 @@ msgstr "OK"
 msgid "Error"
 msgstr "Hiba"
 
-#: webpay/pay/views.py:204 webpay/pin/views.py:93
+#: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Adja meg PIN-kódját"
 
@@ -321,7 +321,7 @@ msgstr "Hibás PIN"
 msgid "Pins do not match."
 msgstr "A PIN kódok nem egyeznek."
 
-#: webpay/pin/views.py:46
+#: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "PIN létrehozása"
 
@@ -366,3 +366,7 @@ msgstr "Valóban vissza kívánja állítani a PIN kódját? Ehhez be kell lépn
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Visszaállítás"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr ""

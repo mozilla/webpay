@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: 2014-04-12 18:12+0400\n"
 "Last-Translator: Alexander L. Slovesnik <unghost@mozilla-russia.org>\n"
 "Language-Team: none\n"
@@ -120,7 +120,7 @@ msgstr "Служба уведомлений ответила ошибкой пр
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "При проверке уведомления о платеже служба уведомлений выдала непредвиденное исключение"
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "Платежи временно отключены."
 
@@ -260,7 +260,7 @@ msgstr "OK"
 msgid "Error"
 msgstr "Ошибка"
 
-#: webpay/pay/views.py:204 webpay/pin/views.py:93
+#: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Введите PIN-код"
 
@@ -320,7 +320,7 @@ msgstr "Неверный PIN-код"
 msgid "Pins do not match."
 msgstr "PIN-коды не совпадают."
 
-#: webpay/pin/views.py:46
+#: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "Создать PIN-код"
 
@@ -365,3 +365,7 @@ msgstr "Вы уверены, что хотите сбросить свой PIN-�
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Сбросить"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr ""

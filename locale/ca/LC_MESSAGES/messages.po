@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: 2013-11-23 15:01+0000\n"
 "Last-Translator: Anna <arosichsoler@gmail.com>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -121,7 +121,7 @@ msgstr "El servei de notificacions ha generat un error en verificar l'anunci de 
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr ""
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "Els pagaments estan inhabilitats temporalment"
 
@@ -261,7 +261,7 @@ msgstr "D'acord"
 msgid "Error"
 msgstr "Error"
 
-#: webpay/pay/views.py:204 webpay/pin/views.py:93
+#: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Introduïu el PIN"
 
@@ -321,7 +321,7 @@ msgstr "PIN incorrecte"
 msgid "Pins do not match."
 msgstr "Els PIN no coincideixen."
 
-#: webpay/pin/views.py:46
+#: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "Crea un PIN"
 
@@ -366,3 +366,7 @@ msgstr "Esteu segur que voleu reiniciar el PIN? Heu d'iniciar una sessió a Pers
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Reinicia"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr ""

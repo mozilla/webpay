@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: 2014-04-10 17:13+0000\n"
 "Last-Translator: Peter <petercpg@mail.moztw.org>\n"
 "Language-Team: MozTW <petercpg@mail.moztw.org>\n"
@@ -120,7 +120,7 @@ msgstr "確認付款通知時，通知服務回應了錯誤"
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "通知服務在確認付款通知時遇到了未知的例外"
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "目前暫時停用付款功能。"
 
@@ -260,7 +260,7 @@ msgstr "確定"
 msgid "Error"
 msgstr "錯誤"
 
-#: webpay/pay/views.py:204 webpay/pin/views.py:93
+#: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "輸入 Pin 碼"
 
@@ -320,7 +320,7 @@ msgstr "Pin 碼錯誤"
 msgid "Pins do not match."
 msgstr "輸入的 Pin 碼不同。"
 
-#: webpay/pin/views.py:46
+#: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "建立 Pin 碼"
 
@@ -365,3 +365,7 @@ msgstr "您確定要重設 Pin 碼嗎？必須登入至 Persona 才能重設您�
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "重設"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr ""

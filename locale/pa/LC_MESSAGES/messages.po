@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: 2014-03-18 09:18+0000\n"
 "Last-Translator: Inder <inddi123in@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -120,7 +120,7 @@ msgstr "ਭੁਗਤਾਨ ਦੇ ਨੋਟਿਸ ਦੇ ਪੜਤਾਲ ਦੌ�
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "ਭੁਗਤਾਨ ਦੇ ਨੋਟਿਸ ਦੇ ਪੜਤਾਲ ਦੌਰਾਨ ਟਿੱਪਣੀ ਦੀ ਸੇਵਾ ਇੱਕ ਅਚਾਨਕ ਅਪਵਾਦ ਉਭਾਰਿਆ।"
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "ਭੁਗਤਾਨ ਆਰਜ਼ੀ ਤੌਰ ਤੇ ਅਯੋਗ ਕਰ ਰਹੇ ਹਨ।"
 
@@ -260,7 +260,7 @@ msgstr "ਉਕੇ"
 msgid "Error"
 msgstr "ਗਲਤੀ"
 
-#: webpay/pay/views.py:204 webpay/pin/views.py:93
+#: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "ਪਿੰਨ ਭਰੋ"
 
@@ -320,7 +320,7 @@ msgstr "ਗਲਤ ਪਿੰਨ"
 msgid "Pins do not match."
 msgstr "ਪਿੰਨ ਮੇਲ ਨਹੀ ਖਾਦਾ।"
 
-#: webpay/pin/views.py:46
+#: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "ਪਿੰਨ ਬਣਾਉ"
 
@@ -365,3 +365,7 @@ msgstr "ਤੁਹਾਨੂੰ ਯਕੀਨ ਹੈ ਕਿ ਤੁਸੀ ਪਿੰ�
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "ਰੀਸੈੱਟ"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr ""

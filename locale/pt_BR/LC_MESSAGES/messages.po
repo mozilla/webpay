@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: marketplace-webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 09:18-0700\n"
+"POT-Creation-Date: 2014-04-30 09:10-0700\n"
 "PO-Revision-Date: 2014-04-09 16:39+0000\n"
 "Last-Translator: Marco Aurélio <ouesten@me.com>\n"
 "Language-Team: Português (Brasil) <dev-l10n-pt-br@lists.mozilla.org>\n"
@@ -123,7 +123,7 @@ msgstr "O serviço de notificação respondeu com um erro enquanto verificava o 
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "O serviço de notificação levantou uma exceção inesperada ao verificar o aviso de pagamento"
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:58
+#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "Os pagamentos foram desativados temporariamente."
 
@@ -263,7 +263,7 @@ msgstr "OK"
 msgid "Error"
 msgstr "Erro"
 
-#: webpay/pay/views.py:204 webpay/pin/views.py:93
+#: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Inserir PIN"
 
@@ -323,7 +323,7 @@ msgstr "PIN incorreto."
 msgid "Pins do not match."
 msgstr "Os PINs inseridos não correspondem."
 
-#: webpay/pin/views.py:46
+#: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "Criar um PIN"
 
@@ -368,3 +368,7 @@ msgstr "Tem certeza de que deseja redefinir seu PIN? Você deve identificar-se n
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Redefinir"
+
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+msgid "Verifying payment&hellip;"
+msgstr ""
