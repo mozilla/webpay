@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-04-30 09:10-0700\n"
-"PO-Revision-Date: 2014-05-01 16:49+0000\n"
+"PO-Revision-Date: 2014-05-01 16:53+0000\n"
 "Last-Translator: Sara <sara.todaro@mozillaitalia.org>\n"
 "Language-Team: mozillaitalia\n"
 "Language: it\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1398962964.0\n"
+"X-POOTLE-MTIME: 1398963219.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -214,7 +214,7 @@ msgstr "Web Pay"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr "Il codice PIN deve essere di quattro cifre."
+msgstr "Il codice PIN deve essere di 4 cifre."
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
