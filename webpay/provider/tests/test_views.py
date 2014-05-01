@@ -8,7 +8,8 @@ import mock
 from nose.tools import eq_, raises
 from slumber.exceptions import HttpClientError
 
-from lib.solitude.constants import STATUS_PENDING
+from lib.solitude.constants import (
+    STATUS_CANCELLED, STATUS_COMPLETED, STATUS_FAILED, STATUS_PENDING)
 from webpay.base import dev_messages as msg
 from webpay.base.tests import BasicSessionCase
 
@@ -33,7 +34,11 @@ class ProviderTestCase(BasicSessionCase):
         self.addCleanup(p.stop)
 
         p = mock.patch('webpay.provider.views.tasks.payment_notify')
-        self.notify = p.start()
+        self.payment_notify = p.start()
+        self.addCleanup(p.stop)
+
+        p = mock.patch('webpay.provider.views.tasks.chargeback_notify')
+        self.chargeback_notify = p.start()
         self.addCleanup(p.stop)
 
 
@@ -78,14 +83,14 @@ class TestProviderSuccess(ProviderTestCase):
         self.trust_notice()
         res = self.success()
         eq_(res.status_code, 200)
-        self.notify.delay.assert_called_with(self.trans_id)
+        self.payment_notify.delay.assert_called_with(self.trans_id)
         self.assertTemplateUsed(res, 'provider/success.html')
 
     def test_error(self):
         self.trust_notice()
         res = self.error()
         eq_(res.status_code, 400)
-        assert not self.notify.delay.called, (
+        assert not self.payment_notify.delay.called, (
             'did not expect a notification on error')
         self.assertTemplateUsed(res, 'error.html')
 
@@ -169,24 +174,54 @@ class TestNotification(ProviderTestCase):
     def setUp(self):
         super(TestNotification, self).setUp()
         self.url = reverse('provider.notification', args=['boku'])
+        self.slumber.generic.transaction.get_object.return_value = {
+            'uuid': self.trans_id,
+            'notes': '{}',
+            'status': STATUS_COMPLETED}
 
-    def test_good(self):
-        res = self.client.get('{url}?param={tr}'.format(url=self.url,
-                                                        tr=self.trans_id))
+    def notify(self):
+        return self.client.get('{url}?param={tr}'.format(url=self.url,
+                                                         tr=self.trans_id))
+
+    def test_completed_transaction(self):
+        res = self.notify()
         eq_(res.status_code, 200)
         self.slumber.provider.boku.event.post.assert_called_with(
             {'param': [self.trans_id]})
-        self.notify.delay.assert_called_with(self.trans_id)
+        self.payment_notify.delay.assert_called_with(self.trans_id)
 
     @raises(NotImplementedError)
     def test_not_implemented(self):
         self.url = reverse('provider.notification', args=['bango'])
-        self.client.get(self.url)
+        self.notify()
 
-    def test_fail(self):
+    def test_api_failure(self):
         self.slumber.provider.boku.event.post.side_effect = HttpClientError
-        res = self.client.get(self.url)
+        res = self.notify()
         eq_(res.status_code, 502)
         eq_(res.content, 'NOTICE_ERROR')
-        assert not self.notify.delay.called, (
+        assert not self.payment_notify.delay.called, (
             'A notification should not be sent on failure')
+
+    def test_failed_transaction(self):
+        self.slumber.generic.transaction.get_object.return_value = {
+            'uuid': self.trans_id,
+            'notes': '{}',
+            'status': STATUS_FAILED}
+        res = self.notify()
+        assert not self.payment_notify.delay.called, (
+            'A notification should not be sent on failed transactions')
+        self.chargeback_notify.delay.assert_called_with(self.trans_id)
+        eq_(res.status_code, 200)
+
+    def test_cancelled_transaction(self):
+        self.slumber.generic.transaction.get_object.return_value = {
+            'uuid': self.trans_id,
+            'notes': '{}',
+            'status': STATUS_CANCELLED}
+        res = self.notify()
+        assert not self.payment_notify.delay.called, (
+            'A notification should not be sent on cancelled transactions')
+        assert not self.chargeback_notify.delay.called, (
+            'Chargeback notices should not be sent on cancelled transactions')
+        eq_(res.status_code, 200)

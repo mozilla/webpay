@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django_paranoia.decorators import require_GET
 
 from lib.solitude.api import client, ProviderHelper
+from lib.solitude.constants import STATUS_COMPLETED, STATUS_FAILED
 from webpay.base import dev_messages as msg
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
@@ -114,5 +115,12 @@ def notification(request, provider_name):
     except msg.DevMessage as m:
         return HttpResponse(m.code, status=502)
 
-    tasks.payment_notify.delay(transaction_uuid)
+    trans = client.get_transaction(transaction_uuid)
+    log.info('Processing notification for transaction {t}; status={s}'
+             .format(t=transaction_uuid, s=trans['status']))
+    if trans['status'] == STATUS_COMPLETED:
+        tasks.payment_notify.delay(transaction_uuid)
+    elif trans['status'] == STATUS_FAILED:
+        tasks.chargeback_notify.delay(transaction_uuid)
+
     return HttpResponse('OK')
