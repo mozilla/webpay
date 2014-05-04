@@ -367,4 +367,4 @@ msgstr "Изчистване"
 
 #: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
-msgstr ""
+msgstr "Потвърждаване на плащането&hellip;"
