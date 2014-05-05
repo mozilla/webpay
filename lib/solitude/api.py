@@ -324,7 +324,7 @@ class ProviderHelper:
                      .format(prod=generic_product, pr=self.provider.name))
 
         # If there is no provider seller it means the billing account has
-        # not yet been set up in Devhub. Thus, we're not caching an exception
+        # not yet been set up in Devhub. Thus, we're not catching an exception
         # here.
         provider_seller = self.provider.get_seller(generic_seller)
 
