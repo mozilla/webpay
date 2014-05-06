@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-04-30 09:10-0700\n"
-"PO-Revision-Date: 2014-04-18 09:46+0000\n"
+"PO-Revision-Date: 2014-05-06 14:18+0000\n"
 "Last-Translator: Channy <channy@mozilla.or.kr>\n"
 "Language-Team: none\n"
 "Language: ko\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1397814401.0\n"
+"X-POOTLE-MTIME: 1399385933.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -368,4 +368,4 @@ msgstr "재설정"
 
 #: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
-msgstr ""
+msgstr "지불 확인하기&hellip;"
