@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: AMO Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-07 09:18-0700\n"
-"PO-Revision-Date: 2014-04-30 18:26+0000\n"
+"PO-Revision-Date: 2014-05-07 19:12+0000\n"
 "Last-Translator: Michael <michael.koehler1@gmx.de>\n"
 "Language-Team: German (de) <coce@nufuerspam.de>\n"
 "Language: de\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1398882413.0\n"
+"X-POOTLE-MTIME: 1399489951.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -259,6 +259,8 @@ msgstr "Ok"
 #: webpay/base/templates/base.html:48
 msgid "The transaction failed. You have not been charged for this purchase."
 msgstr ""
+"Die Transaktion ist fehlgeschlagen. Ihr Konto wurde für diesen Kauf nicht "
+"belastet."
 
 #: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
