@@ -209,10 +209,10 @@ class ProviderHelper:
         self.name = self.provider.name
 
     @classmethod
-    def choose(cls, mcc=None, mnc=None):
+    def supported_providers(cls, mcc=None, mnc=None):
         """
-        Given the user's mobile network (when available) return a suitable
-        provider helper object.
+        Given the user's mobile network (when available) return a list of
+        all suitable provider helper objects in order of preference.
 
         Keyword arguments:
 
@@ -222,22 +222,20 @@ class ProviderHelper:
         **mnc**
             The user's mobile network code, if known.
         """
-        # Switch to Boku when on one of their networks.
+        if settings.PAYMENT_PROVIDER == BokuProvider.name:
+            raise ValueError('Since Boku is detected by network '
+                             'use SIMULATED_NETWORK to force it instead')
+
+        supported_providers = []
+
+        # Allow Boku when on one of their networks.
         if (mcc, mnc) in BokuProvider.network_data:
-            provider_name = BokuProvider.name
-        else:
-            provider_name = settings.PAYMENT_PROVIDER
-            if settings.PAYMENT_PROVIDER == BokuProvider.name:
-                raise ValueError('Since Boku is detected by network '
-                                 'use SIMULATED_NETWORK to force it instead')
+            supported_providers.append(BokuProvider.name)
 
-        log.info('choosing payment provider "{pr}" for mcc {mcc}, mnc {mnc}'
-                 .format(pr=provider_name, mcc=mcc, mnc=mnc))
+        # Always allow the default provider.
+        supported_providers.append(settings.PAYMENT_PROVIDER)
 
-        # TODO: fall back to a payment provider *supported* by the
-        # seller. bug 993691.
-
-        return cls(provider_name)
+        return [cls(provider_name) for provider_name in supported_providers]
 
     def start_transaction(self, transaction_uuid,
                           seller_uuid,

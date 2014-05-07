@@ -19,6 +19,7 @@ import test_utils
 
 
 from lib.marketplace.api import client, UnknownPricePoint
+from lib.marketplace.constants import COUNTRIES
 from lib.solitude import api
 from lib.solitude import constants
 from webpay.base.utils import gmtime
@@ -368,7 +369,7 @@ class TestSimulatedNotifications(NotifyTest):
 class BaseStartPay(test_utils.TestCase):
 
     def setUp(self):
-        self.issue = 'some-seller-uuid'
+        self.issue = 'some-public-id'
         self.user_uuid = 'some-user-uuid'
         self.transaction_uuid = 'webpay:some-id'
         self.notes = {
@@ -396,6 +397,19 @@ class TestStartPay(BaseStartPay):
         self.mkt = p.start()
         self.addCleanup(p.stop)
 
+        self.providers = api.ProviderHelper.supported_providers()
+        self.bango_seller_uuid = 'bango_seller_uuid'
+        self.boku_seller_uuid = 'boku_seller_uuid'
+        self.solitude.generic.product.get_object_or_404.return_value = {
+            'resource_uri': '/generic/product/1/',
+            'public_id': 'public_id',
+            'seller_uuids': {
+                'bango': self.bango_seller_uuid,
+                'boku': self.boku_seller_uuid,
+            },
+            'external_id': 'external_id',
+        }
+
     def start(self):
         prices = mock.Mock()
         prices.get_object.return_value = self.prices
@@ -406,9 +420,8 @@ class TestStartPay(BaseStartPay):
             'type': constants.TYPE_PAYMENT,
             'uuid': self.transaction_uuid
         }
-        provider = 'bango'
         tasks.start_pay(self.transaction_uuid, self.notes, self.user_uuid,
-                        provider)
+                        self.providers)
 
     def set_billing_id(self, slumber, num):
         slumber.bango.billing.post.return_value = {
@@ -418,6 +431,111 @@ class TestStartPay(BaseStartPay):
             'responseCode': 'OK',
             'resource_uri': '/bango/billing/3333/'
         }
+
+    def test_product_queried_in_solitude_using_iss_for_in_app(self):
+        public_id = 'inapp-public-id'
+        self.notes['issuer_key'] = public_id
+        self.start()
+        self.solitude.generic.product.get_object_or_404.assert_any_call(
+            public_id=public_id)
+
+    def test_product_queried_in_solitude_using_public_id_for_web_app(self):
+        public_id = 'webapp-public-id'
+        self.notes['issuer_key'] = settings.KEY
+        self.notes['pay_request']['request']['productData'] = (
+            urlencode({'public_id': public_id}))
+        self.start()
+        self.solitude.generic.product.get_object_or_404.assert_any_call(
+            public_id=public_id)
+
+    def test_boku_used_when_network_supported_and_setup_in_solitude(self):
+        mcc, mnc = api.BokuProvider.network_data.keys()[0]
+        country = COUNTRIES[mcc]
+        self.prices['prices'][0]['region'] = country
+        self.notes['network'] = {
+            'mcc': mcc,
+            'mnc': mnc,
+        }
+        self.solitude.generic.seller.get_object_or_404.return_value = {
+            'resource_pk': 1,
+            'uuid': self.boku_seller_uuid,
+        }
+        self.providers = api.ProviderHelper.supported_providers(
+            mcc=mcc, mnc=mnc)
+
+        self.start()
+
+        self.solitude.generic.seller.get_object_or_404.assert_called_with(
+            uuid=self.boku_seller_uuid)
+        self.solitude.boku.transactions.post.assert_called_with({
+            'seller_uuid': self.boku_seller_uuid,
+            'forward_url': 'http://testserver/mozpay/'
+                           'provider/boku/wait-to-finish',
+            'country': 'MX',
+            'price': 1,
+            'transaction_uuid': 'webpay:some-id',
+            'callback_url': 'http://testserver/mozpay/'
+                            'provider/boku/notification',
+            'user_uuid': self.user_uuid,
+        })
+
+    def test_bango_used_when_boku_supported_but_not_setup_in_solitude(self):
+        mcc, mnc = api.BokuProvider.network_data.keys()[0]
+        country = COUNTRIES[mcc]
+        self.prices['prices'][0]['region'] = country
+        self.notes['network'] = {
+            'mcc': mcc,
+            'mnc': mnc,
+        }
+        self.solitude.generic.seller.get_object_or_404.return_value = {
+            'resource_pk': 1,
+            'uuid': self.boku_seller_uuid,
+        }
+        self.providers = api.ProviderHelper.supported_providers(
+            mcc=mcc, mnc=mnc)
+
+        self.solitude.generic.product.get_object_or_404.return_value = {
+            'resource_uri': '/generic/product/1/',
+            'public_id': 'public_id',
+            'seller_uuids': {
+                'bango': self.bango_seller_uuid,
+                'boku': None,
+            },
+            'external_id': 'external_id',
+        }
+
+        self.start()
+
+        self.solitude.bango.product.get_object_or_404.assert_called_with(
+            seller_product__seller=1,
+            seller_product__external_id='external_id'
+        )
+
+    def test_bango_used_when_boku_not_supported(self):
+        self.providers = api.ProviderHelper.supported_providers()
+        eq_(len(self.providers), 1)
+
+        self.solitude.generic.seller.get_object_or_404.return_value = {
+            'resource_pk': 1,
+            'uuid': self.bango_seller_uuid,
+        }
+
+        self.solitude.generic.product.get_object_or_404.return_value = {
+            'resource_uri': '/generic/product/1/',
+            'public_id': 'public_id',
+            'seller_uuids': {
+                'bango': self.bango_seller_uuid,
+                'boku': None,
+            },
+            'external_id': 'external_id',
+        }
+
+        self.start()
+
+        self.solitude.bango.product.get_object_or_404.assert_called_with(
+            seller_product__seller=1,
+            seller_product__external_id='external_id'
+        )
 
     @raises(api.SellerNotConfigured)
     def test_no_seller(self):
@@ -459,7 +577,7 @@ class TestStartPay(BaseStartPay):
 
     def test_marketplace_found(self):
         self.notes['pay_request']['request']['productData'] = (
-            urlencode({'seller_uuid': self.notes['issuer_key']}))
+            urlencode({'public_id': 'some-public-id'}))
         self.notes['issuer_key'] = settings.KEY
         self.start()
         eq_(self.solitude.bango.billing.post.call_args[0][0]['source'],
@@ -495,22 +613,6 @@ class TestStartPay(BaseStartPay):
         #eq_(trans.status, TRANS_STATE_FAILED)
 
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
-    def test_marketplace_seller_switch(self):
-        self.mkt.webpay.prices.get.return_value = self.prices
-        self.set_billing_id(self.solitude, 123)
-
-        # Simulate how the Marketplace would add
-        # a custom seller_uuid to the product data in the JWT.
-        app_seller_uuid = 'some-seller-uuid'
-        data = urlencode({'seller_uuid': app_seller_uuid})
-        self.notes['issuer_key'] = 'marketplace-domain'
-        self.notes['pay_request']['request']['productData'] = data
-        self.start()
-
-        # Check that the seller_uuid was switched to that of the app seller.
-        self.solitude.generic.seller.get_object_or_404.assert_called_with(
-            uuid=app_seller_uuid)
-
     def test_pay_url_saved(self):
         bill_id = '123'
         self.mkt.webpay.prices.get.return_value = self.prices
@@ -528,12 +630,12 @@ class TestStartPay(BaseStartPay):
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
     def test_marketplace_application_size(self):
         # Simulate how the Marketplace would add
-        # a custom seller_uuid and application_size
+        # a custom public_id and application_size
         # to the product data in the JWT.
-        app_seller_uuid = 'some-seller-uuid'
+        app_public_id = 'some-public-id'
         application_size = 10
         data = urlencode({
-            'seller_uuid': app_seller_uuid,
+            'public_id': app_public_id,
             'application_size': application_size})
         self.notes['issuer_key'] = 'marketplace-domain'
         self.notes['pay_request']['request']['productData'] = data
@@ -546,10 +648,10 @@ class TestStartPay(BaseStartPay):
 
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
     def test_marketplace_wrong_application_size(self):
-        app_seller_uuid = 'some-seller-uuid'
+        app_public_id = 'some-public-id'
         application_size = 'foo'
         data = urlencode({
-            'seller_uuid': app_seller_uuid,
+            'public_id': app_public_id,
             'application_size': application_size})
         self.notes['issuer_key'] = 'marketplace-domain'
         self.notes['pay_request']['request']['productData'] = data
@@ -563,7 +665,7 @@ class TestStartPay(BaseStartPay):
     @raises(ValueError)
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
     @mock.patch('webpay.pay.tasks.client')
-    def test_marketplace_missing_seller_uuid(self, cli):
+    def test_marketplace_missing_public_id(self, cli):
         self.notes['issuer_key'] = settings.KEY
         self.notes['pay_request']['request']['productData'] = 'foo-bar'
         self.start()

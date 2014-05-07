@@ -10,7 +10,7 @@ import mock
 from nose.tools import eq_, raises
 from slumber.exceptions import HttpClientError
 
-from lib.solitude.api import (BangoProvider, BokuProvider, client,
+from lib.solitude.api import (BokuProvider, client,
                               ProviderHelper, SellerNotConfigured)
 from lib.solitude.errors import ERROR_STRINGS
 from lib.solitude.exceptions import ResourceModified, ResourceNotModified
@@ -685,27 +685,34 @@ class TransactionTest(TestCase):
 @mock.patch.object(settings, 'PAYMENT_PROVIDER', 'bango')
 class TestProviderHelper(TestCase):
 
+    def test_supported_providers_returns_default_provider(self):
+        providers = ProviderHelper.supported_providers()
+        eq_(len(providers), 1)
+
+        provider = providers[0]
+        eq_(provider.name, settings.PAYMENT_PROVIDER)
+
     def test_from_boku_operator(self):
         mcc = '334'  # Mexico
         mnc = '020'  # AMX
 
-        provider = ProviderHelper.choose(mcc=mcc, mnc=mnc)
-        eq_(provider.name, BokuProvider.name)
+        providers = ProviderHelper.supported_providers(mcc=mcc, mnc=mnc)
+        provider_names = [provider.name for provider in providers]
+        eq_(provider_names, [
+            BokuProvider.name, settings.PAYMENT_PROVIDER])
 
     def test_from_wrong_mexican_operator(self):
         mcc = '334'  # Mexico
         mnc = '03'  # Movistar
 
-        provider = ProviderHelper.choose(mcc=mcc, mnc=mnc)
-        eq_(provider.name, BangoProvider.name)
+        providers = ProviderHelper.supported_providers(mcc=mcc, mnc=mnc)
+        provider_names = [provider.name for provider in providers]
+        eq_(provider_names, [settings.PAYMENT_PROVIDER])
 
     def test_not_from_mexico(self):
         mcc = '214'  # Spain
         mnc = '01'  # Vodaphone
 
-        provider = ProviderHelper.choose(mcc=mcc, mnc=mnc)
-        eq_(provider.name, BangoProvider.name)
-
-    def test_no_network(self):
-        provider = ProviderHelper.choose()
-        eq_(provider.name, BangoProvider.name)
+        providers = ProviderHelper.supported_providers(mcc=mcc, mnc=mnc)
+        provider_names = [provider.name for provider in providers]
+        eq_(provider_names, [settings.PAYMENT_PROVIDER])
