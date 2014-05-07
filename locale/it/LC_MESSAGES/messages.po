@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-30 09:10-0700\n"
+"POT-Creation-Date: 2014-05-07 09:18-0700\n"
 "PO-Revision-Date: 2014-05-01 16:53+0000\n"
 "Last-Translator: Sara <sara.todaro@mozillaitalia.org>\n"
 "Language-Team: mozillaitalia\n"
@@ -255,6 +255,10 @@ msgstr "Qualcosa è andato storto. Vuoi riprovare?"
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "OK"
+
+#: webpay/base/templates/base.html:48
+msgid "The transaction failed. You have not been charged for this purchase."
+msgstr ""
 
 #: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"

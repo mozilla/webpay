@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-30 09:10-0700\n"
+"POT-Creation-Date: 2014-05-07 09:18-0700\n"
 "PO-Revision-Date: 2014-04-30 13:29-0400\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -254,6 +254,10 @@ msgstr "何か問題が発生しました。再度試しますか？"
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "OK"
+
+#: webpay/base/templates/base.html:48
+msgid "The transaction failed. You have not been charged for this purchase."
+msgstr ""
 
 #: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
