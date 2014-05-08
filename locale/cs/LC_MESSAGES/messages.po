@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Czech (cs)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-07 09:18-0700\n"
-"PO-Revision-Date: 2014-05-02 08:44+0000\n"
+"PO-Revision-Date: 2014-05-08 07:52+0000\n"
 "Last-Translator: Pavel <jasnapaka@jasnapaka.com>\n"
 "Language-Team: Czech Mozilla Team <info@mozilla.cz>\n"
 "Language: cs\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1399020289.0\n"
+"X-POOTLE-MTIME: 1399535536.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -258,7 +258,7 @@ msgstr "OK"
 
 #: webpay/base/templates/base.html:48
 msgid "The transaction failed. You have not been charged for this purchase."
-msgstr ""
+msgstr "Transakce selhala. Tato koupě vám nebyla účtována."
 
 #: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
