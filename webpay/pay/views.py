@@ -354,7 +354,7 @@ def _callback_url(request, is_success):
     # This is currently only used by Bango and Zippy.
     # Future providers should probably get added to the notification
     # abstraction in provider/views.py
-    provider = ProviderHelper.choose()
+    provider = ProviderHelper(settings.PAYMENT_PROVIDER)
 
     if provider.is_callback_token_valid(signed_notice):
         statsd.incr('purchase.payment_{0}_callback.ok'.format(status))
