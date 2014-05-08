@@ -29,8 +29,10 @@ def monitor(request):
         perms = marketplace.api.account.permissions.mine.get()
     except (HttpServerError, HttpClientError), err:
         all_good = False
-        msg = ('Server error: status %s, content: %s' %
-               (err.response.status_code, err.response.content or 'empty'))
+        msg = ('Server error: status {0}, content: {1}'.format(
+                    err.response.status_code,
+                    err.response.content or 'empty')
+               if err.response else 'Server error: no response')
     else:
         if not perms['permissions'].get('webpay', False):
             all_good = False
