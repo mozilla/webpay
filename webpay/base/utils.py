@@ -27,15 +27,15 @@ def gmtime():
 
 
 def log_cef(msg, request, **kw):
-    log_cef_meta(msg, request.META.copy(), request.get_full_path(), **kw)
+    log_cef_meta(msg, request.META.copy(), request.path_info, **kw)
 
 
-def log_cef_meta(msg, meta, full_path, **kw):
+def log_cef_meta(msg, meta, path_info, **kw):
     g = functools.partial(getattr, settings)
     severity = kw.get('severity', g('CEF_DEFAULT_SEVERITY', 5))
     cef_kw = {
         'msg': msg,
-        'signature': full_path,
+        'signature': path_info,
         'config': {
             'cef.product': 'WebPay',
             'cef.vendor': g('CEF_VENDOR', 'Mozilla'),
