@@ -12,6 +12,7 @@ from slumber.exceptions import HttpClientError
 
 from lib.solitude.api import (BokuProvider, client,
                               ProviderHelper, SellerNotConfigured)
+from lib.solitude.constants import ACCESS_PURCHASE
 from lib.solitude.errors import ERROR_STRINGS
 from lib.solitude.exceptions import ResourceModified, ResourceNotModified
 
@@ -414,8 +415,18 @@ class ProviderTestCase(TestCase):
                'token': 'the-token',
            }
 
-        By default, get_object_or_404 will be mocked with a resource_pk and
-        resource_uri
+        Here's an example of mocking a side effect when calling post():
+
+            self.set_mocks({
+                'provider.reference.transactions': {
+                    'method': 'post',
+                    'side_effect': ValueError,
+                }
+            })
+
+        * If no method is specified, the default is get_object_or_404.
+        * If no return is specified, the return will be a resource_pk, uuid,
+          and resource_uri
         """
         if seller_uuid and 'generic.seller' not in returns:
             returns['generic.seller'] = {
@@ -636,7 +647,6 @@ class TestBoku(ProviderTestCase):
 
         eq_(trans_id, 'boku-trans-id')
         eq_(pay_url, boku_pay_url)
-        eq_(seller_uuid, seller_uuid)
 
         kw = self.slumber.boku.transactions.post.call_args[0][0]
         eq_(kw['price'], '55.00')
@@ -650,6 +660,40 @@ class TestBoku(ProviderTestCase):
                                                   args=['boku'])), (
             'Unexpected: {u}'.format(u=kw['forward_url']))
         assert 'transaction_uuid' in kw, 'Missing keys: {kw}'.format(kw=kw)
+        assert self.slumber.generic.transaction.post.called
+
+    def test_new_inapp_transaction(self):
+        seller_uuid = 'seller-xyz'
+        external_id = 'external-id'
+        boku_pay_url = 'https://site/buy'
+
+        self.set_mocks({
+            # Return a 404 as if this is the first purchase
+            # for the in-app product.
+            'generic.product': {
+                'method': 'get_object_or_404',
+                'side_effect': ObjectDoesNotExist,
+            },
+            'boku.transactions': {
+                'method': 'post',
+                'return': {
+                    'buy_url': boku_pay_url,
+                    'transaction_id': 'boku-trans-id',
+                }
+            }},
+            seller_uuid=seller_uuid,
+            product_uuid='XYZ')
+
+        trans_id, pay_url, seller_uuid = self.configure(
+            seller_uuid=seller_uuid, product_uuid=external_id)
+
+        # Make sure the new in-app product was created.
+        kw = self.slumber.generic.product.post.call_args[0][0]
+        eq_(kw['external_id'], external_id)
+        eq_(kw['seller'], '/seller/{u}'.format(u=seller_uuid))
+        eq_(kw['access'], ACCESS_PURCHASE)
+
+        assert self.slumber.boku.transactions.post.called
         assert self.slumber.generic.transaction.post.called
 
     @raises(BokuProvider.TransactionError)

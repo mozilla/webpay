@@ -606,16 +606,13 @@ class BokuProvider(PayProvider):
         return self.slumber.boku
 
     def get_product(self, generic_seller, generic_product):
-        # Boku doesn't have products. I think.
+        # Boku does not have a products API the way Bango does.
         return None
 
     def create_product(self, generic_product, provider_seller, external_id,
                        product_name):
-        # Boku doesn't have products. I think.
+        # Boku does not have a products API the way Bango does.
         return None
-
-    def get_seller(self, generic_seller):
-        raise NotImplementedError()
 
     def create_transaction(self, generic_seller, generic_product,
                            provider_product, product_name, transaction_uuid,
