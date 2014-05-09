@@ -75,13 +75,15 @@ def configure_transaction(request, trans=None):
                                            c=last_configured))
 
     network = request.session['notes'].get('network', {})
-    provider = ProviderHelper.choose(mcc=network.get('mcc'),
-                                     mnc=network.get('mnc'))
+    providers = ProviderHelper.supported_providers(
+        mcc=network.get('mcc'),
+        mnc=network.get('mnc'),
+    )
 
     start_pay.delay(request.session['trans_id'],
                     request.session['notes'],
                     request.session['uuid'],
-                    provider.name)
+                    providers)
 
     # We passed notes to start_pay (which saves it to the transaction
     # object), so delete it from the session to save cookie space.
@@ -129,7 +131,7 @@ def get_secret(issuer_key):
                       .get_object_or_404(public_id=issuer_key))['secret']
 
 
-def get_seller_uuid(issuer_key, product_data):
+def get_provider_seller_uuid(issuer_key, product_data, providers):
     """Resolve the JWT into a seller uuid."""
     if is_marketplace(issuer_key):
         # The issuer of the JWT is Firefox Marketplace.
@@ -137,24 +139,39 @@ def get_seller_uuid(issuer_key, product_data):
         # actual Solitude/Bango seller_uuid to associate the
         # product to the right account.
         try:
-            seller_uuid = product_data['seller_uuid'][0]
+            public_id = product_data['public_id'][0]
         except KeyError:
-            raise ValueError('Marketplace %r did not put a seller_uuid '
-                             'in productData: %r'
-                             % (settings.KEY, product_data))
-        log.info('Using real seller_uuid %r for Marketplace %r '
-                 'app payment' % (seller_uuid, settings.KEY))
-        return seller_uuid
-
+            raise ValueError(
+                'Marketplace {key} did not put a '
+                'public_id in productData: {product_data}'.format(
+                    key=settings.KEY, product_data=product_data
+                )
+            )
     else:
         # The issuer of the JWT is the seller.
         # Resolve this into the seller uuid.
-        #
-        # TODO: we can speed this up by having product return the full data.
-        product = (client.slumber.generic.product
-                         .get_object_or_404(public_id=issuer_key))
-        return (client.slumber.generic.seller(product['seller'].split('/')[-2])
-                      .get_object_or_404())['uuid']
+        public_id = issuer_key
+
+    product = client.slumber.generic.product.get_object_or_404(
+        public_id=public_id)
+
+    for provider in providers:
+        if ((provider.name in product['seller_uuids'])
+                and (product['seller_uuids'][provider.name] is not None)):
+            seller_uuid = product['seller_uuids'][provider.name]
+            log.info(
+                'Using real seller_uuid {seller_uuid} for provider '
+                '{provider} and for public_id {public_id} app payment'.format(
+                    seller_uuid=seller_uuid,
+                    provider=provider.name,
+                    public_id=public_id
+                )
+            )
+            return provider, seller_uuid
+
+    raise ValueError(
+        'Unable to find a valid seller_uuid for public_id {public_id}'.format(
+            public_id=public_id))
 
 
 def is_marketplace(issuer_key):
@@ -164,7 +181,7 @@ def is_marketplace(issuer_key):
 @task
 @use_master
 @transaction.commit_on_success
-def start_pay(transaction_uuid, notes, user_uuid, provider_name, **kw):
+def start_pay(transaction_uuid, notes, user_uuid, providers, **kw):
     """
     Work with Solitude to begin a payment.
 
@@ -191,9 +208,12 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_name, **kw):
     pay = notes['pay_request']
     network = notes.get('network', {})
     product_data = urlparse.parse_qs(pay['request'].get('productData', ''))
-    helper = ProviderHelper(provider_name)
     try:
-        seller_uuid = get_seller_uuid(key, product_data)
+        provider_helper, seller_uuid = get_provider_seller_uuid(
+            key,
+            product_data,
+            providers
+        )
         try:
             application_size = int(product_data['application_size'][0])
         except (KeyError, ValueError):
@@ -202,7 +222,7 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_name, **kw):
         # Ask the marketplace for a valid price point.
         # Note: the get_price_country API might be more helpful.
         prices = mkt_client.get_price(pay['request']['pricePoint'],
-                                      provider=helper.provider.name)
+                                      provider=provider_helper.provider.name)
         log.debug('pricePoint=%s prices=%s' % (pay['request']['pricePoint'],
                                                prices['prices']))
         try:
@@ -213,7 +233,7 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_name, **kw):
             icon_url = None
         log.info('icon URL for %s: %s' % (transaction_uuid, icon_url))
 
-        bill_id, pay_url, seller_id = helper.start_transaction(
+        bill_id, pay_url, seller_id = provider_helper.start_transaction(
             transaction_uuid,
             seller_uuid,
             pay['request']['id'],
