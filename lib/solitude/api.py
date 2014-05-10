@@ -393,7 +393,7 @@ class ProviderHelper:
         # Get the notification data from the incoming request.
         data = self.provider.get_notification_data(request)
 
-        log.info('Provider={pr} posting notification: {data}'
+        log.info('Provider={pr} verifying notification: {data}'
                  .format(pr=self.name, data=data))
         try:
             # Post the result to solitude.
@@ -606,16 +606,13 @@ class BokuProvider(PayProvider):
         return self.slumber.boku
 
     def get_product(self, generic_seller, generic_product):
-        # Boku doesn't have products. I think.
+        # Boku does not have a products API the way Bango does.
         return None
 
     def create_product(self, generic_product, provider_seller, external_id,
                        product_name):
-        # Boku doesn't have products. I think.
+        # Boku does not have a products API the way Bango does.
         return None
-
-    def get_seller(self, generic_seller):
-        raise NotImplementedError()
 
     def create_transaction(self, generic_seller, generic_product,
                            provider_product, product_name, transaction_uuid,

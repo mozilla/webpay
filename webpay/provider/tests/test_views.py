@@ -211,7 +211,6 @@ class TestNotification(ProviderTestCase):
         res = self.notify()
         assert not self.payment_notify.delay.called, (
             'A notification should not be sent on failed transactions')
-        self.chargeback_notify.delay.assert_called_with(self.trans_id)
         eq_(res.status_code, 200)
 
     def test_cancelled_transaction(self):
