@@ -86,6 +86,20 @@ URL bar of how you run your dev server exactly.
 See :ref:`this section <use-hosted>` for how to set up a B2G device to
 talk to your brand new local development server.
 
+Setting Up the Tests
+~~~~~~~~~~~~~~~~~~~~
+
+You will need to install the python testing dependencies for python
+or UI testing::
+
+    pip install -r requirements/test.txt
+
+To run UI tests you need `casperjs`_ 1.1 or greater. With `homebrew`_ on
+Mac OS X you can install it like this::
+
+    brew install --devel casperjs
+
+
 Running Tests
 ~~~~~~~~~~~~~
 
@@ -99,14 +113,8 @@ Running UI Tests
 ~~~~~~~~~~~~~~~~
 
 Webpay has a test suite that sets up a couple mocks then runs tests
-against the web UI in a headless browser.
-To run UI tests you need `casperjs`_ 1.1 or greater. With `homebrew`_ on
-Mac OS X you can install it like this::
-
-    brew install --devel casperjs
-
-From the root of Webpay and within your Python virualenv,
-run the tests like this::
+against the web UI in a headless browser. From the root of Webpay and
+within your Python virualenv, run the tests like this::
 
     make test-ui
 
