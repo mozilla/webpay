@@ -147,10 +147,12 @@ def get_provider_seller_uuid(issuer_key, product_data, providers):
                     key=settings.KEY, product_data=product_data
                 )
             )
+        log.info('Got public_id from Marketplace app purchase')
     else:
         # The issuer of the JWT is the seller.
         # Resolve this into the seller uuid.
         public_id = issuer_key
+        log.info('Got public_id from in-app purchase')
 
     product = client.slumber.generic.product.get_object_or_404(
         public_id=public_id)
