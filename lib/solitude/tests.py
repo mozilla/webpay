@@ -304,6 +304,9 @@ class TestBango(TestCase):
         self.slumber = mock.MagicMock()
         self.provider = ProviderHelper('bango', slumber=self.slumber)
 
+    def start(self):
+        return self.provider.start_transaction(*range(0, 9))
+
     def test_create_without_bango_seller(self):
         with self.assertRaises(ValueError):
             self.provider.create_product(
@@ -330,7 +333,7 @@ class TestBango(TestCase):
         slumber.generic.seller.get_object_or_404.side_effect = (
             ObjectDoesNotExist)
         with self.assertRaises(SellerNotConfigured):
-            self.provider.start_transaction(*range(0, 8))
+            self.start()
 
     def test_no_bango_product(self):
         slumber = self.slumber
@@ -339,8 +342,7 @@ class TestBango(TestCase):
             'billingConfigurationId': 'bill_id'}
         slumber.bango.product.get_object_or_404.side_effect = (
             ObjectDoesNotExist)
-        trans_id, pay_url, seller_uuid = self.provider.start_transaction(
-            *range(0, 8))
+        trans_id, pay_url, seller_uuid = self.start()
         eq_(trans_id, 'bill_id')
 
     def test_with_bango_product(self):
@@ -350,8 +352,7 @@ class TestBango(TestCase):
             'billingConfigurationId': 'bill_id'}
         slumber.bango.product.get_object.return_value = {
             'resource_uri': 'foo'}
-        trans_id, pay_url, seller_uuid = self.provider.start_transaction(
-            *range(0, 8))
+        trans_id, pay_url, seller_uuid = self.start()
         eq_(trans_id, 'bill_id')
 
     def test_pay_url(self):
@@ -364,8 +365,7 @@ class TestBango(TestCase):
         with self.settings(
             PAY_URLS={'bango': {'base': 'http://bango',
                                 'pay': '/pay?bcid={uid_pay}'}}):
-            trans_id, pay_url, seller_uuid = self.provider.start_transaction(
-                *range(0, 8))
+            trans_id, pay_url, seller_uuid = self.start()
 
         eq_(pay_url, 'http://bango/pay?bcid={b}'.format(b=bill_id))
 
@@ -376,19 +376,21 @@ class ProviderTestCase(TestCase):
                   product_uuid='product-xyz', product_name='Shiny App',
                   success_redirect='/todo/postback',
                   error_redirect='/todo/chargeback',
+                  provider_seller_uuid='provider-sel-xyz',
                   prices=[{'price': '0.89', 'currency': 'EUR', 'region': 14},
                           {'price': '55.00', 'currency': 'MXN', 'region': 12}],
                   icon_url='/todo/icons', user_uuid='user-xyz',
                   app_size=1024 * 5, mcc=None, mnc=None):
         return self.provider.start_transaction(
-            trans_uuid,
-            seller_uuid,
-            product_uuid,
-            product_name,
-            prices,
-            icon_url,
-            user_uuid,
-            app_size,
+            transaction_uuid=trans_uuid,
+            generic_seller_uuid=seller_uuid,
+            provider_seller_uuid=provider_seller_uuid,
+            product_id=product_uuid,
+            product_name=product_name,
+            prices=prices,
+            icon_url=icon_url,
+            user_uuid=user_uuid,
+            application_size=app_size,
             mcc=mcc,
             mnc=mnc
         )
@@ -627,6 +629,7 @@ class TestBoku(ProviderTestCase):
 
     def test_start_transaction(self):
         seller_uuid = 'seller-xyz'
+        provider_seller_uuid = 'provider-sel-xyz'
         user_uuid = 'user-xyz'
         boku_pay_url = 'https://site/buy'
 
@@ -643,7 +646,8 @@ class TestBoku(ProviderTestCase):
         )
 
         trans_id, pay_url, seller_uuid = self.configure(
-            seller_uuid=seller_uuid, user_uuid=user_uuid)
+            seller_uuid=seller_uuid, user_uuid=user_uuid,
+            provider_seller_uuid=provider_seller_uuid)
 
         eq_(trans_id, 'boku-trans-id')
         eq_(pay_url, boku_pay_url)
@@ -651,7 +655,7 @@ class TestBoku(ProviderTestCase):
         kw = self.slumber.boku.transactions.post.call_args[0][0]
         eq_(kw['price'], '55.00')
         eq_(kw['country'], 'MX')
-        eq_(kw['seller_uuid'], seller_uuid)
+        eq_(kw['seller_uuid'], provider_seller_uuid)
         eq_(kw['user_uuid'], user_uuid)
         assert kw['callback_url'].endswith(reverse('provider.notification',
                                                    args=['boku'])), (

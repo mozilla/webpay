@@ -68,7 +68,15 @@ def system_error(request, **kw):
 def custom_error(request, user_message, code=None, status=400):
     error = {'error': user_message, 'error_code': code}
     if request.META.get('HTTP_ACCEPT') == 'application/json':
-        return HttpResponse(content=json.dumps(error),
-                    content_type='application/json; charset=utf-8',
-                    status=status)
+        return HttpResponse(
+            content=json.dumps(error),
+            content_type='application/json; charset=utf-8',
+            status=status)
     return render(request, 'error.html', error, status=status)
+
+
+def uri_to_pk(uri):
+    """
+    Convert a resource URI to the primary key of the resource.
+    """
+    return uri.rstrip('/').split('/')[-1]
