@@ -238,7 +238,7 @@ class ProviderHelper:
         return [cls(provider_name) for provider_name in supported_providers]
 
     def start_transaction(self, transaction_uuid,
-                          seller_uuid,
+                          generic_seller_uuid, provider_seller_uuid,
                           product_id, product_name,
                           prices, icon_url,
                           user_uuid, application_size,
@@ -248,40 +248,42 @@ class ProviderHelper:
         Start a payment provider transaction to begin the purchase flow.
         """
         try:
-            seller = self.slumber.generic.seller.get_object_or_404(
-                uuid=seller_uuid)
+            generic_seller = self.slumber.generic.seller.get_object_or_404(
+                uuid=generic_seller_uuid)
         except ObjectDoesNotExist:
             raise SellerNotConfigured(
                 '{pr}: Seller with uuid {u} does not exist'
-                .format(u=seller_uuid, pr=self.provider.name))
-        seller_id = seller['resource_pk']
-        log.info('{pr}: transaction {tr}: seller: {sel}'
-                 .format(tr=transaction_uuid, sel=seller_id,
+                .format(u=generic_seller_uuid, pr=self.provider.name))
+        generic_seller_id = generic_seller['resource_pk']
+        log.info('{pr}: starting transaction {tr}: generic seller: {sel}'
+                 .format(tr=transaction_uuid, sel=generic_seller_id,
                          pr=self.provider.name))
         log.info('{pr}: get product for seller_uuid={uuid} external_id={ext}'
                  .format(pr=self.provider.name,
-                         uuid=seller_uuid, ext=product_id))
+                         uuid=generic_seller_uuid, ext=product_id))
 
         product = None
         try:
             product = self.slumber.generic.product.get_object_or_404(
                 external_id=product_id,
-                seller=seller_id,
+                seller=generic_seller_id,
             )
             log.info('{pr}: found generic product {prod}'
                      .format(pr=self.provider.name, prod=product))
-            provider_product = self.provider.get_product(seller, product)
+            provider_product = self.provider.get_product(generic_seller,
+                                                         product)
             log.info('{pr}: found provider product {prod}'
                      .format(prod=provider_product, pr=self.provider.name))
         except ObjectDoesNotExist:
             product, provider_product = self.create_product(
                 product_id, product_name,
-                seller, generic_product=product)
+                generic_seller, generic_product=product)
 
         trans_token, pay_url = self.provider.create_transaction(
-            generic_seller=seller,
+            generic_seller=generic_seller,
             generic_product=product,
             provider_product=provider_product,
+            provider_seller_uuid=provider_seller_uuid,
             product_name=product_name,
             transaction_uuid=transaction_uuid,
             prices=prices,
@@ -295,7 +297,7 @@ class ProviderHelper:
         log.info('{pr}: made provider trans {trans}'
                  .format(trans=trans_token, pr=self.provider.name))
 
-        return trans_token, pay_url, seller_id
+        return trans_token, pay_url, generic_seller_id
 
     def create_product(self, external_id, product_name, generic_seller,
                        generic_product=None):
@@ -311,6 +313,13 @@ class ProviderHelper:
                          seller=generic_seller,
                          pr=self.provider.name))
 
+        # If there is no provider seller it means the billing account has
+        # not yet been set up in Devhub. Thus, we're not catching an exception
+        # here.
+        provider_seller = self.provider.get_seller(generic_seller)
+
+        # Now that we're sure the seller is set up, create a generic and
+        # provider specific product.
         if not generic_product:
             generic_product = self.slumber.generic.product.post({
                 'external_id': external_id,
@@ -320,11 +329,6 @@ class ProviderHelper:
             })
             log.info('{pr}: created generic product {prod}'
                      .format(prod=generic_product, pr=self.provider.name))
-
-        # If there is no provider seller it means the billing account has
-        # not yet been set up in Devhub. Thus, we're not catching an exception
-        # here.
-        provider_seller = self.provider.get_seller(generic_seller)
 
         provider_product = self.provider.create_product(
             generic_product, provider_seller, external_id, product_name)
@@ -450,11 +454,14 @@ class PayProvider(object):
         })
 
     def get_seller(self, generic_seller):
-        return self.api.sellers.get_object_or_404(
-            uuid=generic_seller['resource_pk'])
+        """
+        Returns a provider-specific seller object from Solitude.
+        """
+        raise NotImplementedError()
 
     def create_transaction(self, generic_seller, generic_product,
-                           provider_product, product_name, transaction_uuid,
+                           provider_product, provider_seller_uuid,
+                           product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
                            icon_url, mcc=None, mnc=None):
         """
@@ -525,7 +532,8 @@ class ReferenceProvider(PayProvider):
     name = 'reference'
 
     def create_transaction(self, generic_seller, generic_product,
-                           provider_product, product_name, transaction_uuid,
+                           provider_product, provider_seller_uuid,
+                           product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
                            icon_url, mcc=None, mnc=None):
 
@@ -579,6 +587,10 @@ class ReferenceProvider(PayProvider):
         token = provider_trans['token']
         return token, self._formatted_payment_url(token)
 
+    def get_seller(self, generic_seller):
+        return self.api.sellers.get_object_or_404(
+            uuid=generic_seller['resource_pk'])
+
 
 @register_provider
 class BokuProvider(PayProvider):
@@ -615,7 +627,8 @@ class BokuProvider(PayProvider):
         return None
 
     def create_transaction(self, generic_seller, generic_product,
-                           provider_product, product_name, transaction_uuid,
+                           provider_product, provider_seller_uuid,
+                           product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
                            icon_url, mcc=None, mnc=None):
         try:
@@ -653,7 +666,7 @@ class BokuProvider(PayProvider):
             #'error_url': absolutify(reverse('provider.error',
             #                                args=[self.name])),
             'price': price,
-            'seller_uuid': generic_seller['uuid'],
+            'seller_uuid': provider_seller_uuid,
             'transaction_uuid': transaction_uuid,
             'user_uuid': user_uuid,
         })
@@ -675,6 +688,13 @@ class BokuProvider(PayProvider):
 
     def get_notification_data(self, request):
         return request.GET
+
+    def get_seller(self, generic_seller):
+        # TODO: this is waiting on a Solitude API to get a provider specific
+        # seller from a generic seller.
+        # It is currently unused because Boku does not have products the
+        # way Bango does.
+        return None
 
     def verify_notification(self, data):
         # This will raise a client error on a non 2xx response.
@@ -741,13 +761,16 @@ class BangoProvider(PayProvider):
         return bango_product
 
     def get_seller(self, generic_seller):
+        # TODO: this shouldn't access the legacy Bango attribute on the
+        # Solitude seller object.
         if not generic_seller['bango']:
             raise ValueError('No bango account set up for {sel}'
                              .format(sel=generic_seller['resource_pk']))
         return generic_seller['bango']
 
     def create_transaction(self, generic_seller, generic_product,
-                           provider_product, product_name, transaction_uuid,
+                           provider_product, provider_seller_uuid,
+                           product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
                            icon_url, mcc=None, mnc=None):
         log.info('transaction {tr}: bango product: {pr}'
