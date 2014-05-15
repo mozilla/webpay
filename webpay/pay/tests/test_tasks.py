@@ -398,6 +398,8 @@ class TestStartPay(BaseStartPay):
         self.addCleanup(p.stop)
 
         self.providers = api.ProviderHelper.supported_providers()
+        self.generic_seller_uuid = 'generic_seller_uuid'
+        self.generic_seller_pk = '1'
         self.bango_seller_uuid = 'bango_seller_uuid'
         self.boku_seller_uuid = 'boku_seller_uuid'
         self.solitude.generic.product.get_object_or_404.return_value = {
@@ -407,7 +409,13 @@ class TestStartPay(BaseStartPay):
                 'bango': self.bango_seller_uuid,
                 'boku': self.boku_seller_uuid,
             },
+            'seller': '/generic/seller/{s}/'.format(s=self.generic_seller_pk),
             'external_id': 'external_id',
+        }
+        seller = mock.Mock()
+        self.solitude.generic.seller.return_value = seller
+        seller.get_object_or_404.return_value = {
+            'uuid': self.generic_seller_uuid
         }
 
     def start(self):
@@ -421,7 +429,7 @@ class TestStartPay(BaseStartPay):
             'uuid': self.transaction_uuid
         }
         tasks.start_pay(self.transaction_uuid, self.notes, self.user_uuid,
-                        self.providers)
+                        [p.name for p in self.providers])
 
     def set_billing_id(self, slumber, num):
         slumber.bango.billing.post.return_value = {
@@ -458,15 +466,17 @@ class TestStartPay(BaseStartPay):
         }
         self.solitude.generic.seller.get_object_or_404.return_value = {
             'resource_pk': 1,
-            'uuid': self.boku_seller_uuid,
+            'uuid': self.generic_seller_uuid,
         }
         self.providers = api.ProviderHelper.supported_providers(
             mcc=mcc, mnc=mnc)
 
         self.start()
 
+        self.solitude.generic.seller.assert_called_with(
+            self.generic_seller_pk)
         self.solitude.generic.seller.get_object_or_404.assert_called_with(
-            uuid=self.boku_seller_uuid)
+            uuid=self.generic_seller_uuid)
         self.solitude.boku.transactions.post.assert_called_with({
             'seller_uuid': self.boku_seller_uuid,
             'forward_url': 'http://testserver/mozpay/'
@@ -501,6 +511,7 @@ class TestStartPay(BaseStartPay):
                 'bango': self.bango_seller_uuid,
                 'boku': None,
             },
+            'seller': '/generic/seller/1',
             'external_id': 'external_id',
         }
 
@@ -527,6 +538,7 @@ class TestStartPay(BaseStartPay):
                 'bango': self.bango_seller_uuid,
                 'boku': None,
             },
+            'seller': '/generic/seller/1',
             'external_id': 'external_id',
         }
 
