@@ -7,7 +7,7 @@ from lib.solitude.api import client
 
 from webpay.auth.utils import set_user_has_pin
 from webpay.base.utils import app_error
-from webpay.pay.views import process_pay_req
+from webpay.pay.views import process_pay_req, configure_transaction
 from webpay.pin.forms import CreatePinForm, ResetPinForm, VerifyPinForm
 
 
@@ -90,5 +90,8 @@ class PayViewSet(viewsets.ViewSet):
         res = process_pay_req(request, request.DATA)
         if res:
             return res
-
-        return response.Response(status=204)
+        res = configure_transaction(request)
+        if res.status_code == 200:
+            return response.Response(status=204)
+        else:
+            return res
