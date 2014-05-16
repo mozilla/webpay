@@ -308,20 +308,28 @@ class TestBango(TestCase):
         return self.provider.start_transaction(*range(0, 9))
 
     def test_create_without_bango_seller(self):
+        self.slumber.generic.seller.get_object.return_value = {
+            'bango': None, 'resource_pk': '1',
+            'resource_uri': '/seller/1'
+        }
         with self.assertRaises(ValueError):
             self.provider.create_product(
-                'ext:id', 'product name',
-                {'bango': None, 'resource_pk': '1',
-                 'resource_uri': '/seller/1'},
-                generic_product={'resource_pk': '2'})
+                external_id='ext:id', product_name='product name',
+                generic_seller={},
+                provider_seller_uuid='provider_seller_uuid',
+                generic_product={'resource_pk': '2',
+                                 'resource_uri': '/foo'})
+        self.slumber.generic.seller.get_object.assert_called_with(
+            uuid='provider_seller_uuid')
 
     def test_create_bango_product(self):
         slumber = self.slumber
         slumber.bango.generic.post.return_value = {'product': 'some:uri'}
         slumber.bango.product.post.return_value = {'resource_uri': 'some:uri',
                                                    'bango_id': '5678'}
-        assert self.provider.create_product('ext:id', 'product:name',
-                                            self.seller)
+        assert self.provider.create_product(
+            external_id='ext:id', product_name='product:name',
+            generic_seller=self.seller, provider_seller_uuid='xyz')
         assert slumber.generic.product.post.called
         kw = slumber.generic.product.post.call_args[0][0]
         eq_(kw['external_id'], 'ext:id')

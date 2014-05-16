@@ -315,7 +315,10 @@ def wait_to_start(request):
         # Dump any messages so we don't show them later.
         clear_messages(request)
         # The transaction is ready; no need to wait for it.
-        return http.HttpResponseRedirect(get_payment_url(trans))
+        url = get_payment_url(trans)
+        log.info('immediately redirecting to payment URL {url} '
+                 'for trans {tr}'.format(url=url, tr=trans))
+        return http.HttpResponseRedirect(url)
     return render(request, 'pay/wait-to-start.html')
 
 
@@ -342,7 +345,10 @@ def trans_start_url(request):
         if payment_start:
             delta = int((time.time() - float(payment_start)) * 1000)
             statsd.timing('purchase.payment_time.duration', delta)
-        data['url'] = get_payment_url(trans)
+        url = get_payment_url(trans)
+        log.info('async call got payment URL {url} for trans {tr}'
+                 .format(url=url, tr=trans))
+        data['url'] = url
     return data
 
 

@@ -276,8 +276,9 @@ class ProviderHelper:
                      .format(prod=provider_product, pr=self.provider.name))
         except ObjectDoesNotExist:
             product, provider_product = self.create_product(
-                product_id, product_name,
-                generic_seller, generic_product=product)
+                external_id=product_id, product_name=product_name,
+                generic_seller=generic_seller, generic_product=product,
+                provider_seller_uuid=provider_seller_uuid)
 
         trans_token, pay_url = self.provider.create_transaction(
             generic_seller=generic_seller,
@@ -300,7 +301,7 @@ class ProviderHelper:
         return trans_token, pay_url, generic_seller_id
 
     def create_product(self, external_id, product_name, generic_seller,
-                       generic_product=None):
+                       provider_seller_uuid, generic_product=None):
         """
         Creates a generic product and provider product on the fly.
 
@@ -308,15 +309,19 @@ class ProviderHelper:
         system might be selling a product for the first time.
         """
         log.info('{pr}: creating product with name: {name}, '
-                 'external_id: {ext_id}, seller: {seller}'
+                 'external_id: {ext_id}, generic seller: {seller} '
+                 'provider seller: {provider_seller_uuid}'
                  .format(name=product_name, ext_id=external_id,
-                         seller=generic_seller,
-                         pr=self.provider.name))
+                         seller=generic_seller, pr=self.provider.name,
+                         provider_seller_uuid=provider_seller_uuid))
 
         # If there is no provider seller it means the billing account has
         # not yet been set up in Devhub. Thus, we're not catching an exception
         # here.
-        provider_seller = self.provider.get_seller(generic_seller)
+        provider_seller = self.provider.get_seller(
+            generic_seller=generic_seller,
+            provider_seller_uuid=provider_seller_uuid
+        )
 
         # Now that we're sure the seller is set up, create a generic and
         # provider specific product.
@@ -453,7 +458,7 @@ class PayProvider(object):
             'name': product_name,
         })
 
-    def get_seller(self, generic_seller):
+    def get_seller(self, generic_seller, provider_seller_uuid):
         """
         Returns a provider-specific seller object from Solitude.
         """
@@ -587,7 +592,7 @@ class ReferenceProvider(PayProvider):
         token = provider_trans['token']
         return token, self._formatted_payment_url(token)
 
-    def get_seller(self, generic_seller):
+    def get_seller(self, generic_seller, provider_seller_uuid):
         return self.api.sellers.get_object_or_404(
             uuid=generic_seller['resource_pk'])
 
@@ -689,7 +694,7 @@ class BokuProvider(PayProvider):
     def get_notification_data(self, request):
         return request.GET
 
-    def get_seller(self, generic_seller):
+    def get_seller(self, generic_seller, provider_seller_uuid):
         # TODO: this is waiting on a Solitude API to get a provider specific
         # seller from a generic seller.
         # It is currently unused because Boku does not have products the
@@ -760,13 +765,17 @@ class BangoProvider(PayProvider):
 
         return bango_product
 
-    def get_seller(self, generic_seller):
-        # TODO: this shouldn't access the legacy Bango attribute on the
-        # Solitude seller object.
-        if not generic_seller['bango']:
-            raise ValueError('No bango account set up for {sel}'
-                             .format(sel=generic_seller['resource_pk']))
-        return generic_seller['bango']
+    def get_seller(self, generic_seller, provider_seller_uuid):
+        # The generic seller is linked to our generic product.
+        # We want to get the provider specific seller so we can get the
+        # Bango package.
+        provider_generic_seller = (self.slumber.generic.seller
+                                   .get_object(uuid=provider_seller_uuid))
+        if not provider_generic_seller['bango']:
+            raise ValueError(
+                'No bango account set up for {sel}'
+                .format(sel=provider_generic_seller['resource_pk']))
+        return provider_generic_seller['bango']
 
     def create_transaction(self, generic_seller, generic_product,
                            provider_product, provider_seller_uuid,
