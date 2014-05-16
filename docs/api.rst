@@ -119,6 +119,10 @@ The Pay API lets you start a purchase.
 
     :param req: the JWT request for starting a payment
     :type req: string
+    :param mnc: the MNC for the device (optional)
+    :type mnc: string
+    :param mcc: The MCC for the device (optional)
+    :type mcc: string
 
     **Response**
 

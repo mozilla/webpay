@@ -29,6 +29,14 @@ class VerifyForm(ParanoidForm):
     secret = settings.SECRET
     is_simulation = False
 
+    def clean(self):
+        cleaned_data = super(VerifyForm, self).clean()
+        # If we set mnc but not mcc or vice versa.
+        if bool(cleaned_data.get('mnc')) != bool(cleaned_data.get('mcc')):
+            raise forms.ValidationError('Both mnc and mcc are required to be '
+                                        'present or not.')
+        return cleaned_data
+
     def clean_req(self):
         data = self.cleaned_data['req']
         jwt_data = data.encode('ascii', 'ignore')
@@ -73,7 +81,7 @@ class VerifyForm(ParanoidForm):
             raise forms.ValidationError(msg.BAD_JWT_ISSUER)
 
         if (active_product and active_product['access'] == ACCESS_SIMULATE
-            and not self.is_simulation):
+                and not self.is_simulation):
             log.info('payment key {0} can only simulate, tried to purchase'
                      .format(repr(self.key)))
             raise forms.ValidationError(msg.SIM_ONLY_KEY)
@@ -84,7 +92,7 @@ class VerifyForm(ParanoidForm):
 
         for fn in msg.SHORT_FIELDS:
             if (len(payload['request'].get(fn, '')) >
-                settings.SHORT_FIELD_MAX_LENGTH):
+                    settings.SHORT_FIELD_MAX_LENGTH):
                 raise forms.ValidationError(msg.SHORT_FIELD_TOO_LONG_CODE[fn])
 
         if payload['request'].get('locales'):
