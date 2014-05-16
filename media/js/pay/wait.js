@@ -6,8 +6,10 @@ require(['cli', 'settings'], function(cli, settings) {
     var transactionTimeout;
     var request;
 
-    if (cli.bodyData.flow === 'wait' || cli.bodyData.flow === 'wait-to-finish') {
-        startWaiting();
+    if (cli.bodyData.flow === 'wait') {
+        startWaiting(cli.bodyData.transStatusPending);
+    } else if (cli.bodyData.flow === 'wait-to-finish') {
+        startWaiting(cli.bodyData.transStatusCompleted);
     }
 
     function clearPoll() {
@@ -44,16 +46,16 @@ require(['cli', 'settings'], function(cli, settings) {
         }, settings.wait_timeout);
     }
 
-    function startWaiting() {
+    function startWaiting(expectedStatus) {
         startUrl = cli.bodyData.transStartUrl;
         startGlobalTimer();
-        poll();
+        poll(expectedStatus);
         cli.trackWebpayEvent({'action': 'payment',
                               'label': 'Start waiting for provider'});
     }
 
-    function poll() {
-        console.log('[wait] polling ' + startUrl);
+    function poll(expectedStatus) {
+        console.log('[wait] polling ' + startUrl + ' until status ' + expectedStatus);
 
         function clear() {
             clearPoll();
@@ -77,7 +79,10 @@ require(['cli', 'settings'], function(cli, settings) {
                 var paymentFailed = (cli.mozPaymentProvider.paymentFailed ||
                                      window.paymentFailed);
 
-                if (data.status === cli.bodyData.transStatusCompleted) {
+                if (data.status === expectedStatus) {
+                    // This wait screen can be used in different contexts.
+                    // If we are finishing or beginning the pay flow,
+                    // redirect to the destination URL.
                     clear();
                     if (data.url) {
                         cli.trackWebpayEvent({'action': 'payment',
@@ -104,10 +109,12 @@ require(['cli', 'settings'], function(cli, settings) {
                     trackClosePayFlow();
                     paymentFailed(cli.bodyData.cancelCode);
                 } else {
-                    // The transaction is in some kind of pending or
-                    // incomplete state.
-                    console.log('[wait] transaction status: ' + data.status);
-                    pollTimeout = window.setTimeout(poll, settings.poll_interval);
+                    // The transaction is in some kind of incomplete state.
+                    console.log('[wait] transaction status: ' + data.status +
+                                '; expecting: ' + expectedStatus);
+                    pollTimeout = window.setTimeout(function() {
+                        poll(expectedStatus);
+                    }, settings.poll_interval);
                 }
             },
             error: function(xhr, textStatus) {
@@ -117,13 +124,15 @@ require(['cli', 'settings'], function(cli, settings) {
                     cli.trackWebpayEvent({'action': 'payment',
                                           'label': 'Transaction Request Timed Out'});
                     cli.hideProgress();
-                    cli.showFullScreenError({callback: poll,
+                    cli.showFullScreenError({callback: function() { poll(expectedStatus); },
                                              errorCode: 'INTERNAL_TIMEOUT'});
                 } else {
                     console.log('[wait] error checking transaction');
                     cli.trackWebpayEvent({'action': 'payment',
                                           'label': 'Error Checking Transaction'});
-                    pollTimeout = window.setTimeout(poll, settings.poll_interval);
+                    pollTimeout = window.setTimeout(function() {
+                        poll(expectedStatus);
+                    }, settings.poll_interval);
                 }
             }
         });
