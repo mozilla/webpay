@@ -4,183 +4,206 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-07 09:18-0700\n"
-"PO-Revision-Date: 2013-06-20 00:42+0200\n"
-"Last-Translator: Maddi Agiriano <mae20@hotmail.com>\n"
+"PO-Revision-Date: 2014-05-17 16:39+0000\n"
+"Last-Translator: Ibai <ibai@oihanguren.com>\n"
 "Language-Team: 89578-OEM-7332157-00211\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Pootle 2.5.0\n"
+"X-POOTLE-MTIME: 1400344780.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
-msgstr ""
+msgstr "Ordainketa bertan behera utzita."
 
 #: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
-msgstr ""
+msgstr "Ordainketa burutu da."
 
 #: webpay/base/dev_messages.py:90
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
 msgstr ""
+"Ordainketa prozesatzerakoan, Mozillak kode baliogabea jaso du ordainketa-"
+"hornitzailearengandik (Bango)"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:94
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr ""
+msgstr "Irudi-ikonoaren gako bat ez zen objektua. Adibide zuzena: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:98
 msgid "No one has been registered for this JWT issuer."
-msgstr ""
+msgstr "Ez da inor erregistratu JWT jaulkitzaile honentzat."
 
 #: webpay/base/dev_messages.py:99
 msgid "The price point is unknown or invalid."
-msgstr ""
+msgstr "Prezioa ezezaguna edo baliogabea da."
 
 #: webpay/base/dev_messages.py:100
 msgid "The request to begin payment was invalid."
-msgstr ""
+msgstr "Ordainketa hasteko eskaera baliogabea izan da."
 
 #: webpay/base/dev_messages.py:102
 msgid "The requested payment simulation result is not supported."
-msgstr ""
+msgstr "Eskatutako ordainketa-simulazioaren emaitza ez dago onartuta."
 
 #: webpay/base/dev_messages.py:104
 msgid "The payment provider (Bango) returned an error while processing the payment"
 msgstr ""
+"Ordainketa-hornitzaileak (Bango) errore bat bueltatu du ordainketa "
+"prozesatzerakoan"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:108
 msgid "The JWT has expired."
-msgstr ""
+msgstr "JWTa iraungi da."
 
 #: webpay/base/dev_messages.py:110
 msgid "The external payment processor returned an error while handling the payment"
 msgstr ""
+"Kanpoko ordainketa-prozesadoreak errore bat itzuli du ordainketa "
+"kudeatzerakoan"
 
 #: webpay/base/dev_messages.py:112
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Barneko web-eskaera bat denboraz kanpo geratu da."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:116
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr ""
+msgstr "JWT sinadura baliogabea da edo JWTa gaizki osatuta dago."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:119
 msgid "The JWT did not decode to a JSON object."
-msgstr ""
+msgstr "JWTa ez da JSON objektu batera deskodetu."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:122
 msgid "Error decoding JWT."
-msgstr ""
+msgstr "Errorea JWTa deskodetzean."
 
 #: webpay/base/dev_messages.py:123
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "Sistema denboraz kanpo geratu da saioa hasten saiatzean."
 
 #: webpay/base/dev_messages.py:124
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "Sistema denboraz kanpo geratu da saioa amaitzen saiatzean."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:126
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
 msgstr ""
+"URL bat gaizki osatuta dago. Publikazio URL bat edo ikono URL bat izan "
+"beharko litzake."
 
 #: webpay/base/dev_messages.py:128
 msgid "The transaction ID was missing from the session when processing a payment return."
 msgstr ""
+"Transakzio IDa falta zen saioan ordainketaren itzulkina prozesatzerakoan."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:132
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
+msgstr "{0} definitzen bada, {1} ere definitu beharra dago."
 
 #. L10n: First argument is the name of the key, 'reason'.
 #: webpay/base/dev_messages.py:136
 msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr ""
+msgstr "Eskatutako kobrantza-ezeztapenaren simulazioak '{0}' gakoa falta du."
 
 #: webpay/base/dev_messages.py:138
 msgid "The notification service responded with an error while verifying the payment notice"
 msgstr ""
+"Jakinarazpen-zerbitzuak errore bat bueltatu du ordainketaren jakinarazpena "
+"egiaztatzerakoan"
 
 #: webpay/base/dev_messages.py:140
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr ""
+"Jakinarazpen-zerbitzuak ustegabeko salbuespen bat eragin du ordainketaren "
+"jakinarazpena egiaztatzerakoan"
 
 #: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
-msgstr ""
+msgstr "Ordainketak aldi baterako desgaituta daude."
 
 #: webpay/base/dev_messages.py:145
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
 msgstr ""
+"Baliabidea aurreko eskaerari esleitutako denboran aldatu da. Ekintza berriro "
+"burutu beharko da."
 
 #: webpay/base/dev_messages.py:147
 msgid "Payment simulations are disabled at this time."
-msgstr ""
+msgstr "Une honetan ordainketa-simulazioak desgaituta daude."
 
 #: webpay/base/dev_messages.py:149
 msgid "This payment key can only be used to simulate purchases."
-msgstr ""
+msgstr "Ordainketa-gako hau erosketak simulatzeko soilik erabil daiteke."
 
 #: webpay/base/dev_messages.py:151
 msgid "The configuration of the payment transaction failed."
-msgstr ""
+msgstr "Ordainketa-transakzioaren konfigurazioak huts egin du."
 
 #: webpay/base/dev_messages.py:153
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr ""
+"Erosketa ezin izan da burutu, uneko transakzioa dagoeneko amaitu delako."
 
 #: webpay/base/dev_messages.py:155
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "Ezin izan da transakzio IDrik aurkitu."
 
 #: webpay/base/dev_messages.py:157
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "Sistema denboraz kanpo geratu da transakzioa hasteko zain zegoenean."
 
 #: webpay/base/dev_messages.py:160
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr ""
+"Ordainketa-metodoa edo prezioa ez dago onartuta herrialde edo operadore "
+"honentzat."
 
 #: webpay/base/dev_messages.py:162
 msgid "The user cancelled the payment."
-msgstr ""
+msgstr "Erabiltzaileak ordainketa bertan behera utzi du."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
 #: webpay/base/dev_messages.py:169
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
+msgstr "\"{0}\" gakoarentzako balioak gehienezko luzeera ({1}) gainditu du"
 
 #: webpay/base/utils.py:56
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr ""
+"Errore bat gertatu da ordainketa konfiguratzean. Saiatu berriro edo jarri "
+"aplikazioarekin harremanetan erroreak irauten badu."
 
 #: webpay/base/utils.py:62
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr ""
+"Barne-errore bat gertatu da ordainketa prozesatzerakoan. Saiatu berriro edo "
+"jarri Mozillarekin harremanetan erroreak irauten badu."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "Ez baimendua"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "Sentitzen dugu, ez duzu ekintza hau burutzeko baimenik."
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
@@ -205,7 +228,7 @@ msgstr "Errore bat egon da eskaera hau prozesatzean."
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
-msgstr ""
+msgstr "Saiatu berriro momentu bat barru."
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9
@@ -214,19 +237,21 @@ msgstr "Online ordaintzeko webgunea"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr ""
+msgstr "PIN kodeak 4 digitu izan behar ditu."
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr ""
+msgstr "PIN kodeak digituak soilik izan ditzake."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
 msgstr ""
+"Erabiltzaile desberdinarekin hasi duzu saioa, ordainketa berriro hasi behar "
+"duzu."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
-msgstr ""
+msgstr "Kargatzen"
 
 #: webpay/base/templates/base.html:32
 msgid "Beginning payment&hellip;"
@@ -234,47 +259,47 @@ msgstr "Ordainketa hasten&hellip;"
 
 #: webpay/base/templates/base.html:33
 msgid "Connecting to Persona"
-msgstr ""
+msgstr "Persona-ra konektatzen"
 
 #: webpay/base/templates/base.html:34
 msgid "Payment complete"
-msgstr ""
+msgstr "Ordainketa burututa"
 
 #: webpay/base/templates/base.html:41
 msgid "Oops&hellip;"
-msgstr ""
+msgstr "Hara&hellip;"
 
 #: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
-msgstr ""
+msgstr "Hau espero baino gehiago ari da luzatzen. Berriro saiatu?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "Zerbait oker joan da. Berriro saiatu?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "Ados"
 
 #: webpay/base/templates/base.html:48
 msgid "The transaction failed. You have not been charged for this purchase."
-msgstr ""
+msgstr "Transakzioak huts egin du. Ez zaizu erosketa honengatik ezer kobratu."
 
 #: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
-msgstr ""
+msgstr "Errorea"
 
 #: webpay/pay/views.py:216 webpay/pin/views.py:93
 msgid "Enter Pin"
-msgstr ""
+msgstr "Idatzi PINa"
 
 #: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign In"
-msgstr ""
+msgstr "Hasi saioa"
 
 #: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in to continue with the payment"
-msgstr ""
+msgstr "Hasi saioa ordainketarekin aurrera egiteko"
 
 #: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in"
@@ -282,15 +307,15 @@ msgstr "Hasi saioa"
 
 #: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
-msgstr ""
+msgstr "Egin ordainketa-simulazioa"
 
 #: webpay/pay/templates/pay/simulate.html:8
 msgid "You will not be charged."
-msgstr ""
+msgstr "Ez zaizu dirurik kobratuko."
 
 #: webpay/pay/templates/pay/simulate.html:10
 msgid "result"
-msgstr ""
+msgstr "emaitza"
 
 #: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
@@ -298,19 +323,19 @@ msgstr "Jarraitu"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "Superbotereak dituzu"
 
 #: webpay/pay/templates/pay/super_simulate.html:8
 msgid "Simulate a payment"
-msgstr ""
+msgstr "Simulatu ordainketa bat"
 
 #: webpay/pay/templates/pay/super_simulate.html:12
 msgid "Make a real payment"
-msgstr ""
+msgstr "Benetako ordainketa bat egin"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
-msgstr ""
+msgstr "Ordainketa konfiguratzen&hellip;"
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
@@ -318,58 +343,66 @@ msgstr "Sortu duzu jada PIN bat."
 
 #: webpay/pin/forms.py:111
 msgid "Wrong pin"
-msgstr ""
+msgstr "Okerreko PINa"
 
 #: webpay/pin/forms.py:123 webpay/pin/forms.py:146
 msgid "Pins do not match."
-msgstr ""
+msgstr "PINak ez datoz bat."
 
 #: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
-msgstr ""
+msgstr "Sortu PINa"
 
 #: webpay/pin/views.py:68 webpay/pin/views.py:185
 msgid "Confirm Pin"
-msgstr ""
+msgstr "Berretsi PINa"
 
 #: webpay/pin/views.py:131 webpay/pin/views.py:157 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
-msgstr ""
+msgstr "Berrezarri PINa"
 
 #: webpay/pin/views.py:178
 msgid "Pin reset"
-msgstr ""
+msgstr "PINa berrezarri da"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
 msgstr ""
+"Probak egiteko soilik. Marketplace-eko erabiltzaileek <b>ez lukete</b> gune "
+"hau erabili beharko."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
-msgstr ""
+msgstr "PINa ahaztu duzu?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
 msgstr ""
+"Okerreko PIN kodea gehiegitan idatzi duzu. Zure kontua blokeatu da. Saiatu "
+"berriro erosten 5 minutu barru."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
-msgstr ""
+msgstr "Zure PINa blokeatu da"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
 msgstr ""
+"Zure PINa blokeatu da, gehiegitan oker idatzi duzulako. Jarraitu aurrera eta "
+"saiatu PINa berriro idazten, edo berrezarri PINa."
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
 msgstr ""
+"Ziur PINa berrezarri nahi duzula? Persona-rekin saioa hasi behar duzu PINa "
+"berrezartzeko."
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
-msgstr ""
+msgstr "Berrezarri"
 
 #: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
-msgstr ""
+msgstr "Ordainketa egiaztatzen&hellip;"
