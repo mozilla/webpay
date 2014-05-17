@@ -1,9 +1,9 @@
 import json
 
-from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.test.client import Client
+from django.test.utils import override_settings
 
 import mock
 from curling.lib import HttpClientError
@@ -238,24 +238,70 @@ class TestCheck(PIN):
                    'pin_is_locked_out': None, 'pin_was_locked_out': None})
 
 
-# TODO: this could be made smaller.
-@mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')
-@mock.patch.object(settings, 'SECRET', 'marketplace.secret')
-@mock.patch.object(settings, 'ISSUER', 'marketplace.mozilla.org')
-@mock.patch.object(settings, 'INAPP_KEY_PATHS', {None: sample})
-@mock.patch.object(settings, 'DEBUG', True)
+@override_settings(
+    KEY='marketplace.mozilla.org', SECRET='marketplace.secret', DEBUG=True,
+    ISSUER='marketplace.mozilla.org', INAPP_KEY_PATHS={None: sample})
+@mock.patch('webpay.pay.tasks.configure_transaction')
 class TestPay(Base, BaseCase):
 
     def setUp(self):
         super(TestPay, self).setUp()
         self.url = reverse('api:pay')
 
-    def test_bad(self):
+    def test_bad(self, config_trans):
         res = self.client.post(self.url, data={})
         eq_(res.status_code, 400)
 
-    def test_inapp(self):
+    def test_inapp(self, config_trans):
+        config_trans.return_value = True
         self.solitude.generic.product.get_object.return_value = {
             'secret': 'p.secret', 'access': constants.ACCESS_PURCHASE}
         req = self.request()
-        eq_(self.client.post(self.url, data={'req': req}).status_code, 204)
+        res = self.client.post(self.url, data={'req': req})
+        eq_(res.status_code, 204)
+
+    def test_no_mnc_mcc(self, config_trans):
+        config_trans.return_value = True
+        req = self.request()
+        res = self.client.post(self.url,
+                               data={'req': req})
+        network = self.client.session.get('notes', {}).get('network')
+        eq_(network, {})
+        eq_(res.status_code, 204)
+
+    def test_stores_mnc_mcc(self, config_trans):
+        config_trans.return_value = True
+        req = self.request()
+        res = self.client.post(self.url,
+                               data={'req': req, 'mnc': '423', 'mcc': '555'})
+        network = self.client.session.get('notes', {}).get('network')
+        eq_(network, {'mnc': '423', 'mcc': '555'})
+        eq_(res.status_code, 204)
+
+    def test_invalid_mnc_mcc(self, config_trans):
+        config_trans.return_value = True
+        req = self.request()
+        res = self.client.post(self.url,
+                               data={'req': req, 'mnc': '123', 'mcc': 'abc'})
+        eq_(res.status_code, 400)
+
+    def test_only_mnc(self, config_trans):
+        config_trans.return_value = True
+        req = self.request()
+        res = self.client.post(self.url,
+                               data={'req': req, 'mnc': '123'})
+        eq_(res.status_code, 400)
+
+    def test_configures_transaction_success(self, config_trans):
+        config_trans.return_value = True
+        req = self.request()
+        res = self.client.post(self.url,
+                               data={'req': req, 'mnc': '423', 'mcc': '555'})
+        eq_(res.status_code, 204)
+
+    def test_configures_transaction_fail(self, config_trans):
+        config_trans.return_value = False
+        req = self.request()
+        res = self.client.post(self.url,
+                               data={'req': req, 'mnc': '423', 'mcc': '555'})
+        eq_(res.status_code, 400)

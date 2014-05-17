@@ -88,6 +88,13 @@ class TestVerifyForm(Base):
         assert 'mcc' not in form.errors
         assert 'mnc' not in form.errors
 
+    def test_only_mnc(self):
+        form = VerifyForm({'mnc': '456'})
+        form.is_valid()
+        assert 'mcc' not in form.errors
+        assert 'mnc' not in form.errors
+        assert '__all__' in form.errors
+
     @mock.patch('lib.solitude.api.SolitudeAPI.get_active_product')
     def test_non_existant(self, get_active_product):
         get_active_product.side_effect = ObjectDoesNotExist
@@ -161,7 +168,7 @@ class TestVerifyForm(Base):
         req = self.request(iss=self.key, app_secret=self.secret,
                            payload=payload)
         form = VerifyForm({'req': req})
-        assert form.is_valid(), form.errors
+        assert form.is_valid(), repr(form.errors)
 
     @mock.patch.object(settings, 'SHORT_FIELD_MAX_LENGTH', 255)
     def test_short_fields_too_long(self):
@@ -177,4 +184,4 @@ class TestVerifyForm(Base):
             req = self.request(payload=payload)
             form = VerifyForm({'req': req})
             assert not form.is_valid(), (
-                    'Field {0} gets too long error'.format(fn))
+                'Field {0} gets too long error'.format(fn))
