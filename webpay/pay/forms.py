@@ -5,6 +5,7 @@ from django_paranoia.forms import ParanoidForm
 import jwt
 
 from lib.solitude.constants import ACCESS_SIMULATE
+from tower import ugettext_lazy as _
 
 from webpay.base import dev_messages as msg
 from webpay.base.logger import getLogger
@@ -100,3 +101,21 @@ class VerifyForm(ParanoidForm):
                 raise forms.ValidationError(msg.NO_DEFAULT_LOC)
 
         return data
+
+
+class SuperSimulateForm(ParanoidForm):
+    action = forms.ChoiceField(
+        widget=forms.RadioSelect(),
+        choices=(('real', _('Make a real payment')),
+                 ('simulate', _('Simulate a payment'))),
+        initial='real')
+    network = forms.ChoiceField(required=False,
+                                choices=((None, _('Default network')),
+                                         # Choice key is mcc:mnc.
+                                         ('334:020', 'Mexico: AMX')))
+
+    def clean_network(self):
+        network = self.cleaned_data.get('network')
+        if not network:
+            return None
+        return network.split(':')  # -> (mcc, mnc)

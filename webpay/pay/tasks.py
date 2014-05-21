@@ -29,13 +29,26 @@ class TransactionOutOfSync(Exception):
     """The transaction's state is unexpected."""
 
 
-def configure_transaction(request, trans=None):
+def configure_transaction(request, trans=None, mcc=None, mnc=None):
     """
     Begins a background task to configure a payment transaction.
     """
     if request.session.get('is_simulation', False):
         log.info('is_simulation: skipping configure payments step')
         return False
+
+    notes = request.session.get('notes', {})
+    if mcc and mnc:
+        notes['network'] = {'mnc': mnc, 'mcc': mcc}
+    else:
+        # Reset network state to avoid leakage from previous states.
+        notes['network'] = {}
+    request.session['notes'] = notes
+    log.info('Added mcc/mnc to session: '
+             '{network}'.format(network=notes['network']))
+
+    log.info('configuring transaction {0} from client'
+             .format(request.session.get('trans_id')))
 
     if not trans and not 'trans_id' in request.session:
         log.error('trans_id: not found in session')

@@ -5,7 +5,7 @@ from django import http
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.decorators.http import require_GET, require_POST
 
 from django_statsd.clients import statsd
@@ -29,7 +29,7 @@ from lib.solitude.api import client as solitude, ProviderHelper
 from lib.solitude.exceptions import ResourceModified
 
 from . import tasks
-from .forms import VerifyForm, NetCodeForm
+from .forms import SuperSimulateForm, VerifyForm, NetCodeForm
 from .utils import clear_messages, trans_id, verify_urls
 
 log = getLogger('w.pay')
@@ -116,7 +116,8 @@ def process_pay_req(request, data=None):
 @require_POST
 @json_view
 def configure_transaction(request):
-    """Configures the transaction to save time later.
+    """
+    Configures a transaction so the user can be redirected to a buy screen.
 
     This is called from the client so that it can provide
     MCC/MNC at the same time.
@@ -127,7 +128,6 @@ def configure_transaction(request):
     """
 
     form = NetCodeForm(request.POST)
-    sess = request.session
 
     mcc = None
     mnc = None
@@ -143,20 +143,7 @@ def configure_transaction(request):
         log.warning('OVERRIDING detected network with: mcc={mcc}, mnc={mnc}'
                     .format(mcc=mcc, mnc=mnc))
 
-    notes = sess.get('notes', {})
-    if mcc and mnc:
-        notes['network'] = {'mnc': mnc, 'mcc': mcc}
-    else:
-        # Reset network state to avoid leakage from previous states.
-        notes['network'] = {}
-    sess['notes'] = notes
-    log.info('Added mcc/mnc to session: '
-             '{network}'.format(network=notes['network']))
-
-    log.info('configuring transaction {0} from client'
-             .format(sess.get('trans_id')))
-
-    if not tasks.configure_transaction(request):
+    if not tasks.configure_transaction(request, mcc=mcc, mnc=mnc):
         log.error('Configuring transaction failed.')
         return system_error(request, code=msg.TRANS_CONFIG_FAILED)
     else:
@@ -246,24 +233,64 @@ def simulate(request):
 def super_simulate(request):
     if not settings.ALLOW_ADMIN_SIMULATIONS:
         return http.HttpResponseForbidden()
-    if request.method == 'POST':
-        try:
-            trans = solitude.get_transaction(request.session['trans_id'])
-        except ObjectDoesNotExist:
-            # If this happens a lot and the celery task is just slow,
-            # we might need to make a polling loop.
-            raise ValueError('Cannot simulate transaction {0}, not configured'
-                             .format(request.session.get['trans_id']))
-        # TODO: patch solitude to mark this as a super-simulated transaction.
 
-        req = trans['notes']['pay_request']
-        # TODO: support simulating refunds.
-        req['request']['simulate'] = {'result': 'postback'}
-        tasks.simulate_notify.delay(trans['notes']['issuer_key'], req)
+    form = SuperSimulateForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
 
-        return render(request, 'pay/simulate_done.html', {})
+        if form.cleaned_data['action'] == 'real':
+            if form.cleaned_data['network']:
+                mcc, mnc = form.cleaned_data['network']
+                if not reconfigure_transaction(request, mcc, mnc):
+                    log.error('Re-configuring transaction failed.')
+                    return system_error(request, code=msg.TRANS_CONFIG_FAILED)
 
-    return render(request, 'pay/super_simulate.html')
+            # Continue to the wait screen.
+            return redirect(reverse('pay.wait_to_start'))
+
+        elif form.cleaned_data['action'] == 'simulate':
+            send_simulated_notification(request.session['trans_id'])
+            return render(request, 'pay/simulate_done.html', {})
+
+        else:
+            raise ValueError('Not sure what to do for action {a}'
+                             .format(a=form.cleaned_data['action']))
+
+    return render(request, 'pay/super_simulate.html', {'form': form})
+
+
+def reconfigure_transaction(request, mcc, mnc):
+    """Configure a new transaction with a simulated network."""
+    new_trans_id = trans_id()
+    log.warning('Replacing transaction for simulation. '
+                'Old: {old}; new: {new}'
+                .format(old=request.session['trans_id'],
+                        new=new_trans_id))
+    # TODO: patch the old transaction to mark it cancelled?
+    request.session['trans_id'] = new_trans_id
+
+    log.info('Simulating a network for transaction {t}: '
+             'mcc={mcc}; mnc={mnc}'
+             .format(mcc=mcc, mnc=mnc, t=request.session['trans_id']))
+    return tasks.configure_transaction(request, mcc=mcc, mnc=mnc)
+
+
+def send_simulated_notification(trans_id):
+    try:
+        trans = solitude.get_transaction(trans_id)
+    except ObjectDoesNotExist:
+        # This could mean:
+        # * the transaction was never configured due to error.
+        # * the celery configuration task was just too slow.
+        raise ValueError(
+            'Cannot simulate transaction {t}, not configured'
+            .format(t=trans_id))
+    # TODO: patch solitude to mark this as a super-simulated
+    # transaction.
+
+    req = trans['notes']['pay_request']
+    # TODO: support simulating refunds.
+    req['request']['simulate'] = {'result': 'postback'}
+    tasks.simulate_notify.delay(trans['notes']['issuer_key'], req)
 
 
 @user_verified
