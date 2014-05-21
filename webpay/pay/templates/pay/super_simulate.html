@@ -2,13 +2,19 @@
 
 {% block content %}
   <h2 class="centered">{{ _('You have super powers') }}</h2>
-  <form action="{{ url('pay.super_simulate') }}" method="post">
+  <form id="super-simulate" action="{{ url('pay.super_simulate') }}" method="post">
     {{ csrf() }}
-    <p class="centered">
-      <button class="button" type="submit">{{ _('Simulate a payment') }}</button>
+    {{ form.non_field_errors() }}
+    <p>
+      {{ form.action.errors }}
+      {{ form.action }}
+    </p>
+    <p>
+      {{ form.network.errors }}
+      {{ form.network }}
+    </p>
+    <p>
+      <input class="button" type="submit" value="{{ _('Continue') }}">
     </p>
   </form>
-  <p class="centered">
-    <a href="{{ url('pay.wait_to_start') }}" class="button">{{ _('Make a real payment') }}</a>
-  </p>
 {% endblock %}

@@ -24,6 +24,41 @@ from webpay.pay.samples import JWTtester
 from . import Base, sample
 
 
+class ConfiguredTransactionTest(Base):
+    """
+    Test case for a view that relies on a configured transaction.
+    """
+
+    def setUp(self):
+        super(ConfiguredTransactionTest, self).setUp()
+        self.pay_request = {'request': {}}
+
+        self.session['uuid'] = '<user_uuid>'
+        self.session['trans_id'] = '<trans_id>'
+        self.save_session()
+
+        p = mock.patch('webpay.pay.views.solitude')
+        self.solitude = p.start()
+        self.addCleanup(p.stop)
+
+        self.transaction = {
+            'uuid': 'trans-uuid',
+            'status': constants.STATUS_PENDING,
+            'notes': {'issuer_key': '<issuer_key>',
+                      'pay_request': self.pay_request}
+        }
+
+        self.solitude.get_transaction.return_value = self.transaction
+
+        # Patch this in a few places to work around detached
+        # references in Python.
+
+        p = mock.patch('webpay.pay.tasks.client')
+        task_solitude = p.start()
+        self.addCleanup(p.stop)
+        task_solitude.get_transaction.return_value = self.transaction
+
+
 @mock.patch.object(settings, 'KEY', 'marketplace.mozilla.org')
 @mock.patch.object(settings, 'SECRET', 'marketplace.secret')
 @mock.patch.object(settings, 'ISSUER', 'marketplace.mozilla.org')
@@ -33,18 +68,12 @@ class TestVerify(Base):
 
     def setUp(self):
         super(TestVerify, self).setUp()
-        self.patches = []
-        patch = mock.patch('webpay.pay.tasks.configure_transaction')
-        self.configure_transaction = patch.start()
-        self.patches.append(patch)
-        patch = mock.patch('webpay.pay.views.marketplace')
-        self.mkt = patch.start()
-        self.patches.append(patch)
-
-    def tearDown(self):
-        super(TestVerify, self).tearDown()
-        for p in self.patches:
-            p.stop()
+        p = mock.patch('webpay.pay.tasks.configure_transaction')
+        self.configure_transaction = p.start()
+        self.addCleanup(p.stop)
+        p = mock.patch('webpay.pay.views.marketplace')
+        self.mkt = p.start()
+        self.addCleanup(p.stop)
 
     def test_post(self):
         eq_(self.client.post(self.url).status_code, 405)
@@ -364,9 +393,15 @@ class TestVerify(Base):
         self.get(payload)
 
 
-@mock.patch('webpay.pay.tasks.configure_transaction')
-class TestConfigureTX(Base):
+class TestConfigureTX(ConfiguredTransactionTest):
 
+    def setUp(self):
+        super(TestConfigureTX, self).setUp()
+        p = mock.patch('webpay.pay.tasks.start_pay')
+        self.start_pay = p.start()
+        self.addCleanup(p.stop)
+
+    @mock.patch('webpay.pay.tasks.configure_transaction')
     def test_configure_transaction_error(self, configure_trans):
         configure_trans.return_value = False
         resp = self.client.post(reverse('pay.configure_transaction'),
@@ -375,52 +410,49 @@ class TestConfigureTX(Base):
         eq_(resp.get('Content-Type'), 'application/json; charset=utf-8')
         ok_('TRANS_CONFIG_FAILED' in resp.content)
 
-    def test_configure_tran_fail_still_sets_mnc_mcc(self, configure_trans):
-        configure_trans.return_value = False
-        self.client.post(reverse('pay.configure_transaction'),
-                         {'mcc': '234', 'mnc': '23'})
-        network_codes = self.client.session.get('notes', {}).get('network', {})
-        eq_(network_codes.get('mcc'), '234', 'mcc should be 234')
-        eq_(network_codes.get('mnc'), '23', 'mnc should be 23')
-
-    def test_configure_transaction(self, configure_trans):
-        self.client.post(reverse('pay.configure_transaction'))
-        ok_(configure_trans.called,
+    def test_configure_transaction(self):
+        res = self.client.post(reverse('pay.configure_transaction'))
+        eq_(res.status_code, 200)
+        ok_(self.start_pay.delay.called,
             'POST should call configure_transaction')
 
-    def test_setup_mcc_mnc(self, configure_trans):
+    def test_setup_mcc_mnc(self):
+        mcc = '123'
+        mnc = '45'
         resp = self.client.post(reverse('pay.configure_transaction'),
-                                {'mcc': '123', 'mnc': '45'},
+                                {'mcc': mcc, 'mnc': mnc},
                                 HTTP_ACCEPT='application/json')
-        network_codes = self.client.session.get('notes', {}).get('network', {})
-        eq_(network_codes.get('mcc'), '123', 'mcc should be 123')
-        eq_(network_codes.get('mnc'), '45', 'mnc should be 45')
+        self.start_pay.delay.assert_called_with(mock.ANY,
+                                                {'network': {'mcc': mcc,
+                                                             'mnc': mnc}},
+                                                mock.ANY, mock.ANY)
         eq_(resp.status_code, 200)
         eq_(resp.get('Content-Type'), 'application/json; charset=utf-8')
 
     @mock.patch.object(settings, 'SIMULATED_NETWORK',
                        {'mcc': '123', 'mnc': '45'})
-    def test_simulate_network(self, configure_trans):
+    def test_simulate_network(self):
         self.client.post(reverse('pay.configure_transaction'),
                          # Pretend this is the client posting a real
                          # network or maybe NULLs.
                          {'mcc': '111', 'mnc': '01'})
-        network_codes = self.client.session.get('notes', {}).get('network', {})
         # Make sure the posted network was overridden.
-        eq_(network_codes.get('mcc'), '123', 'mcc should be overridden to 123')
-        eq_(network_codes.get('mnc'), '45', 'mnc should be overridden to 45')
+        self.start_pay.delay.assert_called_with(mock.ANY,
+                                                {'network': {'mcc': '123',
+                                                             'mnc': '45'}},
+                                                mock.ANY, mock.ANY)
 
-    def test_setup_invalid_mcc_mnc(self, configure_trans):
+    def test_setup_invalid_mcc_mnc(self):
         self.client.post(reverse('pay.configure_transaction'),
                          {'mcc': 'abc', 'mnc': '45'})
         eq_(self.client.session.get('notes', {}).get('network', {}), {})
 
-    def test_setup_invalid_mcc_mnc_single_digit(self, configure_trans):
+    def test_setup_invalid_mcc_mnc_single_digit(self):
         self.client.post(reverse('pay.configure_transaction'),
                          {'mcc': '123', 'mnc': '2'})
         eq_(self.client.session.get('notes', {}).get('network', {}), {})
 
-    def test_no_mcc_mnc(self, configure_trans):
+    def test_no_mcc_mnc(self):
         self.client.post(reverse('pay.configure_transaction'), {})
         eq_(self.client.session.get('notes', {}).get('network', {}), {})
 
@@ -615,39 +647,72 @@ class TestSimulate(BasicSessionCase, JWTtester):
         self.assertTemplateUsed(res, 'pay/simulate_done.html')
 
 
-@mock.patch('webpay.pay.views.tasks.simulate_notify')
-class TestSuperSimulate(BasicSessionCase):
+class TestSuperSimulate(ConfiguredTransactionTest):
 
     def setUp(self):
         super(TestSuperSimulate, self).setUp()
-        self.request = {'request': {}}
-        self.session['trans_id'] = '<trans_id>'
-        self.save_session()
 
-        p = mock.patch('webpay.pay.views.solitude')
-        self.solitude = p.start()
+        p = mock.patch('webpay.pay.views.tasks.simulate_notify')
+        self.fake_notify = p.start()
         self.addCleanup(p.stop)
-        self.solitude.get_transaction.return_value = {
-            'notes': {'issuer_key': '<issuer_key>',
-                      'pay_request': self.request}
-        }
+
+        p = mock.patch('webpay.pay.tasks.start_pay')
+        self.start_pay = p.start()
+        self.addCleanup(p.stop)
+
+    def post(self, data=None, check_status=True, **post_kw):
+        res = self.client.post(reverse('pay.super_simulate'), data,
+                               **post_kw)
+        if check_status:
+            eq_(res.status_code, 200)
+        try:
+            form = res.context.get('form')
+        except AttributeError:
+            form = None
+        if form:
+            eq_(form.errors.as_text(), '')
+        return res
 
     def set_perms(self, perms):
         self.session['mkt_permissions'] = perms
         self.save_session()
 
-    def test_do_simulate(self, fake_notify):
+    def test_do_simulate(self):
         self.set_perms({'admin': False, 'reviewer': True})
-        self.client.post(reverse('pay.super_simulate'))
-        fake_notify.delay.assert_called_with('<issuer_key>', mock.ANY)
-        req = fake_notify.delay.call_args[0][1]['request']
+        self.post(data={'action': 'simulate'})
+        self.fake_notify.delay.assert_called_with('<issuer_key>', mock.ANY)
+        req = self.fake_notify.delay.call_args[0][1]['request']
         eq_(req['simulate'], {'result': 'postback'})
 
-    def test_invalid_permissions(self, fake_notify):
+    def test_real_payment(self):
+        self.set_perms({'admin': True, 'reviewer': False})
+        res = self.post(data={'action': 'real'},
+                        check_status=False)
+        assert not self.fake_notify.delay.called, (
+            'simulation task should not be called for real payments')
+        assert res['Location'].endswith(reverse('pay.wait_to_start')), (
+            'Unexpected redirect: {loc}'.format(loc=res['Location']))
+
+    def test_simulated_network(self):
+        mcc = '334'
+        mnc = '020'
+        self.set_perms({'admin': True, 'reviewer': False})
+        res = self.post(data={'action': 'real',
+                              'network': '{mcc}:{mnc}'.format(mcc=mcc,
+                                                              mnc=mnc)},
+                        check_status=False)
+        self.start_pay.delay.assert_called_with(mock.ANY,
+                                                {'network': {'mcc': mcc,
+                                                             'mnc': mnc}},
+                                                mock.ANY, mock.ANY)
+        assert res['Location'].endswith(reverse('pay.wait_to_start')), (
+            'Unexpected redirect: {loc}'.format(loc=res['Location']))
+
+    def test_invalid_permissions(self):
         self.set_perms({'admin': False, 'reviewer': False})
         res = self.client.post(reverse('pay.super_simulate'))
         eq_(res.status_code, 403)
-        assert not fake_notify.delay.called
+        assert not self.fake_notify.delay.called
 
 
 class TestBounce(Base):

@@ -63,6 +63,7 @@ MINIFY_BUNDLES = {
             'css/pay/throbber.styl',
             'css/pay/messages.styl',
             'css/pay/pay.styl',
+            'css/pay/simulate.styl',
         ),
     },
     'js': {

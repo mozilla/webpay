@@ -13,6 +13,7 @@ from nose.tools import eq_, ok_
 from lib.marketplace.api import client as marketplace
 from lib.solitude import constants
 from lib.solitude.api import client as solitude
+from lib.solitude.constants import STATUS_PENDING
 from webpay.base.tests import BasicSessionCase
 from webpay.pay.tests import Base, sample
 
@@ -241,67 +242,67 @@ class TestCheck(PIN):
 @override_settings(
     KEY='marketplace.mozilla.org', SECRET='marketplace.secret', DEBUG=True,
     ISSUER='marketplace.mozilla.org', INAPP_KEY_PATHS={None: sample})
-@mock.patch('webpay.pay.tasks.configure_transaction')
 class TestPay(Base, BaseCase):
 
     def setUp(self):
         super(TestPay, self).setUp()
         self.url = reverse('api:pay')
 
-    def test_bad(self, config_trans):
-        res = self.client.post(self.url, data={})
+        p = mock.patch('webpay.pay.tasks.start_pay')
+        self.start_pay = p.start()
+        self.addCleanup(p.stop)
+
+        p = mock.patch('webpay.pay.tasks.client')
+        self.api_client = p.start()
+        self.addCleanup(p.stop)
+        self.api_client.get_transaction.return_value = {
+            'uuid': 'uuid',
+            'status': STATUS_PENDING,
+            'notes': {}
+        }
+
+    def post(self, data=None, req=None, mcc='423', mnc='555'):
+        if data is None:
+            data = {}
+            if req is None:
+                req = self.request()
+            data = {'req': req, 'mnc': mnc, 'mcc': mcc}
+        return self.client.post(self.url, data=data)
+
+    def test_bad(self):
+        res = self.post(data={})
         eq_(res.status_code, 400)
 
-    def test_inapp(self, config_trans):
-        config_trans.return_value = True
+    def test_inapp(self):
         self.solitude.generic.product.get_object.return_value = {
             'secret': 'p.secret', 'access': constants.ACCESS_PURCHASE}
-        req = self.request()
-        res = self.client.post(self.url, data={'req': req})
+        res = self.post()
         eq_(res.status_code, 204)
 
-    def test_no_mnc_mcc(self, config_trans):
-        config_trans.return_value = True
-        req = self.request()
-        res = self.client.post(self.url,
-                               data={'req': req})
-        network = self.client.session.get('notes', {}).get('network')
-        eq_(network, {})
+    def test_no_mnc_mcc(self):
+        res = self.post(mcc='', mnc='')
         eq_(res.status_code, 204)
+        args = self.start_pay.delay.call_args[0][1]
+        eq_(args['network'], {})
 
-    def test_stores_mnc_mcc(self, config_trans):
-        config_trans.return_value = True
-        req = self.request()
-        res = self.client.post(self.url,
-                               data={'req': req, 'mnc': '423', 'mcc': '555'})
-        network = self.client.session.get('notes', {}).get('network')
-        eq_(network, {'mnc': '423', 'mcc': '555'})
+    def test_stores_mnc_mcc(self):
+        res = self.post(mnc='423', mcc='555')
         eq_(res.status_code, 204)
+        args = self.start_pay.delay.call_args[0][1]
+        eq_(args['network'], {'mnc': '423', 'mcc': '555'})
 
-    def test_invalid_mnc_mcc(self, config_trans):
-        config_trans.return_value = True
-        req = self.request()
-        res = self.client.post(self.url,
-                               data={'req': req, 'mnc': '123', 'mcc': 'abc'})
+    def test_invalid__mcc(self):
+        res = self.post(mcc='abc')
         eq_(res.status_code, 400)
 
-    def test_only_mnc(self, config_trans):
-        config_trans.return_value = True
-        req = self.request()
-        res = self.client.post(self.url,
-                               data={'req': req, 'mnc': '123'})
+    def test_missing_mcc(self):
+        res = self.post(mcc=None)
         eq_(res.status_code, 400)
 
-    def test_configures_transaction_success(self, config_trans):
-        config_trans.return_value = True
-        req = self.request()
-        res = self.client.post(self.url,
-                               data={'req': req, 'mnc': '423', 'mcc': '555'})
+    def test_configures_transaction_success(self):
+        res = self.post()
         eq_(res.status_code, 204)
 
-    def test_configures_transaction_fail(self, config_trans):
-        config_trans.return_value = False
-        req = self.request()
-        res = self.client.post(self.url,
-                               data={'req': req, 'mnc': '423', 'mcc': '555'})
+    def test_configures_transaction_fail(self):
+        res = self.post(req='')  # cause a form error.
         eq_(res.status_code, 400)
