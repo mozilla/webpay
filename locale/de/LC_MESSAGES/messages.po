@@ -258,9 +258,7 @@ msgstr "Ok"
 
 #: webpay/base/templates/base.html:48
 msgid "The transaction failed. You have not been charged for this purchase."
-msgstr ""
-"Die Transaktion ist fehlgeschlagen. Ihr Konto wurde für diesen Kauf nicht "
-"belastet."
+msgstr "Die Transaktion ist fehlgeschlagen. Ihr Konto wurde für diesen Kauf nicht belastet."
 
 #: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
