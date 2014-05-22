@@ -4,13 +4,14 @@ from django import http
 from django.conf import settings
 from django.test import TestCase
 from django.test.client import RequestFactory
+from django.test.utils import override_settings
 
 import fudge
 import mock
-from nose.tools import eq_
+from nose.tools import eq_, ok_
 
-from webpay.base.middleware import (CEFMiddleware, LocaleMiddleware,
-                                    LogJSONerror)
+from webpay.base.middleware import (CEFMiddleware, CSPMiddleware,
+                                    LocaleMiddleware, LogJSONerror)
 
 
 class TestLocaleMiddleware(TestCase):
@@ -104,3 +105,36 @@ class TestCEFMiddleware(TestCase):
         exc = ExcWithContent('msg', 'foo')
         CEFMiddleware().process_exception(None, exc)
         log_cef.assert_called_with('ExcWithContent', None, severity=8)
+
+
+class TestCSPMiddleware(TestCase):
+    # Override the setting so it gets reset
+    @override_settings(SPARTACUS_STATIC='',
+                       STATIC_URL='http://webpay.dev/media/')
+    def test_without_spartacus(self):
+        del settings.SPARTACUS_STATIC
+        middleware = CSPMiddleware()
+        sources = middleware.get_sources()
+        eq_(sources, ('http://webpay.dev',))
+
+    @override_settings(SPARTACUS_STATIC='http://spartacus.dev/media/',
+                       STATIC_URL='http://webpay.dev/media/')
+    def test_with_spartacus(self):
+        middleware = CSPMiddleware()
+        sources = middleware.get_sources()
+        eq_(set(sources), set(['http://webpay.dev', 'http://spartacus.dev']))
+
+    @override_settings(SPARTACUS_STATIC='http://webpay.dev/media/',
+                       STATIC_URL='http://webpay.dev/media/')
+    def test_spartacus_and_static_match(self):
+        middleware = CSPMiddleware()
+        sources = middleware.get_sources()
+        eq_(sources, ('http://webpay.dev',))
+
+    @mock.patch('webpay.base.middleware.CSPMiddleware.get_sources')
+    def test_get_sources_is_used(self, get_sources):
+        stubbed_source = 'I totally get used'
+        get_sources.return_value = (stubbed_source,)
+        response = self.client.get('/')
+        csp = response['content-security-policy-report-only']
+        ok_(stubbed_source in csp)

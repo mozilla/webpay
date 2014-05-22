@@ -140,14 +140,21 @@ class CEFMiddleware(object):
 class CSPMiddleware(BaseCSPMiddleware):
 
     def process_response(self, request, response):
-        # STATIC_URL often ends in a /, but this will ensure if gets changed
-        # then it shouldn't break CSP.
-        parsed = urlparse.urlparse(settings.STATIC_URL)
-        static = '{0}://{1}'.format(parsed.scheme, parsed.netloc)
-        # Add these in at the last minute so that we get the correct
-        # STATIC_URL from the settings files.
+        sources = self.get_sources()
         response._csp_update = {
-            'font-src': (static,), 'img-src': (static,),
-            'script-src': (static,), 'style-src': (static,),
+            'font-src': sources, 'img-src': sources,
+            'script-src': sources, 'style-src': sources,
         }
         return super(CSPMiddleware, self).process_response(request, response)
+
+    def get_sources(self):
+        # STATIC_URL often ends in a /, but this will ensure if gets changed
+        # then it shouldn't break CSP.
+        sources = [settings.STATIC_URL]
+        if hasattr(settings, 'SPARTACUS_STATIC'):
+            sources.append(settings.SPARTACUS_STATIC)
+        parsed_sources = [urlparse.urlparse(source) for source in sources]
+        return tuple(
+            {'{0}://{1}'.format(parsed.scheme, parsed.netloc)
+             for parsed in parsed_sources
+             if parsed.scheme and parsed.netloc})
