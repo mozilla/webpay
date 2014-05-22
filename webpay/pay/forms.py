@@ -110,7 +110,7 @@ class SuperSimulateForm(ParanoidForm):
                  ('simulate', _('Simulate a payment'))),
         initial='real')
     network = forms.ChoiceField(required=False,
-                                choices=((None, _('Default network')),
+                                choices=(('', _('Default network')),
                                          # Choice key is mcc:mnc.
                                          ('334:020', 'Mexico: AMX')))
 
