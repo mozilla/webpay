@@ -117,7 +117,3 @@ base.JS_SETTINGS['zamboni_raven_url'] = 'https://none@payments-alt.allizom.org/a
 NEWRELIC_INI = '/etc/newrelic.d/payments-alt.allizom.org-webpay.ini'
 
 USAGE_WARNING = True
-
-# This forces the Phantom network for Boku.
-# WARNING: this overrides all client network detection.
-SIMULATED_NETWORK = {'mcc': '334', 'mnc': '020'}
