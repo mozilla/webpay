@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, url
 import views
 
 urlpatterns = patterns('',
-    url(r'^$', views.lobby, name='pay.lobby'),
+    url(r'^$', views.index, name='pay.lobby'),
     url(r'^configure-transaction$', views.configure_transaction, name='pay.configure_transaction'),
     # Be careful if you change this because it could be hard
     # coded into settings. See settings.PAY_URLS.

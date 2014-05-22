@@ -141,4 +141,8 @@ PAY_URLS = {
     },
 }
 
+# Turn on Spartacus for -dev.
 ENABLE_SPA = True
+ENABLE_SPA_URLS = True
+SPARTACUS_STATIC = 'https://marketplace-dev.mozflare.net/mozpay/spa'
+

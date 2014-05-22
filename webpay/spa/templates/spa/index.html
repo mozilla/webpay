@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html LANG="{{ LANG }}" dir="{{ DIR }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="csrf" content="{{ csrf_token }}">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    {# L10n: Web Pay is what we call the payment server/flow. -#}
+    <title>{{ _('Web Pay') }}</title>
+    <link rel="stylesheet" href="{{ settings.SPARTACUS_STATIC }}/css/spartacus.css">
+  </head>
+  <body class="spartacus"
+    data-logged-in-user="{{ session.get('logged_in_user', '') }}"
+    data-privacy-policy="https://marketplace.firefox.com/privacy-policy"
+    data-reset-user-url="{{ url('auth.reset_user') }}"
+    data-static-url="{{ settings.SPARTACUS_STATIC }}"
+    data-terms-of-service="https://marketplace.firefox.com/terms-of-use"
+    data-unverified-issuer="{{ settings.BROWSERID_UNVERIFIED_ISSUER }}"
+    data-verify-url="{{ url('auth.verify') }}"
+    >
+    <main id="app">
+      {# View placeholder #}
+      <div id="view" class="view"></div>
+      {# Throbber placeholder #}
+      <div id="progress" class="progress">
+        <div class="throbber">
+          <div class="inner">
+            <progress></progress>
+            <p class="msg">{{ gettext('Loading...')}}</p>
+          </div>
+        </div>
+      </div>
+      {# Error placeholder #}
+      <div id="error" class="error"></div>
+    </main>
+    {%block site_js -%}
+    <script src="{{ settings.BROWSERID_JS_URL }}"></script>
+    <script data-main="{{ settings.SPARTACUS_STATIC }}/js/main.js" src="{{ settings.SPARTACUS_STATIC }}/lib/js/requirejs/require.js"></script>
+    {%- endblock %}
+  </body>
+</html>
