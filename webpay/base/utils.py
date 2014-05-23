@@ -67,7 +67,7 @@ def system_error(request, **kw):
 
 def custom_error(request, user_message, code=None, status=400):
     error = {'error': user_message, 'error_code': code}
-    if 'application/json' in request.META.get('HTTP_ACCEPT'):
+    if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
         return HttpResponse(
             content=json.dumps(error),
             content_type='application/json; charset=utf-8',
