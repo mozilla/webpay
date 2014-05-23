@@ -261,13 +261,13 @@ class TestPay(Base, BaseCase):
             'notes': {}
         }
 
-    def post(self, data=None, req=None, mcc='423', mnc='555'):
+    def post(self, data=None, req=None, mcc='423', mnc='555', **kwargs):
         if data is None:
             data = {}
             if req is None:
                 req = self.request()
             data = {'req': req, 'mnc': mnc, 'mcc': mcc}
-        return self.client.post(self.url, data=data)
+        return self.client.post(self.url, data=data, **kwargs)
 
     def test_bad(self):
         res = self.post(data={})
@@ -291,9 +291,12 @@ class TestPay(Base, BaseCase):
         args = self.start_pay.delay.call_args[0][1]
         eq_(args['network'], {'mnc': '423', 'mcc': '555'})
 
-    def test_invalid__mcc(self):
-        res = self.post(mcc='abc')
+    def test_invalid_mcc(self):
+        accept = 'application/json, text/javascript, */*; q=0.01'
+        res = self.post(mcc='abc', HTTP_ACCEPT=accept)
         eq_(res.status_code, 400)
+        errors = json.loads(res.content)
+        ok_('error_code' in errors)
 
     def test_missing_mcc(self):
         res = self.post(mcc=None)
