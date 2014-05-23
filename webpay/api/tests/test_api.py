@@ -125,13 +125,13 @@ class TestPost(PIN):
         res = self.client.post(self.url, {'pin': '1234'})
         self.solitude.generic.buyer.post.assert_called_with({'uuid': 'a',
                                                              'pin': '1234'})
-        eq_(res.status_code, 201)
+        eq_(res.status_code, 204)
 
     def test_user(self):
         self.solitude.generic.buyer.get_object_or_404.return_value = {
             'pin': False, 'resource_pk': 'abc'}
         res = self.client.post(self.url, {'pin': '1234'})
-        eq_(res.status_code, 201)
+        eq_(res.status_code, 204)
         self.solitude.generic.buyer.assert_called_with(id='abc')
 
     def test_user_with_pin(self):

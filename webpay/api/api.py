@@ -45,9 +45,8 @@ class PinViewSet(viewsets.ViewSet):
 
             if form.handle_client_errors(res):
                 set_user_has_pin(request, True)
-                return response.Response(status=201)
 
-            return response.Response(status=201)
+            return response.Response(status=204)
 
         return app_error(request)
 

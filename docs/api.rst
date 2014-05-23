@@ -54,7 +54,7 @@ The PIN API lets you check, create and update the PIN through Webpay.
 
     **Response**
 
-    :status 201: successfully created.
+    :status 204: successfully created.
     :status 400: invalid form data.
     :status 403: not authenticated.
 
