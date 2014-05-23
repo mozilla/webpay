@@ -25,3 +25,9 @@ pref("dom.payment.provider.4.description", "mock");
 pref("dom.payment.provider.4.uri", "http://people.mozilla.com/~kmcmillan/pay-provider.html?req=");
 pref("dom.payment.provider.4.type", "mock/payments/inapp/v1");
 pref("dom.payment.provider.4.requestMethod", "GET");
+
+pref("dom.payment.provider.5.name", "firefoxmarketpaymentsalt");
+pref("dom.payment.provider.5.description", "payments-alt.allizom.org");
+pref("dom.payment.provider.5.uri", "https://payments-alt.allizom.org/mozpay/?req=");
+pref("dom.payment.provider.5.type", "mozilla-alt/payments/pay/v1");
+pref("dom.payment.provider.5.requestMethod", "GET");
