@@ -18,10 +18,10 @@ class Permission(permissions.IsAuthenticated):
 
 
 class PinSerializer(serializers.Serializer):
-    pin = serializers.BooleanField()
+    pin = serializers.BooleanField(default=False)
     pin_locked_out = serializers.DateTimeField()
-    pin_is_locked_out = serializers.BooleanField()
-    pin_was_locked_out = serializers.BooleanField()
+    pin_is_locked_out = serializers.BooleanField(default=False)
+    pin_was_locked_out = serializers.BooleanField(default=False)
 
 
 class PinViewSet(viewsets.ViewSet):
@@ -30,9 +30,7 @@ class PinViewSet(viewsets.ViewSet):
 
     def retrieve(self, request):
         res = client.get_buyer(request.session['uuid'])
-        if not res:
-            raise Http404
-        serial = PinSerializer(res)
+        serial = PinSerializer(res or None)
         return response.Response(serial.data)
 
     def create(self, request):

@@ -97,7 +97,8 @@ class TestGet(PIN):
         self.solitude.generic.buyer.get_object_or_404.side_effect = (
             ObjectDoesNotExist)
         res = self.client.get(self.url)
-        eq_(res.status_code, 404)
+        eq_(res.status_code, 200)
+        eq_(json.loads(res.content)['pin'], False)
 
     def test_some_pin(self):
         self.solitude.generic.buyer.get_object_or_404.return_value = {

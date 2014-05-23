@@ -32,7 +32,6 @@ The PIN API lets you check, create and update the PIN through Webpay.
 
     :status 200: successfully completed.
     :status 403: not authenticated.
-    :status 404: no user exists.
 
     :param pin: if a PIN exists or not
     :type pin: boolean
