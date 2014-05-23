@@ -75,26 +75,33 @@ else is intended for using custom builds and/or custom settings.
 Build A Custom B2G Profile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-First you have to build a
-custom profile from the Gaia source that points to a WebPay server.
+You have to build a
+custom profile from the Gaia source to allow ``navigator.mozPay()``
+to talk to your local WebPay server.
 Refer to the `Gaia Hacking`_
 page for more details but this page has everything you need to know.
 
-**IMPORTANT**: Make sure you use the ``v1-train`` of gaia instead of master
+**IMPORTANT**: You have to use a branch of Gaia that matches the
+version of B2G you're using. For example, check out ``origin/v1.2``
+for 1.2, ``origin/v1.4`` for 1.4, etc.
 
-Install `git`_ and track the v1-train branch by typing these commands::
+Here's an example of building a 1.4 profile.
+Install `git`_ and type these commands::
 
     git clone git://github.com/mozilla-b2g/gaia.git
     cd gaia
-    git checkout --track -b v1-train origin/v1-train
+    git checkout --track -b origin/v1.4 origin/v1.4
 
 Get updates like this::
 
-    git checkout v1-train
+    git checkout origin/v1.4
     git pull
 
-Create ``build/custom-prefs.js`` in that directory.
+Create ``build/config/custom-prefs.js`` in that directory.
 With a text editor, add **all** of the settings below.
+
+**IMPORTANT**: Before 1.4, you had to put the file in
+``build/custom-prefs.js``.
 
 Add some basic debug settings::
 
@@ -137,28 +144,26 @@ You now have a custom B2G profile in your ``gaia/profile`` directory.
 These settings are available in the webpay repository:
 https://github.com/mozilla/webpay/blob/master/ezboot/custom-prefs.js
 
-Setting Up Desktop B2G
-~~~~~~~~~~~~~~~~~~~~~~
+Using the Firefox OS Simulator
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Get the `nightly desktop B2G build`_ and start it with the profile you just
-built. Here is an example of
-launching with a custom profile on Mac OS X::
+As of `Firefox OS Simulator`_ 1.3 you can use a cusom Gaia profile
+which is necessary to work with a local Webpay server.
+If you built a custom Gaia profile in the step above, then you are
+ready to start simulating.
 
-    /Applications/B2G.app/Contents/MacOS/b2g-bin -jsconsole -profile /FULL/PATH/TO/gaia/profile/
+Set up the `Firefox OS Simulator`_ according to the documentation.
+This involves installing a version specific addon, such as a
+1.4 Simulator. After installation, open ``about:addons`` in Firefox
+and enter the Preferences section for the Simulator add-on.
+Click the button to use a custom Gaia profile
+and select the directory of the one you just built.
 
-Replace ``/FULL/PATH/TO/gaia/profile`` with the actual path to where you cloned gaia and
-built the profile. If you **see a blank screen** in B2G it probably means the
-path to your profile is wrong.
+Open the `App Manager`_, connect to your Simulator and you are ready to test
+payments against your local Webpay server.
 
-**IMPORTANT**: Use *b2g-bin* not *b2g* on Mac OS X.
-
-Starting a custom built B2G app is pretty similar. Just specify the
-path to the binary you built.
-
-That's it! You should be ready to purchase apps from a properly configured
-Marketplace app on your desktop B2G.
-Read on if you need to set up a local WebPay server or install a dev version of
-the Firefox Marketplace.
+.. _`Firefox OS Simulator`: https://developer.mozilla.org/en-US/docs/Mozilla/Firefox_OS/Using_Firefox_OS_Simulator
+.. _`App Manager`: https://developer.mozilla.org/en-US/Firefox_OS/Using_the_App_Manager
 
 Setting Up A B2G Device
 ~~~~~~~~~~~~~~~~~~~~~~~
