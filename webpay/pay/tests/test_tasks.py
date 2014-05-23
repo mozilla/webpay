@@ -466,6 +466,7 @@ class TestStartPay(BaseStartPay):
         }
         self.solitude.generic.seller.get_object_or_404.return_value = {
             'resource_pk': 1,
+            'resource_uri': '/generic/seller/1/',
             'uuid': self.generic_seller_uuid,
         }
         self.providers = api.ProviderHelper.supported_providers(
