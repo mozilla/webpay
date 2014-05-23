@@ -579,6 +579,7 @@ class ReferenceProvider(PayProvider):
             'uuid': transaction_uuid,
             'status': solitude_const.STATUS_PENDING,
             'provider': solitude_const.PROVIDERS[self.name],
+            'seller': generic_seller['resource_uri'],
             'seller_product': generic_product['resource_uri'],
             'source': solitude_const.PROVIDERS[self.name],
             'region': region,
@@ -680,6 +681,7 @@ class BokuProvider(PayProvider):
 
         trans = self.slumber.generic.transaction.post({
             'provider': solitude_const.PROVIDERS[self.name],
+            'seller': generic_seller['resource_uri'],
             'seller_product': generic_product['resource_uri'],
             'source': solitude_const.PROVIDERS[self.name],
             'status': solitude_const.STATUS_PENDING,

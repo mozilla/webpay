@@ -12,7 +12,7 @@ from slumber.exceptions import HttpClientError
 
 from lib.solitude.api import (BokuProvider, client,
                               ProviderHelper, SellerNotConfigured)
-from lib.solitude.constants import ACCESS_PURCHASE
+from lib.solitude import constants
 from lib.solitude.errors import ERROR_STRINGS
 from lib.solitude.exceptions import ResourceModified, ResourceNotModified
 
@@ -380,6 +380,30 @@ class TestBango(TestCase):
 
 class ProviderTestCase(TestCase):
 
+    def setUp(self):
+        super(ProviderTestCase, self).setUp()
+
+        self.slumber = mock.MagicMock()
+
+        self.seller_id = 1
+        self.seller_uuid = 'seller-xyz'
+        self.seller_uri = '/generic/seller/1/'
+        self.slumber.generic.seller.get_object_or_404.return_value = {
+            'uuid': self.seller_uuid,
+            'resource_pk': self.seller_id,
+            'resource_uri': self.seller_uri,
+        }
+
+        self.product_uuid = 'app-xyz'
+        self.product_uri = '/generic/product/1/',
+
+        self.slumber.generic.product.get_object_or_404.return_value = {
+            'external_id': self.product_uuid,
+            'uuid': 1,
+            'resource_pk': 1,
+            'resource_uri': self.product_uri,
+        }
+
     def configure(self, trans_uuid='trans-xyz', seller_uuid='seller-xyz',
                   product_uuid='product-xyz', product_name='Shiny App',
                   success_redirect='/todo/postback',
@@ -403,163 +427,83 @@ class ProviderTestCase(TestCase):
             mnc=mnc
         )
 
-    def set_mocks(self, returns={}, keys=('generic.seller',
-                                          'generic.product',
-                                          'generic.buyer'),
-                  seller_uuid=None, product_uuid=None):
-        """
-        Set mock object returns, for example:
-
-            self.set_mocks({
-                'provider.reference.transactions': {
-                    'method': 'post',
-                    'return': {
-                        'token': 'the-token',
-                    }
-                }
-            })
-
-        That will do the same thing as:
-
-           self.slumber.provider.reference.transactions.post.return_value = {
-               'token': 'the-token',
-           }
-
-        Here's an example of mocking a side effect when calling post():
-
-            self.set_mocks({
-                'provider.reference.transactions': {
-                    'method': 'post',
-                    'side_effect': ValueError,
-                }
-            })
-
-        * If no method is specified, the default is get_object_or_404.
-        * If no return is specified, the return will be a resource_pk, uuid,
-          and resource_uri
-        """
-        if seller_uuid and 'generic.seller' not in returns:
-            returns['generic.seller'] = {
-                'return': {
-                    'uuid': seller_uuid,
-                    'resource_pk': seller_uuid,
-                    'resource_uri': '/seller/' + seller_uuid,
-                }
-            }
-        if product_uuid and 'generic.product' not in returns:
-            returns['generic.product'] = {
-                'return': {
-                    'resource_uri': '/product/' + product_uuid,
-                    'uuid': product_uuid,
-                    'external_id': product_uuid,
-                }
-            }
-
-        keys = set(list(keys) + returns.keys())
-        for k in keys:
-            attr_path = k.split('.')
-            api = self.slumber
-            while True:
-                try:
-                    api = getattr(api, attr_path.pop(0))
-                except IndexError:
-                    break
-
-            conf = returns.get(k, {})
-            method = conf.get('method', 'get_object_or_404')
-            api = getattr(api, method)
-            if conf.get('side_effect'):
-                api.side_effect = conf['side_effect']
-            else:
-                api.return_value = conf.get('return', {
-                    'uuid': 1,
-                    'resource_pk': 1,
-                    'resource_uri': '/something/1',
-                })
-
 
 class TestReferenceProvider(ProviderTestCase):
 
     def setUp(self):
-        self.slumber = mock.MagicMock()
+        super(TestReferenceProvider, self).setUp()
         self.provider = ProviderHelper('reference', slumber=self.slumber)
 
-    def set_mocks(self, returns={}, keys=None, **kw):
-        if not keys:
-            keys = ('generic.seller',
-                    'generic.product',
-                    'generic.buyer',
-                    'provider.reference.products',
-                    'provider.reference.transactions',)
-        return super(TestReferenceProvider, self).set_mocks(
-            returns=returns, keys=keys, **kw)
-
     def test_start_with_existing_prod(self):
-        seller_uuid = 'seller-xyz'
-        product_uuid = 'app-xyz'
+        self.slumber.provider.reference.transactions.post.return_value = {
+            'token': 'zippy-trans-token',
+        }
 
-        self.set_mocks({
-            'provider.reference.transactions': {
-                'method': 'post',
-                'return': {
-                    'token': 'zippy-trans-token',
-                }
-            }},
-            seller_uuid=seller_uuid,
-            product_uuid=product_uuid
-        )
-
-        trans_id, pay_url, seller_uuid = self.configure(
-            seller_uuid=seller_uuid, product_uuid=product_uuid)
+        trans_id, pay_url, seller_id = self.configure(
+            seller_uuid=self.seller_uuid, product_uuid=self.product_uuid)
 
         eq_(trans_id, 'zippy-trans-token')
-        eq_(seller_uuid, seller_uuid)
+        eq_(seller_id, self.seller_id)
         assert pay_url.endswith('tx={t}'.format(t=trans_id)), (
             'Unexpected: {url}'.format(url=pay_url))
 
-        kw = self.slumber.provider.reference.products\
-                                            .get_object_or_404.call_args[1]
-        eq_(kw['external_id'], product_uuid)
-        eq_(kw['seller_id'], seller_uuid)
+        kw = (self.slumber.provider.reference.products
+                                             .get_object_or_404).call_args[1]
+        eq_(kw['external_id'], self.product_uuid)
+        eq_(kw['seller_id'], self.seller_uuid)
+
+        self.slumber.generic.transaction.post.assert_called_with({
+            'amount': '0.99',
+            'carrier': 'USA_TMOBILE',
+            'currency': 'EUR',
+            'provider': constants.PROVIDER_REFERENCE,
+            'region': '123',
+            'seller': self.seller_uri,
+            'seller_product': self.product_uri,
+            'source': 2,
+            'status': constants.STATUS_PENDING,
+            'type': constants.TYPE_PAYMENT,
+            'uuid': 'trans-xyz',
+        })
 
     def test_with_new_prod(self):
         new_product_id = 66
-        product_uuid = 'app-xyz'
-        seller_uuid = 'seller-xyz'
 
-        self.set_mocks({
-            'generic.product': {
-                'side_effect': ObjectDoesNotExist,
-            },
-            'provider.reference.transactions': {
-                'method': 'post',
-                'return': {
-                    'token': 'zippy-trans-token',
-                }
-            },
-            'provider.reference.products': {
-                'side_effect': ObjectDoesNotExist,
-            },
-            'provider.reference.sellers': {
-                'return': {
-                    'resource_pk': seller_uuid,
-                }
-            }},
-            seller_uuid=seller_uuid
-        )
+        (self.slumber.generic.product.get_object_or_404
+                                     .side_effect) = ObjectDoesNotExist
+
+        self.slumber.generic.product.post.return_value = {
+            'access': 1,
+            'public_id': '6597288d-7bce-409b-a35b-772acfe04b1e',
+            'external_id': self.product_uuid,
+            'seller': self.seller_uri,
+            'resource_uri': self.product_uri,
+        }
+
+        self.slumber.provider.reference.transactions.post.return_value = {
+            'token': 'zippy-trans-token',
+        }
+
+        (self.slumber.provider.reference.products
+                                        .side_effect) = ObjectDoesNotExist
+
+        (self.slumber.provider.reference.sellers.get_object_or_404
+                                                .return_value) = {
+            'resource_pk': self.seller_id,
+        }
 
         self.slumber.provider.reference.products.post.return_value = {
             'resource_pk': new_product_id,
         }
 
-        result = self.configure(seller_uuid=seller_uuid,
-                                product_uuid=product_uuid)
+        result = self.configure(seller_uuid=self.seller_uuid,
+                                product_uuid=self.product_uuid)
 
         eq_(result[0], 'zippy-trans-token')
 
         kw = self.slumber.provider.reference.products.post.call_args[0][0]
-        eq_(kw['external_id'], product_uuid)
-        eq_(kw['seller_id'], seller_uuid)
+        eq_(kw['external_id'], self.product_uuid)
+        eq_(kw['seller_id'], self.seller_id)
 
         kw = self.slumber.provider.reference.transactions.post.call_args[0][0]
         eq_(kw['product_id'], new_product_id)
@@ -568,23 +512,27 @@ class TestReferenceProvider(ProviderTestCase):
             'Unexpected: {0}'.format(kw['success_url']))
         assert kw['error_url'].endswith('/provider/reference/error'), (
             'Unexpected: {0}'.format(kw['error_url']))
+        self.slumber.generic.transaction.post.assert_called_with({
+            'amount': '0.99',
+            'carrier': 'USA_TMOBILE',
+            'currency': 'EUR',
+            'provider': constants.PROVIDER_REFERENCE,
+            'region': '123',
+            'seller': self.seller_uri,
+            'seller_product': self.product_uri,
+            'source': 2,
+            'status': constants.STATUS_PENDING,
+            'type': constants.TYPE_PAYMENT,
+            'uuid': 'trans-xyz',
+        })
 
     def test_callback_validation_success(self):
-        self.set_mocks({
-            'provider.reference.notices': {
-                'method': 'post',
-                'return': {
-                    'result': 'OK',
-                }
-            },
-            'provider.reference.transactions': {
-                'method': 'post',
-                'return': {
-                    'token': 'zippy-trans-token',
-                }
-            }},
-            product_uuid='XYZ'
-        )
+        self.slumber.provider.reference.notices.post.return_value = {
+            'result': 'OK',
+        }
+        self.slumber.provider.reference.transactions.post.return_value = {
+            'token': 'zippy-trans-token',
+        }
 
         self.configure(seller_uuid='seller-xyz', product_uuid='app-xyz')
         is_valid = self.provider.is_callback_token_valid({'foo': 'bar'})
@@ -593,22 +541,13 @@ class TestReferenceProvider(ProviderTestCase):
             {'qs': {'foo': 'bar'}})
 
     def test_callback_validation_failure(self):
-        self.set_mocks({
-            'provider.reference.notices': {
-                'method': 'post',
-                'return': {
-                    'result': 'FAIL',
-                    'reason': 'signature mismatch',
-                }
-            },
-            'provider.reference.transactions': {
-                'method': 'post',
-                'return': {
-                    'token': 'zippy-trans-token',
-                }
-            }},
-            product_uuid='XYZ'
-        )
+        self.slumber.provider.reference.notices.post.return_value = {
+            'result': 'FAIL',
+            'reason': 'signature mismatch',
+        }
+        self.slumber.provider.reference.transactions.post.return_value = {
+            'token': 'zippy-trans-token',
+        }
 
         self.configure(seller_uuid='seller-xyz', product_uuid='app-xyz')
         is_valid = self.provider.is_callback_token_valid({'foo': 'bar'})
@@ -618,17 +557,8 @@ class TestReferenceProvider(ProviderTestCase):
 class TestBoku(ProviderTestCase):
 
     def setUp(self):
-        self.slumber = mock.MagicMock()
+        super(TestBoku, self).setUp()
         self.provider = ProviderHelper('boku', slumber=self.slumber)
-
-    def set_mocks(self, returns={}, keys=None, **kw):
-        if not keys:
-            keys = ('generic.seller',
-                    'generic.product',
-                    'generic.buyer',
-                    'boku.transactions',)
-        return super(TestBoku, self).set_mocks(
-            returns=returns, keys=keys, **kw)
 
     def configure(self, **kw):
         kw.setdefault('mcc', mobile_codes.alpha2('MX').mcc)
@@ -636,33 +566,26 @@ class TestBoku(ProviderTestCase):
         return super(TestBoku, self).configure(**kw)
 
     def test_start_transaction(self):
-        seller_uuid = 'seller-xyz'
+        boku_pay_url = 'https://site/buy'
+        boku_transaction_id = 'boku-trans-id'
         provider_seller_uuid = 'provider-sel-xyz'
         user_uuid = 'user-xyz'
-        boku_pay_url = 'https://site/buy'
 
-        self.set_mocks({
-            'boku.transactions': {
-                'method': 'post',
-                'return': {
-                    'buy_url': boku_pay_url,
-                    'transaction_id': 'boku-trans-id',
-                }
-            }},
-            seller_uuid=seller_uuid,
-            product_uuid='XYZ'
-        )
+        self.slumber.boku.transactions.post.return_value = {
+            'buy_url': boku_pay_url,
+            'transaction_id': boku_transaction_id,
+        }
 
         trans_id, pay_url, seller_uuid = self.configure(
-            seller_uuid=seller_uuid, user_uuid=user_uuid,
+            seller_uuid=self.seller_uuid, user_uuid=user_uuid,
             provider_seller_uuid=provider_seller_uuid)
 
-        eq_(trans_id, 'boku-trans-id')
+        eq_(trans_id, boku_transaction_id)
         eq_(pay_url, boku_pay_url)
 
         kw = self.slumber.boku.transactions.post.call_args[0][0]
-        eq_(kw['price'], '55.00')
         eq_(kw['country'], 'MX')
+        eq_(kw['price'], '55.00')
         eq_(kw['seller_uuid'], provider_seller_uuid)
         eq_(kw['user_uuid'], user_uuid)
         assert kw['callback_url'].endswith(reverse('provider.notification',
@@ -672,29 +595,29 @@ class TestBoku(ProviderTestCase):
                                                   args=['boku'])), (
             'Unexpected: {u}'.format(u=kw['forward_url']))
         assert 'transaction_uuid' in kw, 'Missing keys: {kw}'.format(kw=kw)
-        assert self.slumber.generic.transaction.post.called
+        self.slumber.generic.transaction.post.assert_called_with({
+            'provider': constants.PROVIDER_BOKU,
+            'seller': self.seller_uri,
+            'seller_product': self.product_uri,
+            'source': 3,
+            'status': constants.STATUS_PENDING,
+            'type': constants.TYPE_PAYMENT,
+            'uuid': 'trans-xyz',
+        })
 
     def test_new_inapp_transaction(self):
         seller_uuid = 'seller-xyz'
         external_id = 'external-id'
         boku_pay_url = 'https://site/buy'
 
-        self.set_mocks({
-            # Return a 404 as if this is the first purchase
-            # for the in-app product.
-            'generic.product': {
-                'method': 'get_object_or_404',
-                'side_effect': ObjectDoesNotExist,
-            },
-            'boku.transactions': {
-                'method': 'post',
-                'return': {
-                    'buy_url': boku_pay_url,
-                    'transaction_id': 'boku-trans-id',
-                }
-            }},
-            seller_uuid=seller_uuid,
-            product_uuid='XYZ')
+        # Return a 404 as if this is the first purchase
+        # for the in-app product.
+        (self.slumber.generic.product.get_object_or_404
+                                     .side_effect) = ObjectDoesNotExist
+        self.slumber.boku.transactions.post.return_value = {
+            'buy_url': boku_pay_url,
+            'transaction_id': 'boku-trans-id',
+        }
 
         trans_id, pay_url, seller_uuid = self.configure(
             seller_uuid=seller_uuid, product_uuid=external_id)
@@ -702,8 +625,8 @@ class TestBoku(ProviderTestCase):
         # Make sure the new in-app product was created.
         kw = self.slumber.generic.product.post.call_args[0][0]
         eq_(kw['external_id'], external_id)
-        eq_(kw['seller'], '/seller/{u}'.format(u=seller_uuid))
-        eq_(kw['access'], ACCESS_PURCHASE)
+        eq_(kw['seller'], self.seller_uri)
+        eq_(kw['access'], constants.ACCESS_PURCHASE)
 
         assert self.slumber.boku.transactions.post.called
         assert self.slumber.generic.transaction.post.called
