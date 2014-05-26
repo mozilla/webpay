@@ -1,9 +1,12 @@
 -r prod.txt
 
-nose-blockage==0.1.2
-pyquery==1.2.4
 cssselect==0.8
-supervisor==3.0
-meld3==0.6.10
 dennis==0.3.10
+fudge==1.0.3
+meld3==0.6.10
+mock==1.0b1
+nose==1.2.1
+nose-blockage==0.1.2
 polib==1.0.3
+pyquery==1.2.4
+supervisor==3.0
