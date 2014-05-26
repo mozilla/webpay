@@ -29,6 +29,8 @@ mobile-codes==0.2.1
 mozilla-logger==0.1
 mozpay==2.0.0
 newrelic==2.4.0.4
+# Nose has to be here because django-nose is in installed apps.
+nose==1.2.1
 oauth2==1.5.211
 PyJWT-mozilla==0.1.4.2
 python-dateutil==2.1
