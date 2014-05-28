@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-07 09:18-0700\n"
+"POT-Creation-Date: 2014-05-28 09:42-0700\n"
 "PO-Revision-Date: 2014-05-24 13:00+0000\n"
 "Last-Translator: Mihovil <mihovil.stanic@gmail.com>\n"
 "Language-Team: none\n"
@@ -10,8 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Pootle 2.5.0\n"
 "X-POOTLE-MTIME: 1400936444.0\n"
 
@@ -25,9 +24,7 @@ msgstr "Plaćanje dovršeno."
 
 #: webpay/base/dev_messages.py:90
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
-"Mozilla je primila neispravan kod od pružatelja usluge plaćanja (Bango) "
-"prilikom obrade transakcije"
+msgstr "Mozilla je primila neispravan kod od pružatelja usluge plaćanja (Bango) prilikom obrade transakcije"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:94
@@ -54,8 +51,7 @@ msgstr "Zahtjevani rezultat simulacije plaćanja nije podržan."
 
 #: webpay/base/dev_messages.py:104
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
-"Pružatelj usluge plaćanja (Bango) je vratio grešku prilikom obrade plaćanja"
+msgstr "Pružatelj usluge plaćanja (Bango) je vratio grešku prilikom obrade plaćanja"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -65,8 +61,7 @@ msgstr "JWT je istekao."
 
 #: webpay/base/dev_messages.py:110
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
-"Vanjski pružatelj usluge plaćanja je vratio grešku prilikom obrade plaćanja"
+msgstr "Vanjski pružatelj usluge plaćanja je vratio grešku prilikom obrade plaćanja"
 
 #: webpay/base/dev_messages.py:112
 msgid "An internal web request timed out."
@@ -119,15 +114,11 @@ msgstr "Traženoj simulaciji refundacije nedostaje ključ '{0}'."
 
 #: webpay/base/dev_messages.py:138
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
-"Servis za obavjesti je odgovorio s greškom prilikom provjere obavjesti za "
-"plaćanje"
+msgstr "Servis za obavjesti je odgovorio s greškom prilikom provjere obavjesti za plaćanje"
 
 #: webpay/base/dev_messages.py:140
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr ""
-"Servis za obavjesti je podigao neočekivanu iznimku prilikom provjere "
-"obavjesti za plaćanje"
+msgstr "Servis za obavjesti je podigao neočekivanu iznimku prilikom provjere obavjesti za plaćanje"
 
 #: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
@@ -135,9 +126,7 @@ msgstr "Plaćanja su trenutno onemogućena."
 
 #: webpay/base/dev_messages.py:145
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
-"Resurs je izmjenjen unutar vremena prethodnog zahtjeva. Radnja bi se trebala "
-"ponovno uraditi."
+msgstr "Resurs je izmjenjen unutar vremena prethodnog zahtjeva. Radnja bi se trebala ponovno uraditi."
 
 #: webpay/base/dev_messages.py:147
 msgid "Payment simulations are disabled at this time."
@@ -153,8 +142,7 @@ msgstr "Konfiguracija transakcije plaćanja nije uspješna."
 
 #: webpay/base/dev_messages.py:153
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
-"Kupnja ne može biti završena zato što je trenutna transakcija već završena."
+msgstr "Kupnja ne može biti završena zato što je trenutna transakcija već završena."
 
 #: webpay/base/dev_messages.py:155
 msgid "No transaction ID could be found."
@@ -166,9 +154,7 @@ msgstr "Vrijeme je isteklo prilikom čekanja na početak transakcije."
 
 #: webpay/base/dev_messages.py:160
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
-"Metoda plaćanja ili cijenovna točka nije podržana za ovu regiju ili "
-"operatera."
+msgstr "Metoda plaćanja ili cijenovna točka nije podržana za ovu regiju ili operatera."
 
 #: webpay/base/dev_messages.py:162
 msgid "The user cancelled the payment."
@@ -182,15 +168,11 @@ msgstr "Vrijednost za ključ \"{0}\" prelazi maksimalnu duljinu od {1}"
 
 #: webpay/base/utils.py:56
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr ""
-"Došlo je do greške prilikom postavljanja plaćanja. Pokušajte ponovno ili "
-"kontaktirajte aplikaciju ukoliko ustraje."
+msgstr "Došlo je do greške prilikom postavljanja plaćanja. Pokušajte ponovno ili kontaktirajte aplikaciju ukoliko ustraje."
 
 #: webpay/base/utils.py:62
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
-"Došlo je do interne greške prilikom obrade plaćanja. Pokušajte ponovno ili "
-"kontaktirajte Mozillu ukoliko ustraje."
+msgstr "Došlo je do interne greške prilikom obrade plaćanja. Pokušajte ponovno ili kontaktirajte Mozillu ukoliko ustraje."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -226,7 +208,7 @@ msgid "Please try again in a few moments."
 msgstr "Molim pokušajte ponovno za koji trenutak."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa/index.html:9
 msgid "Web Pay"
 msgstr "Web Pay"
 
@@ -282,7 +264,19 @@ msgstr "Transakcija nije uspjela. Niste terećeni za ovu kupnju."
 msgid "Error"
 msgstr "Greška"
 
-#: webpay/pay/views.py:216 webpay/pin/views.py:93
+#: webpay/pay/forms.py:109
+msgid "Make a real payment"
+msgstr "Napravite pravo plaćanje"
+
+#: webpay/pay/forms.py:110
+msgid "Simulate a payment"
+msgstr "Simulirajte plaćanje"
+
+#: webpay/pay/forms.py:113
+msgid "Default network"
+msgstr ""
+
+#: webpay/pay/views.py:212 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Upišite PIN"
 
@@ -310,21 +304,13 @@ msgstr "Nećete biti terećeni."
 msgid "result"
 msgstr "rezultat"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pay/templates/pay/super_simulate.html:17 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Nastavi"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
 msgstr "Vi imate super moći"
-
-#: webpay/pay/templates/pay/super_simulate.html:8
-msgid "Simulate a payment"
-msgstr "Simulirajte plaćanje"
-
-#: webpay/pay/templates/pay/super_simulate.html:12
-msgid "Make a real payment"
-msgstr "Napravite pravo plaćanje"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
@@ -360,9 +346,7 @@ msgstr "Resetiranje PIN-a"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
-"Samo za testiranje. Marketplace korisnici <b>nebi trebali</b> koristiti ovu "
-"stranicu."
+msgstr "Samo za testiranje. Marketplace korisnici <b>nebi trebali</b> koristiti ovu stranicu."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
@@ -393,3 +377,7 @@ msgstr "Resetiraj"
 #: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
 msgstr "Provjera plaćanja&hellip;"
+
+#: webpay/spa/templates/spa/index.html:29
+msgid "Loading..."
+msgstr ""

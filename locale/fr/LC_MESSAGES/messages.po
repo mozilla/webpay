@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-07 09:18-0700\n"
+"POT-Creation-Date: 2014-05-28 09:42-0700\n"
 "PO-Revision-Date: 2014-04-14 08:27+0000\n"
 "Last-Translator: Benoit <benoit.leseul@gmail.com>\n"
 "Language-Team: français <>\n"
@@ -211,7 +211,7 @@ msgid "Please try again in a few moments."
 msgstr "Merci de réessayer dans quelques instants."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa/index.html:9
 msgid "Web Pay"
 msgstr "Web Pay"
 
@@ -267,7 +267,19 @@ msgstr ""
 msgid "Error"
 msgstr "Erreur"
 
-#: webpay/pay/views.py:216 webpay/pin/views.py:93
+#: webpay/pay/forms.py:109
+msgid "Make a real payment"
+msgstr "Faire un vrai paiement"
+
+#: webpay/pay/forms.py:110
+msgid "Simulate a payment"
+msgstr "Simuler un paiement"
+
+#: webpay/pay/forms.py:113
+msgid "Default network"
+msgstr ""
+
+#: webpay/pay/views.py:212 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Entrez le code PIN"
 
@@ -295,21 +307,13 @@ msgstr "Aucun prélèvement ne sera effectué."
 msgid "result"
 msgstr "résultat"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pay/templates/pay/super_simulate.html:17 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Continuer"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
 msgstr "Vous avez les super pouvoirs"
-
-#: webpay/pay/templates/pay/super_simulate.html:8
-msgid "Simulate a payment"
-msgstr "Simuler un paiement"
-
-#: webpay/pay/templates/pay/super_simulate.html:12
-msgid "Make a real payment"
-msgstr "Faire un vrai paiement"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
@@ -375,4 +379,8 @@ msgstr "Remise à zéro"
 
 #: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
+msgstr ""
+
+#: webpay/spa/templates/spa/index.html:29
+msgid "Loading..."
 msgstr ""

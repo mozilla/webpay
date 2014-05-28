@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: webpay\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-07 09:18-0700\n"
+"POT-Creation-Date: 2014-05-28 09:42-0700\n"
 "PO-Revision-Date: 2013-04-05 08:50-0500\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -207,7 +207,7 @@ msgid "Please try again in a few moments."
 msgstr "Déan iarracht eile i gceann nóiméid."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa/index.html:9
 msgid "Web Pay"
 msgstr "Íocaíocht Ghréasáin"
 
@@ -263,7 +263,19 @@ msgstr ""
 msgid "Error"
 msgstr "Earráid"
 
-#: webpay/pay/views.py:216 webpay/pin/views.py:93
+#: webpay/pay/forms.py:109
+msgid "Make a real payment"
+msgstr ""
+
+#: webpay/pay/forms.py:110
+msgid "Simulate a payment"
+msgstr ""
+
+#: webpay/pay/forms.py:113
+msgid "Default network"
+msgstr ""
+
+#: webpay/pay/views.py:212 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Cuir UAP isteach"
 
@@ -291,20 +303,12 @@ msgstr "Ní bhainfear aon airgead díot."
 msgid "result"
 msgstr "toradh"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pay/templates/pay/super_simulate.html:17 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Lean ar aghaidh"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
-
-#: webpay/pay/templates/pay/super_simulate.html:8
-msgid "Simulate a payment"
-msgstr ""
-
-#: webpay/pay/templates/pay/super_simulate.html:12
-msgid "Make a real payment"
 msgstr ""
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
@@ -371,4 +375,8 @@ msgstr "Athshocraigh"
 
 #: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
+msgstr ""
+
+#: webpay/spa/templates/spa/index.html:29
+msgid "Loading..."
 msgstr ""

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-07 09:18-0700\n"
+"POT-Creation-Date: 2014-05-28 09:42-0700\n"
 "PO-Revision-Date: 2014-05-12 07:41+0000\n"
 "Last-Translator: Channy <channy@mozilla.or.kr>\n"
 "Language-Team: none\n"
@@ -208,7 +208,7 @@ msgid "Please try again in a few moments."
 msgstr "잠시 후 다시 시도하십시오."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa/index.html:9
 msgid "Web Pay"
 msgstr "웹 결제"
 
@@ -264,7 +264,19 @@ msgstr "진행 중 오류가 있였습니다. 현재 구매에 결제는 이루�
 msgid "Error"
 msgstr "오류"
 
-#: webpay/pay/views.py:216 webpay/pin/views.py:93
+#: webpay/pay/forms.py:109
+msgid "Make a real payment"
+msgstr "실제로 결제하기"
+
+#: webpay/pay/forms.py:110
+msgid "Simulate a payment"
+msgstr "결제 과정 시물레이션"
+
+#: webpay/pay/forms.py:113
+msgid "Default network"
+msgstr ""
+
+#: webpay/pay/views.py:212 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "비밀번호 입력"
 
@@ -292,21 +304,13 @@ msgstr "실제 결제가 일어나지 않습니다."
 msgid "result"
 msgstr "결과"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pay/templates/pay/super_simulate.html:17 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "계속"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
 msgstr "최상위 기능"
-
-#: webpay/pay/templates/pay/super_simulate.html:8
-msgid "Simulate a payment"
-msgstr "결제 과정 시물레이션"
-
-#: webpay/pay/templates/pay/super_simulate.html:12
-msgid "Make a real payment"
-msgstr "실제로 결제하기"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
@@ -373,3 +377,7 @@ msgstr "재설정"
 #: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
 msgstr "결제 확인하기&hellip;"
+
+#: webpay/spa/templates/spa/index.html:29
+msgid "Loading..."
+msgstr ""

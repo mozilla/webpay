@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Czech (cs)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-07 09:18-0700\n"
+"POT-Creation-Date: 2014-05-28 09:42-0700\n"
 "PO-Revision-Date: 2014-05-08 07:52+0000\n"
 "Last-Translator: Pavel <jasnapaka@jasnapaka.com>\n"
 "Language-Team: Czech Mozilla Team <info@mozilla.cz>\n"
@@ -208,7 +208,7 @@ msgid "Please try again in a few moments."
 msgstr "Zkuste to prosím znovu za chvíli."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa/index.html:9
 msgid "Web Pay"
 msgstr "Webová platba"
 
@@ -264,7 +264,19 @@ msgstr "Transakce selhala. Tato koupě vám nebyla účtována."
 msgid "Error"
 msgstr "Chyba"
 
-#: webpay/pay/views.py:216 webpay/pin/views.py:93
+#: webpay/pay/forms.py:109
+msgid "Make a real payment"
+msgstr "Uskutečnit reálnou platbu"
+
+#: webpay/pay/forms.py:110
+msgid "Simulate a payment"
+msgstr "Zkušební platba"
+
+#: webpay/pay/forms.py:113
+msgid "Default network"
+msgstr ""
+
+#: webpay/pay/views.py:212 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Vložte PIN"
 
@@ -292,21 +304,13 @@ msgstr "Nebude účtována."
 msgid "result"
 msgstr "výsledek"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pay/templates/pay/super_simulate.html:17 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Pokračovat"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
 msgstr "Máte speciální možnosti"
-
-#: webpay/pay/templates/pay/super_simulate.html:8
-msgid "Simulate a payment"
-msgstr "Zkušební platba"
-
-#: webpay/pay/templates/pay/super_simulate.html:12
-msgid "Make a real payment"
-msgstr "Uskutečnit reálnou platbu"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
@@ -373,3 +377,7 @@ msgstr "Obnova"
 #: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
 msgstr "Ověřování platby&hellip;"
+
+#: webpay/spa/templates/spa/index.html:29
+msgid "Loading..."
+msgstr ""

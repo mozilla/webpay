@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-21 09:43-0700\n"
+"POT-Creation-Date: 2014-05-28 09:42-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -237,6 +237,7 @@ msgstr ""
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9
+#: webpay/spa/templates/spa/index.html:9
 msgid "Web Pay"
 msgstr ""
 
@@ -294,7 +295,19 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: webpay/pay/views.py:216
+#: webpay/pay/forms.py:109
+msgid "Make a real payment"
+msgstr ""
+
+#: webpay/pay/forms.py:110
+msgid "Simulate a payment"
+msgstr ""
+
+#: webpay/pay/forms.py:113
+msgid "Default network"
+msgstr ""
+
+#: webpay/pay/views.py:212
 #: webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr ""
@@ -328,6 +341,7 @@ msgid "result"
 msgstr ""
 
 #: webpay/pay/templates/pay/simulate.html:20
+#: webpay/pay/templates/pay/super_simulate.html:17
 #: webpay/pin/templates/pin/pin_form.html:46
 #: webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
@@ -335,14 +349,6 @@ msgstr ""
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
-
-#: webpay/pay/templates/pay/super_simulate.html:8
-msgid "Simulate a payment"
-msgstr ""
-
-#: webpay/pay/templates/pay/super_simulate.html:12
-msgid "Make a real payment"
 msgstr ""
 
 #: webpay/pay/templates/pay/wait-to-start.html:6
@@ -423,4 +429,8 @@ msgstr ""
 #: webpay/provider/templates/provider/wait-to-finish.html:6
 #: webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
+msgstr ""
+
+#: webpay/spa/templates/spa/index.html:29
+msgid "Loading..."
 msgstr ""

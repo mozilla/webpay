@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-21 09:43-0700\n"
+"POT-Creation-Date: 2014-05-28 09:42-0700\n"
 "PO-Revision-Date: 2014-05-15 01:42+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: none\n"
@@ -206,7 +206,7 @@ msgid "Please try again in a few moments."
 msgstr "Ju lutemi, riprovoni pas pak çastesh."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9
+#: webpay/base/templates/base.html:9 webpay/spa/templates/spa/index.html:9
 msgid "Web Pay"
 msgstr "Web Pay"
 
@@ -262,7 +262,19 @@ msgstr "Transaksioni dështoi. Nuk ju janë mbajtur para për këtë blerje."
 msgid "Error"
 msgstr "Gabim"
 
-#: webpay/pay/views.py:216 webpay/pin/views.py:93
+#: webpay/pay/forms.py:109
+msgid "Make a real payment"
+msgstr "Bëni një pagim të njëmendtë"
+
+#: webpay/pay/forms.py:110
+msgid "Simulate a payment"
+msgstr "Simuloni një pagim"
+
+#: webpay/pay/forms.py:113
+msgid "Default network"
+msgstr ""
+
+#: webpay/pay/views.py:212 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Jepni Pin-in"
 
@@ -290,21 +302,13 @@ msgstr "Nuk do t'ju vihet në ngarkim ndonjë pagesë."
 msgid "result"
 msgstr "përfundim"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pay/templates/pay/super_simulate.html:17 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Vazhdo"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
 msgstr "Keni super fuqi"
-
-#: webpay/pay/templates/pay/super_simulate.html:8
-msgid "Simulate a payment"
-msgstr "Simuloni një pagim"
-
-#: webpay/pay/templates/pay/super_simulate.html:12
-msgid "Make a real payment"
-msgstr "Bëni një pagim të njëmendtë"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
@@ -371,3 +375,7 @@ msgstr "Ricaktoje"
 #: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
 msgstr "Po verifikohet pagesa&hellip;"
+
+#: webpay/spa/templates/spa/index.html:29
+msgid "Loading..."
+msgstr ""
