@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-28 09:42-0700\n"
-"PO-Revision-Date: 2014-05-08 06:03+0000\n"
+"PO-Revision-Date: 2014-05-28 17:05+0000\n"
 "Last-Translator: Peter <petercpg@mail.moztw.org>\n"
 "Language-Team: MozTW <petercpg@mail.moztw.org>\n"
 "Language: zh_TW\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1399529027.0\n"
+"X-POOTLE-MTIME: 1401296729.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -214,11 +214,11 @@ msgstr "Web Pay"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr "Pin 必須為四個數字。"
+msgstr "PIN 必須為四個數字。"
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr "Pin 碼只能為數字。"
+msgstr "PIN 碼只能為數字。"
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
@@ -274,11 +274,11 @@ msgstr "模擬付款"
 
 #: webpay/pay/forms.py:113
 msgid "Default network"
-msgstr ""
+msgstr "預設網路"
 
 #: webpay/pay/views.py:212 webpay/pin/views.py:93
 msgid "Enter Pin"
-msgstr "輸入 Pin 碼"
+msgstr "輸入 PIN 碼"
 
 #: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign In"
@@ -322,27 +322,27 @@ msgstr "您已建立 PIN 碼。"
 
 #: webpay/pin/forms.py:111
 msgid "Wrong pin"
-msgstr "Pin 碼錯誤"
+msgstr "PIN 碼錯誤"
 
 #: webpay/pin/forms.py:123 webpay/pin/forms.py:146
 msgid "Pins do not match."
-msgstr "輸入的 Pin 碼不同。"
+msgstr "輸入的 PIN 碼不同。"
 
 #: webpay/pin/views.py:46 webpay/testing/views.py:25
 msgid "Create a Pin"
-msgstr "建立 Pin 碼"
+msgstr "建立 PIN 碼"
 
 #: webpay/pin/views.py:68 webpay/pin/views.py:185
 msgid "Confirm Pin"
-msgstr "確認 Pin 碼"
+msgstr "確認 PIN 碼"
 
 #: webpay/pin/views.py:131 webpay/pin/views.py:157 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
-msgstr "重設 Pin 碼"
+msgstr "重設 PIN 碼"
 
 #: webpay/pin/views.py:178
 msgid "Pin reset"
-msgstr "重設 Pin 碼"
+msgstr "重設 PIN 碼"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
@@ -352,23 +352,23 @@ msgstr "僅供測試。Marketplace 使用者 <b>不應該</b> 使用此網站。
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
-msgstr "忘記您的 Pin 碼？"
+msgstr "忘記了您的 PIN 碼？"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr "您輸入了錯誤的 Pin 碼太多次，帳號已被鎖定。請等五分鐘後再嘗試購買。"
+msgstr "您輸入了錯誤的 PIN 碼太多次，帳號已被鎖定。請等五分鐘後再嘗試購買。"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
-msgstr "您的 Pin 碼已被鎖定"
+msgstr "您的 PIN 碼已被鎖定"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
-msgstr "您輸錯太多次 Pin 碼，已被鎖定。您可以繼續嘗試輸入，或重設您的 Pin 碼。"
+msgstr "您輸錯太多次 PIN 碼，已被鎖定。您可以繼續嘗試輸入，或重設您的 PIN 碼。"
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr "您確定要重設 Pin 碼嗎？必須登入至 Persona 才能重設您的 Pin 碼。"
+msgstr "您確定要重設 PIN 碼嗎？必須登入至 Persona 才能重設您的 PIN 碼。"
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
@@ -380,4 +380,4 @@ msgstr "付款確認中&hellip;"
 
 #: webpay/spa/templates/spa/index.html:29
 msgid "Loading..."
-msgstr ""
+msgstr "載入中…"
