@@ -41,7 +41,9 @@ class PinViewSet(viewsets.ViewSet):
                                         form.cleaned_data['pin'],
                                         etag=form.buyer_etag)
             else:
-                res = client.create_buyer(form.uuid, form.cleaned_data['pin'])
+                res = client.create_buyer(form.uuid,
+                                          form.cleaned_data['pin'],
+                                          pin_confirmed=True)
 
             if form.handle_client_errors(res):
                 set_user_has_pin(request, True)

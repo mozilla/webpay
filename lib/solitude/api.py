@@ -40,15 +40,22 @@ class SolitudeAPI(SlumberWrapper):
     def __init__(self, *args, **kw):
         super(SolitudeAPI, self).__init__(*args, **kw)
 
-    def create_buyer(self, uuid, pin=None):
+    def create_buyer(self, uuid, pin=None, pin_confirmed=False):
         """Creates a buyer with an optional PIN in solitude.
 
         :param uuid: String to identify the buyer by.
         :param pin: Optional PIN that will be hashed.
+        :param pin_confirmed: Optional boolean if PIN was confirmed.
         :rtype: dictionary
         """
-        obj = self.safe_run(self.slumber.generic.buyer.post,
-                            {'uuid': uuid, 'pin': pin})
+        pin_data = {
+            'uuid': uuid,
+            'pin': pin,
+            'pin_confirmed': bool(pin_confirmed and pin),
+        }
+
+        obj = self.safe_run(self.slumber.generic.buyer.post, pin_data)
+
         if 'etag' in obj:
             etag = obj['etag']
             cache.set('etag:%s' % uuid, etag)

@@ -26,6 +26,7 @@ Jinja2==2.6
 kombu==2.5.10
 m2secret==0.1.1
 mobile-codes==0.2.1
+mock==1.0b1
 mozilla-logger==0.1
 mozpay==2.0.0
 newrelic==2.4.0.4

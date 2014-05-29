@@ -4,7 +4,6 @@ cssselect==0.8
 dennis==0.3.10
 fudge==1.0.3
 meld3==0.6.10
-mock==1.0b1
 nose-blockage==0.1.2
 polib==1.0.3
 pyquery==1.2.4
