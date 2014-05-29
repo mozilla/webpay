@@ -922,9 +922,9 @@ class TestConfigureTrans(test.TestCase):
     def test_configure(self):
         ok_(self.configure())
         assert self.start_pay.delay.called
-        assert 'notes' not in self.request.session, (
-            'notes should be deleted from session after '
-            'passing it to start_pay')
+        assert 'notes' in self.request.session, (
+            'notes should remain in the session after '
+            'passing it to start_pay so that super_simulate() works')
 
     def test_skip_when_simulating(self):
         self.request.session['is_simulation'] = True

@@ -98,9 +98,6 @@ def configure_transaction(request, trans=None, mcc=None, mnc=None):
                     request.session['uuid'],
                     [p.name for p in providers])
 
-    # We passed notes to start_pay (which saves it to the transaction
-    # object), so delete it from the session to save cookie space.
-    del request.session['notes']
     return True
 
 
