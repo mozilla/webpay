@@ -123,8 +123,8 @@ class TestPost(PIN):
         self.solitude.generic.buyer.get_object_or_404.side_effect = (
             ObjectDoesNotExist)
         res = self.client.post(self.url, {'pin': '1234'})
-        self.solitude.generic.buyer.post.assert_called_with({'uuid': 'a',
-                                                             'pin': '1234'})
+        self.solitude.generic.buyer.post.assert_called_with(
+            {'uuid': 'a', 'pin': '1234', 'pin_confirmed': True})
         eq_(res.status_code, 204)
 
     def test_user(self):
