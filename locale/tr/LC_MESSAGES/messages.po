@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-28 09:42-0700\n"
-"PO-Revision-Date: 2014-05-12 07:07+0000\n"
+"PO-Revision-Date: 2014-05-29 07:43+0000\n"
 "Last-Translator: Selim <selim@sum.lu>\n"
 "Language-Team: Mozilla Turkey <bilgi@mozilla.org.tr>\n"
 "Language: tr\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1399878423.0\n"
+"X-POOTLE-MTIME: 1401349385.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -274,7 +274,7 @@ msgstr "Ödeme simülasyonu yap"
 
 #: webpay/pay/forms.py:113
 msgid "Default network"
-msgstr ""
+msgstr "Varsayılan şebeke"
 
 #: webpay/pay/views.py:212 webpay/pin/views.py:93
 msgid "Enter Pin"
@@ -380,4 +380,4 @@ msgstr "Ödeme doğrulanıyor&hellip;"
 
 #: webpay/spa/templates/spa/index.html:29
 msgid "Loading..."
-msgstr ""
+msgstr "Yükleniyor..."
