@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-28 09:42-0700\n"
-"PO-Revision-Date: 2014-05-11 19:17+0000\n"
+"PO-Revision-Date: 2014-05-29 21:00+0000\n"
 "Last-Translator: Vlado <valastiak@mozilla.sk>\n"
 "Language-Team: Mozilla.sk <l10n@mozilla.sk>\n"
 "Language: sk\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1399835866.0\n"
+"X-POOTLE-MTIME: 1401397207.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -274,7 +274,7 @@ msgstr "Simulovať platbu"
 
 #: webpay/pay/forms.py:113
 msgid "Default network"
-msgstr ""
+msgstr "Predvolená sieť"
 
 #: webpay/pay/views.py:212 webpay/pin/views.py:93
 msgid "Enter Pin"
@@ -380,4 +380,4 @@ msgstr "Platba sa overuje&hellip;"
 
 #: webpay/spa/templates/spa/index.html:29
 msgid "Loading..."
-msgstr ""
+msgstr "Načítava sa..."
