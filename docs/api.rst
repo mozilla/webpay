@@ -26,8 +26,9 @@ The PIN API lets you check, create and update the PIN through Webpay.
         {
             "pin": true,
             "pin_locked_out": null,
-            "pin_is_locked_out": null,
-            "pin_was_locked_out": null
+            "pin_is_locked_out": false,
+            "pin_was_locked_out": false,
+            "pin_reset_started": false
         }
 
     :status 200: successfully completed.
@@ -41,6 +42,8 @@ The PIN API lets you check, create and update the PIN through Webpay.
     :type pin_is_locked_out: boolean
     :param pin_was_locked_out: if a PIN has been locked out
     :type pin_was_locked_out: boolean
+    :param pin_reset_started: if a PIN reset has been started
+    :type pin_reset_started: boolean
 
 
 .. http:post:: /mozpay/v1/api/pin/

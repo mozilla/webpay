@@ -22,6 +22,7 @@ class PinSerializer(serializers.Serializer):
     pin_locked_out = serializers.DateTimeField()
     pin_is_locked_out = serializers.BooleanField(default=False)
     pin_was_locked_out = serializers.BooleanField(default=False)
+    pin_reset_started = serializers.BooleanField(default=False)
 
 
 class PinViewSet(viewsets.ViewSet):
@@ -30,6 +31,9 @@ class PinViewSet(viewsets.ViewSet):
 
     def retrieve(self, request):
         res = client.get_buyer(request.session['uuid'])
+        if res:
+            res['pin_reset_started'] = request.session.get(
+                'was_reverified', False)
         serial = PinSerializer(res or None)
         return response.Response(serial.data)
 
