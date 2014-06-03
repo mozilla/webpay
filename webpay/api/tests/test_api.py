@@ -48,7 +48,7 @@ class BaseCase(BasicSessionCase):
 
     def setUp(self, *args, **kw):
         super(BaseCase, self).setUp(*args, **kw)
-        self.set_session(uuid='a')
+        self.set_session(uuid='fake-uuid')
 
         p = mock.patch.object(solitude, 'slumber', name='patched:solitude')
         self.solitude = p.start()
@@ -105,7 +105,7 @@ class TestGet(PIN):
             'pin': True}
         res = self.client.get(self.url)
         self.solitude.generic.buyer.get_object_or_404.assert_called_with(
-            headers={}, uuid='a')
+            headers={}, uuid='fake-uuid')
         eq_(json.loads(res.content)['pin'], True)
 
     def test_user_not_reverified(self):
@@ -138,15 +138,19 @@ class TestPost(PIN):
             ObjectDoesNotExist)
         res = self.client.post(self.url, {'pin': '1234'})
         self.solitude.generic.buyer.post.assert_called_with(
-            {'uuid': 'a', 'pin': '1234', 'pin_confirmed': True})
+            {'uuid': 'fake-uuid', 'pin': '1234', 'pin_confirmed': True})
         eq_(res.status_code, 204)
 
-    def test_user(self):
+    @mock.patch('webpay.api.api.client')
+    def test_user(self, solitude_client):
         self.solitude.generic.buyer.get_object_or_404.return_value = {
             'pin': False, 'resource_pk': 'abc'}
         res = self.client.post(self.url, {'pin': '1234'})
         eq_(res.status_code, 204)
-        self.solitude.generic.buyer.assert_called_with(id='abc')
+        solitude_client.change_pin.assert_called_with('fake-uuid',
+                                                      '1234',
+                                                      etag='',
+                                                      pin_confirmed=True)
 
     def test_user_with_pin(self):
         self.solitude.generic.buyer.get_object_or_404.return_value = {
@@ -159,7 +163,11 @@ class TestPatch(PIN):
 
     def setUp(self):
         super(TestPatch, self).setUp()
-        self.set_session(was_reverified=True)
+        self.uuid = '1120933'
+        self.set_session(was_reverified=True, uuid=self.uuid)
+        solitude_client_patcher = mock.patch('webpay.api.api.client')
+        self.solitude_client = solitude_client_patcher.start()
+        self.addCleanup(solitude_client_patcher.stop)
 
     def patch(self, url, data=None):
         """
@@ -188,22 +196,19 @@ class TestPatch(PIN):
         eq_(res.status_code, 400)
 
     def test_change(self):
-        self.solitude.generic.buyer.get_object_or_404.return_value = {
-            'pin': True, 'resource_pk': 'abc'}
+        self.solitude_client.change_pin.return_value = {}
         res = self.patch(self.url, data={'pin': '1234'})
         eq_(res.status_code, 204)
-        # TODO: figure out how to check that patch was called.
-        self.solitude.generic.buyer.assert_called_with(id='abc')
-        eq_(res.status_code, 204)
+        self.solitude_client.change_pin.assert_called_with(self.uuid,
+                                                           '1234',
+                                                           pin_confirmed=True)
 
     def test_reverified(self):
-        self.solitude.generic.buyer.get_object_or_404.return_value = {
-            'pin': True, 'resource_pk': 'abc'}
+        self.solitude_client.change_pin.return_value = {}
+        assert self.client.session['was_reverified']
         res = self.patch(self.url, data={'pin': '1234'})
         eq_(res.status_code, 204)
-        # A cheap way to confirm that was_reverified was flipped.
-        res = self.patch(self.url, data={'pin': '1234'})
-        eq_(res.status_code, 400)
+        assert not self.client.session['was_reverified']
 
 
 class TestCheck(PIN):

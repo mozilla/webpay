@@ -43,7 +43,8 @@ class PinViewSet(viewsets.ViewSet):
             if getattr(form, 'buyer_exists', None):
                 res = client.change_pin(form.uuid,
                                         form.cleaned_data['pin'],
-                                        etag=form.buyer_etag)
+                                        etag=form.buyer_etag,
+                                        pin_confirmed=True)
             else:
                 res = client.create_buyer(form.uuid,
                                           form.cleaned_data['pin'],
@@ -63,7 +64,9 @@ class PinViewSet(viewsets.ViewSet):
             return app_error(request)
 
         if form.is_valid():
-            res = client.set_new_pin(form.uuid, form.cleaned_data['pin'])
+            res = client.change_pin(form.uuid,
+                                    form.cleaned_data['pin'],
+                                    pin_confirmed=True)
             if form.handle_client_errors(res):
                 request.session['was_reverified'] = False
                 return response.Response(status=204)

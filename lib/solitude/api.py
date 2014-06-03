@@ -45,7 +45,8 @@ class SolitudeAPI(SlumberWrapper):
 
         :param uuid: String to identify the buyer by.
         :param pin: Optional PIN that will be hashed.
-        :param pin_confirmed: Optional boolean if PIN was confirmed.
+        :param pin_confirmed: Optional boolean to set if the PIN was already
+                              confirmed in the UI.
         :rtype: dictionary
         """
         pin_data = {
@@ -115,18 +116,20 @@ class SolitudeAPI(SlumberWrapper):
             return res
         return {}
 
-    def change_pin(self, uuid, pin, etag=''):
+    def change_pin(self, uuid, pin, etag='', pin_confirmed=False):
         """Changes the pin of a buyer, for use with buyers who exist without
         pins.
 
         :param buyer_id integer: ID of the buyer you'd like to change the PIN
                                  for.
         :param pin: PIN the user would like to change to.
+        :param pin_confirmed: Boolean to set if the PIN was already confirmed
+                              in the UI.
         :rtype: dictionary
         """
         id_ = self.get_buyer(uuid).get('resource_pk')
         res = self.safe_run(self.slumber.generic.buyer(id=id_).patch,
-                            {'pin': pin},
+                            {'pin': pin, 'pin_confirmed': pin_confirmed},
                             headers={'If-Match': etag})
         # Empty string is a good thing from tastypie for a PATCH.
         if 'errors' in res:

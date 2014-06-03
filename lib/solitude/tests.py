@@ -241,6 +241,8 @@ class SolitudeAPITest(TestCase):
         buyer.patch.return_value = {}
         slumber.generic.buyer.return_value = buyer
         assert 'errors' not in client.change_pin(self.uuid, self.pin)
+        buyer.patch.assert_called_with({'pin': '1234', 'pin_confirmed': False},
+                                       headers={'If-Match': ''})
 
     def test_change_pin_with_etag(self, slumber):
         etag = 'etag:good'
@@ -259,6 +261,22 @@ class SolitudeAPITest(TestCase):
         slumber.generic.buyer.return_value = buyer
         with self.assertRaises(ResourceModified):
             client.change_pin(self.uuid, self.pin, wrong_etag)
+
+    def test_change_pin_and_confirm(self, slumber):
+        buyer = mock.Mock(return_value=self.buyer_data)
+        buyer.patch.return_value = {}
+        slumber.generic.buyer.return_value = buyer
+        client.change_pin(self.uuid, '1234', pin_confirmed=True)
+        buyer.patch.assert_called_with({'pin': '1234', 'pin_confirmed': True},
+                                       headers={'If-Match': ''})
+
+    def test_change_pin_and_not_confirmed(self, slumber):
+        buyer = mock.Mock(return_value=self.buyer_data)
+        buyer.patch.return_value = {}
+        slumber.generic.buyer.return_value = buyer
+        client.change_pin(self.uuid, '1234', pin_confirmed=False)
+        buyer.patch.assert_called_with({'pin': '1234', 'pin_confirmed': False},
+                                       headers={'If-Match': ''})
 
     def test_set_needs_pin_reset(self, slumber):
         buyer = mock.Mock(return_value=self.buyer_data)
