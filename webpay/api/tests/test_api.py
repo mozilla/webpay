@@ -332,3 +332,43 @@ class TestPay(Base, BaseCase):
     def test_configures_transaction_fail(self):
         res = self.post(req='')  # cause a form error.
         eq_(res.status_code, 400)
+
+
+@mock.patch('webpay.api.api.client')
+class TestGetPay(Base, BaseCase):
+    def setUp(self):
+        super(TestGetPay, self).setUp()
+        self.url = reverse('api:pay')
+        self.trans_id = 'the-transaction-uuid'
+        self.set_session(trans_id=self.trans_id)
+        self.transaction_data = {
+            'provider': 1,
+            'pay_url': 'https://think.this/works?',
+        }
+
+    def test_transaction_is_retrieved(self, solitude_client):
+        solitude_client.get_transaction.return_value = self.transaction_data
+        self.client.get(self.url)
+        solitude_client.get_transaction.assert_called_with(uuid=self.trans_id)
+
+    def test_success(self, solitude_client):
+        solitude_client.get_transaction.return_value = self.transaction_data
+        response = self.client.get(self.url)
+        solitude_client.get_transaction.assert_called_with(uuid=self.trans_id)
+        eq_(response.status_code, 200)
+        eq_(response.data.get('provider'), 'bango')
+        eq_(response.data.get('pay_url'), 'https://think.this/works?')
+
+    def test_transaction_not_found(self, solitude_client):
+        solitude_client.get_transaction.side_effect = ObjectDoesNotExist
+        response = self.client.get(self.url)
+        eq_(response.status_code, 404)
+        eq_(response.data.get('error_code'), 'TRANSACTION_NOT_FOUND')
+
+    def test_no_trans_id_in_session(self, solitude_client):
+        del self.session['trans_id']
+        self.save_session()
+        response = self.client.get(self.url)
+        assert not solitude_client.get_transaction.called
+        eq_(response.status_code, 400)
+        eq_(response.data.get('error_code'), 'TRANS_ID_NOT_SET')

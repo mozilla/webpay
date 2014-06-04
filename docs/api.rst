@@ -130,3 +130,20 @@ The Pay API lets you start a purchase.
 
     :status 204: successfully updated.
     :status 400: invalid form data.
+
+.. http:get:: /mozpay/v1/api/pay/
+
+    Get information about your purchase.
+
+    **Response**
+
+    .. code-block:: json
+
+        {
+            "provider": "bango",
+            "pay_url": "https://url.to-start.the/transaction"
+        }
+
+    :status 200: successfully completed.
+    :status 400: trans_id is not set in the session.
+    :status 404: transaction could not be found.

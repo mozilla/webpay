@@ -10,5 +10,7 @@ urlpatterns = patterns('',
         name='pin'),
     url('^pin/check/', PinCheckViewSet.as_view({'post': 'check'}),
         name='pin.check'),
-    url('^pay/', PayViewSet.as_view({'post': 'create'}), name='pay'),
+    url('^pay/',
+        PayViewSet.as_view({'post': 'create', 'get': 'retrieve'}),
+        name='pay'),
 )

@@ -4,6 +4,7 @@ from django.http import Http404
 from rest_framework import permissions, response, serializers, viewsets
 
 from lib.solitude.api import client
+from lib.solitude.constants import PROVIDERS_INVERTED
 
 from webpay.auth.utils import set_user_has_pin
 from webpay.base.utils import app_error
@@ -23,6 +24,16 @@ class PinSerializer(serializers.Serializer):
     pin_is_locked_out = serializers.BooleanField(default=False)
     pin_was_locked_out = serializers.BooleanField(default=False)
     pin_reset_started = serializers.BooleanField(default=False)
+
+
+class TransactionSerializer(serializers.Serializer):
+    provider = serializers.CharField()
+    pay_url = serializers.CharField()
+
+    def __init__(self, data):
+        if 'provider' in data and data['provider'] in PROVIDERS_INVERTED:
+            data['provider'] = PROVIDERS_INVERTED[data['provider']]
+        super(TransactionSerializer, self).__init__(data)
 
 
 class PinViewSet(viewsets.ViewSet):
@@ -101,3 +112,21 @@ class PayViewSet(viewsets.ViewSet):
             return response.Response(status=204)
         else:
             return res
+
+    def retrieve(self, request):
+        try:
+            trans_id = request.session['trans_id']
+            transaction = client.get_transaction(uuid=trans_id)
+        except ObjectDoesNotExist:
+            return response.Response({
+                'error_code': 'TRANSACTION_NOT_FOUND',
+                'error': 'Transaction could not be found.',
+            }, status=404)
+        except KeyError:
+            return response.Response({
+                'error_code': 'TRANS_ID_NOT_SET',
+                'error': 'trans_id was not set.',
+            }, status=400)
+        else:
+            serializer = TransactionSerializer(transaction)
+            return response.Response(serializer.data)
