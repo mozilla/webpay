@@ -36,7 +36,11 @@
     </main>
     {%block site_js -%}
     <script src="{{ settings.BROWSERID_JS_URL }}"></script>
-    <script data-main="{{ settings.SPARTACUS_STATIC }}/js/main.js" src="{{ settings.SPARTACUS_STATIC }}/lib/js/requirejs/require.js"></script>
+    {% if settings.SPA_USE_MIN_JS %}
+      <script src="{{ settings.SPARTACUS_STATIC }}/js/main.min.js"></script>
+    {% else %}
+      <script data-main="{{ settings.SPARTACUS_STATIC }}/js/main.js" src="{{ settings.SPARTACUS_STATIC }}/lib/js/requirejs/require.js"></script>
+    {% endif %}
     {%- endblock %}
   </body>
 </html>
