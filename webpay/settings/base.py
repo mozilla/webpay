@@ -570,3 +570,4 @@ SPA_URLS = [
     'wait-for-tx',
     'was-locked'
 ]
+SPA_USE_MIN_JS = True

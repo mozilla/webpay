@@ -131,3 +131,6 @@ MARKETPLACE_URL = 'http://localhost:8000'
 
 # Ensure that cache_nuggets can import correctly.
 CACHE_PREFIX = 'webpay'
+
+# Whether to use minified JS in you local env.
+SPA_USE_MIN_JS = False
