@@ -93,7 +93,7 @@ PAY_URLS = {
         # As per bug https://bugzilla.mozilla.org/show_bug.cgi?id=937701#c16
         # changing the pay url to have a 2 in it for when
         # BANGO_BILLING_CONFIG_V2 is enabled in solitude.
-        'pay': '/mozpayments/?bcid2={uid_pay}',
+        'pay': '/mozpayments/?bcid2={uid_pay}&X-Bango-Use-Merchant-Identifier=true',
         'logout': '/mozpayments/logout/',
     },
     'reference': {
