@@ -3,6 +3,7 @@ import json as jsonlib
 import urlparse
 
 from django.conf import settings
+from django.core.cache import cache
 
 import jinja2
 from jingo import register
@@ -49,6 +50,20 @@ def media(context, url, key='MEDIA_URL'):
 def static(context, url):
     """Get a STATIC_URL link with a cache buster querystring."""
     return media(context, url, 'STATIC_URL')
+
+
+@register.function
+def spartacus_build_id():
+    return cache.get(settings.SPARTACUS_BUILD_ID_KEY)
+
+
+@register.function
+def spartacus_static(path):
+    build_id = spartacus_build_id()
+    url = settings.SPARTACUS_STATIC + path
+    if build_id is not None:
+        url += '?bust=' + build_id
+    return url
 
 
 @register.filter

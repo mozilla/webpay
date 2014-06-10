@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     {# L10n: Web Pay is what we call the payment server/flow. -#}
     <title>{{ _('Web Pay') }}</title>
-    <link rel="stylesheet" href="{{ settings.SPARTACUS_STATIC }}/css/spartacus.css">
+    <link rel="stylesheet" href="{{ spartacus_static("/css/spartacus.css") }}">
   </head>
   <body class="spartacus"
     data-logged-in-user="{{ session.get('logged_in_user', '') }}"
@@ -18,6 +18,7 @@
     data-terms-of-service="https://marketplace.firefox.com/terms-of-use"
     data-unverified-issuer="{{ settings.BROWSERID_UNVERIFIED_ISSUER }}"
     data-verify-url="{{ url('auth.verify') }}"
+    data-build-id="{{ spartacus_build_id() }}"
     >
     <main id="app">
       {# View placeholder #}
@@ -37,9 +38,9 @@
     {%block site_js -%}
     <script src="{{ settings.BROWSERID_JS_URL }}"></script>
     {% if settings.SPA_USE_MIN_JS %}
-      <script src="{{ settings.SPARTACUS_STATIC }}/js/main.min.js"></script>
+      <script src="{{ spartacus_static("/js/main.min.js") }}"></script>
     {% else %}
-      <script data-main="{{ settings.SPARTACUS_STATIC }}/js/main.js" src="{{ settings.SPARTACUS_STATIC }}/lib/js/requirejs/require.js"></script>
+      <script data-main="{{ spartacus_static("/js/main.js") }}" src="{{ spartacus_static("/lib/js/requirejs/require.js") }}"></script>
     {% endif %}
     {%- endblock %}
   </body>

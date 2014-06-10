@@ -558,6 +558,8 @@ SIMULATED_NETWORK = None
 ENABLE_SPA = False
 ENABLE_SPA_URLS = False
 
+SPARTACUS_BUILD_ID_KEY = 'spartacus-build-id'
+
 # Spartacus path settings.
 BASE_SPA_URL = '/mozpay/spa/'
 SPA_URLS = [
