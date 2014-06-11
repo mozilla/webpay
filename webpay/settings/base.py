@@ -559,6 +559,7 @@ ENABLE_SPA = False
 ENABLE_SPA_URLS = False
 
 SPARTACUS_BUILD_ID_KEY = 'spartacus-build-id'
+SPARTACUS_STATIC = 'http://localhost:7777'
 
 # Spartacus path settings.
 BASE_SPA_URL = '/mozpay/spa/'
