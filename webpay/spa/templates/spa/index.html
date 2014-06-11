@@ -17,8 +17,9 @@
     data-static-docs-url="{{ settings.STATIC_URL }}"
     data-terms-of-service="https://marketplace.firefox.com/terms-of-use"
     data-unverified-issuer="{{ settings.BROWSERID_UNVERIFIED_ISSUER }}"
-    data-verify-url="{{ url('auth.verify') }}"
     data-build-id="{{ spartacus_build_id() }}"
+    data-verify-url="{{ url('auth.verify') }}"
+    data-reverify-url="{{ url('auth.reverify') }}"
     >
     <main id="app">
       {# View placeholder #}
