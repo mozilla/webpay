@@ -3,10 +3,11 @@ import json as jsonlib
 import urlparse
 
 from django.conf import settings
-from django.core.cache import cache
 
 import jinja2
 from jingo import register
+
+from webpay.base import utils
 
 
 @register.filter
@@ -54,7 +55,7 @@ def static(context, url):
 
 @register.function
 def spartacus_build_id():
-    return cache.get(settings.SPARTACUS_BUILD_ID_KEY)
+    return utils.spartacus_build_id()
 
 
 @register.function

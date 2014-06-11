@@ -1,6 +1,6 @@
-from django.conf import settings
 from django.core.management.base import BaseCommand
-from django.core.cache import cache
+
+from webpay.base.utils import set_spartacus_build_id
 
 
 class Command(BaseCommand):
@@ -8,4 +8,4 @@ class Command(BaseCommand):
     help = 'Set the spartacus build id to bust caches'
 
     def handle(self, build_id, *args, **options):
-        cache.set(settings.SPARTACUS_BUILD_ID_KEY, build_id, None)
+        set_spartacus_build_id(build_id)

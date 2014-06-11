@@ -4,6 +4,7 @@ import json
 import time
 
 from django.conf import settings
+from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -80,3 +81,18 @@ def uri_to_pk(uri):
     Convert a resource URI to the primary key of the resource.
     """
     return uri.rstrip('/').split('/')[-1]
+
+
+def spartacus_build_id():
+    if settings.DEBUG:
+        return None
+    build_id = cache.get(settings.SPARTACUS_BUILD_ID_KEY)
+    if not build_id:
+        build_id = str(int(time.time()))
+        set_spartacus_build_id(build_id)
+    return build_id
+
+
+def set_spartacus_build_id(build_id):
+    ten_years = 3.15576e8
+    cache.set(settings.SPARTACUS_BUILD_ID_KEY, build_id, timeout=ten_years)

@@ -1,12 +1,12 @@
 import os
-import sys
 
 from django import test
 from django.conf import settings
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.core.urlresolvers import reverse
 
 import mock
 from nose.tools import eq_, ok_
+from pyquery import PyQuery as pq
 
 
 class TestSpaViewsMeta(type):
@@ -34,3 +34,16 @@ class TestSpaViewsMeta(type):
 @mock.patch.object(settings, 'ENABLE_SPA', True)
 class TestSpaViews(test.TestCase):
     __metaclass__ = TestSpaViewsMeta
+
+
+@mock.patch('webpay.base.utils.spartacus_build_id')
+@test.utils.override_settings(ENABLE_SPA=True, ENABLE_SPA_URLS=True)
+class TestSpartacusCacheBusting(test.TestCase):
+    def test_build_id_is_set(self, spartacus_build_id):
+        build_id = 'the-build-id-for-spartacus'
+        spartacus_build_id.return_value = build_id
+        url = reverse('pay.lobby')
+        response = test.Client().get(url)
+        doc = pq(response.content)
+        build_id_from_dom = doc('body').attr('data-build-id')
+        eq_(build_id_from_dom, build_id)
