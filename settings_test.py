@@ -60,6 +60,7 @@ ENABLE_SPA = False
 ENABLE_SPA_URLS = True
 
 SPARTACUS_BUILD_ID_KEY = 'spartacus-build-id'
+SPARTACUS_STATIC = '/mozpay/media'
 
 ALLOW_ANDROID_PAYMENTS = True
 
