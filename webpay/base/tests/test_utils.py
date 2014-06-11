@@ -21,7 +21,7 @@ class TestSpartacusBuildID(test.TestCase):
 
     def test_with_build_id_set(self):
         build_id = 'the-build-id'
-        cache.set(self.cache_key, build_id, timeout=0)
+        cache.set(self.cache_key, build_id)
         eq_(utils.spartacus_build_id(), build_id)
 
     @mock.patch('webpay.base.utils.time')
