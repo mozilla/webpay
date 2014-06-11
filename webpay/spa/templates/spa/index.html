@@ -20,6 +20,11 @@
     data-build-id="{{ spartacus_build_id() }}"
     data-verify-url="{{ url('auth.verify') }}"
     data-reverify-url="{{ url('auth.reverify') }}"
+    data-trans-start-url="{{ url('pay.trans_start_url') }}"
+    data-trans-status-completed="{{ solitude_constants.STATUS_COMPLETED }}"
+    data-trans-status-pending="{{ solitude_constants.STATUS_PENDING }}"
+    data-trans-status-failed="{{ solitude_constants.STATUS_FAILED }}"
+    data-trans-status-cancelled="{{ solitude_constants.STATUS_CANCELLED }}"
     >
     <main id="app">
       {# View placeholder #}
