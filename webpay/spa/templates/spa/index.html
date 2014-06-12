@@ -20,7 +20,11 @@
     data-build-id="{{ spartacus_build_id() }}"
     data-verify-url="{{ url('auth.verify') }}"
     data-reverify-url="{{ url('auth.reverify') }}"
-    data-trans-start-url="{{ url('pay.trans_start_url') }}"
+    {% if transaction_status_url %}
+      data-trans-start-url="{{ transaction_status_url }}"
+    {% else %}
+      data-trans-start-url="{{ url('pay.trans_start_url') }}"
+    {% endif %}
     data-trans-status-completed="{{ solitude_constants.STATUS_COMPLETED }}"
     data-trans-status-pending="{{ solitude_constants.STATUS_PENDING }}"
     data-trans-status-failed="{{ solitude_constants.STATUS_FAILED }}"

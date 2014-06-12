@@ -8,6 +8,8 @@ import mock
 from nose.tools import eq_, ok_
 from pyquery import PyQuery as pq
 
+from webpay.provider.tests.test_views import ProviderTestCase
+
 
 class TestSpaViewsMeta(type):
     """Dynamically generate tests for Spartacus views."""
@@ -47,3 +49,33 @@ class TestSpartacusCacheBusting(test.TestCase):
         doc = pq(response.content)
         build_id_from_dom = doc('body').attr('data-build-id')
         eq_(build_id_from_dom, build_id)
+
+
+@test.utils.override_settings(ENABLE_SPA=True, ENABLE_SPA_URLS=True)
+class TestWaitToFinish(ProviderTestCase):
+
+    def setUp(self):
+        super(TestWaitToFinish, self).setUp()
+        self.wait_url = reverse('spa_wait_to_finish', args=['boku'])
+
+    def wait(self, trans_uuid=None):
+        if not trans_uuid:
+            trans_uuid = self.trans_id
+        return self.client.get('{u}?param={t}'.format(u=self.wait_url,
+                                                      t=trans_uuid))
+
+    def test_wait_for_boku_transaction(self):
+        res = self.wait()
+        url = reverse('provider.transaction_status', args=[self.trans_id])
+        eq_(res.context['transaction_status_url'], url)
+        eq_(res.status_code, 200)
+
+    def test_missing_transaction(self):
+        res = self.client.get('{u}?foo=bar'.format(u=self.wait_url))
+        eq_(res.status_code, 404)
+
+    @test.utils.override_settings(ENABLE_SPA=False)
+    def test_missing_transaction(self):
+        res = self.client.get('{u}?param={t}'.format(u=self.wait_url,
+                                                     t=self.trans_id))
+        eq_(res.status_code, 403)

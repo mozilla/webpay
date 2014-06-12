@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.defaults import patterns, include, url
 
 from webpay.spa.views import index as spa_index
+from webpay.spa.views import wait_to_finish as spa_wait_to_finish
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -22,6 +23,7 @@ urlpatterns = patterns('',
 
 if settings.ENABLE_SPA_URLS:
     urlpatterns += patterns('',
+        url(r'^mozpay/spa/(?P<provider_name>[^/]+)/wait-to-finish', spa_wait_to_finish, name='spa_wait_to_finish'),
         url(r'^mozpay/spa/(?:' + '|'.join(settings.SPA_URLS) + ')$', spa_index),
         url(r'^mozpay/v1/api/', include('webpay.api.urls', namespace='api'))
     )
