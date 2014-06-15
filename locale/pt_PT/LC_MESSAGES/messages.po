@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WebPay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-28 09:42-0700\n"
-"PO-Revision-Date: 2014-05-01 19:16+0100\n"
+"PO-Revision-Date: 2014-06-15 05:45+0100\n"
 "Last-Translator: Cláudio Esperança <cesperanc@gmail.com>\n"
 "Language-Team: Cláudio Esperança <cesperanc+mozilla@gmail.com>\n"
 "Language: pt\n"
@@ -13,17 +13,24 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
+#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/base/templates/base.html:35
 msgid "Payment cancelled."
 msgstr "Pagamento cancelado."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
+#: webpay/bango/templates/bango/success.html:10
+#: webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "O seu pagamento está concluído."
 
 #: webpay/base/dev_messages.py:90
-msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr "A Mozilla recebeu um código inválido do fornecedor de pagamentos (Bango) ao processar o pagamento"
+msgid ""
+"Mozilla received an invalid code from the payment provider (Bango) when "
+"processing the payment"
+msgstr ""
+"A Mozilla recebeu um código inválido do fornecedor de pagamentos (Bango) ao "
+"processar o pagamento"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:94
@@ -49,8 +56,11 @@ msgid "The requested payment simulation result is not supported."
 msgstr "O resultado do pedido da simulação de pagamento não é suportado."
 
 #: webpay/base/dev_messages.py:104
-msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr "O fornecedor de pagamento (Bango) devolveu um erro enquanto processava o pagamento"
+msgid ""
+"The payment provider (Bango) returned an error while processing the payment"
+msgstr ""
+"O fornecedor de pagamento (Bango) devolveu um erro enquanto processava o "
+"pagamento"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -59,8 +69,11 @@ msgid "The JWT has expired."
 msgstr "O JWT expirou."
 
 #: webpay/base/dev_messages.py:110
-msgid "The external payment processor returned an error while handling the payment"
-msgstr "O processador de pagamento externo devolveu um erro enquanto processava o pagamento"
+msgid ""
+"The external payment processor returned an error while handling the payment"
+msgstr ""
+"O processador de pagamento externo devolveu um erro enquanto processava o "
+"pagamento"
 
 #: webpay/base/dev_messages.py:112
 msgid "An internal web request timed out."
@@ -95,11 +108,17 @@ msgstr "O sistema expirou enquanto tentava o fim da sessão."
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:126
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr "A URL está mal formada. Isto pode ser uma URL de retorno ou uma URL de um ícone."
+msgstr ""
+"A URL está mal formada. Isto pode ser uma URL de retorno ou uma URL de um "
+"ícone."
 
 #: webpay/base/dev_messages.py:128
-msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr "O identificador da transação estava em falta na sessão enquanto processava o retorno do pagamento."
+msgid ""
+"The transaction ID was missing from the session when processing a payment "
+"return."
+msgstr ""
+"O identificador da transação estava em falta na sessão enquanto processava o "
+"retorno do pagamento."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:132
@@ -112,20 +131,32 @@ msgid "The requested chargeback simulation is missing the key '{0}'."
 msgstr "A simulação do pedido de estorno tem a chave '{0}' em falta."
 
 #: webpay/base/dev_messages.py:138
-msgid "The notification service responded with an error while verifying the payment notice"
-msgstr "O serviço de notificação respondeu com um erro enquanto verificava o aviso de pagamento"
+msgid ""
+"The notification service responded with an error while verifying the payment "
+"notice"
+msgstr ""
+"O serviço de notificação respondeu com um erro enquanto verificava o aviso "
+"de pagamento"
 
 #: webpay/base/dev_messages.py:140
-msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr "O serviço de notificação gerou uma exceção inesperada enquanto verificava o aviso de pagamento"
+msgid ""
+"The notification service raised an unexpected exception while verifying the "
+"payment notice"
+msgstr ""
+"O serviço de notificação gerou uma exceção inesperada enquanto verificava o "
+"aviso de pagamento"
 
 #: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "Os pagamentos estão temporariamente desativos."
 
 #: webpay/base/dev_messages.py:145
-msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr "O recurso foi modificado dentro do tempo do pedido anterior. A ação deve ser executada novamente."
+msgid ""
+"The resource has been modified within the timing of the previous request. "
+"The action should be performed again."
+msgstr ""
+"O recurso foi modificado dentro do tempo do pedido anterior. A ação deve ser "
+"executada novamente."
 
 #: webpay/base/dev_messages.py:147
 msgid "Payment simulations are disabled at this time."
@@ -133,14 +164,17 @@ msgstr "As simulações de pagamento estão desativas neste momento."
 
 #: webpay/base/dev_messages.py:149
 msgid "This payment key can only be used to simulate purchases."
-msgstr "Esta chave de pagamento apenas pode ser utilizada para simular compras."
+msgstr ""
+"Esta chave de pagamento apenas pode ser utilizada para simular compras."
 
 #: webpay/base/dev_messages.py:151
 msgid "The configuration of the payment transaction failed."
 msgstr "A configuração da transação de pagamento falhou."
 
 #: webpay/base/dev_messages.py:153
-msgid "The purchase cannot be completed because the current transaction has already ended."
+msgid ""
+"The purchase cannot be completed because the current transaction has already "
+"ended."
 msgstr "A compra não pode ser concluída pois a transação atual já terminou."
 
 #: webpay/base/dev_messages.py:155
@@ -152,8 +186,12 @@ msgid "The system timed out while waiting for a transaction to start."
 msgstr "O sistema expirou enquanto esperava pelo início de uma transação."
 
 #: webpay/base/dev_messages.py:160
-msgid "The payment method or price point is not supported for this region or operator."
-msgstr "O método de pagamento ou ponto do preço não é suportado nesta região ou operador."
+msgid ""
+"The payment method or price point is not supported for this region or "
+"operator."
+msgstr ""
+"O método de pagamento ou ponto do preço não é suportado nesta região ou "
+"operador."
 
 #: webpay/base/dev_messages.py:162
 msgid "The user cancelled the payment."
@@ -166,12 +204,20 @@ msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "O valor para a chave \"{0}\" excede o tamanho máximo de {1}"
 
 #: webpay/base/utils.py:56
-msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr "Ocorreu um erro na configuração do pagamento. Tente novamente ou contacte a aplicação se este erro persistir."
+msgid ""
+"There was an error setting up the payment. Try again or contact the app if "
+"it persists."
+msgstr ""
+"Ocorreu um erro na configuração do pagamento. Tente novamente ou contacte a "
+"aplicação se este erro persistir."
 
 #: webpay/base/utils.py:62
-msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr "Ocorreu um erro interno ao processar o pagamento. Tente novamente ou contacte a Mozilla se este erro persistir."
+msgid ""
+"There was an internal error processing the payment. Try again or contact "
+"Mozilla if it persists."
+msgstr ""
+"Ocorreu um erro interno ao processar o pagamento. Tente novamente ou "
+"contacte a Mozilla se este erro persistir."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -181,8 +227,12 @@ msgstr "Não permitido"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Lamentamos, mas não está autorizado a fazer isso."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
-#: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45
+#: webpay/base/templates/error.html:17
+#: webpay/pay/templates/pay/simulate.html:18
+#: webpay/pin/templates/pin/pin_form.html:39
+#: webpay/pin/templates/pin/pin_form.html:43
+#: webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -221,7 +271,9 @@ msgstr "O PIN só pode conter dígitos."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr "Iniciou sessão como um utilizador diferente; deve iniciar o pagamento novamente."
+msgstr ""
+"Iniciou sessão como um utilizador diferente; deve iniciar o pagamento "
+"novamente."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
@@ -251,15 +303,17 @@ msgstr "Isto está a demorar mais do que era esperado. Tentar novamente?"
 msgid "Something went wrong. Try again?"
 msgstr "Algo correu mal. Tentar novamente?"
 
-#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:44
+#: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "OK"
 
 #: webpay/base/templates/base.html:48
 msgid "The transaction failed. You have not been charged for this purchase."
-msgstr ""
+msgstr "A transação falhou. Esta compra não foi cobrada."
 
-#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9
+#: webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Erro"
 
@@ -273,25 +327,29 @@ msgstr "Simular um pagamento"
 
 #: webpay/pay/forms.py:113
 msgid "Default network"
-msgstr ""
+msgstr "Rede por omissão"
 
 #: webpay/pay/views.py:212 webpay/pin/views.py:93
 msgid "Enter Pin"
 msgstr "Introduzir PIN"
 
-#: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:11
+#: webpay/pay/templates/pay/bounce.html:12
+#: webpay/pay/templates/pay/lobby.html:11
 msgid "Sign In"
 msgstr "Iniciar sessão"
 
-#: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:12
+#: webpay/pay/templates/pay/bounce.html:13
+#: webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in to continue with the payment"
 msgstr "Iniciar sessão para continuar com o pagamento"
 
-#: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:13
+#: webpay/pay/templates/pay/bounce.html:14
+#: webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in"
 msgstr "Iniciar sessão"
 
-#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7
+#: webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Simular pagamento"
 
@@ -303,7 +361,10 @@ msgstr "Não será cobrado."
 msgid "result"
 msgstr "resultado"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pay/templates/pay/super_simulate.html:17 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20
+#: webpay/pay/templates/pay/super_simulate.html:17
+#: webpay/pin/templates/pin/pin_form.html:46
+#: webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Continuar"
 
@@ -311,7 +372,8 @@ msgstr "Continuar"
 msgid "You have super powers"
 msgstr "Tem super poderes"
 
-#: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
+#: webpay/pay/templates/pay/wait-to-start.html:6
+#: webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
 msgstr "A definir o pagamento&hellip;"
 
@@ -335,7 +397,8 @@ msgstr "Criar um PIN"
 msgid "Confirm Pin"
 msgstr "Confirmar PIN"
 
-#: webpay/pin/views.py:131 webpay/pin/views.py:157 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:131 webpay/pin/views.py:157
+#: webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Repor PIN"
 
@@ -345,38 +408,54 @@ msgstr "Reposição de PIN"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr "Apenas para testes. Utilizadores do Marketplace <b>não devem</b> utilizar este site."
+msgstr ""
+"Apenas para testes. Utilizadores do Marketplace <b>não devem</b> utilizar "
+"este site."
 
 #. This is the same as the standard forgot
-#.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
+#. password that most sites have.
+#: webpay/pin/templates/pin/pin_form.html:31
+#: webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
 msgstr "Esqueceu-se do seu PIN?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
-msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr "Introduziu demasiadas vezes um PIN errado. A sua conta está bloqueada. Por favor tente fazer a compra novamente daqui a 5 minutos."
+msgid ""
+"You entered the wrong pin too many times. Your account is locked. Please try "
+"your purchase again in 5 minutes."
+msgstr ""
+"Introduziu demasiadas vezes um PIN errado. A sua conta está bloqueada. Por "
+"favor tente fazer a compra novamente daqui a 5 minutos."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
 msgstr "O seu PIN foi bloqueado"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
-msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
-msgstr "O seu PIN foi bloqueado porque o introduziu incorretamente demasiadas vezes. Pode continuar e tentar introduzir o PIN novamente ou repor o seu PIN."
+msgid ""
+"Your pin was locked because you entered it incorrectly too many times. You "
+"can continue and try entering your pin again or reset your pin."
+msgstr ""
+"O seu PIN foi bloqueado porque o introduziu incorretamente demasiadas vezes. "
+"Pode continuar e tentar introduzir o PIN novamente ou repor o seu PIN."
 
 #: webpay/pin/templates/pin/reset_start.html:14
-msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr "Tem a certeza que pretende repor o seu PIN? Tem de iniciar sessão no Persona para repor o seu PIN."
+msgid ""
+"Are you sure you want to reset your pin? You must sign in to Persona to "
+"reset your pin."
+msgstr ""
+"Tem a certeza que pretende repor o seu PIN? Tem de iniciar sessão no Persona "
+"para repor o seu PIN."
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Repor"
 
-#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+#: webpay/provider/templates/provider/wait-to-finish.html:6
+#: webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
 msgstr "A verificar pagamento&hellip;"
 
 #: webpay/spa/templates/spa/index.html:29
 msgid "Loading..."
-msgstr ""
+msgstr "A carregar..."
