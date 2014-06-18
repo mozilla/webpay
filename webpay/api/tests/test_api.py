@@ -147,10 +147,9 @@ class TestPost(PIN):
             'pin': False, 'resource_pk': 'abc'}
         res = self.client.post(self.url, {'pin': '1234'})
         eq_(res.status_code, 204)
-        solitude_client.change_pin.assert_called_with('fake-uuid',
-                                                      '1234',
-                                                      etag='',
-                                                      pin_confirmed=True)
+        solitude_client.change_pin.assert_called_with(
+            'fake-uuid', '1234', etag='', pin_confirmed=True,
+            clear_was_locked=True)
 
     def test_user_with_pin(self):
         self.solitude.generic.buyer.get_object_or_404.return_value = {
@@ -199,9 +198,8 @@ class TestPatch(PIN):
         self.solitude_client.change_pin.return_value = {}
         res = self.patch(self.url, data={'pin': '1234'})
         eq_(res.status_code, 204)
-        self.solitude_client.change_pin.assert_called_with(self.uuid,
-                                                           '1234',
-                                                           pin_confirmed=True)
+        self.solitude_client.change_pin.assert_called_with(
+            self.uuid, '1234', pin_confirmed=True, clear_was_locked=True)
 
     def test_reverified(self):
         self.solitude_client.change_pin.return_value = {}

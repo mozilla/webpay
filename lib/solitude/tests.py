@@ -42,6 +42,12 @@ class SolitudeAPITest(TestCase):
         error_response.content = content
         return error_response
 
+    def setup_buyer(self, slumber):
+        buyer = mock.Mock(return_value=self.buyer_data)
+        buyer.patch.return_value = {}
+        slumber.generic.buyer.return_value = buyer
+        return buyer
+
     @mock.patch('lib.utils.log')
     def test_invalid_json_response(self, fake_log, slumber):
         slumber.generic.buyer.get_object_or_404.side_effect = HttpClientError(
@@ -263,19 +269,23 @@ class SolitudeAPITest(TestCase):
             client.change_pin(self.uuid, self.pin, wrong_etag)
 
     def test_change_pin_and_confirm(self, slumber):
-        buyer = mock.Mock(return_value=self.buyer_data)
-        buyer.patch.return_value = {}
-        slumber.generic.buyer.return_value = buyer
+        buyer = self.setup_buyer(slumber)
         client.change_pin(self.uuid, '1234', pin_confirmed=True)
         buyer.patch.assert_called_with({'pin': '1234', 'pin_confirmed': True},
                                        headers={'If-Match': ''})
 
     def test_change_pin_and_not_confirmed(self, slumber):
-        buyer = mock.Mock(return_value=self.buyer_data)
-        buyer.patch.return_value = {}
-        slumber.generic.buyer.return_value = buyer
+        buyer = self.setup_buyer(slumber)
         client.change_pin(self.uuid, '1234', pin_confirmed=False)
         buyer.patch.assert_called_with({'pin': '1234', 'pin_confirmed': False},
+                                       headers={'If-Match': ''})
+
+    def test_change_pin_clear_was_locked(self, slumber):
+        buyer = self.setup_buyer(slumber)
+        client.change_pin(self.uuid, '1234', clear_was_locked=True)
+        buyer.patch.assert_called_with({'pin': '1234',
+                                        'pin_confirmed': False,
+                                        'pin_was_locked_out': False},
                                        headers={'If-Match': ''})
 
     def test_set_needs_pin_reset(self, slumber):
