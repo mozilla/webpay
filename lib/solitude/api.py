@@ -116,7 +116,8 @@ class SolitudeAPI(SlumberWrapper):
             return res
         return {}
 
-    def change_pin(self, uuid, pin, etag='', pin_confirmed=False):
+    def change_pin(self, uuid, pin, etag='', pin_confirmed=False,
+                   clear_was_locked=False):
         """Changes the pin of a buyer, for use with buyers who exist without
         pins.
 
@@ -125,11 +126,16 @@ class SolitudeAPI(SlumberWrapper):
         :param pin: PIN the user would like to change to.
         :param pin_confirmed: Boolean to set if the PIN was already confirmed
                               in the UI.
+        :param clear_was_locked: Boolean to clear the pin_was_locked_out state
+                                 if the PIN was changed by the user.
         :rtype: dictionary
         """
+        pin_data = {'pin': pin, 'pin_confirmed': pin_confirmed}
+        if clear_was_locked:
+            pin_data['pin_was_locked_out'] = False
         id_ = self.get_buyer(uuid).get('resource_pk')
         res = self.safe_run(self.slumber.generic.buyer(id=id_).patch,
-                            {'pin': pin, 'pin_confirmed': pin_confirmed},
+                            pin_data,
                             headers={'If-Match': etag})
         # Empty string is a good thing from tastypie for a PATCH.
         if 'errors' in res:
@@ -679,8 +685,8 @@ class BokuProvider(PayProvider):
                                                args=[self.name])),
             'country': country.alpha2,
             # TODO: figure out error callbacks in bug 987843.
-            #'error_url': absolutify(reverse('provider.error',
-            #                                args=[self.name])),
+            # 'error_url': absolutify(reverse('provider.error',
+            #                                 args=[self.name])),
             'price': price,
             'seller_uuid': provider_seller_uuid,
             'transaction_uuid': transaction_uuid,
