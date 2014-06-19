@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-28 09:42-0700\n"
-"PO-Revision-Date: 2014-02-27 11:12+0000\n"
+"PO-Revision-Date: 2014-06-19 13:35+0000\n"
 "Last-Translator: Håvar <havar@firefox.no>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nb_NO\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1393499548.0\n"
+"X-POOTLE-MTIME: 1403184951.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -139,7 +139,7 @@ msgstr "Denne betalingsnøkkelen kan kun brukes til å simulere kjøp."
 
 #: webpay/base/dev_messages.py:151
 msgid "The configuration of the payment transaction failed."
-msgstr ""
+msgstr "Konfigurasjonen av betalingstransaksjonen mislyktes."
 
 #: webpay/base/dev_messages.py:153
 msgid "The purchase cannot be completed because the current transaction has already ended."
@@ -259,7 +259,7 @@ msgstr "OK"
 
 #: webpay/base/templates/base.html:48
 msgid "The transaction failed. You have not been charged for this purchase."
-msgstr ""
+msgstr "Transaksjonen mislyktes. Du har ikke blitt belastet for dette kjøpet."
 
 #: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
@@ -275,7 +275,7 @@ msgstr "Simuler en betaling"
 
 #: webpay/pay/forms.py:113
 msgid "Default network"
-msgstr ""
+msgstr "Standardnettverk"
 
 #: webpay/pay/views.py:212 webpay/pin/views.py:93
 msgid "Enter Pin"
@@ -377,8 +377,8 @@ msgstr "Tilbakestill"
 
 #: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
-msgstr ""
+msgstr "Verifiserer betaling &hellip;"
 
 #: webpay/spa/templates/spa/index.html:29
 msgid "Loading..."
-msgstr ""
+msgstr "Laster ..."
