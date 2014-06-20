@@ -46,7 +46,7 @@ statsd==2.0.3
 translate-toolkit==1.9.0
 
 -e git://github.com/clouserw/tower.git@7711557f55fefa9526402b2731879edf9b128381#egg=tower
--e git://github.com/jbalogh/test-utils.git@ffccaeda15d7f0477570a6e848bef91f9aa69df9#egg=test-utils
+-e git://github.com/andymckay/test-utils.git@6c4acfc57dcb98eea13eb1f0cf3372d3465b9e78#egg=test-utils
 
 -e git://github.com/jsocol/commonware.git@1b2e7623782c7aaca5401714758845cf9fcee621#egg=commonware
 -e git://github.com/jsocol/django-cronjobs.git@cfda8176c5c3a50d1b58fcf57e87e23c467789bd#egg=django-cronjobs

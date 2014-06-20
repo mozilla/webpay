@@ -26,14 +26,14 @@ class TestSpaViewsMeta(type):
 
         for url in settings.SPA_URLS + ['/mozpay/']:
             test_name = 'test_%s' % url.replace('/', '').replace('-', '_')
-            test_method = gen_test(os.path.join(settings.BASE_SPA_URL, url))
+            test_method = gen_test(os.path.join(settings.SPA_BASE_URL, url))
             test_method.__name__ = test_name
             dict[test_name] = test_method
 
         return type.__new__(mcs, name, bases, dict)
 
 
-@mock.patch.object(settings, 'ENABLE_SPA', True)
+@mock.patch.object(settings, 'SPA_ENABLE', True)
 class TestSpaViews(test.TestCase):
     __metaclass__ = TestSpaViewsMeta
 

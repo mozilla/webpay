@@ -22,6 +22,9 @@ manage.setup_environ(__file__, more_pythonic=True)
 from django.conf import settings
 newrelic_ini = getattr(settings, 'NEWRELIC_INI', None)
 
+from webpay.utils import validate_settings
+validate_settings()
+
 if newrelic_ini and os.path.exists(newrelic_ini):
     import newrelic.agent
     try:
