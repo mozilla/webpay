@@ -10,8 +10,6 @@ before_install:
 
 install:
   - pip install --no-deps -r requirements/test.txt --use-mirrors
-  - cp webpay/settings/local.py{-dist,}
-  - mysqladmin create zamboni
 script: ./manage.py test
 notifications:
   irc:
