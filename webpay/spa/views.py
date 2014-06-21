@@ -33,7 +33,7 @@ def wait_to_finish(request, provider_name):
     This view loads up the spa on a specific URL.
 
     """
-    if not settings.ENABLE_SPA:
+    if not settings.SPA_ENABLE:
         return http.HttpResponseForbidden()
 
     helper = ProviderHelper(provider_name)

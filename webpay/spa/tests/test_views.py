@@ -39,7 +39,7 @@ class TestSpaViews(test.TestCase):
 
 
 @mock.patch('webpay.base.utils.spartacus_build_id')
-@test.utils.override_settings(ENABLE_SPA=True, ENABLE_SPA_URLS=True)
+@test.utils.override_settings(SPA_ENABLE=True, SPA_ENABLE_URLS=True)
 class TestSpartacusCacheBusting(test.TestCase):
     def test_build_id_is_set(self, spartacus_build_id):
         build_id = 'the-build-id-for-spartacus'
@@ -51,7 +51,7 @@ class TestSpartacusCacheBusting(test.TestCase):
         eq_(build_id_from_dom, build_id)
 
 
-@test.utils.override_settings(ENABLE_SPA=True, ENABLE_SPA_URLS=True)
+@test.utils.override_settings(SPA_ENABLE=True, SPA_ENABLE_URLS=True)
 class TestWaitToFinish(ProviderTestCase):
 
     def setUp(self):
@@ -74,7 +74,7 @@ class TestWaitToFinish(ProviderTestCase):
         res = self.client.get('{u}?foo=bar'.format(u=self.wait_url))
         eq_(res.status_code, 404)
 
-    @test.utils.override_settings(ENABLE_SPA=False)
+    @test.utils.override_settings(SPA_ENABLE=False)
     def test_missing_transaction(self):
         res = self.client.get('{u}?param={t}'.format(u=self.wait_url,
                                                      t=self.trans_id))
