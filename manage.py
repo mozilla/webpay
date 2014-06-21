@@ -16,12 +16,14 @@ from funfactory import manage
 # Let the path magic happen in setup_environ() !
 sys.path.remove(tmp_path)
 
-
 manage.setup_environ(__file__, more_pythonic=True)
 
 # Specifically importing once the environment has been setup.
 from django.conf import settings
 newrelic_ini = getattr(settings, 'NEWRELIC_INI', None)
+
+from webpay.utils import validate_settings
+validate_settings()
 
 if newrelic_ini and os.path.exists(newrelic_ini):
     import newrelic.agent
@@ -32,6 +34,10 @@ if newrelic_ini and os.path.exists(newrelic_ini):
         startup_logger = logging.getLogger('.startup')
         startup_logger.exception('Failed to load new relic config.')
 
+# Alter webpay to run on a particular port as per the
+# marketplace docs, unless overridden.
+from django.core.management.commands import runserver
+runserver.DEFAULT_PORT = 2601
 
 if __name__ == "__main__":
     manage.main()

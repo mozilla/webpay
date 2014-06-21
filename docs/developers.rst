@@ -41,10 +41,6 @@ Install with::
 
     pip install --no-deps -r requirements/dev.txt
 
-Create a database to work in::
-
-    mysql -u root -e 'create database webpay'
-
 Node dependencies are included in the source tree.
 For node to find them add this to your bash profile::
 
@@ -57,18 +53,11 @@ Make sure you see a valid path when you type::
     which cleancss
     which uglifyjs
 
-Make yourself a local settings file::
-
-    cp webpay/settings/local.py-dist webpay/settings/local.py
-
-Edit that file and fill in your database credentials.
-Be sure to also set this so you can see errors::
-
-    VERBOSE_LOGGING = True
-
-Sync up your database by running all the migrations::
-
-    schematic ./migrations
+Out of the box, webpay makes some assumptions in the settings file and should
+not need a custom settings files. Some environment variables are configurable
+from the environment, they are: `ZAMBONI_URL`, `SOLITUDE_URL`. See the
+`marketplace docs`_ for information on the environment variables and how
+they affect the services.
 
 You can now fire up a development server::
 
@@ -215,3 +204,4 @@ number of keys logged and the time spent in views::
 .. _git: http://git-scm.com/
 .. _`navigator.mozPay()`: https://wiki.mozilla.org/WebAPI/WebPayment
 .. _`Zamboni`: https://github.com/mozilla/zamboni
+.. _`marketplace docs`: http://marketplace.readthedocs.org/en/latest/topics/setup.html
