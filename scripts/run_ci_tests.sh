@@ -28,34 +28,6 @@ source $VENV/bin/activate
 
 pip --log-file ./pip.log install -U --exists-action=w --no-deps -q -r requirements/test.txt
 
-cat > webpay/settings/local.py <<SETTINGS
-from webpay.settings.base import *
-LOG_LEVEL = logging.ERROR
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'zamboni_mkt',
-        'TEST_NAME': 'test_zamboni_webpay',
-        'USER': 'hudson',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-        'OPTIONS': {
-            'init_command': 'SET storage_engine=InnoDB',
-            'charset' : 'utf8',
-            'use_unicode' : True,
-        },
-        'TEST_CHARSET': 'utf8',
-        'TEST_COLLATION': 'utf8_general_ci',
-    },
-}
-CELERY_ALWAYS_EAGER = True
-STATIC_URL = ''
-DEBUG = True
-SECRET_KEY = 'cheese will make you live forever'
-
-SETTINGS
-
 echo "Starting tests..." `date`
 export FORCE_DB='yes sir'
 
