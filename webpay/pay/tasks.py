@@ -181,8 +181,9 @@ def get_provider_seller_uuid(issuer_key, product_data, provider_names):
                     generic_seller_uuid)
 
     raise ValueError(
-        'Unable to find a valid seller_uuid for public_id {public_id}'.format(
-            public_id=public_id))
+        'Unable to find a valid seller_uuid for public_id {public_id} '
+        'using providers: {providers}'.format(
+            public_id=public_id, providers=provider_names))
 
 
 def is_marketplace(issuer_key):

@@ -1,20 +1,36 @@
 import logging.handlers
+from socket import gethostname, gaierror
+from urlparse import urlparse
 
 from funfactory.settings_base import *
 
+try:
+    host = os.environ.get('MARKETPLACE_URL', 'http://' + gethostname())
+except gaierror:
+    host = 'http://localhost'
+
+###############################################################################
+# Django settings
+#
+# See https://docs.djangoproject.com/en/dev/ref/settings/ for info.
+#
 ALLOWED_HOSTS = []
 
-# Name of the top-level module where you put all your apps.
-# If you did not install Playdoh with the funfactory installer script
-# you may need to edit this value. See the docs about installing from a
-# clone.
-PROJECT_MODULE = 'webpay'
+AUTHENTICATION_BACKENDS = []
 
-# Defines the views served for root URLs.
-ROOT_URLCONF = '%s.urls' % PROJECT_MODULE
+# We don't actually need a database, this is the smallest and simplest
+# configuration we can get away with.
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:'
+    }
+}
+
+DEBUG = True
+DEBUG_PROPAGATE_EXCEPTIONS = True
 
 INSTALLED_APPS = [
-
     # Local apps
     'funfactory',  # Content common to most playdoh-based apps.
 
@@ -49,178 +65,10 @@ INSTALLED_APPS = [
     'jingo_minify',
 ]
 
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = '/mozpay/media/'
-
-# A list of our CSS and JS assets for jingo-minify.
-MINIFY_BUNDLES = {
-    'css': {
-        'pay/pay': (
-            'css/pay/normalize.styl',
-            'css/pay/util.styl',
-            'css/pay/fonts.styl',
-            'css/pay/throbber.styl',
-            'css/pay/messages.styl',
-            'css/pay/pay.styl',
-            'css/pay/simulate.styl',
-        ),
-    },
-    'js': {
-        'pay': (
-            'js/lib/jquery-1.8.js',
-            'js/lib/require.js',
-            'js/settings.js',
-            'js/lib/underscore.js',
-            'js/lib/format.js',
-            'js/lib/longtext.js',
-            'js/lib/tracking.js',
-            'js/lib/raven.min.js',
-            'js/lib/raven-proxy.js',
-
-            # These are modules used by others.
-            # The order is important, do not alphabetize.
-            'js/raven-init.js',
-            'js/cli.js',
-            'js/id.js',
-            'js/auth.js',
-            'js/lib/l10n.js',
-            'js/pay/bango.js',
-
-            # These are top-level modules.
-            'js/pay/messages.js',
-            'js/pay/pay.js',
-            'js/pay/wait.js',
-            'js/pay/cancel.js',
-            'js/pin/pin.js',
-            'js/pin/reset.js',
-        ),
-    }
-}
-
-# jingo-minify: Style sheet media attribute default
-CSS_MEDIA_DEFAULT = 'all'
-
-# Tell jingo-minify to use the media URL instead.
-JINGO_MINIFY_USE_STATIC = False
-
-# Cache-bust images in the CSS.
-CACHEBUST_IMGS = True
-
-# Stylus / Uglify / CleanCSS.
-STYLUS_BIN = 'stylus'
-UGLIFY_BIN = 'uglifyjs'
-CLEANCSS_BIN = 'cleancss'
-
 LOCALE_PATHS = (
-    os.path.join(ROOT, PROJECT_MODULE, 'locale'),
+    os.path.join(ROOT, 'webpay', 'locale'),
 )
 
-# In production, all locales must be whitelisted for use, regardless of the
-# existence of po files.
-PROD_LANGUAGES = (
-    'af',
-    'bg',
-    'ca',
-    'cs',
-    'da',
-    'de',
-    'el',
-    'en-US',
-    'es',
-    'eu',
-    'fi',
-    'fr',
-    'fy-NL',
-    'ga-IE',
-    'hr',
-    'hu',
-    'id',
-    'it',
-    'ja',
-    'ko',
-    'mk',
-    'my',
-    'nl',
-    'pl',
-    'pt-BR',
-    'pt-PT',
-    'ro',
-    'ru',
-    'sk',
-    'sl',
-    'sq',
-    'sr',
-    'sr-Latn',
-    'srp',
-    'sv-SE',
-    'te',
-    'th',
-    'ur',
-    'vi',
-    'zh-CN',
-    'zh-TW',
-)
-
-
-# Because Jinja2 is the default template loader, add any non-Jinja templated
-# apps here:
-JINGO_EXCLUDE_APPS = [
-    'admin',
-    'registration',
-]
-
-# BrowserID configuration
-AUTHENTICATION_BACKENDS = [
-    #'django_browserid.auth.BrowserIDBackend',
-    #'django.contrib.auth.backends.ModelBackend',
-]
-
-SITE_URL = 'http://localhost:8000'
-LOGIN_URL = 'pay.lobby'
-LOGIN_REDIRECT_URL = 'pay.lobby'
-LOGIN_REDIRECT_URL_FAILURE = 'pay.lobby'
-
-# We won't be persisting users in the DB.
-BROWSERID_CREATE_USER = False
-
-TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
-    'jingo_minify.helpers.build_ids',
-    'django_browserid.context_processors.browserid',
-    'webpay.base.context_processors.defaults',
-]
-
-# Should robots.txt deny everything or disallow a calculated list of URLs we
-# don't want to be crawled?  Default is false, disallow everything.
-# Also see http://www.google.com/support/webmasters/bin/answer.py?answer=93710
-ENGAGE_ROBOTS = False
-
-# Always generate a CSRF token for anonymous users.
-ANON_ALWAYS = True
-
-# Custom name for csrf cookie.
-# This must be a non-default value so it doesn't collide with zamboni on the
-# same subdomain.
-CSRF_COOKIE_NAME = 'webpay_csrftoken'
-
-# Custom anon CSRF cookie name.
-# This is to avoid collisions with zamboni when on the same subdomain.
-ANON_COOKIE = 'webpay_anoncsrf'
-
-# Tells the extract script what files to look for L10n in and what function
-# handles the extraction. The Tower library expects this.
-DOMAIN_METHODS['messages'] = [
-    ('%s/**.py' % PROJECT_MODULE,
-        'tower.management.commands.extract.extract_tower_python'),
-    ('%s/**/templates/**.html' % PROJECT_MODULE,
-        'tower.management.commands.extract.extract_tower_template'),
-    ('templates/**.html',
-        'tower.management.commands.extract.extract_tower_template'),
-]
-
-HAS_SYSLOG = True  # syslog is used if HAS_SYSLOG and NOT DEBUG.
-# See settings/local.py for SYSLOG_TAG, etc
 LOGGING = {
     'formatters': {
         'webpay': {
@@ -279,6 +127,11 @@ LOGGING = {
     },
 }
 
+LOGIN_URL = 'pay.lobby'
+LOGIN_REDIRECT_URL = 'pay.lobby'
+LOGIN_REDIRECT_URL_FAILURE = 'pay.lobby'
+
+MEDIA_URL = '/mozpay/media/'
 
 MIDDLEWARE_CLASSES = (
     'webpay.base.middleware.CSPMiddleware',
@@ -298,11 +151,53 @@ MIDDLEWARE_CLASSES = (
     'webpay.base.logger.LoggerMiddleware',
 )
 
-STATSD_CLIENT = 'django_statsd.clients.normal'
+MINIFY_BUNDLES = {
+    'css': {
+        'pay/pay': (
+            'css/pay/normalize.styl',
+            'css/pay/util.styl',
+            'css/pay/fonts.styl',
+            'css/pay/throbber.styl',
+            'css/pay/messages.styl',
+            'css/pay/pay.styl',
+            'css/pay/simulate.styl',
+        ),
+    },
+    'js': {
+        'pay': (
+            'js/lib/jquery-1.8.js',
+            'js/lib/require.js',
+            'js/settings.js',
+            'js/lib/underscore.js',
+            'js/lib/format.js',
+            'js/lib/longtext.js',
+            'js/lib/tracking.js',
+            'js/lib/raven.min.js',
+            'js/lib/raven-proxy.js',
 
-DJANGO_PARANOIA_REPORTERS = [
-    'django_paranoia.reporters.cef_',
-]
+            # These are modules used by others.
+            # The order is important, do not alphabetize.
+            'js/raven-init.js',
+            'js/cli.js',
+            'js/id.js',
+            'js/auth.js',
+            'js/lib/l10n.js',
+            'js/pay/bango.js',
+
+            # These are top-level modules.
+            'js/pay/messages.js',
+            'js/pay/pay.js',
+            'js/pay/wait.js',
+            'js/pay/cancel.js',
+            'js/pin/pin.js',
+            'js/pin/reset.js',
+        ),
+    }
+}
+
+ROOT_URLCONF = 'webpay.urls'
+
+SECRET_KEY = 'please change this'
 
 SESSION_ENGINE = 'encrypted_cookies'
 
@@ -314,142 +209,90 @@ SESSION_COOKIE_NAME = 'webpay_sessionid'
 # All the webpay stuff is under a custom domain.
 SESSION_COOKIE_PATH = '/mozpay/'
 
-# Limiting the session cookie down to a small number prevents people coming back
-# later with valid transactions and session. It does mean people inactive for
-# more than this time will have to start again though.
+# Limiting the session cookie down to a small number prevents people coming
+# back later with valid transactions and session. It does mean people inactive
+# for more than this time will have to start again though.
 SESSION_COOKIE_AGE = 60 * 60
 
-# By default, celery is active.
-# If you need to disable it, make this True in your local settings.
-CELERY_ALWAYS_EAGER = False  # required to activate celeryd
+SESSION_COOKIE_SECURE = False
 
-# This is the key and secret for purchases, our special marketplace key and
-# secret for selling apps.
-KEY = 'marketplace'  # would typically be a URL
-SECRET = ''
+# Needed to serve the media out for development servers.
+TEMPLATE_DEBUG = DEBUG
 
-# Marketplace's postback/chargeback URLs where app purchase JWT notifications
-# are sent.
-MKT_POSTBACK = 'https://marketplace-dev.allizom.org/services/bluevia/postback'
-MKT_CHARGEBACK = 'https://marketplace-dev.allizom.org/services/bluevia/chargeback'
+TEST_RUNNER = 'test_utils.runner.NoDBTestSuiterunner'
 
-# The domain of the webpay server. Example: webpay.somewhere.org
-DOMAIN = 'localhost'
+##############################################################################
+# Celery settings
+#
+CELERY_ALWAYS_EAGER = True
 
-# The issuer of the special marketplace app purchase JWTs.
-ISSUER = DOMAIN
+###############################################################################
+# Project settings
+#
+# Moved up here because other things depend upon it.
+#
+# The domain of the webpay server. Example: webpay.somewhere.org.
+DOMAIN = urlparse(host).netloc
 
-# The issuer of all notifications (i.e. the webpay server).
-NOTIFY_ISSUER = DOMAIN
+# When True, allow Marketplace admins and reviewers to force a simulated
+# payment if needed.
+ALLOW_ADMIN_SIMULATIONS = True
 
-# Temporary, this should be going into solitude.
-INAPP_KEY_PATHS = {}
+ALLOW_ANDROID_PAYMENTS = True
 
-# Set this to True to get nice long verbose messages.
-VERBOSE_LOGGING = False
+# When True, developers can simulate payments by signing a JWT with a simulate
+# attribute in the request.
+ALLOW_SIMULATE = True
 
-# This is the URL lib.solitude.api uses to connect to the pay server. If this
-# is none the solitude api tests don't run as we currently don't have a mock
-# server for it.
-SOLITUDE_URL = None
-
-# The OAuth tokens for solitude.
-SOLITUDE_OAUTH = {'key': '', 'secret': ''}
-
-# Control which Persona server you use for logins.
-# This is useful for switching to a development Persona server.
-
-BROWSERID_DOMAIN = 'login.persona.org'
-# We only trust one issuer to grant us unverified emails.
-# If UNVERIFIED_ISSUER is set to None, forceIssuer will not
-# be sent to the client or the verifier.
-BROWSERID_UNVERIFIED_ISSUER = 'firefoxos.persona.org'
-BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
-BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN
-
-# This is the URL to the marketplace.
-MARKETPLACE_URL = None
-
-# The OAuth config from the marketplace.
-MARKETPLACE_OAUTH = {'key': '', 'secret': ''}
-
-# Height/width size of product icon images.
-PRODUCT_ICON_SIZE = 64
-
-# When True, use the marketplace API to get product icons.
-USE_PRODUCT_ICONS = True
-
-# This is the time that a user has to buy more stuff before having to enter
-# their PIN in again in seconds.
-#PIN_UNLOCK_LENGTH = 300
-# Disable PIN unlocking because of bug 1000877.
-PIN_UNLOCK_LENGTH = 0
+ALLOW_TARAKO_PAYMENTS = False
 
 # The schemes that are allowed in callbacks.
 # Historically, app postbacks were required to be HTTPS in prod but we reversed
 # that decision. See bug 862588.
 ALLOWED_CALLBACK_SCHEMES = ['http', 'https']
 
-# Number of retries on a payment postback.
-POSTBACK_ATTEMPTS = 5
-
-# Amount of seconds between each payment postback attempt.
-POSTBACK_DELAY = 300
-
-# When True, developers can simulate payments by signing a JWT with a simulate
-# attribute in the request.
-ALLOW_SIMULATE = True
-
 # When passing a simulate request, the result must match one of these.
 ALLOWED_SIMULATIONS = ('postback', 'chargeback')
 
-# If True, only simulated payments can be processed. All other requests will
-# result in an error.
-ONLY_SIMULATIONS = False
+# Always generate a CSRF token for anonymous users.
+ANON_ALWAYS = True
 
-# When True, allow Marketplace admins and reviewers to force a simulated payment
-# if needed.
-ALLOW_ADMIN_SIMULATIONS = False
+# Custom anon CSRF cookie name.
+# This is to avoid collisions with zamboni when on the same subdomain.
+ANON_COOKIE = 'webpay_anoncsrf'
 
-# Special just for front-end folks! When True, it lets you hit the main page
-# without a JWT. You can create/enter PINs but it won't let you get very far
-# beyond that.
-TEST_PIN_UI = False
+# This is the key and secret for purchases, our special marketplace key and
+# secret for selling apps.
+APP_PURCHASE_KEY = KEY = DOMAIN
 
-# If empty, all users will be allowed through.
-# If not empty, each string will be compiled as a regular expression
-# and the email from persona checked using match, not search. If any of the
-# expressions match, the user will be let through.
-USER_WHITELIST = []
+# This is the key and secret for purchases, our special marketplace key and
+# secret for selling apps.
+APP_PURCHASE_SECRET = SECRET = 'please change this'
 
-# Secret key string to use in UUID HMACs which are derived from Persona emails.
-# This must not be blank in production and should be more than 32 bytes long.
-UUID_HMAC_KEY = ''
+# We won't be persisting users in the DB.
+BROWSERID_CREATE_USER = False
 
-# This string is used for encrypting session cookies. It should be at least 64
-# bytes and should be set to a random value. In development (or if you leave
-# this empty), SECRET_KEY is used.
-#ENCRYPTED_COOKIE_KEY = ''
+# Control which Persona server you use for logins.
+# This is useful for switching to a development Persona server.
+BROWSERID_DOMAIN = 'login.persona.org'
+BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN
+# We only trust one issuer to grant us unverified emails.
+# If UNVERIFIED_ISSUER is set to None, forceIssuer will not
+# be sent to the client or the verifier.
+BROWSERID_UNVERIFIED_ISSUER = 'firefoxos.persona.org'
+BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
+
+CACHEBUST_IMGS = True
+
+# A cache nuggets setting, that hasn't been updated to use the
+# new PREFIX in the CACHE setttings. Overridden on all prod servers.
+CACHE_PREFIX = 'webpay'
+
+CLEANCSS_BIN = 'cleancss'
 
 # When True, compress session cookie data with zlib to improve network
 # performance and avoid maxing out HTTP header length.
 COMPRESS_ENCRYPTED_COOKIE = True
-
-# Set the zlib level for compression.
-ENCRYPTED_COOKIE_COMPRESSION_LEVEL = 6
-
-# Maximum length of a product description. This is used to truncate long
-# descriptions so that they do not break things like session cookies.
-PRODUCT_DESCRIPTION_LENGTH = 255
-
-# Maximum value for "short" fields in a product JWT. These are fields (like
-# 'name') that have an implied short length. Values that exceed the maximum will
-# trigger form errors.
-SHORT_FIELD_MAX_LENGTH = 255
-
-# This is the typ for signature checking JWTs.
-# This is used to integrate with Marketplace and other apps.
-SIG_CHECK_TYP = 'mozilla/payments/sigcheck/v1'
 
 # CSP Settings
 CSP_REPORT_URI = '/mozpay/services/csp/report'
@@ -459,24 +302,95 @@ CSP_REPORT_ONLY = True
 CSP_ALLOW = ("'self'",)
 
 # Note: STATIC_URL will be added to these in the middleware.
-CSP_IMG_SRC = ("'self'",
-               "https://ssl.google-analytics.com",
-               "data:"
-              )
-CSP_SCRIPT_SRC = ("'self'",
-                  "https://%s" % BROWSERID_DOMAIN,
-                  "https://ssl.google-analytics.com",
-                  )
-CSP_STYLE_SRC = ("'self'",
-                 # Because CSRF and persona both use style="".
-                 "'unsafe-inline'",
-                 "https://static.login.persona.org")
+CSP_IMG_SRC = (
+    "'self'",
+    'https://ssl.google-analytics.com',
+    'data:'
+)
+CSP_SCRIPT_SRC = (
+    "'self'",
+    'https://%s' % BROWSERID_DOMAIN,
+    'https://ssl.google-analytics.com',
+)
+CSP_STYLE_SRC = (
+    "'self'",
+    # Because CSRF and persona both use style="".
+    "'unsafe-inline'",
+    'https://static.login.persona.org'
+)
 CSP_OBJECT_SRC = ("'none'",)
 CSP_MEDIA_SRC = ("'none'",)
-CSP_FRAME_SRC = ("https://ssl.google-analytics.com",
-                 "https://%s" % BROWSERID_DOMAIN,
-                )
+CSP_FRAME_SRC = (
+    'https://ssl.google-analytics.com',
+    'https://%s' % BROWSERID_DOMAIN,
+)
 CSP_FONT_SRC = ("'self'",)
+
+# When running in DEBUG mode, we assume you are running locally
+# and are not using SSL. If that's the case, resources might load
+# as http too.
+if DEBUG:
+    for key in ('CSP_IMG_SRC', 'CSP_MEDIA_SRC', 'CSP_SCRIPT_SRC'):
+        values = locals()[key]
+        new = []
+        for value in values:
+            if value.startswith('https://'):
+                new.append(value.replace('https://', 'http://'))
+        locals()[key] = tuple(list(values) + new)
+
+
+# Custom name for csrf cookie.
+# This must be a non-default value so it doesn't collide with zamboni on the
+# same subdomain.
+CSRF_COOKIE_NAME = 'webpay_csrftoken'
+
+CSS_MEDIA_DEFAULT = 'all'
+
+DJANGO_PARANOIA_REPORTERS = [
+    'django_paranoia.reporters.cef_',
+]
+
+# Tells the extract script what files to look for L10n in and what function
+# handles the extraction. The Tower library expects this.
+DOMAIN_METHODS['messages'] = [
+    ('webpay/**.py',
+        'tower.management.commands.extract.extract_tower_python'),
+    ('webpay/**/templates/**.html',
+        'tower.management.commands.extract.extract_tower_template'),
+    ('templates/**.html',
+        'tower.management.commands.extract.extract_tower_template'),
+]
+
+# Set the zlib level for compression.
+ENCRYPTED_COOKIE_COMPRESSION_LEVEL = 6
+
+# This string is used for encrypting session cookies. It should be at least 64
+# bytes and should be set to a random value. If you leave this empty,
+# SECRET_KEY is used.
+ENCRYPTED_COOKIE_KEY = ''
+
+# Should robots.txt deny everything or disallow a calculated list of URLs we
+# don't want to be crawled?  Default is false, disallow everything.
+# Also see http://www.google.com/support/webmasters/bin/answer.py?answer=93710
+ENGAGE_ROBOTS = False
+
+# The issuer of the special marketplace app purchase JWTs.
+ISSUER = DOMAIN
+
+HAS_SYSLOG = not DEBUG
+
+# Temporary, this should be going into solitude.
+INAPP_KEY_PATHS = {}
+
+# Because Jinja2 is the default template loader, add any non-Jinja templated
+# apps here:
+JINGO_EXCLUDE_APPS = [
+    'admin',
+    'registration',
+]
+
+# Tell jingo-minify to use the media URL instead.
+JINGO_MINIFY_USE_STATIC = False
 
 JS_SETTINGS = {
     # Allow tracking of events.
@@ -503,21 +417,27 @@ JS_SETTINGS = {
     # Raven error logging
     # ex: http://none@zamboni.localhost/api/v1/fireplace/report_error/12345
     # Please note that the leading 'none@' is required
-    # The trailing integer '12345' is the sentry account id which is found in a sentry DSN
+    # The trailing integer '12345' is the sentry account id which
+    # is found in a sentry DSN
     # ex: https://<user>:<pass>@app.getsentry.com/<sentry_account_id>
     'zamboni_raven_url': '',
 }
 
+# This is the URL to the marketplace.
+MARKETPLACE_URL = host
+
+# The OAuth config from the marketplace.
+MARKETPLACE_OAUTH = {'key': '', 'secret': ''}
+
+# The issuer of all notifications (i.e. the webpay server).
+NOTIFY_ISSUER = DOMAIN
+
 # New Relic is configured here.
 NEWRELIC_INI = None
 
-PAYMENT_PROVIDERS = ('bango', 'reference')
-
-# Which payment provider to use on the backend, it must be one of
-# PAYMENT_PROVIDERS.
-# In the future this setting might be chosen dynamically based on region
-# or something.
-PAYMENT_PROVIDER = 'bango'
+# If True, only simulated payments can be processed. All other requests will
+# result in an error.
+ONLY_SIMULATIONS = False
 
 # The pay URL is the starting page of the payment screen.
 # It will receive one substitution: the uid_pay value. For example, this is the
@@ -541,12 +461,85 @@ PAY_URLS = {
     }
 }
 
-# Warning that this server is really only for testing.
-USAGE_WARNING = False
+# Which payment provider to use on the backend, it must be one of
+# PAYMENT_PROVIDERS.
+PAYMENT_PROVIDER = 'reference'
+PAYMENT_PROVIDERS = ('bango', 'boku', 'reference')
 
+# This is the time that a user has to buy more stuff before having to enter
+# their PIN in again in seconds.
+# Disable PIN unlocking because of bug 1000877.
+PIN_UNLOCK_LENGTH = 0
 
-ALLOW_ANDROID_PAYMENTS = True
-ALLOW_TARAKO_PAYMENTS = False
+# Number of retries on a payment postback.
+POSTBACK_ATTEMPTS = 5
+
+# Amount of seconds between each payment postback attempt.
+POSTBACK_DELAY = 300
+
+# In production, all locales must be whitelisted for use, regardless of the
+# existence of po files.
+PROD_LANGUAGES = (
+    'af',
+    'bg',
+    'ca',
+    'cs',
+    'da',
+    'de',
+    'el',
+    'en-US',
+    'es',
+    'eu',
+    'fi',
+    'fr',
+    'fy-NL',
+    'ga-IE',
+    'hr',
+    'hu',
+    'id',
+    'it',
+    'ja',
+    'ko',
+    'mk',
+    'my',
+    'nl',
+    'pl',
+    'pt-BR',
+    'pt-PT',
+    'ro',
+    'ru',
+    'sk',
+    'sl',
+    'sq',
+    'sr',
+    'sr-Latn',
+    'srp',
+    'sv-SE',
+    'te',
+    'th',
+    'ur',
+    'vi',
+    'zh-CN',
+    'zh-TW',
+)
+
+# Maximum length of a product description. This is used to truncate long
+# descriptions so that they do not break things like session cookies.
+PRODUCT_DESCRIPTION_LENGTH = 255
+
+# Height/width size of product icon images.
+PRODUCT_ICON_SIZE = 64
+
+PROJECT_MODULE = 'webpay'
+
+# Maximum value for "short" fields in a product JWT. These are fields (like
+# 'name') that have an implied short length. Values that exceed the maximum will
+# trigger form errors.
+SHORT_FIELD_MAX_LENGTH = 255
+
+# This is the typ for signature checking JWTs.
+# This is used to integrate with Marketplace and other apps.
+SIG_CHECK_TYP = 'mozilla/payments/sigcheck/v1'
 
 # When not None, this is a dict of mcc and mnc to simulate a specific mobile
 # network. This overrides the client side network detection.
@@ -554,15 +547,23 @@ ALLOW_TARAKO_PAYMENTS = False
 # Use this setting carefully!
 SIMULATED_NETWORK = None
 
-# Enable/Disable the Single Page App
-ENABLE_SPA = False
-ENABLE_SPA_URLS = False
+SITE_URL = host
+
+# This is the URL lib.solitude.api uses to connect to the pay server. If this
+# is none the solitude api tests don't run as we currently don't have a mock
+# server for it.
+SOLITUDE_URL = os.environ.get('SOLITUDE_URL')
+
+# The OAuth tokens for solitude.
+SOLITUDE_OAUTH = {'key': '', 'secret': ''}
 
 SPARTACUS_BUILD_ID_KEY = 'spartacus-build-id'
 SPARTACUS_STATIC = 'http://localhost:7777'
 
 # Spartacus path settings.
-BASE_SPA_URL = '/mozpay/spa/'
+SPA_BASE_URL = '/mozpay/spa/'
+SPA_ENABLE = False
+SPA_ENABLE_URLS = False
 SPA_URLS = [
     'create-pin',
     'enter-pin',
@@ -574,3 +575,40 @@ SPA_URLS = [
     'was-locked'
 ]
 SPA_USE_MIN_JS = True
+
+STATSD_CLIENT = 'django_statsd.clients.normal'
+
+# Stylus / Uddglify / CleanCSS.
+STYLUS_BIN = 'stylus'
+
+TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
+    'jingo_minify.helpers.build_ids',
+    'django_browserid.context_processors.browserid',
+    'webpay.base.context_processors.defaults',
+]
+
+# Special just for front-end folks! When True, it lets you hit the main page
+# without a JWT. You can create/enter PINs but it won't let you get very far
+# beyond that.
+TEST_PIN_UI = False
+
+UGLIFY_BIN = 'uglifyjs'
+
+# When True, use the marketplace API to get product icons.
+USE_PRODUCT_ICONS = True
+
+# Secret key string to use in UUID HMACs which are derived from Persona emails.
+# This must not be blank in production and should be more than 32 bytes long.
+UUID_HMAC_KEY = ''
+
+# Warning that this server is really only for testing.
+USAGE_WARNING = False
+
+# If empty, all users will be allowed through.
+# If not empty, each string will be compiled as a regular expression
+# and the email from persona checked using match, not search. If any of the
+# expressions match, the user will be let through.
+USER_WHITELIST = []
+
+# Set this to True to get nice long verbose messages.
+VERBOSE_LOGGING = False

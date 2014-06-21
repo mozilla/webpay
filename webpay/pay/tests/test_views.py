@@ -29,6 +29,9 @@ class ConfiguredTransactionTest(Base):
     Test case for a view that relies on a configured transaction.
     """
 
+    def _post_teardown(self):
+        pass
+
     def setUp(self):
         super(ConfiguredTransactionTest, self).setUp()
         self.pay_request = {'request': {}}

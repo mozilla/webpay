@@ -5,6 +5,12 @@ from django.utils.importlib import import_module
 
 class BasicSessionCase(test.TestCase):
 
+    def _fixture_setup(self):
+        pass
+
+    def _fixture_teardown(self):
+        pass
+
     def setUp(self):
         super(BasicSessionCase, self).setUp()
         # Set up a session for this client because the session code in

@@ -75,6 +75,7 @@ ENGAGE_ROBOTS = False
 
 ## Celery
 BROKER_URL = private.BROKER_URL
+CELERY_ALWAYS_EAGER = False
 CELERY_IGNORE_RESULT = True
 CELERY_DISABLE_RATE_LIMITS = True
 CELERYD_PREFETCH_MULTIPLIER = 1
@@ -142,7 +143,7 @@ PAY_URLS = {
 }
 
 # Turn on Spartacus for -dev.
-ENABLE_SPA = True
-ENABLE_SPA_URLS = True
+SPA_ENABLE = True
+SPA_ENABLE_URLS = True
 SPARTACUS_STATIC = 'https://marketplace-dev.mozflare.net/mozpay/spa'
 

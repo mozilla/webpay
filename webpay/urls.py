@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     (r'^mozpay/', include('webpay.pay.urls'))
 )
 
-if settings.ENABLE_SPA_URLS:
+if settings.SPA_ENABLE_URLS:
     urlpatterns += patterns('',
         url(r'^mozpay/spa/(?P<provider_name>[^/]+)/wait-to-finish', spa_wait_to_finish, name='spa_wait_to_finish'),
         url(r'^mozpay/spa/(?:' + '|'.join(settings.SPA_URLS) + ')$', spa_index),

@@ -17,7 +17,7 @@ log = getLogger('w.spa')
 def index(request):
     """Page that serves the static Single Page App (Spartacus)."""
 
-    if not settings.ENABLE_SPA:
+    if not settings.SPA_ENABLE:
         return http.HttpResponseForbidden()
 
     return render(request, 'spa/index.html')
