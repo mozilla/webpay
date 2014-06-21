@@ -1,8 +1,6 @@
 from django import http
-
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.http import (HttpResponseForbidden, HttpResponseNotFound)
 from django.shortcuts import render
 
 from django_paranoia.decorators import require_GET
@@ -43,7 +41,7 @@ def wait_to_finish(request, provider_name):
         # the payment provider changed their URL parameters.
         log.info('no transaction found for provider {p}; url: {u}'
                  .format(p=helper.provider.name, u=request.get_full_path()))
-        return HttpResponseNotFound()
+        return http.HttpResponseNotFound()
 
     trans_url = reverse('provider.transaction_status', args=[trans_uuid])
 
