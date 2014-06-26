@@ -619,3 +619,5 @@ USER_WHITELIST = []
 
 # Set this to True to get nice long verbose messages.
 VERBOSE_LOGGING = False
+
+IN_TEST_SUITE = False
