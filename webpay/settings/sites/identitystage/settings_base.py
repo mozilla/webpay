@@ -73,7 +73,7 @@ DOMAIN = 'identity-stage-marketplace.allizom.org'
 ISSUER = DOMAIN
 NOTIFY_ISSUER = DOMAIN
 
-KEY = DOMAIN
+APP_PURCHASE_KEY = KEY = DOMAIN
 # This must match private_mkt.APP_PURCHASE_SECRET in marketplace settings.
 APP_PURCHASE_SECRET = SECRET = private.SECRET
 
