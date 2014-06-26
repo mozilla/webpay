@@ -121,3 +121,7 @@ base.JS_SETTINGS['zamboni_raven_url'] = 'https://none@payments-alt.allizom.org/a
 NEWRELIC_INI = '/etc/newrelic.d/payments-alt.allizom.org-webpay.ini'
 
 USAGE_WARNING = True
+
+SPA_ENABLE = True
+SPA_ENABLE_URLS = True
+SPARTACUS_STATIC = 'https://payments-alt-cdn.allizom.org/mozpay/spa'
