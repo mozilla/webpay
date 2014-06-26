@@ -78,9 +78,9 @@ ISSUER = DOMAIN
 NOTIFY_ISSUER = DOMAIN
 VERBOSE_LOGGING = False
 
-KEY = DOMAIN
+APP_PURCHASE_KEY = KEY = DOMAIN
 # This must match private_mkt.APP_PURCHASE_SECRET in marketplace settings.
-SECRET = private.SECRET
+APP_PURCHASE_SECRET = SECRET = private.SECRET
 
 SOLITUDE_URL = 'https://payments.firefox.com'
 SOLITUDE_OAUTH = {'key': private.SOLITUDE_OAUTH_KEY,

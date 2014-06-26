@@ -77,9 +77,9 @@ DOMAIN = 'payments-alt.allizom.org'
 ISSUER = DOMAIN
 NOTIFY_ISSUER = DOMAIN
 
-KEY = DOMAIN
+APP_PURCHASE_KEY = KEY = DOMAIN
 # This must match private_mkt.APP_PURCHASE_SECRET in marketplace settings.
-SECRET = private.SECRET
+APP_PURCHASE_SECRET = SECRET = private.SECRET
 
 SOLITUDE_URL = 'https://payments-alt-solitude.allizom.org'
 SOLITUDE_OAUTH = {'key': private.SOLITUDE_OAUTH_KEY,
