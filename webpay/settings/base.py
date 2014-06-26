@@ -576,9 +576,16 @@ SPA_URLS = [
 ]
 SPA_USE_MIN_JS = True
 
+# SPA App settings. These are merged into the app's settings.js.
+# This allows us to specify different settings for -dev/stage/prod
+SPA_SETTINGS = {
+    # Turn UA tracking on/off wholesale.
+    'ua_tracking_enabled': False,
+}
+
 STATSD_CLIENT = 'django_statsd.clients.normal'
 
-# Stylus / Uddglify / CleanCSS.
+# Stylus / Uglify / CleanCSS.
 STYLUS_BIN = 'stylus'
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
