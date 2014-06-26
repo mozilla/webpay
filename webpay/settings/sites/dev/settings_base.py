@@ -99,7 +99,7 @@ NOTIFY_ISSUER = DOMAIN
 VERBOSE_LOGGING = True
 
 KEY = DOMAIN
-SECRET = private.SECRET
+APP_PURCHASE_SECRET = SECRET = private.SECRET
 
 SOLITUDE_URL = 'https://payments-dev.allizom.org'
 SOLITUDE_OAUTH = {'key': private.SOLITUDE_OAUTH_KEY,
