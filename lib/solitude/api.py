@@ -10,14 +10,15 @@ from django.core.urlresolvers import reverse
 
 import mobile_codes
 from slumber.exceptions import HttpClientError
+
+from lib.marketplace.constants import COUNTRIES
 from webpay.base import dev_messages as msg
 from webpay.base.helpers import absolutify
 
-from lib.marketplace.constants import COUNTRIES
-from ..utils import SlumberWrapper
 from . import constants as solitude_const
 from .errors import ERROR_STRINGS
 from .exceptions import ResourceNotModified
+from ..utils import SlumberWrapper
 
 
 log = logging.getLogger('w.solitude')
@@ -597,7 +598,7 @@ class ReferenceProvider(PayProvider):
             'provider': solitude_const.PROVIDERS[self.name],
             'seller': generic_seller['resource_uri'],
             'seller_product': generic_product['resource_uri'],
-            'source': solitude_const.PROVIDERS[self.name],
+            'source': source,
             'region': region,
             'carrier': carrier,
             'type': solitude_const.TYPE_PAYMENT,
@@ -699,7 +700,7 @@ class BokuProvider(PayProvider):
             'provider': solitude_const.PROVIDERS[self.name],
             'seller': generic_seller['resource_uri'],
             'seller_product': generic_product['resource_uri'],
-            'source': solitude_const.PROVIDERS[self.name],
+            'source': source,
             'status': solitude_const.STATUS_PENDING,
             'type': solitude_const.TYPE_PAYMENT,
             'uuid': transaction_uuid,
