@@ -32,12 +32,15 @@ def create(request):
             if getattr(form, 'buyer_exists', False):
                 try:
                     res = client.change_pin(form.uuid,
-                                            form.cleaned_data['pin'],
+                                            pin=form.cleaned_data['pin'],
                                             etag=form.buyer_etag)
                 except ResourceModified:
                     return system_error(request, code=msg.RESOURCE_MODIFIED)
             else:
-                res = client.create_buyer(form.uuid, form.cleaned_data['pin'])
+                res = client.create_buyer(form.uuid,
+                                          pin=form.cleaned_data['pin'],
+                                          email=request.session[
+                                              'logged_in_user'])
             if form.handle_client_errors(res):
                 set_user_has_pin(request, True)
                 return http.HttpResponseRedirect(reverse('pin.confirm'))

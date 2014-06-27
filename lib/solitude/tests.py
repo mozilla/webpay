@@ -23,6 +23,7 @@ class SolitudeAPITest(TestCase):
 
     def setUp(self):
         self.uuid = 'dat:uuid'
+        self.email = 'buyer@buying.com'
         self.pin = '1234'
         self.buyer_data = {
             'uuid': self.uuid,
@@ -85,47 +86,51 @@ class SolitudeAPITest(TestCase):
         self.buyer_data['uuid'] = uuid
         del self.buyer_data['pin']
         slumber.generic.buyer.post.return_value = self.buyer_data
-        buyer = client.create_buyer(uuid)
+        buyer = client.create_buyer(uuid, self.email)
         eq_(buyer.get('uuid'), uuid)
         assert not buyer.get('pin')
         assert buyer.get('resource_pk')
         slumber.generic.buyer.post.assert_called_with(
-            {'uuid': uuid, 'pin': None, 'pin_confirmed': False})
+            {'uuid': uuid, 'email': self.email, 'pin': None,
+             'pin_confirmed': False})
 
     def test_create_buyer_without_confirmed_pin(self, slumber):
         uuid = 'no_pin:1234'
         self.buyer_data['uuid'] = uuid
         del self.buyer_data['pin']
         slumber.generic.buyer.post.return_value = self.buyer_data
-        client.create_buyer(uuid, pin_confirmed=True)
+        client.create_buyer(uuid, self.email, pin_confirmed=True)
         slumber.generic.buyer.post.assert_called_with(
-            {'uuid': uuid, 'pin': None, 'pin_confirmed': False})
+            {'uuid': uuid, 'email': self.email, 'pin': None,
+             'pin_confirmed': False})
 
     def test_create_buyer_with_pin(self, slumber):
         uuid = 'with_pin'
         self.buyer_data['uuid'] = uuid
         slumber.generic.buyer.post.return_value = self.buyer_data
-        buyer = client.create_buyer(uuid, self.pin)
+        buyer = client.create_buyer(uuid, self.email, pin=self.pin)
         eq_(buyer.get('uuid'), uuid)
         assert buyer.get('pin')
         assert buyer.get('resource_pk')
         slumber.generic.buyer.post.assert_called_with(
-            {'uuid': uuid, 'pin': self.pin, 'pin_confirmed': False})
+            {'uuid': uuid, 'email': self.email,
+             'pin': self.pin, 'pin_confirmed': False})
 
     def test_create_buyer_with_confirmed_pin(self, slumber):
         uuid = 'with_pin'
         self.buyer_data['uuid'] = uuid
         slumber.generic.buyer.post.return_value = self.buyer_data
-        client.create_buyer(uuid, self.pin, pin_confirmed=True)
+        client.create_buyer(uuid, self.email, pin=self.pin, pin_confirmed=True)
         slumber.generic.buyer.post.assert_called_with(
-            {'uuid': uuid, 'pin': self.pin, 'pin_confirmed': True})
+            {'uuid': uuid, 'email': self.email,
+             'pin': self.pin, 'pin_confirmed': True})
 
     def test_create_buyer_with_alpha_pin(self, slumber):
         slumber.generic.buyer.post.side_effect = HttpClientError(
             response=self.create_error_response(content={
                 'pin': ['PIN_ONLY_NUMBERS']
             }))
-        buyer = client.create_buyer('with_alpha_pin', 'lame')
+        buyer = client.create_buyer('with_alpha_pin', self.email, pin='lame')
         assert buyer.get('errors')
         eq_(buyer['errors'].get('pin'), [ERROR_STRINGS['PIN_ONLY_NUMBERS']])
 
@@ -134,7 +139,7 @@ class SolitudeAPITest(TestCase):
             response=self.create_error_response(content={
                 'pin': ['PIN_4_NUMBERS_LONG']
             }))
-        buyer = client.create_buyer('with_short_pin', '123')
+        buyer = client.create_buyer('with_short_pin', self.email, pin='123')
         assert buyer.get('errors')
         eq_(buyer['errors'].get('pin'),
             [ERROR_STRINGS['PIN_4_NUMBERS_LONG']])
@@ -144,7 +149,7 @@ class SolitudeAPITest(TestCase):
             response=self.create_error_response(content={
                 'pin': ['PIN_4_NUMBERS_LONG']
             }))
-        buyer = client.create_buyer('with_long_pin', '12345')
+        buyer = client.create_buyer('with_long_pin', self.email, pin='12345')
         assert buyer.get('errors')
         eq_(buyer['errors'].get('pin'),
             [ERROR_STRINGS['PIN_4_NUMBERS_LONG']])
@@ -154,10 +159,20 @@ class SolitudeAPITest(TestCase):
             response=self.create_error_response(content={
                 'uuid': ['BUYER_UUID_ALREADY_EXISTS']
             }))
-        buyer = client.create_buyer(self.uuid, '1234')
+        buyer = client.create_buyer(self.uuid, self.email, pin='1234')
         assert buyer.get('errors')
         eq_(buyer['errors'].get('uuid'),
             [ERROR_STRINGS['BUYER_UUID_ALREADY_EXISTS']])
+
+    def test_create_buyer_with_email(self, slumber):
+        uuid = 'with_email'
+        self.buyer_data['uuid'] = uuid
+        self.buyer_data['email'] = self.email
+        slumber.generic.buyer.post.return_value = self.buyer_data
+        client.create_buyer(uuid, self.email)
+        slumber.generic.buyer.post.assert_called_with(
+            {'uuid': uuid, 'email': self.email,
+             'pin': None, 'pin_confirmed': False})
 
     def test_confirm_pin_with_good_pin(self, slumber):
         slumber.generic.confirm_pin.post.return_value = {'confirmed': True}

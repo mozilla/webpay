@@ -20,10 +20,11 @@ class SessionTestCase(BasicSessionCase):
     in testing.
     """
 
-    def verify(self, uuid, request_meta=None):
+    def verify(self, uuid, email, request_meta=None):
         engine = import_module(settings.SESSION_ENGINE)
         self.session = engine.SessionStore(request_meta=request_meta)
         self.session['uuid'] = uuid
+        self.session['logged_in_user'] = email
         self.save_session()
 
     def unverify(self):

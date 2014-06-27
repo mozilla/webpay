@@ -59,8 +59,10 @@ class PinViewSet(viewsets.ViewSet):
                                         clear_was_locked=True)
             else:
                 res = client.create_buyer(form.uuid,
-                                          form.cleaned_data['pin'],
-                                          pin_confirmed=True)
+                                          pin=form.cleaned_data['pin'],
+                                          pin_confirmed=True,
+                                          email=request.session[
+                                              'logged_in_user'])
 
             if form.handle_client_errors(res):
                 set_user_has_pin(request, True)

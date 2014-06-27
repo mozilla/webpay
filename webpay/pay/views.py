@@ -180,7 +180,10 @@ def lobby(request):
     pin_form = VerifyPinForm()
 
     if sess.get('uuid'):
-        auth_utils.update_session(request, sess.get('uuid'), False)
+        auth_utils.update_session(request,
+                                  sess.get('uuid'),
+                                  False,
+                                  request.session.get('logged_in_user', None))
 
         redirect_url = check_pin_status(request)
         if redirect_url is not None:
