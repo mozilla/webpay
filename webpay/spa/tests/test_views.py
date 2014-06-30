@@ -79,3 +79,23 @@ class TestWaitToFinish(ProviderTestCase):
         res = self.client.get('{u}?param={t}'.format(u=self.wait_url,
                                                      t=self.trans_id))
         eq_(res.status_code, 403)
+
+
+@test.utils.override_settings(SPA_ENABLE=True, SPA_ENABLE_URLS=True)
+class TestSpaDataAttrs(test.TestCase):
+
+    @mock.patch.object(settings, 'PAYMENT_PROVIDERS', ('bango', 'boku'))
+    def test_has_bango_logout_url(self):
+        res = self.client.get('/mozpay/')
+        eq_(res.status_code, 200)
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-bango-logout-url'),
+            settings.PAY_URLS['bango']['base'] +
+            settings.PAY_URLS['bango']['logout'])
+
+    @mock.patch.object(settings, 'PAYMENT_PROVIDERS', ('boku',))
+    def test_has_no_bango_logout_url(self):
+        res = self.client.get('/mozpay/')
+        eq_(res.status_code, 200)
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-bango-logout-url'), None)
