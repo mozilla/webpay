@@ -104,9 +104,6 @@ PAY_URLS = {
     },
 }
 
-# Default payment provider.
-PAYMENT_PROVIDER = 'bango'
-
 VERBOSE_LOGGING = True
 
 STATSD_HOST = private.STATSD_HOST
