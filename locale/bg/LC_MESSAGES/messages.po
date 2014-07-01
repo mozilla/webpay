@@ -257,7 +257,7 @@ msgstr "ОК"
 
 #: webpay/base/templates/base.html:48
 msgid "The transaction failed. You have not been charged for this purchase."
-msgstr ""
+msgstr "Транзакцията се провали. Не бяхте таксувани за тази покупка."
 
 #: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
@@ -273,7 +273,7 @@ msgstr "Симулирай плащане"
 
 #: webpay/pay/forms.py:113
 msgid "Default network"
-msgstr ""
+msgstr "Мрежа по подразбиране"
 
 #: webpay/pay/views.py:212 webpay/pin/views.py:93
 msgid "Enter Pin"
@@ -379,4 +379,4 @@ msgstr "Потвърждаване на плащането&hellip;"
 
 #: webpay/spa/templates/spa/index.html:29
 msgid "Loading..."
-msgstr ""
+msgstr "Зареждане..."
