@@ -30,9 +30,7 @@
     data-trans-status-failed="{{ solitude_constants.STATUS_FAILED }}"
     data-trans-status-cancelled="{{ solitude_constants.STATUS_CANCELLED }}"
     data-settings="{{ settings.SPA_SETTINGS|json }}"
-    {% if 'bango' in settings.PAYMENT_PROVIDERS %}
-      data-bango-logout-url="{{ settings.PAY_URLS['bango']['base'] + settings.PAY_URLS['bango']['logout'] }}"
-    {% endif %}
+    data-bango-logout-url="{{ settings.PAY_URLS['bango']['base'] + settings.PAY_URLS['bango']['logout'] }}"
     >
     <main id="app">
       {# View placeholder #}
