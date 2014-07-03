@@ -6,14 +6,12 @@ from django.core.urlresolvers import reverse
 import mock
 from nose.tools import eq_
 
-from webpay.auth.utils import get_uuid, client
+from webpay.auth.utils import get_uuid
 from webpay.base.tests import BasicSessionCase
 
 from . import good_assertion, SessionTestCase, set_up_no_mkt_account
 
 
-@mock.patch.object(client, 'get_buyer',
-                   lambda *args: {'pin': False, 'needs_pin_reset': False})
 @mock.patch.object(settings, 'DOMAIN', 'web.pay')
 class TestAuth(SessionTestCase):
 
@@ -21,15 +19,18 @@ class TestAuth(SessionTestCase):
         super(TestAuth, self).setUp()
         self.url = reverse('auth.verify')
         self.reverify_url = reverse('auth.reverify')
-        patch = mock.patch('webpay.auth.views.pay_tasks.configure_transaction')
-        self.config_trans = patch.start()
-        self.patches = [patch]
-        set_up_no_mkt_account(self)
 
-    def tearDown(self):
-        super(TestAuth, self).tearDown()
-        for p in self.patches:
-            p.stop()
+        configure_transaction_patch = mock.patch(
+            'webpay.auth.views.pay_tasks.configure_transaction')
+        self.config_trans = configure_transaction_patch.start()
+        self.addCleanup(configure_transaction_patch.stop)
+
+        get_buyer_patch = mock.patch('webpay.auth.utils.client.get_buyer')
+        self.get_buyer = get_buyer_patch.start()
+        self.get_buyer.return_value = {'pin': False, 'needs_pin_reset': False}
+        self.addCleanup(get_buyer_patch.stop)
+
+        set_up_no_mkt_account(self)
 
     @mock.patch('webpay.auth.views.verify_assertion')
     @mock.patch('webpay.auth.views.set_user')
@@ -46,7 +47,7 @@ class TestAuth(SessionTestCase):
         eq_(data['user_hash'], '<user_hash>')
         set_user_mock.assert_called_with(mock.ANY, 'a@a.com')
         assert store_mkt.called, (
-                'After login, marketplace permissions should be stored')
+            'After login, marketplace permissions should be stored')
 
     @mock.patch('webpay.auth.views.verify_assertion')
     @mock.patch('webpay.auth.views.set_user')
@@ -58,10 +59,20 @@ class TestAuth(SessionTestCase):
         set_user_mock.assert_called_with(mock.ANY, 'a+unverified@a.com')
 
     @mock.patch('webpay.auth.views.verify_assertion')
-    def test_session(self, verify_assertion):
+    @mock.patch('webpay.auth.utils.client.update_buyer')
+    def test_session(self, update_buyer, verify_assertion):
         verify_assertion.return_value = good_assertion
         self.client.post(self.url, {'assertion': 'good'})
         assert self.client.session['uuid'].startswith('web.pay:')
+
+    @mock.patch('webpay.auth.views.verify_assertion')
+    @mock.patch('webpay.auth.utils.client.update_buyer')
+    def test_session_sets_email(self, update_buyer, verify_assertion):
+        verify_assertion.return_value = good_assertion
+        self.client.post(self.url, {'assertion': 'good'})
+        assert self.client.session['uuid'].startswith('web.pay:')
+        update_buyer.assert_called_with(
+            self.client.session['uuid'], email='a+unverified@a.com')
 
     @mock.patch('webpay.auth.views.verify_assertion')
     def test_bad(self, verify_assertion):
@@ -71,7 +82,7 @@ class TestAuth(SessionTestCase):
 
     @mock.patch('webpay.auth.views.verify_assertion')
     def test_session_cleaned(self, verify_assertion):
-        self.verify('a:b')
+        self.verify('fake_uuid', 'fake_email')
         verify_assertion.return_value = False
         eq_(self.client.post(self.url, {'assertion': 'bad'}).status_code, 400)
         eq_(self.client.session.get('uuid'), None)
@@ -89,7 +100,7 @@ class TestAuth(SessionTestCase):
             verify_assertion.call_args)
         eq_(self.client.session['was_reverified'], True)
         assert store_mkt.called, (
-                'After reverify, marketplace permissions should be stored')
+            'After reverify, marketplace permissions should be stored')
 
     @mock.patch('webpay.auth.views.verify_assertion')
     def test_reverify_failed(self, verify_assertion):

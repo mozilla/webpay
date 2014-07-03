@@ -15,6 +15,8 @@ class ParanoidPinFormTest(SessionTestCase):
     @patch.object(solitude, 'slumber')
     @patch('django_paranoia.reporters.cef_.log_cef')
     def test_change_useragent(self, report, sol, mkt):
-        self.verify('fake', request_meta={'HTTP_USER_AGENT': 'foo'})
+        self.verify('fake_uuid',
+                    'fake_email',
+                    request_meta={'HTTP_USER_AGENT': 'foo'})
         self.client.post(reverse('monitor'), HTTP_USER_AGENT='bar')
         assert report.called

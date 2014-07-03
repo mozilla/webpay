@@ -48,7 +48,10 @@ class BaseCase(BasicSessionCase):
 
     def setUp(self, *args, **kw):
         super(BaseCase, self).setUp(*args, **kw)
-        self.set_session(uuid='fake-uuid')
+        self.uuid = 'fake-uuid'
+        self.email = 'fake@user.com'
+        self.set_session(uuid=self.uuid)
+        self.set_session(logged_in_user=self.email)
 
         p = mock.patch.object(solitude, 'slumber', name='patched:solitude')
         self.solitude = p.start()
@@ -105,7 +108,7 @@ class TestGet(PIN):
             'pin': True}
         res = self.client.get(self.url)
         self.solitude.generic.buyer.get_object_or_404.assert_called_with(
-            headers={}, uuid='fake-uuid')
+            headers={}, uuid=self.uuid)
         eq_(json.loads(res.content)['pin'], True)
 
     def test_user_not_reverified(self):
@@ -138,7 +141,8 @@ class TestPost(PIN):
             ObjectDoesNotExist)
         res = self.client.post(self.url, {'pin': '1234'})
         self.solitude.generic.buyer.post.assert_called_with(
-            {'uuid': 'fake-uuid', 'pin': '1234', 'pin_confirmed': True})
+            {'uuid': self.uuid, 'pin': '1234',
+             'pin_confirmed': True, 'email': self.email})
         eq_(res.status_code, 204)
 
     @mock.patch('webpay.api.api.client')
@@ -148,7 +152,7 @@ class TestPost(PIN):
         res = self.client.post(self.url, {'pin': '1234'})
         eq_(res.status_code, 204)
         solitude_client.change_pin.assert_called_with(
-            'fake-uuid', '1234', etag='', pin_confirmed=True,
+            self.uuid, '1234', etag='', pin_confirmed=True,
             clear_was_locked=True)
 
     def test_user_with_pin(self):

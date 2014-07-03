@@ -41,7 +41,7 @@ class SolitudeAPI(SlumberWrapper):
     def __init__(self, *args, **kw):
         super(SolitudeAPI, self).__init__(*args, **kw)
 
-    def create_buyer(self, uuid, pin=None, pin_confirmed=False):
+    def create_buyer(self, uuid, email, pin=None, pin_confirmed=False):
         """Creates a buyer with an optional PIN in solitude.
 
         :param uuid: String to identify the buyer by.
@@ -52,6 +52,7 @@ class SolitudeAPI(SlumberWrapper):
         """
         pin_data = {
             'uuid': uuid,
+            'email': email,
             'pin': pin,
             'pin_confirmed': bool(pin_confirmed and pin),
         }
@@ -87,6 +88,20 @@ class SolitudeAPI(SlumberWrapper):
             cache.set('buyer:%s' % etag, obj)
         return obj
 
+    def update_buyer(self, uuid, etag='', **kwargs):
+        """Updates a buyer identified by their uuid.
+
+        :param uuid: String to identify the buyer by.
+        :rtype: dictionary
+        """
+        id_ = self.get_buyer(uuid).get('resource_pk')
+        res = self.safe_run(self.slumber.generic.buyer(id=id_).patch,
+                            kwargs,
+                            headers={'If-Match': etag})
+        if 'errors' in res:
+            return res
+        return {}
+
     def set_needs_pin_reset(self, uuid, value=True, etag=''):
         """Set flag for user to go through reset flow or not on next log in.
 
@@ -95,13 +110,10 @@ class SolitudeAPI(SlumberWrapper):
                       not, defaults to True
         :rtype: dictionary
         """
-        id_ = self.get_buyer(uuid).get('resource_pk')
-        res = self.safe_run(self.slumber.generic.buyer(id=id_).patch,
-                            {'needs_pin_reset': value, 'new_pin': None},
-                            headers={'If-Match': etag})
-        if 'errors' in res:
-            return res
-        return {}
+        return self.update_buyer(uuid,
+                                 etag=etag,
+                                 needs_pin_reset=value,
+                                 new_pin=None)
 
     def unset_was_locked(self, uuid, etag=''):
         """Unsets the flag to view the was_locked screen.
@@ -109,13 +121,7 @@ class SolitudeAPI(SlumberWrapper):
         :param uuid: String to identify the buyer by.
         :rtype: dictionary
         """
-        id_ = self.get_buyer(uuid).get('resource_pk')
-        res = self.safe_run(self.slumber.generic.buyer(id=id_).patch,
-                            {'pin_was_locked_out': False},
-                            headers={'If-Match': etag})
-        if 'errors' in res:
-            return res
-        return {}
+        return self.update_buyer(uuid, etag=etag, pin_was_locked_out=False)
 
     def change_pin(self, uuid, pin, etag='', pin_confirmed=False,
                    clear_was_locked=False):
@@ -134,14 +140,8 @@ class SolitudeAPI(SlumberWrapper):
         pin_data = {'pin': pin, 'pin_confirmed': pin_confirmed}
         if clear_was_locked:
             pin_data['pin_was_locked_out'] = False
-        id_ = self.get_buyer(uuid).get('resource_pk')
-        res = self.safe_run(self.slumber.generic.buyer(id=id_).patch,
-                            pin_data,
-                            headers={'If-Match': etag})
-        # Empty string is a good thing from tastypie for a PATCH.
-        if 'errors' in res:
-            return res
-        return {}
+
+        return self.update_buyer(uuid, etag=etag, **pin_data)
 
     def set_new_pin(self, uuid, new_pin, etag=''):
         """Sets the new_pin for use with a buyer that is resetting their pin.
@@ -151,14 +151,7 @@ class SolitudeAPI(SlumberWrapper):
         :param pin: PIN the user would like to change to.
         :rtype: dictionary
         """
-        id_ = self.get_buyer(uuid).get('resource_pk')
-        res = self.safe_run(self.slumber.generic.buyer(id=id_).patch,
-                            {'new_pin': new_pin},
-                            headers={'If-Match': etag})
-        # Empty string is a good thing from tastypie for a PATCH.
-        if 'errors' in res:
-            return res
-        return {}
+        return self.update_buyer(uuid, etag=etag, new_pin=new_pin)
 
     def get_active_product(self, public_id):
         """

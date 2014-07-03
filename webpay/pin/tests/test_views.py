@@ -18,7 +18,9 @@ class PinViewTestCase(SessionTestCase):
     def setUp(self):
         super(PinViewTestCase, self).setUp()
         self.url = reverse(self.url_name)
-        self.verify('a:b')
+        self.uuid = 'fake:buyer_uuid'
+        self.email = 'fake@user.com'
+        self.verify(self.uuid, self.email)
 
 
 class CreatePinViewTest(PinViewTestCase):
@@ -34,8 +36,9 @@ class CreatePinViewTest(PinViewTestCase):
     @patch.object(client, 'get_buyer', lambda x: {})
     def test_buyer_does_not_exist(self, set_user_has_pin, change_pin,
                                   create_buyer):
-        res = self.client.post(self.url, data={'pin': '1234'})
-        assert create_buyer.called
+        pin = '1234'
+        res = self.client.post(self.url, data={'pin': pin})
+        create_buyer.assert_called_with(self.uuid, email=self.email, pin=pin)
         assert not change_pin.called
         set_user_has_pin.assert_called_with(ANY, True)
         assert res['Location'].endswith(reverse('pin.confirm'))
@@ -58,7 +61,7 @@ class CreatePinViewTest(PinViewTestCase):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not create_buyer.called
         assert change_pin.called
-        change_pin.assert_called_with('a:b', '1234', etag='etag')
+        change_pin.assert_called_with(self.uuid, pin='1234', etag='etag')
         assert res['Location'].endswith(reverse('pin.confirm'))
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
@@ -78,7 +81,8 @@ class CreatePinViewTest(PinViewTestCase):
     @patch.object(client, 'get_buyer', lambda x: {'uuid': 'some:uuid'})
     @patch.object(client, 'change_pin',
                   lambda *args, **kwargs: {
-                    'errors': {'pin': [ERROR_STRINGS['PIN_4_NUMBERS_LONG']]}})
+                      'errors': {
+                          'pin': [ERROR_STRINGS['PIN_4_NUMBERS_LONG']]}})
     def test_buyer_does_exist_with_short_pin(self, create_buyer):
         res = self.client.post(self.url, data={'pin': '123'})
         assert not create_buyer.called
@@ -89,7 +93,8 @@ class CreatePinViewTest(PinViewTestCase):
     @patch.object(client, 'get_buyer', lambda x: {'uuid': 'some:uuid'})
     @patch.object(client, 'change_pin',
                   lambda *args, **kwargs: {
-                    'errors': {'pin': [ERROR_STRINGS['PIN_ONLY_NUMBERS']]}})
+                      'errors': {
+                          'pin': [ERROR_STRINGS['PIN_ONLY_NUMBERS']]}})
     def test_buyer_does_exist_with_alpha_pin(self, create_buyer):
         res = self.client.post(self.url, data={'pin': '1234'})
         assert not create_buyer.called
@@ -136,7 +141,7 @@ class VerifyPinViewTest(PinViewTestCase):
     def test_uuid_used(self, verify_pin):
         verify_pin.return_value = {'locked': False, 'valid': True}
         self.client.post(self.url, data={'pin': '1234'})
-        eq_(verify_pin.call_args[0][0], 'a:b')
+        eq_(verify_pin.call_args[0][0], self.uuid)
 
     def test_needs_verified_pin(self):
         self.session['uuid_has_confirmed_pin'] = False
@@ -194,7 +199,7 @@ class ConfirmPinViewTest(PinViewTestCase):
     def test_uuid_used(self, confirm_pin):
         confirm_pin.return_value = True
         self.client.post(self.url, data={'pin': '1234'})
-        eq_(confirm_pin.call_args[0][0], 'a:b')
+        eq_(confirm_pin.call_args[0][0], self.uuid)
 
     def test_needs_pin(self):
         self.session['uuid_has_pin'] = False
@@ -431,7 +436,7 @@ class ResetConfirmPinViewTest(ResetPinTest):
     def test_uuid_used(self, confirm_pin):
         confirm_pin.return_value = True
         self.client.post(self.url, data={'pin': '1234'})
-        eq_(confirm_pin.call_args[0][0], 'a:b')
+        eq_(confirm_pin.call_args[0][0], self.uuid)
 
 
 class ResetCancelViewTest(PinViewTestCase):
