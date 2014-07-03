@@ -23,8 +23,10 @@ urlpatterns = patterns('',
 
 if settings.SPA_ENABLE_URLS:
     urlpatterns += patterns('',
-        url(r'^mozpay/spa/(?P<provider_name>[^/]+)/wait-to-finish', spa_wait_to_finish, name='spa_wait_to_finish'),
-        url(r'^mozpay/spa/(?:' + '|'.join(settings.SPA_URLS) + ')$', spa_index),
+        url(r'^mozpay/spa/(?P<provider_name>[^/]+)/wait-to-finish',
+            spa_wait_to_finish, name='spa.wait_to_finish'),
+        url(r'^mozpay/spa/(?:' + '|'.join(settings.SPA_URLS) + ')$',
+            spa_index, name='spa.index'),
         url(r'^mozpay/v1/api/', include('webpay.api.urls', namespace='api'))
     )
 
