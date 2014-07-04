@@ -1,13 +1,9 @@
 import logging.handlers
-from socket import gethostname, gaierror
 from urlparse import urlparse
 
 from funfactory.settings_base import *
 
-try:
-    host = os.environ.get('MARKETPLACE_URL', 'http://' + gethostname())
-except gaierror:
-    host = 'http://localhost'
+host = os.environ.get('MARKETPLACE_URL', 'http://localhost')
 
 ###############################################################################
 # Django settings
