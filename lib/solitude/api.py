@@ -25,6 +25,10 @@ log = logging.getLogger('w.solitude')
 client = None
 
 
+class BuyerNotConfigured(Exception):
+    """The buyer has not yet been configured for the payment."""
+
+
 class SellerNotConfigured(Exception):
     """The seller has not yet been configued for the payment."""
 
@@ -258,6 +262,14 @@ class ProviderHelper:
         Start a payment provider transaction to begin the purchase flow.
         """
         try:
+            generic_buyer = self.slumber.generic.buyer.get_object_or_404(
+                uuid=user_uuid)
+        except ObjectDoesNotExist:
+            raise BuyerNotConfigured(
+                '{pr}: Buyer with uuid {u} does not exist'
+                .format(u=user_uuid, pr=self.provider.name))
+
+        try:
             generic_seller = self.slumber.generic.seller.get_object_or_404(
                 uuid=generic_seller_uuid)
         except ObjectDoesNotExist:
@@ -291,6 +303,7 @@ class ProviderHelper:
                 provider_seller_uuid=provider_seller_uuid)
 
         trans_token, pay_url = self.provider.create_transaction(
+            generic_buyer=generic_buyer,
             generic_seller=generic_seller,
             generic_product=product,
             provider_product=provider_product,
@@ -474,7 +487,8 @@ class PayProvider(object):
         """
         raise NotImplementedError()
 
-    def create_transaction(self, generic_seller, generic_product,
+    def create_transaction(self, generic_buyer,
+                           generic_seller, generic_product,
                            provider_product, provider_seller_uuid,
                            product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
@@ -546,7 +560,8 @@ class ReferenceProvider(PayProvider):
     """
     name = 'reference'
 
-    def create_transaction(self, generic_seller, generic_product,
+    def create_transaction(self, generic_buyer, generic_seller,
+                           generic_product,
                            provider_product, provider_seller_uuid,
                            product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
@@ -589,6 +604,7 @@ class ReferenceProvider(PayProvider):
             'uuid': transaction_uuid,
             'status': solitude_const.STATUS_PENDING,
             'provider': solitude_const.PROVIDERS[self.name],
+            'buyer': generic_buyer['resource_uri'],
             'seller': generic_seller['resource_uri'],
             'seller_product': generic_product['resource_uri'],
             'source': source,
@@ -648,7 +664,8 @@ class BokuProvider(PayProvider):
         # Boku does not have a products API the way Bango does.
         return None
 
-    def create_transaction(self, generic_seller, generic_product,
+    def create_transaction(self, generic_buyer,
+                           generic_seller, generic_product,
                            provider_product, provider_seller_uuid,
                            product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
@@ -697,6 +714,7 @@ class BokuProvider(PayProvider):
 
         trans = self.slumber.generic.transaction.post({
             'provider': solitude_const.PROVIDERS[self.name],
+            'buyer': generic_buyer['resource_uri'],
             'seller': generic_seller['resource_uri'],
             'seller_product': generic_product['resource_uri'],
             'source': source,
@@ -795,7 +813,8 @@ class BangoProvider(PayProvider):
                 .format(sel=provider_generic_seller['resource_pk']))
         return provider_generic_seller['bango']
 
-    def create_transaction(self, generic_seller, generic_product,
+    def create_transaction(self, generic_buyer,
+                           generic_seller, generic_product,
                            provider_product, provider_seller_uuid,
                            product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
