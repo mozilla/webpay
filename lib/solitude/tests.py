@@ -450,6 +450,10 @@ class ProviderTestCase(TestCase):
 
         self.slumber = mock.MagicMock()
 
+        self.buyer_id = 1
+        self.buyer_uuid = 'buyer-xyz'
+        self.buyer_uri = '/generic/buyer/1/'
+
         self.seller_id = 1
         self.seller_uuid = 'seller-xyz'
         self.seller_uri = '/generic/seller/1/'
@@ -504,6 +508,10 @@ class TestReferenceProvider(ProviderTestCase):
             'token': 'zippy-trans-token',
         }
 
+        self.slumber.generic.buyer.get_object_or_404.return_value = {
+            'resource_uri': self.buyer_uri,
+        }
+
         trans_id, pay_url, seller_id = self.configure(
             seller_uuid=self.seller_uuid, product_uuid=self.product_uuid)
 
@@ -523,6 +531,7 @@ class TestReferenceProvider(ProviderTestCase):
             'currency': 'EUR',
             'provider': constants.PROVIDER_REFERENCE,
             'region': '123',
+            'buyer': self.buyer_uri,
             'seller': self.seller_uri,
             'seller_product': self.product_uri,
             'source': 'unknown',
@@ -533,6 +542,10 @@ class TestReferenceProvider(ProviderTestCase):
 
     def test_with_new_prod(self):
         new_product_id = 66
+
+        self.slumber.generic.buyer.get_object_or_404.return_value = {
+            'resource_uri': self.buyer_uri,
+        }
 
         (self.slumber.generic.product.get_object_or_404
                                      .side_effect) = ObjectDoesNotExist
@@ -583,6 +596,7 @@ class TestReferenceProvider(ProviderTestCase):
             'currency': 'EUR',
             'provider': constants.PROVIDER_REFERENCE,
             'region': '123',
+            'buyer': self.buyer_uri,
             'seller': self.seller_uri,
             'seller_product': self.product_uri,
             'source': 'unknown',
@@ -646,6 +660,10 @@ class TestBoku(ProviderTestCase):
         provider_seller_uuid = 'provider-sel-xyz'
         user_uuid = 'user-xyz'
 
+        self.slumber.generic.buyer.get_object_or_404.return_value = {
+            'resource_uri': self.buyer_uri,
+        }
+
         self.slumber.boku.transactions.post.return_value = {
             'buy_url': boku_pay_url,
             'transaction_id': boku_transaction_id,
@@ -672,6 +690,7 @@ class TestBoku(ProviderTestCase):
         assert 'transaction_uuid' in kw, 'Missing keys: {kw}'.format(kw=kw)
         self.slumber.generic.transaction.post.assert_called_with({
             'provider': constants.PROVIDER_BOKU,
+            'buyer': self.buyer_uri,
             'seller': self.seller_uri,
             'seller_product': self.product_uri,
             'source': 'unknown',
