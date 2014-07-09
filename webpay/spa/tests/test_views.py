@@ -56,7 +56,7 @@ class TestWaitToFinish(ProviderTestCase):
 
     def setUp(self):
         super(TestWaitToFinish, self).setUp()
-        self.wait_url = reverse('spa.wait_to_finish', args=['boku'])
+        self.wait_url = reverse('spa:wait_to_finish', args=['boku'])
 
     def wait(self, trans_uuid=None):
         if not trans_uuid:
