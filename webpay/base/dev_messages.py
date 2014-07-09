@@ -6,8 +6,8 @@ from tower import ugettext as _
 
 
 BAD_BANGO_CODE = 'BAD_BANGO_CODE'
-BAD_JWT_ISSUER = 'BAD_JWT_ISSUER'
 BAD_ICON_KEY = 'BAD_ICON_KEY'
+BAD_JWT_ISSUER = 'BAD_JWT_ISSUER'
 BAD_PRICE_POINT = 'BAD_PRICE_POINT'
 BAD_REQUEST = 'BAD_REQUEST'
 BAD_SIM_RESULT = 'BAD_SIM_RESULT'
@@ -17,28 +17,52 @@ EXT_ERROR = 'EXT_ERROR'
 INTERNAL_TIMEOUT = 'INTERNAL_TIMEOUT'
 INVALID_JWT = 'INVALID_JWT'
 INVALID_JWT_OBJ = 'INVALID_JWT_OBJ'
+INVALID_REDIR_URL = 'INVALID_REDIR_URL'
 JWT_DECODE_ERR = 'JWT_DECODE_ERR'
 LOGIN_TIMEOUT = 'LOGIN_TIMEOUT'
 LOGOUT_TIMEOUT = 'LOGOUT_TIMEOUT'
+LOGOUT_URL_MISSING = 'LOGOUT_URL_MISSING'
 MALFORMED_URL = 'MALFORMED_URL'
+MISSING_JWT = 'MISSING_JWT'
 NO_ACTIVE_TRANS = 'NO_ACTIVE_TRANS'
 NO_DEFAULT_LOC = 'NO_DEFAULT_LOC'
+NO_PAY_FAILED_FUNC = 'NO_PAY_FAILED_FUNC'
+NO_PAY_SUCCESS_FUNC = 'NO_PAY_SUCCESS_FUNC'
 NO_SIM_REASON = 'NO_SIM_REASON'
 NOTICE_ERROR = 'NOTICE_ERROR'
 NOTICE_EXCEPTION = 'NOTICE_EXCEPTION'
 PAY_DISABLED = 'PAY_DISABLED'
+PIN_STATE_ERROR = 'PIN_STATE_ERROR'
+PIN_STATE_TIMEOUT = 'PIN_STATE_TIMEOUT'
+REAUTH_LOGOUT_ERROR = 'REAUTH_LOGOUT_ERROR'
 RESOURCE_MODIFIED = 'RESOURCE_MODIFIED'
+REVERIFY_DENIED = 'REVERIFY_DENIED'
+REVERIFY_FAILED = 'REVERIFY_FAILED'
+REVERIFY_MISSING_PROVIDER = 'REVERIFY_MISSING_PROVIDER'
+REVERIFY_MISSING_URL = 'REVERIFY_MISSING_URL'
+REVERIFY_TIMEOUT = 'REVERIFY_TIMEOUT'
 SIM_DISABLED = 'SIM_DISABLED'
 SIM_ONLY_KEY = 'SIM_ONLY_KEY'
+STATUS_COMPLETE_UNDEF = 'STATUS_COMPLETE_UNDEF'
+STATUS_PENDING_UNDEF = 'STATUS_PENDING_UNDEF'
 TRANS_CONFIG_FAILED = 'TRANS_CONFIG_FAILED'
 TRANS_ENDED = 'TRANS_ENDED'
 TRANS_EXPIRED = 'TRANS_EXPIRED'
 TRANS_MISSING = 'TRANS_MISSING'
 TRANS_TIMEOUT = 'TRANS_TIMEOUT'
+UNEXPECTED_ERROR = 'UNEXPECTED_ERROR'
+UNEXPECTED_STATE = 'UNEXPECTED_STATE'
 UNSUPPORTED_PAY = 'UNSUPPORTED_PAY'
 # This string is used to determine the message on Marketplace;
 # change it at your peril.
 USER_CANCELLED = 'USER_CANCELLED'
+USER_HASH_EMPTY = 'USER_HASH_EMPTY'
+VERIFY_DENIED = 'VERIFY_DENIED'
+VERIFY_FAILED = 'VERIFY_FAILED'
+VERIFY_MISSING_PROVIDER = 'VERIFY_MISSING_PROVIDER'
+VERIFY_MISSING_URL = 'VERIFY_MISSING_URL'
+VERIFY_TIMEOUT = 'VERIFY_TIMEOUT'
+WAIT_URL_NOT_SET = 'WAIT_URL_NOT_SET'
 
 SHORT_FIELDS = ('chargebackURL',
                 'defaultLocale',
@@ -86,6 +110,8 @@ class DevMessage(Exception):
 
 def _build_legend():
     _legend = {
+        # Some of these codes are only referenced
+        # in SPA: https://github.com/mozilla/spartacus/ .
         BAD_BANGO_CODE:
             _('Mozilla received an invalid code from the payment '
               'provider (Bango) when processing the payment'),
@@ -114,6 +140,7 @@ def _build_legend():
             # L10n: JWT stands for JSON Web Token and does not need to be
             # localized.
             _('The JWT signature is invalid or the JWT is malformed.'),
+        INVALID_REDIR_URL: _('The redirect URL given is not valid.'),
         # L10n: JWT stands for JSON Web Token and does not need to be
         # localized.
         INVALID_JWT_OBJ: _('The JWT did not decode to a JSON object.'),
@@ -122,9 +149,11 @@ def _build_legend():
         JWT_DECODE_ERR: _('Error decoding JWT.'),
         LOGIN_TIMEOUT: _('The system timed out while trying to log in.'),
         LOGOUT_TIMEOUT: _('The system timed out while trying to log out.'),
+        LOGOUT_URL_MISSING: _('The logout URL is missing from configuration.'),
         # L10n: 'postback' is a term that means a URL accepting HTTP posts.
         MALFORMED_URL: _('A URL is malformed. This could be a postback '
                          'URL or an icon URL.'),
+        MISSING_JWT: _('The JWT signature is missing or invalid.'),
         NO_ACTIVE_TRANS: _('The transaction ID was missing from the session '
                            'when processing a payment return.'),
         NO_DEFAULT_LOC:
@@ -135,18 +164,39 @@ def _build_legend():
             # L10n: First argument is the name of the key, 'reason'.
             _("The requested chargeback simulation is missing "
               "the key '{0}'.").format('reason'),
+        NO_PAY_FAILED_FUNC:
+            # L10n: First argument is the name of a function.
+            _('{0} function is undefined.').format('paymentFailed'),
+        NO_PAY_SUCCESS_FUNC:
+            # L10n: First argument is the name of a function.
+            _('{0} function is undefined').format('paymentSuccess'),
         NOTICE_ERROR: _('The notification service responded with an '
                         'error while verifying the payment notice'),
         NOTICE_EXCEPTION: _('The notification service raised an '
                             'unexpected exception while verifying the '
                             'payment notice'),
         PAY_DISABLED: _('Payments are temporarily disabled.'),
+        PIN_STATE_ERROR:
+            _('An unexpected error occurred while fetching data.'),
+        PIN_STATE_TIMEOUT: _('The request timed out fetching data.'),
+        REAUTH_LOGOUT_ERROR: _('An error occurred while trying to log out.'),
         RESOURCE_MODIFIED:
             _('The resource has been modified within the timing of the '
               'previous request. The action should be performed again.'),
+        REVERIFY_DENIED: _('Permission denied to re-verify the user.'),
+        REVERIFY_FAILED: _('Re-verifying the user failed.'),
+        REVERIFY_MISSING_PROVIDER: _('The payment provider does not exist'),
+        REVERIFY_MISSING_URL:
+            _('The re-verification URL is missing from configuration.'),
+        REVERIFY_TIMEOUT:
+            _('The request to the server timed out during re-verification.'),
         SIM_DISABLED: _('Payment simulations are disabled at this time.'),
         SIM_ONLY_KEY:
             _('This payment key can only be used to simulate purchases.'),
+        STATUS_COMPLETE_UNDEF:
+            _('Status attributes are not configured correctly.'),
+        STATUS_PENDING_UNDEF:
+            _('Status attributes are not configured correctly'),
         TRANS_CONFIG_FAILED:
             _('The configuration of the payment transaction failed.'),
         TRANS_ENDED:
@@ -156,10 +206,21 @@ def _build_legend():
         TRANS_TIMEOUT:
             _('The system timed out while waiting for a transaction '
               'to start.'),
+        UNEXPECTED_ERROR: _('An unexpected error occurred.'),
+        UNEXPECTED_STATE: _('An unexpected error occurred.'),
         UNSUPPORTED_PAY:
             _('The payment method or price point is not supported for this '
               'region or operator.'),
         USER_CANCELLED: _('The user cancelled the payment.'),
+        USER_HASH_EMPTY: _('User hash is missing from configuration.'),
+        VERIFY_DENIED: _('Permission denied to verify the user.'),
+        VERIFY_FAILED: _('Verifying the user failed.'),
+        VERIFY_MISSING_PROVIDER: _('The payment provider does not exist'),
+        VERIFY_MISSING_URL:
+            _('The verification URL is missing from configuration.'),
+        VERIFY_TIMEOUT:
+            _('The request to the server timed out during verification.'),
+        WAIT_URL_NOT_SET: _('The wait URL is missing from configration.'),
     }
 
     # Define all short field too long errors.
