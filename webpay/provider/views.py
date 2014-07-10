@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import (HttpResponseForbidden, HttpResponseNotFound,
@@ -36,6 +37,12 @@ def wait_to_finish(request, provider_name):
         return HttpResponseNotFound()
 
     trans_url = reverse('provider.transaction_status', args=[trans_uuid])
+
+    if settings.SPA_ENABLE:
+        return render(request, 'spa/index.html', {
+            'transaction_status_url': trans_url,
+            'start_view': 'wait-to-finish'})
+
     return render(request, 'provider/wait-to-finish.html',
                   {'transaction_status_url': trans_url})
 

@@ -98,6 +98,7 @@ def success(request):
 
     # Signature verification was successful; fulfill the payment.
     tasks.payment_notify.delay(request.GET.get('MerchantTransactionId'))
+
     return render(request, 'bango/success.html')
 
 
