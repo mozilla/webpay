@@ -630,16 +630,6 @@ class TestBoku(ProviderTestCase):
         kw.setdefault('mnc', '020')  # AMX
         return super(TestBoku, self).configure(**kw)
 
-    @test.utils.override_settings(SPA_ENABLE=False)
-    def test_get_finish_url_name(self):
-        eq_(self.provider.provider.get_finish_url_name(),
-            'provider.wait_to_finish')
-
-    @test.utils.override_settings(SPA_ENABLE=True)
-    def test_get_finish_url_spa(self):
-        eq_(self.provider.provider.get_finish_url_name(),
-            'spa.wait_to_finish')
-
     def test_start_transaction(self):
         boku_pay_url = 'https://site/buy'
         boku_transaction_id = 'boku-trans-id'

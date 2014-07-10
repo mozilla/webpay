@@ -637,12 +637,6 @@ class BokuProvider(PayProvider):
         # Boku does not have a products API the way Bango does.
         return None
 
-    def get_finish_url_name(self):
-        if settings.SPA_ENABLE and settings.SPA_ENABLE_URLS:
-            return 'spa.wait_to_finish'
-        else:
-            return 'provider.wait_to_finish'
-
     def create_product(self, generic_product, provider_seller, external_id,
                        product_name):
         # Boku does not have a products API the way Bango does.
@@ -679,7 +673,7 @@ class BokuProvider(PayProvider):
                 .format(mcc=mcc, mnc=mnc, r=mcc_region))
 
         provider_trans = self.api.transactions.post({
-            'forward_url': absolutify(reverse(self.get_finish_url_name(),
+            'forward_url': absolutify(reverse('provider.wait_to_finish',
                                               args=[self.name])),
             'callback_url': absolutify(reverse('provider.notification',
                                                args=[self.name])),

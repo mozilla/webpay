@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 
 import mock
 from nose.tools import eq_, raises
+from pyquery import PyQuery as pq
 from slumber.exceptions import HttpClientError
 
 from lib.solitude.constants import (
@@ -133,6 +134,15 @@ class TestWaitToFinish(ProviderTestCase):
         url = reverse('provider.transaction_status', args=[self.trans_id])
         eq_(res.context['transaction_status_url'], url)
         eq_(res.status_code, 200)
+
+    @mock.patch.object(settings, 'SPA_ENABLE', True)
+    def test_spa_wait_to_finish(self):
+        res = self.wait()
+        eq_(res.status_code, 200)
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-start-view'), 'wait-to-finish')
+        url = reverse('provider.transaction_status', args=[self.trans_id])
+        eq_(res.context['transaction_status_url'], url)
 
     def test_missing_transaction(self):
         res = self.client.get('{u}?foo=bar'.format(u=self.wait_url))

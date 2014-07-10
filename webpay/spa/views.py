@@ -12,7 +12,7 @@ log = getLogger('w.spa')
 
 
 @require_GET
-def index(request):
+def index(request, view_name=None):
     """Page that serves the static Single Page App (Spartacus)."""
 
     if not settings.SPA_ENABLE:
