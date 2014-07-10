@@ -548,7 +548,7 @@ SITE_URL = host
 # This is the URL lib.solitude.api uses to connect to the pay server. If this
 # is none the solitude api tests don't run as we currently don't have a mock
 # server for it.
-SOLITUDE_URL = os.environ.get('SOLITUDE_URL')
+SOLITUDE_URL = os.environ.get('SOLITUDE_URL', 'http://localhost:2602')
 
 # The OAuth tokens for solitude.
 SOLITUDE_OAUTH = {'key': '', 'secret': ''}
