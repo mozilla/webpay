@@ -24,6 +24,7 @@ LOGOUT_TIMEOUT = 'LOGOUT_TIMEOUT'
 LOGOUT_URL_MISSING = 'LOGOUT_URL_MISSING'
 MALFORMED_URL = 'MALFORMED_URL'
 MISSING_JWT = 'MISSING_JWT'
+MISSING_ERROR_CODE = 'MISSING_ERROR_CODE'
 NO_ACTIVE_TRANS = 'NO_ACTIVE_TRANS'
 NO_DEFAULT_LOC = 'NO_DEFAULT_LOC'
 NO_PAY_FAILED_FUNC = 'NO_PAY_FAILED_FUNC'
@@ -154,6 +155,8 @@ def _build_legend():
         MALFORMED_URL: _('A URL is malformed. This could be a postback '
                          'URL or an icon URL.'),
         MISSING_JWT: _('The JWT signature is missing or invalid.'),
+        MISSING_ERROR_CODE:
+            _('An error code was expected but was not supplied.'),
         NO_ACTIVE_TRANS: _('The transaction ID was missing from the session '
                            'when processing a payment return.'),
         NO_DEFAULT_LOC:
