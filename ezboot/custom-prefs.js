@@ -16,7 +16,7 @@ pref("dom.payment.provider.2.requestMethod", "GET");
 
 pref("dom.payment.provider.3.name", "firefoxmarketlocal");
 pref("dom.payment.provider.3.description", "localhost");
-pref("dom.payment.provider.3.uri", "http://localhost:8000/mozpay/?req=");
+pref("dom.payment.provider.3.uri", "http://localhost/mozpay/?req=");
 pref("dom.payment.provider.3.type", "mozilla-local/payments/pay/v1");
 pref("dom.payment.provider.3.requestMethod", "GET");
 
