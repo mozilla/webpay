@@ -116,6 +116,24 @@ class TestProviderSuccess(ProviderTestCase):
         res = self.error()
         eq_(res.status_code, 400)
 
+    @mock.patch.object(settings, 'SPA_ENABLE', True)
+    def test_success_spa(self):
+        self.trust_notice()
+        res = self.success()
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-start-view'), 'payment-success')
+        self.assertTemplateUsed('spa/index.html')
+
+    @mock.patch.object(settings, 'SPA_ENABLE', True)
+    def test_error_spa(self):
+        self.trust_notice()
+        res = self.error()
+        eq_(res.status_code, 400)
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-start-view'), 'payment-failed')
+        eq_(doc('body').attr('data-error-code'), 'EXT_ERROR')
+        self.assertTemplateUsed('spa/index.html')
+
 
 class TestWaitToFinish(ProviderTestCase):
 

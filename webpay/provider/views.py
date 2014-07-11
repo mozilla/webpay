@@ -86,6 +86,11 @@ def success(request, provider_name):
         return system_error(request, code=m.code)
 
     tasks.payment_notify.delay(transaction_id)
+
+    if settings.SPA_ENABLE:
+        return render(request, 'spa/index.html',
+                      {'start_view': 'payment-success'})
+
     return render(request, 'provider/success.html')
 
 
