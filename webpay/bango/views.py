@@ -99,6 +99,10 @@ def success(request):
     # Signature verification was successful; fulfill the payment.
     tasks.payment_notify.delay(request.GET.get('MerchantTransactionId'))
 
+    if settings.SPA_ENABLE:
+        return render(request, 'spa/index.html',
+                      {'start_view': 'payment-success'})
+
     return render(request, 'bango/success.html')
 
 
