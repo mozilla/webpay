@@ -73,6 +73,12 @@ def custom_error(request, user_message, code=None, status=400):
             content=json.dumps(error),
             content_type='application/json; charset=utf-8',
             status=status)
+
+    if settings.SPA_ENABLE:
+        return render(request, 'spa/index.html',
+                      {'start_view': 'payment-failed',
+                       'error_code': code}, status=status)
+
     return render(request, 'error.html', error, status=status)
 
 

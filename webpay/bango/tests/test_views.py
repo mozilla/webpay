@@ -2,12 +2,15 @@ import base64
 import urllib
 
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 import mock
 from mock import ANY
 from nose.tools import eq_
+from pyquery import PyQuery as pq
 from slumber.exceptions import HttpClientError
 from test_utils import TestCase
+
 
 from webpay.base.tests import BasicSessionCase
 
@@ -90,6 +93,22 @@ class TestBangoReturn(BasicSessionCase):
     def test_not_ok(self, payment_notify, slumber):
         self.call(overrides={'ResponseCode': 'NOT_OK'}, url='bango.success',
                   expected_status=400)
+
+    @mock.patch.object(settings, 'SPA_ENABLE', True)
+    def test_success_spa(self, payment_notify, slumber):
+        res = self.call()
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-start-view'), 'payment-success')
+        self.assertTemplateUsed('spa/index.html')
+
+    @mock.patch.object(settings, 'SPA_ENABLE', True)
+    def test_error_spa(self, payment_notify, slumber):
+        res = self.call(overrides={'ResponseCode': 'NOT_OK'},
+                        url='bango.error', expected_status=400)
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-start-view'), 'payment-failed')
+        eq_(doc('body').attr('data-error-code'), 'BANGO_ERROR')
+        self.assertTemplateUsed('spa/index.html')
 
 
 class TestNotification(TestCase):
