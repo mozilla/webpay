@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django_paranoia.decorators import require_GET
 
 from lib.solitude.api import client, ProviderHelper
-from lib.solitude.constants import STATUS_COMPLETED
+from lib.solitude.constants import PROVIDERS_INVERTED, STATUS_COMPLETED
 from webpay.base import dev_messages as msg
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
@@ -66,7 +66,8 @@ def transaction_status(request, transaction_uuid):
 
     try:
         trans = client.get_transaction(transaction_uuid)
-        return {'status': trans['status'], 'url': None}
+        return {'status': trans['status'], 'url': None,
+                'provider': PROVIDERS_INVERTED[trans['provider']]}
     except ObjectDoesNotExist:
         log.info('Cannot get transaction status; not found: {t}'
                  .format(t=transaction_uuid))
