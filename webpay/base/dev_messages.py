@@ -5,6 +5,9 @@ import tower
 from tower import ugettext as _
 
 
+# Some of these codes are only referenced
+# in SPA: https://github.com/mozilla/spartacus/ .
+
 BAD_BANGO_CODE = 'BAD_BANGO_CODE'
 BAD_ICON_KEY = 'BAD_ICON_KEY'
 BAD_JWT_ISSUER = 'BAD_JWT_ISSUER'
@@ -35,6 +38,7 @@ NOTICE_EXCEPTION = 'NOTICE_EXCEPTION'
 PAY_DISABLED = 'PAY_DISABLED'
 PIN_STATE_ERROR = 'PIN_STATE_ERROR'
 PIN_STATE_TIMEOUT = 'PIN_STATE_TIMEOUT'
+PROVIDER_LOGOUT_FAIL = 'PROVIDER_LOGOUT_FAIL'
 REAUTH_LOGOUT_ERROR = 'REAUTH_LOGOUT_ERROR'
 RESOURCE_MODIFIED = 'RESOURCE_MODIFIED'
 REVERIFY_DENIED = 'REVERIFY_DENIED'
@@ -111,8 +115,6 @@ class DevMessage(Exception):
 
 def _build_legend():
     _legend = {
-        # Some of these codes are only referenced
-        # in SPA: https://github.com/mozilla/spartacus/ .
         BAD_BANGO_CODE:
             _('Mozilla received an invalid code from the payment '
               'provider (Bango) when processing the payment'),
@@ -182,6 +184,8 @@ def _build_legend():
         PIN_STATE_ERROR:
             _('An unexpected error occurred while fetching data.'),
         PIN_STATE_TIMEOUT: _('The request timed out fetching data.'),
+        PROVIDER_LOGOUT_FAIL:
+            _('Failed to log out of the payment provider.'),
         REAUTH_LOGOUT_ERROR: _('An error occurred while trying to log out.'),
         RESOURCE_MODIFIED:
             _('The resource has been modified within the timing of the '

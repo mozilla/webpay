@@ -10,7 +10,8 @@ from pyquery import PyQuery as pq
 from slumber.exceptions import HttpClientError
 
 from lib.solitude.constants import (
-    STATUS_CANCELLED, STATUS_COMPLETED, STATUS_FAILED, STATUS_PENDING)
+    PROVIDER_BANGO, PROVIDERS_INVERTED, STATUS_CANCELLED, STATUS_COMPLETED,
+    STATUS_FAILED, STATUS_PENDING)
 from webpay.base import dev_messages as msg
 from webpay.base.tests import BasicSessionCase
 
@@ -180,13 +181,17 @@ class TestTransactionStatus(ProviderTestCase):
         eq_(res.status_code, 403)
 
     def test_pending(self):
+        provider = PROVIDER_BANGO
         self.slumber.generic.transaction.get_object.return_value = {
             'uuid': self.trans_id,
             'notes': '{}',
+            'provider': provider,
             'status': STATUS_PENDING}
         res = self.status()
         eq_(res.status_code, 203)
-        eq_(json.loads(res.content), {'status': STATUS_PENDING, 'url': None})
+        eq_(json.loads(res.content),
+            {'status': STATUS_PENDING, 'url': None,
+             'provider': PROVIDERS_INVERTED[provider]})
         self.slumber.generic.transaction.get_object.assert_called_with(
             uuid=self.trans_id)
 
