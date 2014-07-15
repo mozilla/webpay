@@ -91,7 +91,7 @@ PAY_URLS = {
     # Hook into the production web flow.
     'bango': {
         'base': 'https://mozilla.bango.net',
-        'pay': '/mozpayments/?bcid2={uid_pay}&X-Bango-Use-Merchant-Identifier=true',
+        'pay': '/mozpayments/?bcid={uid_pay}',
         'logout': '/mozpayments/logout/',
     },
     'reference': {
