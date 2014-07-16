@@ -460,7 +460,6 @@ class TestConfigureTX(ConfiguredTransactionTest):
         eq_(self.client.session.get('notes', {}).get('network', {}), {})
 
 
-@mock.patch('lib.solitude.api.client.get_transaction')
 class TestWaitToStart(Base):
 
     def setUp(self):
@@ -474,25 +473,41 @@ class TestWaitToStart(Base):
         self.session['trans_id'] = 'some:trans'
         self.save_session()
 
-    def test_redirect_when_ready(self, get_transaction):
-        pay_url = 'https://bango/pay'
-        get_transaction.return_value = {
+        p = mock.patch('lib.solitude.api.client.get_transaction')
+        self.get_transaction = p.start()
+        self.addCleanup(p.stop)
+
+    def fake_transaction(self, **kw):
+        trans = {
             'status': constants.STATUS_PENDING,
             'uid_pay': 123,
-            'pay_url': pay_url
+            'pay_url': 'https://bango/pay',
+            'provider': constants.PROVIDER_BANGO
         }
+        trans.update(kw)
+        self.get_transaction.return_value = trans
+
+    def test_no_trans_in_session(self):
+        del self.session['trans_id']
+        self.save_session()
+        res = self.client.get(self.start)
+        eq_(res.status_code, 400, res)
+
+    def test_redirect_when_ready(self):
+        pay_url = 'https://bango/pay'
+        self.fake_transaction(status=constants.STATUS_PENDING,
+                              pay_url=pay_url)
         self.session['payment_start'] = time.time()
         self.save_session()
         res = self.client.get(self.wait)
         eq_(res['Location'], pay_url)
 
-    def test_start_ready(self, get_transaction):
+    def test_start_ready(self):
+        provider = constants.PROVIDER_BANGO
         pay_url = 'https://bango/pay'
-        get_transaction.return_value = {
-            'status': constants.STATUS_PENDING,
-            'uid_pay': 123,
-            'pay_url': pay_url,
-        }
+        self.fake_transaction(pay_url=pay_url,
+                              provider=provider,
+                              status=constants.STATUS_PENDING)
         self.session['payment_start'] = time.time()
         self.save_session()
         res = self.client.get(self.start)
@@ -500,43 +515,36 @@ class TestWaitToStart(Base):
         data = json.loads(res.content)
         eq_(data['url'], pay_url)
         eq_(data['status'], constants.STATUS_PENDING)
+        eq_(data['provider'], constants.PROVIDERS_INVERTED[provider])
 
-    def test_start_not_there(self, get_transaction):
-        get_transaction.side_effect = ObjectDoesNotExist
+    def test_start_not_there(self):
+        self.get_transaction.side_effect = ObjectDoesNotExist
         res = self.client.get(self.start)
         eq_(res.status_code, 200, res.content)
         data = json.loads(res.content)
         eq_(data['url'], None)
         eq_(data['status'], None)
 
-    def test_start_not_ready(self, get_transaction):
-        get_transaction.return_value = {
-            'status': constants.STATUS_RECEIVED,
-            'uid_pay': 123,
-            'pay_url': 'https://bango/pay',
-        }
+    def test_start_not_ready(self):
+        self.fake_transaction(status=constants.STATUS_RECEIVED)
         res = self.client.get(self.start)
         eq_(res.status_code, 200, res.content)
         data = json.loads(res.content)
         eq_(data['url'], None)
         eq_(data['status'], constants.STATUS_RECEIVED)
 
-    def wait_ended_transaction(self, get_transaction, status):
+    def wait_ended_transaction(self, status):
         with self.settings(VERBOSE_LOGGING=True):
-            get_transaction.return_value = {
-                'status': status,
-                'uid_pay': 123,
-                'pay_url': 'https://bango/pay',
-            }
+            self.fake_transaction(status=status)
             res = self.client.get(self.wait)
             self.assertContains(res, msg.TRANS_ENDED,
                                 status_code=400)
 
-    def test_wait_ended_transaction(self, get_transaction):
+    def test_wait_ended_transaction(self):
         for status in constants.STATUS_ENDED:
-            self.wait_ended_transaction(get_transaction, status)
+            self.wait_ended_transaction(status)
 
-    def test_wait(self, get_transaction):
+    def test_wait(self):
         res = self.client.get(self.wait)
         eq_(res.status_code, 200)
         self.assertContains(res, 'Setting up payment')

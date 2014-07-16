@@ -368,17 +368,24 @@ def trans_start_url(request):
     """
     JSON handler to get the Bango payment URL to start a transaction.
     """
+    trans = None
+    trans_id = request.session.get('trans_id')
+    data = {'url': None, 'status': None}
+
+    if not trans_id:
+        log.error('trans_start_url(): no transaction ID in session')
+        return http.HttpResponseBadRequest()
     try:
         statsd.incr('purchase.payment_time.retry')
         with statsd.timer('purchase.payment_time.get_transaction'):
-            trans = solitude.get_transaction(request.session['trans_id'])
+            trans = solitude.get_transaction(trans_id)
+        data['status'] = trans['status']
+        data['provider'] = constants.PROVIDERS_INVERTED[trans['provider']]
     except ObjectDoesNotExist:
         log.error('trans_start_url() transaction does not exist: {t}'
-                  .format(t=request.session['trans_id']))
-        trans = {'status': None}
+                  .format(t=trans_id))
 
-    data = {'url': None, 'status': trans['status']}
-    if trans['status'] == constants.STATUS_PENDING:
+    if data['status'] == constants.STATUS_PENDING:
         statsd.incr('purchase.payment_time.success')
         payment_start = request.session.get('payment_start', False)
         if payment_start:
