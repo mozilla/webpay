@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 09:24-0700\n"
-"PO-Revision-Date: 2014-05-29 15:06+0000\n"
+"PO-Revision-Date: 2014-07-16 22:50+0000\n"
 "Last-Translator: Ton <tonnes.mb@gmail.com>\n"
 "Language-Team: none\n"
 "Language: nl\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1401375971.0\n"
+"X-POOTLE-MTIME: 1405551057.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -75,7 +75,7 @@ msgstr "De JWT-handtekening is ongeldig of de JWT is onjuist."
 
 #: webpay/base/dev_messages.py:146
 msgid "The redirect URL given is not valid."
-msgstr ""
+msgstr "De opgegeven omleidings-URL is niet geldig."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -99,7 +99,7 @@ msgstr "Het systeem heeft een time-out gegeven tijdens het afmelden."
 
 #: webpay/base/dev_messages.py:155
 msgid "The logout URL is missing from configuration."
-msgstr ""
+msgstr "De afmeldings-URL ontbreekt in de configuratie."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:157
@@ -108,11 +108,11 @@ msgstr "Een URL is onjuist. Dit is mogelijk een postback-URL of een URL van een 
 
 #: webpay/base/dev_messages.py:159
 msgid "The JWT signature is missing or invalid."
-msgstr ""
+msgstr "De JWT-handtekening ontbreekt of is ongeldig."
 
 #: webpay/base/dev_messages.py:161
 msgid "An error code was expected but was not supplied."
-msgstr ""
+msgstr "Er werd een foutcode verwacht maar niet opgegeven."
 
 #: webpay/base/dev_messages.py:162
 msgid "The transaction ID was missing from the session when processing a payment return."
@@ -131,12 +131,12 @@ msgstr "De aangevraagde restitutiesimulatie mist de sleutel ‘{0}’."
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:174
 msgid "{0} function is undefined."
-msgstr ""
+msgstr "{0}-functie is niet gedefinieerd."
 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:177
 msgid "{0} function is undefined"
-msgstr ""
+msgstr "{0}-functie is niet gedefinieerd"
 
 #: webpay/base/dev_messages.py:178
 msgid "The notification service responded with an error while verifying the payment notice"
@@ -152,19 +152,19 @@ msgstr "Betalingen zijn tijdelijk uitgeschakeld."
 
 #: webpay/base/dev_messages.py:185
 msgid "An unexpected error occurred while fetching data."
-msgstr ""
+msgstr "Er is een onverwachte fout opgetreden tijdens het ophalen van gegevens."
 
 #: webpay/base/dev_messages.py:186
 msgid "The request timed out fetching data."
-msgstr ""
+msgstr "De aanvraag is verlopen tijdens het ophalen van gegevens."
 
 #: webpay/base/dev_messages.py:188
 msgid "Failed to log out of the payment provider."
-msgstr ""
+msgstr "Afmelden bij de betalingsprovider is mislukt."
 
 #: webpay/base/dev_messages.py:189
 msgid "An error occurred while trying to log out."
-msgstr ""
+msgstr "Er is een fout opgetreden tijdens het afmelden."
 
 #: webpay/base/dev_messages.py:191
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
@@ -172,23 +172,23 @@ msgstr "De hulpbron is gewijzigd binnen het tijdvak van het voorgaande verzoek. 
 
 #: webpay/base/dev_messages.py:193
 msgid "Permission denied to re-verify the user."
-msgstr ""
+msgstr "Toestemming tot opnieuw verifiëren van de gebruiker geweigerd."
 
 #: webpay/base/dev_messages.py:194
 msgid "Re-verifying the user failed."
-msgstr ""
+msgstr "Opnieuw verifiëren van de gebruiker mislukt."
 
 #: webpay/base/dev_messages.py:195 webpay/base/dev_messages.py:225
 msgid "The payment provider does not exist"
-msgstr ""
+msgstr "De betalingsprovider bestaat niet."
 
 #: webpay/base/dev_messages.py:197
 msgid "The re-verification URL is missing from configuration."
-msgstr ""
+msgstr "De URL voor opnieuw verifiëren ontbreekt in de configuratie."
 
 #: webpay/base/dev_messages.py:199
 msgid "The request to the server timed out during re-verification."
-msgstr ""
+msgstr "De aanvraag bij de server is verlopen tijdens het opnieuw verifiëren."
 
 #: webpay/base/dev_messages.py:200
 msgid "Payment simulations are disabled at this time."
@@ -200,11 +200,11 @@ msgstr "Deze betalingssleutel kan alleen voor aankoopsimulaties worden gebruikt.
 
 #: webpay/base/dev_messages.py:204
 msgid "Status attributes are not configured correctly."
-msgstr ""
+msgstr "Statuskenmerken zijn niet juist geconfigureerd."
 
 #: webpay/base/dev_messages.py:206
 msgid "Status attributes are not configured correctly"
-msgstr ""
+msgstr "Statuskenmerken zijn niet juist geconfigureerd"
 
 #: webpay/base/dev_messages.py:208
 msgid "The configuration of the payment transaction failed."
@@ -224,7 +224,7 @@ msgstr "Het systeem heeft een time-out gegeven tijdens het wachten op het begin 
 
 #: webpay/base/dev_messages.py:216 webpay/base/dev_messages.py:217
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Er is een onverwachte fout opgetreden."
 
 #: webpay/base/dev_messages.py:219
 msgid "The payment method or price point is not supported for this region or operator."
@@ -236,27 +236,27 @@ msgstr "De gebruiker heeft de betaling geannuleerd."
 
 #: webpay/base/dev_messages.py:222
 msgid "User hash is missing from configuration."
-msgstr ""
+msgstr "Gebruikershash ontbreekt in configuratie."
 
 #: webpay/base/dev_messages.py:223
 msgid "Permission denied to verify the user."
-msgstr ""
+msgstr "Toestemming tot verifiëren van de gebruiker geweigerd."
 
 #: webpay/base/dev_messages.py:224
 msgid "Verifying the user failed."
-msgstr ""
+msgstr "Verifiëren van de gebruiker mislukt."
 
 #: webpay/base/dev_messages.py:227
 msgid "The verification URL is missing from configuration."
-msgstr ""
+msgstr "De verificatie-URL ontbreekt in de configuratie."
 
 #: webpay/base/dev_messages.py:229
 msgid "The request to the server timed out during verification."
-msgstr ""
+msgstr "De aanvraag bij de server is verlopen tijdens de verificatie."
 
 #: webpay/base/dev_messages.py:230
 msgid "The wait URL is missing from configration."
-msgstr ""
+msgstr "De wacht-URL ontbreekt in de configuratie."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
