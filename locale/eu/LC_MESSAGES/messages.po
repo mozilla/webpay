@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-28 09:42-0700\n"
+"POT-Creation-Date: 2014-07-16 09:24-0700\n"
 "PO-Revision-Date: 2014-05-28 20:18+0000\n"
 "Last-Translator: Ibai <ibai@oihanguren.com>\n"
 "Language-Team: 89578-OEM-7332157-00211\n"
@@ -23,155 +23,253 @@ msgstr "Ordainketa bertan behera utzita."
 msgid "Your payment is complete."
 msgstr "Ordainketa burutu da."
 
-#: webpay/base/dev_messages.py:90
+#: webpay/base/dev_messages.py:119
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
 msgstr "Ordainketa prozesatzerakoan, Mozillak kode baliogabea jaso du ordainketa-hornitzailearengandik (Bango)"
 
 #. L10n: First argument is an example of the proper key format.
-#: webpay/base/dev_messages.py:94
+#: webpay/base/dev_messages.py:123
 msgid "An image icon key was not an object. Correct example: {0}"
 msgstr "Irudi-ikonoaren gako bat ez zen objektua. Adibide zuzena: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:98
+#: webpay/base/dev_messages.py:127
 msgid "No one has been registered for this JWT issuer."
 msgstr "Ez da inor erregistratu JWT jaulkitzaile honentzat."
 
-#: webpay/base/dev_messages.py:99
+#: webpay/base/dev_messages.py:128
 msgid "The price point is unknown or invalid."
 msgstr "Prezioa ezezaguna edo baliogabea da."
 
-#: webpay/base/dev_messages.py:100
+#: webpay/base/dev_messages.py:129
 msgid "The request to begin payment was invalid."
 msgstr "Ordainketa hasteko eskaera baliogabea izan da."
 
-#: webpay/base/dev_messages.py:102
+#: webpay/base/dev_messages.py:131
 msgid "The requested payment simulation result is not supported."
 msgstr "Eskatutako ordainketa-simulazioaren emaitza ez dago onartuta."
 
-#: webpay/base/dev_messages.py:104
+#: webpay/base/dev_messages.py:133
 msgid "The payment provider (Bango) returned an error while processing the payment"
 msgstr "Ordainketa-hornitzaileak (Bango) errore bat bueltatu du ordainketa prozesatzerakoan"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:108
+#: webpay/base/dev_messages.py:137
 msgid "The JWT has expired."
 msgstr "JWTa iraungi da."
 
-#: webpay/base/dev_messages.py:110
+#: webpay/base/dev_messages.py:139
 msgid "The external payment processor returned an error while handling the payment"
 msgstr "Kanpoko ordainketa-prozesadoreak errore bat itzuli du ordainketa kudeatzerakoan"
 
-#: webpay/base/dev_messages.py:112
+#: webpay/base/dev_messages.py:141
 msgid "An internal web request timed out."
 msgstr "Barneko web-eskaera bat denboraz kanpo geratu da."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:116
+#: webpay/base/dev_messages.py:145
 msgid "The JWT signature is invalid or the JWT is malformed."
 msgstr "JWT sinadura baliogabea da edo JWTa gaizki osatuta dago."
 
+#: webpay/base/dev_messages.py:146
+msgid "The redirect URL given is not valid."
+msgstr ""
+
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:119
+#: webpay/base/dev_messages.py:149
 msgid "The JWT did not decode to a JSON object."
 msgstr "JWTa ez da JSON objektu batera deskodetu."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
-#: webpay/base/dev_messages.py:122
+#: webpay/base/dev_messages.py:152
 msgid "Error decoding JWT."
 msgstr "Errorea JWTa deskodetzean."
 
-#: webpay/base/dev_messages.py:123
+#: webpay/base/dev_messages.py:153
 msgid "The system timed out while trying to log in."
 msgstr "Sistema denboraz kanpo geratu da saioa hasten saiatzean."
 
-#: webpay/base/dev_messages.py:124
+#: webpay/base/dev_messages.py:154
 msgid "The system timed out while trying to log out."
 msgstr "Sistema denboraz kanpo geratu da saioa amaitzen saiatzean."
 
+#: webpay/base/dev_messages.py:155
+msgid "The logout URL is missing from configuration."
+msgstr ""
+
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
-#: webpay/base/dev_messages.py:126
+#: webpay/base/dev_messages.py:157
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
 msgstr "URL bat gaizki osatuta dago. Publikazio URL bat edo ikono URL bat izan beharko litzake."
 
-#: webpay/base/dev_messages.py:128
+#: webpay/base/dev_messages.py:159
+msgid "The JWT signature is missing or invalid."
+msgstr ""
+
+#: webpay/base/dev_messages.py:161
+msgid "An error code was expected but was not supplied."
+msgstr ""
+
+#: webpay/base/dev_messages.py:162
 msgid "The transaction ID was missing from the session when processing a payment return."
 msgstr "Transakzio IDa falta zen saioan ordainketaren itzulkina prozesatzerakoan."
 
 #. L10n: First and second arguements are the names of keys.
-#: webpay/base/dev_messages.py:132
+#: webpay/base/dev_messages.py:166
 msgid "If {0} is defined, then you must also define {1}."
 msgstr "{0} definitzen bada, {1} ere definitu beharra dago."
 
 #. L10n: First argument is the name of the key, 'reason'.
-#: webpay/base/dev_messages.py:136
+#: webpay/base/dev_messages.py:170
 msgid "The requested chargeback simulation is missing the key '{0}'."
 msgstr "Eskatutako kobrantza-ezeztapenaren simulazioak '{0}' gakoa falta du."
 
-#: webpay/base/dev_messages.py:138
+#. L10n: First argument is the name of a function.
+#: webpay/base/dev_messages.py:174
+msgid "{0} function is undefined."
+msgstr ""
+
+#. L10n: First argument is the name of a function.
+#: webpay/base/dev_messages.py:177
+msgid "{0} function is undefined"
+msgstr ""
+
+#: webpay/base/dev_messages.py:178
 msgid "The notification service responded with an error while verifying the payment notice"
 msgstr "Jakinarazpen-zerbitzuak errore bat bueltatu du ordainketaren jakinarazpena egiaztatzerakoan"
 
-#: webpay/base/dev_messages.py:140
+#: webpay/base/dev_messages.py:180
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "Jakinarazpen-zerbitzuak ustegabeko salbuespen bat eragin du ordainketaren jakinarazpena egiaztatzerakoan"
 
-#: webpay/base/dev_messages.py:143 webpay/pay/views.py:54
+#: webpay/base/dev_messages.py:183 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "Ordainketak aldi baterako desgaituta daude."
 
-#: webpay/base/dev_messages.py:145
+#: webpay/base/dev_messages.py:185
+msgid "An unexpected error occurred while fetching data."
+msgstr ""
+
+#: webpay/base/dev_messages.py:186
+msgid "The request timed out fetching data."
+msgstr ""
+
+#: webpay/base/dev_messages.py:188
+msgid "Failed to log out of the payment provider."
+msgstr ""
+
+#: webpay/base/dev_messages.py:189
+msgid "An error occurred while trying to log out."
+msgstr ""
+
+#: webpay/base/dev_messages.py:191
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
 msgstr "Baliabidea aurreko eskaerari esleitutako denboran aldatu da. Ekintza berriro burutu beharko da."
 
-#: webpay/base/dev_messages.py:147
+#: webpay/base/dev_messages.py:193
+msgid "Permission denied to re-verify the user."
+msgstr ""
+
+#: webpay/base/dev_messages.py:194
+msgid "Re-verifying the user failed."
+msgstr ""
+
+#: webpay/base/dev_messages.py:195 webpay/base/dev_messages.py:225
+msgid "The payment provider does not exist"
+msgstr ""
+
+#: webpay/base/dev_messages.py:197
+msgid "The re-verification URL is missing from configuration."
+msgstr ""
+
+#: webpay/base/dev_messages.py:199
+msgid "The request to the server timed out during re-verification."
+msgstr ""
+
+#: webpay/base/dev_messages.py:200
 msgid "Payment simulations are disabled at this time."
 msgstr "Une honetan ordainketa-simulazioak desgaituta daude."
 
-#: webpay/base/dev_messages.py:149
+#: webpay/base/dev_messages.py:202
 msgid "This payment key can only be used to simulate purchases."
 msgstr "Ordainketa-gako hau erosketak simulatzeko soilik erabil daiteke."
 
-#: webpay/base/dev_messages.py:151
+#: webpay/base/dev_messages.py:204
+msgid "Status attributes are not configured correctly."
+msgstr ""
+
+#: webpay/base/dev_messages.py:206
+msgid "Status attributes are not configured correctly"
+msgstr ""
+
+#: webpay/base/dev_messages.py:208
 msgid "The configuration of the payment transaction failed."
 msgstr "Ordainketa-transakzioaren konfigurazioak huts egin du."
 
-#: webpay/base/dev_messages.py:153
+#: webpay/base/dev_messages.py:210
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr "Erosketa ezin izan da burutu, uneko transakzioa dagoeneko amaitu delako."
 
-#: webpay/base/dev_messages.py:155
+#: webpay/base/dev_messages.py:212
 msgid "No transaction ID could be found."
 msgstr "Ezin izan da transakzio IDrik aurkitu."
 
-#: webpay/base/dev_messages.py:157
+#: webpay/base/dev_messages.py:214
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "Sistema denboraz kanpo geratu da transakzioa hasteko zain zegoenean."
 
-#: webpay/base/dev_messages.py:160
+#: webpay/base/dev_messages.py:216 webpay/base/dev_messages.py:217
+msgid "An unexpected error occurred."
+msgstr ""
+
+#: webpay/base/dev_messages.py:219
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr "Ordainketa-metodoa edo prezioa ez dago onartuta herrialde edo operadore honentzat."
 
-#: webpay/base/dev_messages.py:162
+#: webpay/base/dev_messages.py:221
 msgid "The user cancelled the payment."
 msgstr "Erabiltzaileak ordainketa bertan behera utzi du."
 
+#: webpay/base/dev_messages.py:222
+msgid "User hash is missing from configuration."
+msgstr ""
+
+#: webpay/base/dev_messages.py:223
+msgid "Permission denied to verify the user."
+msgstr ""
+
+#: webpay/base/dev_messages.py:224
+msgid "Verifying the user failed."
+msgstr ""
+
+#: webpay/base/dev_messages.py:227
+msgid "The verification URL is missing from configuration."
+msgstr ""
+
+#: webpay/base/dev_messages.py:229
+msgid "The request to the server timed out during verification."
+msgstr ""
+
+#: webpay/base/dev_messages.py:230
+msgid "The wait URL is missing from configration."
+msgstr ""
+
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
-#: webpay/base/dev_messages.py:169
+#: webpay/base/dev_messages.py:237
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "\"{0}\" gakoarentzako balioak gehienezko luzeera ({1}) gainditu du"
 
-#: webpay/base/utils.py:56
+#: webpay/base/utils.py:57
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr "Errore bat gertatu da ordainketa konfiguratzean. Saiatu berriro edo jarri aplikazioarekin harremanetan erroreak irauten badu."
 
-#: webpay/base/utils.py:62
+#: webpay/base/utils.py:63
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr "Barne-errore bat gertatu da ordainketa prozesatzerakoan. Saiatu berriro edo jarri Mozillarekin harremanetan erroreak irauten badu."
 
@@ -277,7 +375,7 @@ msgstr "Simulatu ordainketa bat"
 msgid "Default network"
 msgstr "Sare lehenetsia"
 
-#: webpay/pay/views.py:212 webpay/pin/views.py:93
+#: webpay/pay/views.py:215 webpay/pin/views.py:96
 msgid "Enter Pin"
 msgstr "Idatzi PINa"
 
@@ -329,19 +427,19 @@ msgstr "Okerreko PINa"
 msgid "Pins do not match."
 msgstr "PINak ez datoz bat."
 
-#: webpay/pin/views.py:46 webpay/testing/views.py:25
+#: webpay/pin/views.py:49 webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "Sortu PINa"
 
-#: webpay/pin/views.py:68 webpay/pin/views.py:185
+#: webpay/pin/views.py:71 webpay/pin/views.py:188
 msgid "Confirm Pin"
 msgstr "Berretsi PINa"
 
-#: webpay/pin/views.py:131 webpay/pin/views.py:157 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:134 webpay/pin/views.py:160 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Berrezarri PINa"
 
-#: webpay/pin/views.py:178
+#: webpay/pin/views.py:181
 msgid "Pin reset"
 msgstr "PINa berrezarri da"
 
@@ -379,6 +477,6 @@ msgstr "Berrezarri"
 msgid "Verifying payment&hellip;"
 msgstr "Ordainketa egiaztatzen&hellip;"
 
-#: webpay/spa/templates/spa/index.html:29
+#: webpay/spa/templates/spa/index.html:45
 msgid "Loading..."
 msgstr "Kargatzen..."
