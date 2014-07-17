@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 09:24-0700\n"
-"PO-Revision-Date: 2014-05-28 18:04-0400\n"
+"PO-Revision-Date: 2014-07-17 09:21-0400\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -74,7 +74,7 @@ msgstr "JWT の署名が不正か、JWT の形式が間違っています。"
 
 #: webpay/base/dev_messages.py:146
 msgid "The redirect URL given is not valid."
-msgstr ""
+msgstr "入力されたリダイレクト URL が正しくありません。"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -98,7 +98,7 @@ msgstr "ログアウト試行中にシステムがタイムアウトしました
 
 #: webpay/base/dev_messages.py:155
 msgid "The logout URL is missing from configuration."
-msgstr ""
+msgstr "ログアウト URL が設定に見つかりません。"
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:157
@@ -107,11 +107,11 @@ msgstr "URL の形式が間違っています。これはポストバック URL 
 
 #: webpay/base/dev_messages.py:159
 msgid "The JWT signature is missing or invalid."
-msgstr ""
+msgstr "JWT 署名が見つからないか正しくありません。"
 
 #: webpay/base/dev_messages.py:161
 msgid "An error code was expected but was not supplied."
-msgstr ""
+msgstr "エラーコードが期待されていますが提供されていません。"
 
 #: webpay/base/dev_messages.py:162
 msgid "The transaction ID was missing from the session when processing a payment return."
@@ -130,12 +130,12 @@ msgstr "リクエストされたチャージバックシミュレーションに
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:174
 msgid "{0} function is undefined."
-msgstr ""
+msgstr "{0} 関数は未定義です。"
 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:177
 msgid "{0} function is undefined"
-msgstr ""
+msgstr "{0} 関数は未定義です"
 
 #: webpay/base/dev_messages.py:178
 msgid "The notification service responded with an error while verifying the payment notice"
@@ -151,19 +151,19 @@ msgstr "決済は一時的に無効化されています。"
 
 #: webpay/base/dev_messages.py:185
 msgid "An unexpected error occurred while fetching data."
-msgstr ""
+msgstr "データの取得中に予期せぬエラーが発生しました。"
 
 #: webpay/base/dev_messages.py:186
 msgid "The request timed out fetching data."
-msgstr ""
+msgstr "データの取得中にリクエストがタイムアウトしました。"
 
 #: webpay/base/dev_messages.py:188
 msgid "Failed to log out of the payment provider."
-msgstr ""
+msgstr "決済プロバイダからのログアウトに失敗しました。"
 
 #: webpay/base/dev_messages.py:189
 msgid "An error occurred while trying to log out."
-msgstr ""
+msgstr "ログアウト中にエラーが発生しました。"
 
 #: webpay/base/dev_messages.py:191
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
@@ -171,23 +171,23 @@ msgstr "前回のリクエスト以降リソースが変更されているため
 
 #: webpay/base/dev_messages.py:193
 msgid "Permission denied to re-verify the user."
-msgstr ""
+msgstr "ユーザの再検証を行う権限がありません。"
 
 #: webpay/base/dev_messages.py:194
 msgid "Re-verifying the user failed."
-msgstr ""
+msgstr "ユーザの再検証に失敗しました。"
 
 #: webpay/base/dev_messages.py:195 webpay/base/dev_messages.py:225
 msgid "The payment provider does not exist"
-msgstr ""
+msgstr "検証プロバイダが存在しません"
 
 #: webpay/base/dev_messages.py:197
 msgid "The re-verification URL is missing from configuration."
-msgstr ""
+msgstr "再検証 URL が設定に見つかりません。"
 
 #: webpay/base/dev_messages.py:199
 msgid "The request to the server timed out during re-verification."
-msgstr ""
+msgstr "再検証中にサーバへのリクエストがタイムアウトしました。"
 
 #: webpay/base/dev_messages.py:200
 msgid "Payment simulations are disabled at this time."
@@ -199,11 +199,11 @@ msgstr "この決済キーはシミュレーション購入専用です。"
 
 #: webpay/base/dev_messages.py:204
 msgid "Status attributes are not configured correctly."
-msgstr ""
+msgstr "ステータス属性が適切に設定されていません。"
 
 #: webpay/base/dev_messages.py:206
 msgid "Status attributes are not configured correctly"
-msgstr ""
+msgstr "ステータス属性が適切に設定されていません"
 
 #: webpay/base/dev_messages.py:208
 msgid "The configuration of the payment transaction failed."
@@ -223,7 +223,7 @@ msgstr "トランザクションの開始を待っている間にシステムが
 
 #: webpay/base/dev_messages.py:216 webpay/base/dev_messages.py:217
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "予期せぬエラーが発生しました。"
 
 #: webpay/base/dev_messages.py:219
 msgid "The payment method or price point is not supported for this region or operator."
@@ -235,27 +235,27 @@ msgstr "ユーザが決済をキャンセルしました。"
 
 #: webpay/base/dev_messages.py:222
 msgid "User hash is missing from configuration."
-msgstr ""
+msgstr "ユーザハッシュが設定に見つかりません。"
 
 #: webpay/base/dev_messages.py:223
 msgid "Permission denied to verify the user."
-msgstr ""
+msgstr "ユーザの検証を行う権限がありません。"
 
 #: webpay/base/dev_messages.py:224
 msgid "Verifying the user failed."
-msgstr ""
+msgstr "ユーザの検証に失敗しました。"
 
 #: webpay/base/dev_messages.py:227
 msgid "The verification URL is missing from configuration."
-msgstr ""
+msgstr "検証 URL が設定に見つかりません。"
 
 #: webpay/base/dev_messages.py:229
 msgid "The request to the server timed out during verification."
-msgstr ""
+msgstr "検証中にサーバへのリクエストがタイムアウトしました。"
 
 #: webpay/base/dev_messages.py:230
 msgid "The wait URL is missing from configration."
-msgstr ""
+msgstr "待機 URL が設定に見つかりません。"
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
