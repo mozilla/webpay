@@ -62,6 +62,7 @@ UNSUPPORTED_PAY = 'UNSUPPORTED_PAY'
 # change it at your peril.
 USER_CANCELLED = 'USER_CANCELLED'
 USER_HASH_EMPTY = 'USER_HASH_EMPTY'
+USER_HASH_UNSET = 'USER_HASH_UNSET'
 VERIFY_DENIED = 'VERIFY_DENIED'
 VERIFY_FAILED = 'VERIFY_FAILED'
 VERIFY_MISSING_PROVIDER = 'VERIFY_MISSING_PROVIDER'
@@ -220,6 +221,12 @@ def _build_legend():
               'region or operator.'),
         USER_CANCELLED: _('The user cancelled the payment.'),
         USER_HASH_EMPTY: _('User hash is missing from configuration.'),
+        # L10n: First argument is the name of a var, 'user_hash'. The second
+        # argument is the name of an event, 'onLogin'. The third argument
+        # is the name of an event, 'onReady'.
+        USER_HASH_UNSET:
+            _('The app failed to set the {0} when handling {1}/{2} '
+              'Persona callbacks').format('user_hash', 'onLogin', 'onReady'),
         VERIFY_DENIED: _('Permission denied to verify the user.'),
         VERIFY_FAILED: _('Verifying the user failed.'),
         VERIFY_MISSING_PROVIDER: _('The payment provider does not exist'),
