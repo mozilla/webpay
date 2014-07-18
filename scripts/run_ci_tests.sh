@@ -32,7 +32,7 @@ echo "Starting tests..." `date`
 export FORCE_DB='yes sir'
 
 # Run Django Tests
-$PYTHON manage.py test -v 2 --noinput --logging-clear-handlers --with-xunit
+$PYTHON manage.py test -v 2 --noinput --with-xunit
 rv_pytests=$?
 
 # Remove any previously compressed assets.

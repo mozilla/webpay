@@ -120,3 +120,5 @@ base.JS_SETTINGS['zamboni_raven_url'] = 'https://none@marketplace.allizom.org/ap
 NEWRELIC_INI = '/etc/newrelic.d/marketplace.allizom.org-webpay.ini'
 
 USAGE_WARNING = True
+
+NOSE_PLUGINS = []

@@ -434,7 +434,8 @@ NOSE_PLUGINS = [
 NOSE_ARGS = [
     '--logging-clear-handlers',
     '--logging-level=DEBUG',
-    '--with-nicedots',
+    # This breaks xunit in CI. FIXME.
+    # '--with-nicedots',
     '--with-blockage',
     '--http-whitelist=""',
 ]

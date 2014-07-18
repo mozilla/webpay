@@ -124,3 +124,5 @@ SPA_ENABLE_URLS = True
 SPARTACUS_STATIC = 'https://payments-alt-cdn.allizom.org/mozpay/spa'
 
 PAYMENT_PROVIDER = 'bango'
+
+NOSE_PLUGINS = []
