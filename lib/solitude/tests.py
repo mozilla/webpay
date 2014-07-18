@@ -3,12 +3,10 @@ import json
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from django import test
 from django.test import TestCase
 
 import mobile_codes
 import mock
-from nose import SkipTest
 from nose.tools import eq_, raises
 from slumber.exceptions import HttpClientError
 
@@ -533,10 +531,8 @@ class TestReferenceProvider(ProviderTestCase):
         })
 
     def test_with_new_prod(self):
-        raise SkipTest
-        # TODO: andym, test with in-app products which does not have products
-        # and will break on this.
-        new_product_id = 66
+        name = 'Magic Unicorn'
+        new_product_uuid = 'new-product'
 
         (self.slumber.generic.product.get_object_or_404
                                      .side_effect) = ObjectDoesNotExist
@@ -553,28 +549,36 @@ class TestReferenceProvider(ProviderTestCase):
             'token': 'zippy-trans-token',
         }
 
+        seller_ref_uri = '/reference/seller/1'
         (self.slumber.provider.reference.sellers.get_object_or_404
                                                 .return_value) = {
-            'resource_pk': self.seller_id,
+            'resource_uri': seller_ref_uri
         }
 
+        seller_prod_uri = '/reference/product/1'
         self.slumber.provider.reference.products.post.return_value = {
-            'resource_pk': new_product_id,
+            'reference': {
+                'uuid': new_product_uuid
+            },
+            'resource_uri': seller_prod_uri
         }
         (self.slumber.provider.reference.products
                                         .side_effect) = ObjectDoesNotExist
 
         result = self.configure(seller_uuid=self.seller_uuid,
-                                product_uuid=self.product_uuid)
+                                product_uuid=self.product_uuid,
+                                product_name=name)
 
         eq_(result[0], 'zippy-trans-token')
 
         kw = self.slumber.provider.reference.products.post.call_args[0][0]
-        eq_(kw['external_id'], self.product_uuid)
-        eq_(kw['seller_id'], self.seller_id)
+        eq_(kw['name'], name)
+        eq_(kw['seller_reference'], seller_ref_uri)
+        eq_(kw['seller_product'], self.product_uri)
+        assert 'uuid' in kw, kw
 
         kw = self.slumber.provider.reference.transactions.post.call_args[0][0]
-        eq_(kw['product_id'], new_product_id)
+        eq_(kw['product_id'], new_product_uuid)
         eq_(kw['product_image_url'], '/todo/icons')
         assert kw['success_url'].endswith('/provider/reference/success'), (
             'Unexpected: {0}'.format(kw['success_url']))
