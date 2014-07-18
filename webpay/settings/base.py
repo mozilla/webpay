@@ -425,6 +425,20 @@ MARKETPLACE_URL = host
 # The OAuth config from the marketplace.
 MARKETPLACE_OAUTH = {'key': '', 'secret': ''}
 
+# Configure our test runner for some nice test output.
+NOSE_PLUGINS = [
+    'nosenicedots.NiceDots',
+    'blockage.plugins.NoseBlockage',
+]
+
+NOSE_ARGS = [
+    '--logging-clear-handlers',
+    '--logging-level=DEBUG',
+    '--with-nicedots',
+    '--with-blockage',
+    '--http-whitelist=""',
+]
+
 # The issuer of all notifications (i.e. the webpay server).
 NOTIFY_ISSUER = DOMAIN
 
@@ -543,7 +557,7 @@ SIG_CHECK_TYP = 'mozilla/payments/sigcheck/v1'
 # Use this setting carefully!
 SIMULATED_NETWORK = None
 
-SITE_URL = host
+SITE_URL = host.rstrip('/')
 
 # This is the URL lib.solitude.api uses to connect to the pay server. If this
 # is none the solitude api tests don't run as we currently don't have a mock
@@ -577,6 +591,16 @@ SPA_USE_MIN_JS = True
 SPA_SETTINGS = {
     # Turn UA tracking on/off wholesale.
     'ua_tracking_enabled': False,
+    # These are payment provider buy flow sites that Spartacus
+    # is allowed to redirect to.
+    'validRedirSites': [
+        'http://mozilla.bango.net',
+        'https://mozilla.bango.net',
+        'https://buy.boku.com',
+        # Allow redirects to Zippy which typically would be accessible
+        # via your local host name on its own port.
+        SITE_URL,
+    ]
 }
 
 STATSD_CLIENT = 'django_statsd.clients.normal'
