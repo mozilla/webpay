@@ -29,18 +29,13 @@ def create(request):
     if request.method == 'POST':
         form = forms.CreatePinForm(uuid=get_user(request), data=request.POST)
         if form.is_valid():
-            if getattr(form, 'buyer_exists', False):
-                try:
-                    res = client.change_pin(form.uuid,
-                                            pin=form.cleaned_data['pin'],
-                                            etag=form.buyer_etag)
-                except ResourceModified:
-                    return system_error(request, code=msg.RESOURCE_MODIFIED)
-            else:
-                res = client.create_buyer(form.uuid,
-                                          pin=form.cleaned_data['pin'],
-                                          email=request.session[
-                                              'logged_in_user'])
+            try:
+                res = client.change_pin(form.uuid,
+                                        pin=form.cleaned_data['pin'],
+                                        etag=form.buyer_etag)
+            except ResourceModified:
+                return system_error(request, code=msg.RESOURCE_MODIFIED)
+
             if form.handle_client_errors(res):
                 set_user_has_pin(request, True)
                 return http.HttpResponseRedirect(reverse('pin.confirm'))

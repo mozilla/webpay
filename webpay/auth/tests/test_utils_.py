@@ -34,6 +34,17 @@ class TestUUID(test.TestCase):
         assert req.session.__setitem__.called
 
     @mock.patch('webpay.auth.utils.client')
+    def test_set_user_create_buyer(self, client):
+        email = 'f@f.com'
+        req = mock.MagicMock()
+        user = get_uuid(email)
+        client.get_buyer.return_value = {}
+        eq_(set_user(req, email), user)
+        assert client.get_buyer.called
+        assert client.create_buyer.called
+        assert req.session.__setitem__.called
+
+    @mock.patch('webpay.auth.utils.client')
     def test_update_user_pin_unlock(self, client):
         email = 'f@f.com'
         req = http.HttpRequest()

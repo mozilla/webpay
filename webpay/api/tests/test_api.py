@@ -136,15 +136,6 @@ class TestPost(PIN):
         res = self.client.post(self.url, {})
         eq_(res.status_code, 400)
 
-    def test_no_user(self):
-        self.solitude.generic.buyer.get_object_or_404.side_effect = (
-            ObjectDoesNotExist)
-        res = self.client.post(self.url, {'pin': '1234'})
-        self.solitude.generic.buyer.post.assert_called_with(
-            {'uuid': self.uuid, 'pin': '1234',
-             'pin_confirmed': True, 'email': self.email})
-        eq_(res.status_code, 204)
-
     @mock.patch('webpay.api.api.client')
     def test_user(self, solitude_client):
         self.solitude.generic.buyer.get_object_or_404.return_value = {

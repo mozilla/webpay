@@ -51,18 +51,11 @@ class PinViewSet(viewsets.ViewSet):
     def create(self, request):
         form = CreatePinForm(uuid=request.session['uuid'], data=request.DATA)
         if form.is_valid():
-            if getattr(form, 'buyer_exists', None):
-                res = client.change_pin(form.uuid,
-                                        form.cleaned_data['pin'],
-                                        etag=form.buyer_etag,
-                                        pin_confirmed=True,
-                                        clear_was_locked=True)
-            else:
-                res = client.create_buyer(form.uuid,
-                                          pin=form.cleaned_data['pin'],
-                                          pin_confirmed=True,
-                                          email=request.session[
-                                              'logged_in_user'])
+            res = client.change_pin(form.uuid,
+                                    form.cleaned_data['pin'],
+                                    etag=form.buyer_etag,
+                                    pin_confirmed=True,
+                                    clear_was_locked=True)
 
             if form.handle_client_errors(res):
                 set_user_has_pin(request, True)

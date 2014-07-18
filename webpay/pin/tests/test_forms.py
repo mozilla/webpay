@@ -30,23 +30,15 @@ class PinFormOutputTest(BasePinFormTestCase):
 
 class CreatePinFormTest(BasePinFormTestCase):
 
-    @patch.object(client, 'get_buyer', lambda x: {})
-    def test_new_user(self):
-        form = forms.CreatePinForm(uuid=self.uuid, data=self.data)
-        assert form.is_valid(), form.errors
-        assert not getattr(form, 'buyer_exists', False)
-
     @patch.object(client, 'get_buyer', lambda x: {'uuid': x})
     def test_existing_buyer(self):
         form = forms.CreatePinForm(uuid=self.uuid, data=self.data)
         assert form.is_valid(), form.errors
-        assert getattr(form, 'buyer_exists', False)
 
     @patch.object(client, 'get_buyer', lambda x: {'uuid:': x, 'pin': 'fake'})
     def test_has_pin(self):
         form = forms.CreatePinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
-        assert getattr(form, 'buyer_exists', False)
         assert 'You have already created a PIN.' in str(form.errors)
         eq_(len(form.pin_error_codes), 1)
         eq_(form.pin_error_codes, ['PIN_ALREADY_CREATED'])

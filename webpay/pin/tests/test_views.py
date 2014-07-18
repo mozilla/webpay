@@ -32,19 +32,6 @@ class CreatePinViewTest(PinViewTestCase):
 
     @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
     @patch('lib.solitude.api.client.change_pin', auto_spec=True)
-    @patch('webpay.pin.views.set_user_has_pin', auto_spec=True)
-    @patch.object(client, 'get_buyer', lambda x: {})
-    def test_buyer_does_not_exist(self, set_user_has_pin, change_pin,
-                                  create_buyer):
-        pin = '1234'
-        res = self.client.post(self.url, data={'pin': pin})
-        create_buyer.assert_called_with(self.uuid, email=self.email, pin=pin)
-        assert not change_pin.called
-        set_user_has_pin.assert_called_with(ANY, True)
-        assert res['Location'].endswith(reverse('pin.confirm'))
-
-    @patch('lib.solitude.api.client.create_buyer', auto_spec=True)
-    @patch('lib.solitude.api.client.change_pin', auto_spec=True)
     @patch.object(client, 'get_buyer', lambda x: {'uuid': 'some:uuid'})
     def test_buyer_does_exist_with_no_pin(self, change_pin, create_buyer):
         res = self.client.post(self.url, data={'pin': '1234'})
