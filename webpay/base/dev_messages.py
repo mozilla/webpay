@@ -61,7 +61,6 @@ UNSUPPORTED_PAY = 'UNSUPPORTED_PAY'
 # This string is used to determine the message on Marketplace;
 # change it at your peril.
 USER_CANCELLED = 'USER_CANCELLED'
-USER_HASH_EMPTY = 'USER_HASH_EMPTY'
 USER_HASH_UNSET = 'USER_HASH_UNSET'
 VERIFY_DENIED = 'VERIFY_DENIED'
 VERIFY_FAILED = 'VERIFY_FAILED'
@@ -220,7 +219,6 @@ def _build_legend():
             _('The payment method or price point is not supported for this '
               'region or operator.'),
         USER_CANCELLED: _('The user cancelled the payment.'),
-        USER_HASH_EMPTY: _('User hash is missing from configuration.'),
         # L10n: First argument is the name of a var, 'user_hash'. The second
         # argument is the name of an event, 'onLogin'. The third argument
         # is the name of an event, 'onReady'.
