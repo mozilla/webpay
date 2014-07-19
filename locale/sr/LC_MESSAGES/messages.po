@@ -3,16 +3,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 09:24-0700\n"
-"PO-Revision-Date: 2014-05-29 07:35+0000\n"
+"PO-Revision-Date: 2014-07-19 10:14+0000\n"
 "Last-Translator: Vanja <tumbas93@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1401348945.0\n"
+"X-POOTLE-MTIME: 1405764878.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -75,7 +76,7 @@ msgstr "JWT потпис је неважећи или је у погрешном
 
 #: webpay/base/dev_messages.py:146
 msgid "The redirect URL given is not valid."
-msgstr ""
+msgstr "Премусмерена URL адреса није важећа."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -99,7 +100,7 @@ msgstr "Систем је престао са радом приликом пок
 
 #: webpay/base/dev_messages.py:155
 msgid "The logout URL is missing from configuration."
-msgstr ""
+msgstr "URL адреса за одјаву недостаје из подешавања."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:157
@@ -108,11 +109,11 @@ msgstr "URL адреса је погрешна. Може бити да URL пр�
 
 #: webpay/base/dev_messages.py:159
 msgid "The JWT signature is missing or invalid."
-msgstr ""
+msgstr "JWT потпис недостаје или је неважећи."
 
 #: webpay/base/dev_messages.py:161
 msgid "An error code was expected but was not supplied."
-msgstr ""
+msgstr "Очекиван је код грешке али није испоручен."
 
 #: webpay/base/dev_messages.py:162
 msgid "The transaction ID was missing from the session when processing a payment return."
@@ -131,12 +132,12 @@ msgstr "Захтеваној симулацији повраћаја новца 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:174
 msgid "{0} function is undefined."
-msgstr ""
+msgstr "{0} функција није дефинисана."
 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:177
 msgid "{0} function is undefined"
-msgstr ""
+msgstr "{0} функција није дефинисана"
 
 #: webpay/base/dev_messages.py:178
 msgid "The notification service responded with an error while verifying the payment notice"
@@ -152,19 +153,19 @@ msgstr "Уплате су привремено онемогућене."
 
 #: webpay/base/dev_messages.py:185
 msgid "An unexpected error occurred while fetching data."
-msgstr ""
+msgstr "Дошло је до грешке приликом преузимања података."
 
 #: webpay/base/dev_messages.py:186
 msgid "The request timed out fetching data."
-msgstr ""
+msgstr "Захтев је зауставио преузимање података."
 
 #: webpay/base/dev_messages.py:188
 msgid "Failed to log out of the payment provider."
-msgstr ""
+msgstr "Нисте успели да се одјавите од пружаоца уплате."
 
 #: webpay/base/dev_messages.py:189
 msgid "An error occurred while trying to log out."
-msgstr ""
+msgstr "Дошло је до грешке приликом покушаја да се одјавите."
 
 #: webpay/base/dev_messages.py:191
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
@@ -172,23 +173,23 @@ msgstr "Извор је измењен након претходног захт�
 
 #: webpay/base/dev_messages.py:193
 msgid "Permission denied to re-verify the user."
-msgstr ""
+msgstr "Захтев да се корисник поново потврди је одбијен."
 
 #: webpay/base/dev_messages.py:194
 msgid "Re-verifying the user failed."
-msgstr ""
+msgstr "Поновна провера корисника није успела."
 
 #: webpay/base/dev_messages.py:195 webpay/base/dev_messages.py:225
 msgid "The payment provider does not exist"
-msgstr ""
+msgstr "Пружалац уплате не постоји"
 
 #: webpay/base/dev_messages.py:197
 msgid "The re-verification URL is missing from configuration."
-msgstr ""
+msgstr "URL адреса за поновну потврду недостаје из подешавања."
 
 #: webpay/base/dev_messages.py:199
 msgid "The request to the server timed out during re-verification."
-msgstr ""
+msgstr "Серверски захтев је заустављен током поновне верификације."
 
 #: webpay/base/dev_messages.py:200
 msgid "Payment simulations are disabled at this time."
@@ -200,11 +201,11 @@ msgstr "Овај кључ за плаћање је могуће користит
 
 #: webpay/base/dev_messages.py:204
 msgid "Status attributes are not configured correctly."
-msgstr ""
+msgstr "Стање атрибута није правилно подешено."
 
 #: webpay/base/dev_messages.py:206
 msgid "Status attributes are not configured correctly"
-msgstr ""
+msgstr "Стање атрибута није правилно подешено"
 
 #: webpay/base/dev_messages.py:208
 msgid "The configuration of the payment transaction failed."
@@ -224,7 +225,7 @@ msgstr "Систем је престао са радом приликом чек
 
 #: webpay/base/dev_messages.py:216 webpay/base/dev_messages.py:217
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Дошло је до неочекиване грешке."
 
 #: webpay/base/dev_messages.py:219
 msgid "The payment method or price point is not supported for this region or operator."
@@ -236,27 +237,27 @@ msgstr "Корисник је обуставио уплату."
 
 #: webpay/base/dev_messages.py:222
 msgid "User hash is missing from configuration."
-msgstr ""
+msgstr "Корисникова дисперзија недостаје у подешавањима."
 
 #: webpay/base/dev_messages.py:223
 msgid "Permission denied to verify the user."
-msgstr ""
+msgstr "Дозвола за проверу корисника је одбијена."
 
 #: webpay/base/dev_messages.py:224
 msgid "Verifying the user failed."
-msgstr ""
+msgstr "Провера корисника није успела."
 
 #: webpay/base/dev_messages.py:227
 msgid "The verification URL is missing from configuration."
-msgstr ""
+msgstr "URL за оверу недостаје из подешавања."
 
 #: webpay/base/dev_messages.py:229
 msgid "The request to the server timed out during verification."
-msgstr ""
+msgstr "Серверски захтев је заустављен током верификације."
 
 #: webpay/base/dev_messages.py:230
 msgid "The wait URL is missing from configration."
-msgstr ""
+msgstr "URL за чекање недостаје из подешавања."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
