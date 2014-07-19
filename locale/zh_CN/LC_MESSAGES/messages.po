@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 09:24-0700\n"
-"PO-Revision-Date: 2014-05-28 22:10+0000\n"
-"Last-Translator: yfdyh000 <yfdyh000@gmail.com>\n"
+"PO-Revision-Date: 2014-07-19 09:28+0000\n"
+"Last-Translator: Shen <steekid@icloud.com>\n"
 "Language-Team: Chinese Simplified, China <LL@li.org>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1401315048.0\n"
+"X-POOTLE-MTIME: 1405762117.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -75,7 +75,7 @@ msgstr "JWT 签名无效或者 JWT 有问题。"
 
 #: webpay/base/dev_messages.py:146
 msgid "The redirect URL given is not valid."
-msgstr ""
+msgstr "提供的重定向网址无效。"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -99,7 +99,7 @@ msgstr "尝试登出过程中系统超时。"
 
 #: webpay/base/dev_messages.py:155
 msgid "The logout URL is missing from configuration."
-msgstr ""
+msgstr "配置中缺少退出的网址。"
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:157
@@ -108,11 +108,11 @@ msgstr "网址有问题，应该是一个回传网址或者一个图标网址。
 
 #: webpay/base/dev_messages.py:159
 msgid "The JWT signature is missing or invalid."
-msgstr ""
+msgstr "JWT 签名丢失或无效。"
 
 #: webpay/base/dev_messages.py:161
 msgid "An error code was expected but was not supplied."
-msgstr ""
+msgstr "应该出现错误代码的位置没有显示。"
 
 #: webpay/base/dev_messages.py:162
 msgid "The transaction ID was missing from the session when processing a payment return."
@@ -131,12 +131,12 @@ msgstr "模拟退款请求缺少密钥'{0}'。"
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:174
 msgid "{0} function is undefined."
-msgstr ""
+msgstr "{0} 函数未定义。"
 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:177
 msgid "{0} function is undefined"
-msgstr ""
+msgstr "{0} 函数未定义"
 
 #: webpay/base/dev_messages.py:178
 msgid "The notification service responded with an error while verifying the payment notice"
@@ -152,19 +152,19 @@ msgstr "目前暂时停用付款功能。"
 
 #: webpay/base/dev_messages.py:185
 msgid "An unexpected error occurred while fetching data."
-msgstr ""
+msgstr "获得数据时遇到意外错误。"
 
 #: webpay/base/dev_messages.py:186
 msgid "The request timed out fetching data."
-msgstr ""
+msgstr "获得数据时请求超时。"
 
 #: webpay/base/dev_messages.py:188
 msgid "Failed to log out of the payment provider."
-msgstr ""
+msgstr "退出支付服务时失败。"
 
 #: webpay/base/dev_messages.py:189
 msgid "An error occurred while trying to log out."
-msgstr ""
+msgstr "尝试退出时发生错误。"
 
 #: webpay/base/dev_messages.py:191
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
@@ -172,23 +172,23 @@ msgstr "在上一个请求中的资源已被修改。需要重新操作。"
 
 #: webpay/base/dev_messages.py:193
 msgid "Permission denied to re-verify the user."
-msgstr ""
+msgstr "重新验证用户时被拒绝。"
 
 #: webpay/base/dev_messages.py:194
 msgid "Re-verifying the user failed."
-msgstr ""
+msgstr "重新验证用户失败。"
 
 #: webpay/base/dev_messages.py:195 webpay/base/dev_messages.py:225
 msgid "The payment provider does not exist"
-msgstr ""
+msgstr "支付服务商不存在"
 
 #: webpay/base/dev_messages.py:197
 msgid "The re-verification URL is missing from configuration."
-msgstr ""
+msgstr "配置中缺少重新验证网址。"
 
 #: webpay/base/dev_messages.py:199
 msgid "The request to the server timed out during re-verification."
-msgstr ""
+msgstr "重新验证时服务器请求超时。"
 
 #: webpay/base/dev_messages.py:200
 msgid "Payment simulations are disabled at this time."
@@ -200,11 +200,11 @@ msgstr "付费密钥仅能用来模拟付款流程。"
 
 #: webpay/base/dev_messages.py:204
 msgid "Status attributes are not configured correctly."
-msgstr ""
+msgstr "状态属性配置不正确。"
 
 #: webpay/base/dev_messages.py:206
 msgid "Status attributes are not configured correctly"
-msgstr ""
+msgstr "状态属性配置不正确"
 
 #: webpay/base/dev_messages.py:208
 msgid "The configuration of the payment transaction failed."
@@ -224,7 +224,7 @@ msgstr "等待交易开始过程中系统超时。"
 
 #: webpay/base/dev_messages.py:216 webpay/base/dev_messages.py:217
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "发生意外错误。"
 
 #: webpay/base/dev_messages.py:219
 msgid "The payment method or price point is not supported for this region or operator."
@@ -236,27 +236,27 @@ msgstr "用户取消付款。"
 
 #: webpay/base/dev_messages.py:222
 msgid "User hash is missing from configuration."
-msgstr ""
+msgstr "配置中缺少用户散列。"
 
 #: webpay/base/dev_messages.py:223
 msgid "Permission denied to verify the user."
-msgstr ""
+msgstr "验证用户时被拒绝。"
 
 #: webpay/base/dev_messages.py:224
 msgid "Verifying the user failed."
-msgstr ""
+msgstr "验证用户失败。"
 
 #: webpay/base/dev_messages.py:227
 msgid "The verification URL is missing from configuration."
-msgstr ""
+msgstr "配置中缺少验证网址。"
 
 #: webpay/base/dev_messages.py:229
 msgid "The request to the server timed out during verification."
-msgstr ""
+msgstr "验证过程中服务器请求超时。"
 
 #: webpay/base/dev_messages.py:230
 msgid "The wait URL is missing from configration."
-msgstr ""
+msgstr "配置中缺少等待网址。"
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
