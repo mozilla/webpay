@@ -116,3 +116,5 @@ base.JS_SETTINGS['zamboni_raven_url'] = ''
 
 ALLOW_ANDROID_PAYMENTS = False
 ALLOW_ADMIN_SIMULATIONS = False
+
+NOSE_PLUGINS = []

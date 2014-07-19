@@ -290,6 +290,7 @@ class ProviderHelper:
                 generic_seller=generic_seller, generic_product=product,
                 provider_seller_uuid=provider_seller_uuid)
 
+
         trans_token, pay_url = self.provider.create_transaction(
             generic_seller=generic_seller,
             generic_product=product,
@@ -456,9 +457,10 @@ class PayProvider(object):
         return getattr(self.slumber.provider, self.name)
 
     def get_product(self, generic_seller, generic_product):
-        return self.api.products.get_object_or_404(
-            seller_id=generic_seller['uuid'],
-            external_id=generic_product['external_id'])
+        """
+        Returns the provider specific product object from Solitude.
+        """
+        raise NotImplementedError()
 
     def create_product(self, generic_product, provider_seller, external_id,
                        product_name):
@@ -546,12 +548,19 @@ class ReferenceProvider(PayProvider):
     """
     name = 'reference'
 
+    def get_product(self, generic_seller, generic_product):
+        # This returns a partial result.
+        listing = self.api.products.get_object_or_404(
+            seller_product__seller=generic_seller['resource_pk'],
+            seller_product__external_id=generic_product['external_id'])
+        # This pings zippy and returns us a full result.
+        return self.api.products(id=listing['id']).get_object_or_404()
+
     def create_transaction(self, generic_seller, generic_product,
                            provider_product, provider_seller_uuid,
                            product_name, transaction_uuid,
                            prices, user_uuid, application_size, source,
                            icon_url, mcc=None, mnc=None):
-
         # TODO: Maybe make these real values. See bug 941952.
         # In the case of Zippy, it does not detect any of these values
         # itself. All other providers will detect these values without
@@ -564,7 +573,7 @@ class ReferenceProvider(PayProvider):
         currency = 'EUR'
 
         provider_trans = self.api.transactions.post({
-            'product_id': provider_product['resource_pk'],
+            'product_id': provider_product[self.name]['uuid'],
             'region': region,
             'carrier': carrier,
             'price': price,
@@ -604,8 +613,8 @@ class ReferenceProvider(PayProvider):
         return token, self._formatted_payment_url(token)
 
     def get_seller(self, generic_seller, provider_seller_uuid):
-        return self.api.sellers.get_object_or_404(
-            uuid=generic_seller['resource_pk'])
+        return (self.api.sellers(generic_seller['resource_pk'])
+                .get_object_or_404())
 
 
 @register_provider
