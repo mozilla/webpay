@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Czech (cs)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 09:24-0700\n"
-"PO-Revision-Date: 2014-05-29 08:03+0000\n"
+"PO-Revision-Date: 2014-07-20 20:51+0000\n"
 "Last-Translator: Pavel <jasnapaka@jasnapaka.com>\n"
 "Language-Team: Czech Mozilla Team <info@mozilla.cz>\n"
 "Language: cs\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1401350617.0\n"
+"X-POOTLE-MTIME: 1405889464.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -75,7 +75,7 @@ msgstr "Podpis JWT je neplatný nebo je poškozen."
 
 #: webpay/base/dev_messages.py:146
 msgid "The redirect URL given is not valid."
-msgstr ""
+msgstr "Nastavené URL pro přesměrování není platné."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -99,7 +99,7 @@ msgstr "Vypršel čas při snaze systému provést odhlášení."
 
 #: webpay/base/dev_messages.py:155
 msgid "The logout URL is missing from configuration."
-msgstr ""
+msgstr "V konfiguraci chybí URL pro odhlášení."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:157
@@ -108,11 +108,11 @@ msgstr "URL je poškozeno. Může se jednat o postback URL nebo URL ikony."
 
 #: webpay/base/dev_messages.py:159
 msgid "The JWT signature is missing or invalid."
-msgstr ""
+msgstr "Podpis JWT chybí nebo je neplatný."
 
 #: webpay/base/dev_messages.py:161
 msgid "An error code was expected but was not supplied."
-msgstr ""
+msgstr "Byl očekávání chybový kód, ale nebyl nalezen."
 
 #: webpay/base/dev_messages.py:162
 msgid "The transaction ID was missing from the session when processing a payment return."
@@ -131,12 +131,12 @@ msgstr "Požadované zkušební vrácení transakce neobsahuje klíč '{0}'."
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:174
 msgid "{0} function is undefined."
-msgstr ""
+msgstr "Funkce {0} není definována."
 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:177
 msgid "{0} function is undefined"
-msgstr ""
+msgstr "Funkce {0} není definována"
 
 #: webpay/base/dev_messages.py:178
 msgid "The notification service responded with an error while verifying the payment notice"
@@ -152,19 +152,19 @@ msgstr "Platby jsou dočasně zakázány"
 
 #: webpay/base/dev_messages.py:185
 msgid "An unexpected error occurred while fetching data."
-msgstr ""
+msgstr "Při získávání dat nastala neočekávaná chyba."
 
 #: webpay/base/dev_messages.py:186
 msgid "The request timed out fetching data."
-msgstr ""
+msgstr "Při získávání dat vypršel časový limit."
 
 #: webpay/base/dev_messages.py:188
 msgid "Failed to log out of the payment provider."
-msgstr ""
+msgstr "Chyba při odhlašování od poskytovatele plateb."
 
 #: webpay/base/dev_messages.py:189
 msgid "An error occurred while trying to log out."
-msgstr ""
+msgstr "Chyba při pokusu o odhlášení."
 
 #: webpay/base/dev_messages.py:191
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
@@ -176,15 +176,15 @@ msgstr ""
 
 #: webpay/base/dev_messages.py:194
 msgid "Re-verifying the user failed."
-msgstr ""
+msgstr "Opětovné ověření uživatele selhalo."
 
 #: webpay/base/dev_messages.py:195 webpay/base/dev_messages.py:225
 msgid "The payment provider does not exist"
-msgstr ""
+msgstr "Poskytovatel plateb neexistuje"
 
 #: webpay/base/dev_messages.py:197
 msgid "The re-verification URL is missing from configuration."
-msgstr ""
+msgstr "URL pro opětovnou kontrolu není uvedena v konfiguraci."
 
 #: webpay/base/dev_messages.py:199
 msgid "The request to the server timed out during re-verification."
