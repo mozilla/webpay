@@ -79,7 +79,6 @@ class CreatePinForm(BasePinForm):
         pin = self.cleaned_data['pin']
         buyer = client.get_buyer(self.uuid)
         if buyer and self.handle_client_errors(buyer):
-            self.buyer_exists = True
             try:
                 self.buyer_etag = buyer['etag']
             except KeyError:

@@ -63,11 +63,16 @@ def set_user(request, email):
     request.session['uuid'] = uuid
     # This is only used by navigator.id.watch()
     request.session['logged_in_user'] = email
-    return update_session(request, uuid, new_uuid, email)
 
-
-def update_session(request, uuid, new_uuid, email):
     buyer = client.get_buyer(uuid)
+    if not buyer:
+        buyer = client.create_buyer(uuid, email)
+
+    return update_session(request, uuid, new_uuid, email, buyer=buyer)
+
+
+def update_session(request, uuid, new_uuid, email, buyer=None):
+    buyer = buyer or client.get_buyer(uuid)
 
     # Some buyers may not have email set
     # We must update them to store their email

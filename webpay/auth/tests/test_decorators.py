@@ -43,6 +43,9 @@ class TestBuyerHasPin(Base):
     def test_no_user(self, slumber):
         slumber.generic.buyer.get_object_or_404.side_effect = (
             ObjectDoesNotExist)
+        slumber.generic.buyer.post.return_value = {
+            'uuid': 'new-user',
+        }
         data = self.do_auth()
         eq_(self.client.session.get('uuid_has_pin'), False)
         eq_(data['needs_redirect'], True)
@@ -95,6 +98,9 @@ class TestBuyerHasResetFlag(Base):
     def test_no_user(self, slumber):
         slumber.generic.buyer.get_object_or_404.side_effect = (
             ObjectDoesNotExist)
+        slumber.generic.buyer.post.return_value = {
+            'uuid': 'new-user',
+        }
         self.do_auth()
         eq_(self.client.session.get('uuid_needs_pin_reset'), False)
 
