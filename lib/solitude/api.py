@@ -290,7 +290,6 @@ class ProviderHelper:
                 generic_seller=generic_seller, generic_product=product,
                 provider_seller_uuid=provider_seller_uuid)
 
-
         trans_token, pay_url = self.provider.create_transaction(
             generic_seller=generic_seller,
             generic_product=product,
@@ -464,11 +463,10 @@ class PayProvider(object):
 
     def create_product(self, generic_product, provider_seller, external_id,
                        product_name):
-        return self.api.products.post({
-            'external_id': external_id,
-            'seller_id': provider_seller['resource_pk'],
-            'name': product_name,
-        })
+        """
+        Creates and returns a provider-specific product object from Solitude.
+        """
+        raise NotImplementedError()
 
     def get_seller(self, generic_seller, provider_seller_uuid):
         """
@@ -548,6 +546,15 @@ class ReferenceProvider(PayProvider):
     """
     name = 'reference'
 
+    def create_product(self, generic_product, provider_seller, external_id,
+                       product_name):
+        return self.api.products.post({
+            'seller_product': generic_product['resource_uri'],
+            'seller_reference': provider_seller['resource_uri'],
+            'name': product_name,
+            'uuid': str(uuid.uuid4()),
+        })
+
     def get_product(self, generic_seller, generic_product):
         # This returns a partial result.
         listing = self.api.products.get_object_or_404(
@@ -613,8 +620,8 @@ class ReferenceProvider(PayProvider):
         return token, self._formatted_payment_url(token)
 
     def get_seller(self, generic_seller, provider_seller_uuid):
-        return (self.api.sellers(generic_seller['resource_pk'])
-                .get_object_or_404())
+        return (self.api.sellers
+                .get_object_or_404(seller__uuid=provider_seller_uuid))
 
 
 @register_provider
