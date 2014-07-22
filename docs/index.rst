@@ -8,12 +8,14 @@ making app purchases or in-app payments on Firefox OS.
 
 This guide can help you do a few things:
 
-* :ref:`Set up a B2G device <use-hosted>` to test payments against a hosted
-  version of the WebPay server.
 * :ref:`Install and configure <developers>` your own WebPay server for development.
 * Understand the APIs WebPay consumes and generally how things work.
 
 This is also available as a `PDF`_.
+
+The section on *using a hosted webpay* has moved to the
+`payments section <http://marketplace.readthedocs.org/en/latest/topics/payments.html>`_
+of the Marketplace documentaion .
 
 .. _WebPaymentProvider: https://wiki.mozilla.org/WebAPI/WebPaymentProvider
 .. _`navigator.mozPay()`: https://wiki.mozilla.org/WebAPI/WebPayment
@@ -25,7 +27,6 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-   use_hosted_webpay
    developers
    api
    solitude_api
