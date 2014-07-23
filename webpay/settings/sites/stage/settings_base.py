@@ -122,3 +122,6 @@ NEWRELIC_INI = '/etc/newrelic.d/marketplace.allizom.org-webpay.ini'
 USAGE_WARNING = True
 
 NOSE_PLUGINS = []
+
+SPA_ENABLE = False
+SPA_ENABLE_URLS = False

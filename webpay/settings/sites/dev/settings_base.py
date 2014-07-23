@@ -142,8 +142,6 @@ PAY_URLS = {
     },
 }
 
-SPA_ENABLE = True
-SPA_ENABLE_URLS = True
 SPARTACUS_STATIC = 'https://marketplace-dev.mozflare.net/mozpay/spa'
 
 NOSE_PLUGINS = []
