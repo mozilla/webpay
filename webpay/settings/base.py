@@ -573,8 +573,8 @@ SPARTACUS_STATIC = 'http://localhost:7777'
 
 # Spartacus path settings.
 SPA_BASE_URL = '/mozpay/spa/'
-SPA_ENABLE = False
-SPA_ENABLE_URLS = False
+SPA_ENABLE = True
+SPA_ENABLE_URLS = True
 SPA_URLS = [
     'create-pin',
     'enter-pin',
@@ -582,7 +582,7 @@ SPA_URLS = [
     'login',
     'reset-pin',
     'reset-start',
-    'wait-for-tx',
+    'wait-to-start',
     'was-locked'
 ]
 SPA_USE_MIN_JS = True
