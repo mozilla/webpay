@@ -144,4 +144,7 @@ PAY_URLS = {
 
 SPARTACUS_STATIC = 'https://marketplace-dev.mozflare.net/mozpay/spa'
 
+SPA_SETTINGS = base.SPA_SETTINGS
+SPA_SETTINGS['validRedirSites'].append('https://zippy.paas.allizom.org')
+
 NOSE_PLUGINS = []

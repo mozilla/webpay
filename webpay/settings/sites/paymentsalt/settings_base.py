@@ -121,4 +121,7 @@ USAGE_WARNING = True
 
 SPARTACUS_STATIC = 'https://payments-alt-cdn.allizom.org/mozpay/spa'
 
+SPA_SETTINGS = base.SPA_SETTINGS
+SPA_SETTINGS['validRedirSites'].append('https://zippy.paas.allizom.org')
+
 NOSE_PLUGINS = []
