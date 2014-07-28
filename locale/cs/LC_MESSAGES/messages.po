@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Czech (cs)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 09:24-0700\n"
-"PO-Revision-Date: 2014-07-20 20:51+0000\n"
+"PO-Revision-Date: 2014-07-28 12:07+0000\n"
 "Last-Translator: Pavel <jasnapaka@jasnapaka.com>\n"
 "Language-Team: Czech Mozilla Team <info@mozilla.cz>\n"
 "Language: cs\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1405889464.0\n"
+"X-POOTLE-MTIME: 1406549275.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -172,7 +172,7 @@ msgstr "Zdroj byl od předešlého požadavku změněn. Akce by měla být prove
 
 #: webpay/base/dev_messages.py:193
 msgid "Permission denied to re-verify the user."
-msgstr ""
+msgstr "Nedostatečná práva pro znovuověření uživatele."
 
 #: webpay/base/dev_messages.py:194
 msgid "Re-verifying the user failed."
@@ -188,7 +188,7 @@ msgstr "URL pro opětovnou kontrolu není uvedena v konfiguraci."
 
 #: webpay/base/dev_messages.py:199
 msgid "The request to the server timed out during re-verification."
-msgstr ""
+msgstr "Při požadavku o opětovné ověření vypršel čas spojení k serveru."
 
 #: webpay/base/dev_messages.py:200
 msgid "Payment simulations are disabled at this time."
@@ -200,11 +200,11 @@ msgstr "Tento platbní klíč může být použit pouze pro zkušební platby."
 
 #: webpay/base/dev_messages.py:204
 msgid "Status attributes are not configured correctly."
-msgstr ""
+msgstr "Atributy stavu nejsou korektně nakonfigurovány."
 
 #: webpay/base/dev_messages.py:206
 msgid "Status attributes are not configured correctly"
-msgstr ""
+msgstr "Atributy stavu nejsou korektně nakonfigurovány"
 
 #: webpay/base/dev_messages.py:208
 msgid "The configuration of the payment transaction failed."
@@ -224,7 +224,7 @@ msgstr "Vypršel čas při snaze systému provést zahájení transakce."
 
 #: webpay/base/dev_messages.py:216 webpay/base/dev_messages.py:217
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Nastala neočekávaná chyba."
 
 #: webpay/base/dev_messages.py:219
 msgid "The payment method or price point is not supported for this region or operator."
@@ -236,27 +236,27 @@ msgstr "Uživatel zrušil platbu."
 
 #: webpay/base/dev_messages.py:222
 msgid "User hash is missing from configuration."
-msgstr ""
+msgstr "V konfiguraci chybí hash uživatele."
 
 #: webpay/base/dev_messages.py:223
 msgid "Permission denied to verify the user."
-msgstr ""
+msgstr "Pro ověření uživatele nemáte dostatečná oprávnění."
 
 #: webpay/base/dev_messages.py:224
 msgid "Verifying the user failed."
-msgstr ""
+msgstr "Ověření uživatele selhalo."
 
 #: webpay/base/dev_messages.py:227
 msgid "The verification URL is missing from configuration."
-msgstr ""
+msgstr "V konfiguraci chybí URL pro ověření."
 
 #: webpay/base/dev_messages.py:229
 msgid "The request to the server timed out during verification."
-msgstr ""
+msgstr "V průběhu ověřování vypršel čas spojení k serveru."
 
 #: webpay/base/dev_messages.py:230
 msgid "The wait URL is missing from configration."
-msgstr ""
+msgstr "V konfigurací chybí URL pro čekání."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
