@@ -1,6 +1,7 @@
 from urllib import urlencode
 import json as jsonlib
 import urlparse
+import uuid
 
 from django.conf import settings
 
@@ -81,3 +82,15 @@ def absolutify(url, site=None):
 @register.filter
 def json(s):
     return jsonlib.dumps(s)
+
+
+@register.function
+def fxa_auth_info():
+    state = uuid.uuid4().hex
+    return (state,
+            urlparams(
+                urlparse.urljoin(settings.FXA_OAUTH_URL,
+                                 'v1/authorization'),
+                client_id=settings.FXA_CLIENT_ID,
+                state=state,
+                scope='profile'))

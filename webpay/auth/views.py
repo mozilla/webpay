@@ -1,3 +1,7 @@
+import os
+import json
+import urlparse
+
 from django import http
 from django.conf import settings
 from django.shortcuts import render
@@ -7,6 +11,7 @@ from curling.lib import HttpClientError
 from django_browserid import (get_audience as get_aud_from_request,
                               verify as verify_assertion)
 from django_browserid.forms import BrowserIDForm
+from requests_oauthlib import OAuth2Session
 from session_csrf import anonymous_csrf_exempt
 
 from lib.marketplace.api import client as mkt_client
@@ -159,3 +164,42 @@ def store_mkt_permissions(request, email, assertion, audience):
                  .format(email, exc.__class__.__name__, exc))
 
     request.session['mkt_permissions'] = permissions
+
+
+def get_fxa_session(**kwargs):
+    if settings.DEBUG:
+        # In DEBUG mode, don't require HTTPS for FxA oauth redirects.
+        import os
+        os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
+    return OAuth2Session(
+        settings.FXA_CLIENT_ID,
+        scope=u'profile',
+        **kwargs)
+
+
+def _fxa_authorize(fxa, client_secret, request, auth_response):
+    token = fxa.fetch_token(
+        urlparse.urljoin(settings.FXA_OAUTH_URL,
+                         'v1/token'),
+        authorization_response=auth_response,
+        client_secret=client_secret)
+    res = fxa.post(
+        urlparse.urljoin(settings.FXA_OAUTH_URL,
+                         'v1/verify'),
+                   data=json.dumps({'token': token['access_token']}),
+                   headers={'Content-Type': 'application/json'})
+    return res.json()
+
+
+@anonymous_csrf_exempt
+@json_view
+def fxa_login(request):
+    session = get_fxa_session(state=request.POST.get('state'))
+    data = _fxa_authorize(
+        session,
+        settings.FXA_CLIENT_SECRET,
+        request,
+        request.POST.get('auth_response'))
+    log.info("FxA login response:" + repr(data,))
+    return {'user_hash': set_user(request, data['email'])}
