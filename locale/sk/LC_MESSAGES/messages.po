@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 09:24-0700\n"
-"PO-Revision-Date: 2014-05-29 21:00+0000\n"
-"Last-Translator: Vlado <valastiak@mozilla.sk>\n"
+"PO-Revision-Date: 2014-07-29 12:46+0000\n"
+"Last-Translator: Branislav <sektormaster@atlas.sk>\n"
 "Language-Team: Mozilla.sk <l10n@mozilla.sk>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1401397245.0\n"
+"X-POOTLE-MTIME: 1406637981.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -75,7 +75,7 @@ msgstr "Podpis JWT je neplatný alebo JWT je poškodené."
 
 #: webpay/base/dev_messages.py:146
 msgid "The redirect URL given is not valid."
-msgstr ""
+msgstr "Nastavená URL adresa presmerovania nie je platná."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -99,7 +99,7 @@ msgstr "Čas určený na odhlásenie vypršal."
 
 #: webpay/base/dev_messages.py:155
 msgid "The logout URL is missing from configuration."
-msgstr ""
+msgstr "V konfigurácií chýba URL adresa pre odhlásenie."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:157
@@ -108,11 +108,11 @@ msgstr "Adresa URL je poškodená. Mohla by to byť postback URL alebo adresa ik
 
 #: webpay/base/dev_messages.py:159
 msgid "The JWT signature is missing or invalid."
-msgstr ""
+msgstr "Podpis JWT chýba, alebo je neplatný."
 
 #: webpay/base/dev_messages.py:161
 msgid "An error code was expected but was not supplied."
-msgstr ""
+msgstr "Bol očakávaný chybový kód, ale nebol nájdený."
 
 #: webpay/base/dev_messages.py:162
 msgid "The transaction ID was missing from the session when processing a payment return."
@@ -131,12 +131,12 @@ msgstr "Požadovaná simulácia vrátenia platby neobsahuje kľúč '{0}'."
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:174
 msgid "{0} function is undefined."
-msgstr ""
+msgstr "Funkcia {0} nie je definovaná."
 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:177
 msgid "{0} function is undefined"
-msgstr ""
+msgstr "Funkcia {0} nie je definovaná"
 
 #: webpay/base/dev_messages.py:178
 msgid "The notification service responded with an error while verifying the payment notice"
@@ -152,19 +152,19 @@ msgstr "Platby sú dočasne nedostupné."
 
 #: webpay/base/dev_messages.py:185
 msgid "An unexpected error occurred while fetching data."
-msgstr ""
+msgstr "Pri získavaní údajov nastala neočakávaná chyba."
 
 #: webpay/base/dev_messages.py:186
 msgid "The request timed out fetching data."
-msgstr ""
+msgstr "Pri získavaní údajov vypršal časový limit."
 
 #: webpay/base/dev_messages.py:188
 msgid "Failed to log out of the payment provider."
-msgstr ""
+msgstr "Chyba pri odhlasovaní od poskytovateľa platieb."
 
 #: webpay/base/dev_messages.py:189
 msgid "An error occurred while trying to log out."
-msgstr ""
+msgstr "Chyba pri pokuse o odhlásenie."
 
 #: webpay/base/dev_messages.py:191
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
@@ -172,23 +172,23 @@ msgstr "Zdroj bol od predchádzajúcej požiadavky zmenený. Akciu by ste mali v
 
 #: webpay/base/dev_messages.py:193
 msgid "Permission denied to re-verify the user."
-msgstr ""
+msgstr "Nedostatočné práva pre znovu-overenie používateľa."
 
 #: webpay/base/dev_messages.py:194
 msgid "Re-verifying the user failed."
-msgstr ""
+msgstr "Opakované overenie používateľa zlyhalo."
 
 #: webpay/base/dev_messages.py:195 webpay/base/dev_messages.py:225
 msgid "The payment provider does not exist"
-msgstr ""
+msgstr "Poskytovateľ platby neexistuje"
 
 #: webpay/base/dev_messages.py:197
 msgid "The re-verification URL is missing from configuration."
-msgstr ""
+msgstr "URL adresa pre opakovanú kontrolu nie je v konfigurácií uvedená."
 
 #: webpay/base/dev_messages.py:199
 msgid "The request to the server timed out during re-verification."
-msgstr ""
+msgstr "Pri požiadavke o opakované overenie vypršal čas pripojenia k serveru."
 
 #: webpay/base/dev_messages.py:200
 msgid "Payment simulations are disabled at this time."
@@ -200,11 +200,11 @@ msgstr "Tento kľúč platby je možné použiť len na simuláciu objednávok."
 
 #: webpay/base/dev_messages.py:204
 msgid "Status attributes are not configured correctly."
-msgstr ""
+msgstr "Atribúty stavu nie sú korektne nakonfigurované."
 
 #: webpay/base/dev_messages.py:206
 msgid "Status attributes are not configured correctly"
-msgstr ""
+msgstr "Atribúty stavu nie sú korektne nakonfigurované"
 
 #: webpay/base/dev_messages.py:208
 msgid "The configuration of the payment transaction failed."
@@ -224,7 +224,7 @@ msgstr "Počas čakania na spustenie transakcie vypršal čas požiadavky."
 
 #: webpay/base/dev_messages.py:216 webpay/base/dev_messages.py:217
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Nastala neočakávaná chyba."
 
 #: webpay/base/dev_messages.py:219
 msgid "The payment method or price point is not supported for this region or operator."
@@ -236,27 +236,27 @@ msgstr "Používateľ platbu zrušil."
 
 #: webpay/base/dev_messages.py:222
 msgid "User hash is missing from configuration."
-msgstr ""
+msgstr "V konfigurácií chýba hash používateľa."
 
 #: webpay/base/dev_messages.py:223
 msgid "Permission denied to verify the user."
-msgstr ""
+msgstr "Pre overenie používateľa nemáte dostatočné oprávnenia."
 
 #: webpay/base/dev_messages.py:224
 msgid "Verifying the user failed."
-msgstr ""
+msgstr "Overenie používateľa zlyhalo."
 
 #: webpay/base/dev_messages.py:227
 msgid "The verification URL is missing from configuration."
-msgstr ""
+msgstr "V konfigurácií chýba URL adresa pre overenie."
 
 #: webpay/base/dev_messages.py:229
 msgid "The request to the server timed out during verification."
-msgstr ""
+msgstr "V priebehu overovania vypršal čas pripojenia k serveru."
 
 #: webpay/base/dev_messages.py:230
 msgid "The wait URL is missing from configration."
-msgstr ""
+msgstr "V konfigurácií chýba URL adresa pre čakanie."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
