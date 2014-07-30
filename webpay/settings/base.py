@@ -569,7 +569,7 @@ SOLITUDE_URL = os.environ.get('SOLITUDE_URL', 'http://localhost:2602')
 SOLITUDE_OAUTH = {'key': '', 'secret': ''}
 
 SPARTACUS_BUILD_ID_KEY = 'spartacus-build-id'
-SPARTACUS_STATIC = 'http://localhost:2604'
+SPARTACUS_STATIC = os.environ.get('SPARTACUS_STATIC', 'http://localhost:2604')
 
 # Spartacus path settings.
 SPA_BASE_URL = '/mozpay/spa/'
