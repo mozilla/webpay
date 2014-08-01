@@ -1,7 +1,7 @@
 # Dockerfile - built to be built/run by fig
 # Note: This image is just for setting-up deps.
 
-FROM   muffinresearch/centos-python27-mkt:0.4
+FROM  mozillamarketplace/centos-python27-mkt:0.5
 
 RUN mkdir -p /pip/{cache,build}
 
