@@ -18,8 +18,15 @@
     data-terms-of-service="https://marketplace.firefox.com/terms-of-use"
     data-unverified-issuer="{{ settings.BROWSERID_UNVERIFIED_ISSUER }}"
     data-build-id="{{ spartacus_build_id() }}"
-    data-verify-url="{{ url('auth.verify') }}"
-    data-reverify-url="{{ url('auth.reverify') }}"
+    {% if settings.USE_FXA %}
+      {% set fxa_state, fxa_url = fxa_auth_info() %}
+      data-fxa-state="{{ fxa_state }}"
+      data-fxa-url="{{ fxa_url }}"
+      data-fxa-auth-url="{{ url('auth.fxa_login') }}"
+    {% else %}
+      data-verify-url="{{ url('auth.verify') }}"
+      data-reverify-url="{{ url('auth.reverify') }}"
+    {% endif %}
     {% if transaction_status_url %}
       data-trans-start-url="{{ transaction_status_url }}"
     {% else %}

@@ -33,12 +33,14 @@ newrelic==2.4.0.4
 # Nose has to be here because django-nose is in installed apps.
 nose==1.2.1
 oauth2==1.5.211
+oauthlib==0.6.2
 PyJWT-mozilla==0.1.4.2
 python-dateutil==2.1
 python-memcached==1.48
 pytz==2010e
 raven==4.2.3
-requests==0.14.2
+requests==2.0.0
+requests_oauthlib==0.4.1
 schematic==0.2
 six==1.2.0
 slumber==0.5.3

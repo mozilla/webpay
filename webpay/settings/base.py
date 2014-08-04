@@ -1,3 +1,4 @@
+import os
 import logging.handlers
 from urlparse import urlparse
 
@@ -578,6 +579,8 @@ SPA_ENABLE_URLS = True
 SPA_URLS = [
     'create-pin',
     'enter-pin',
+    'fxa-auth',
+    'fxa-login',
     'locked',
     'login',
     'reset-pin',
@@ -642,3 +645,8 @@ USER_WHITELIST = []
 VERBOSE_LOGGING = False
 
 IN_TEST_SUITE = False
+
+USE_FXA = False
+FXA_OAUTH_URL = 'https://oauth-marketplace.dev.lcip.org'
+FXA_CLIENT_ID = '514dadc7fd674e63'
+FXA_CLIENT_SECRET = 'dd22a0a99bedf2eaf372db7d384dc8033f01d86e68155b03a544130d646bf75b'

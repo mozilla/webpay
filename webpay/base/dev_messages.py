@@ -17,6 +17,9 @@ BAD_SIM_RESULT = 'BAD_SIM_RESULT'
 BANGO_ERROR = 'BANGO_ERROR'
 EXPIRED_JWT = 'EXPIRED_JWT'
 EXT_ERROR = 'EXT_ERROR'
+FXA_DENIED = 'FXA_DENIED'
+FXA_FAILED = 'FXA_FAILED'
+FXA_TIMEOUT = 'FXA_TIMEOUT'
 INTERNAL_TIMEOUT = 'INTERNAL_TIMEOUT'
 INVALID_JWT = 'INVALID_JWT'
 INVALID_JWT_OBJ = 'INVALID_JWT_OBJ'
@@ -138,6 +141,10 @@ def _build_legend():
         EXT_ERROR:
             _('The external payment processor returned an error while '
               'handling the payment'),
+        FXA_DENIED: _('Permission denied to verify the user.'),
+        FXA_FAILED: _('Verifying the user failed.'),
+        FXA_TIMEOUT:
+            _('The request to the server timed out during verification.'),
         INTERNAL_TIMEOUT: _('An internal web request timed out.'),
         INVALID_JWT:
             # L10n: JWT stands for JSON Web Token and does not need to be
