@@ -1,5 +1,7 @@
-# Dockerfile - built to be built/run by fig
-# Note: This image is just for setting-up deps.
+# This is designed to be run from fig as part of a
+# Marketplace development environment.
+
+# NOTE: this is not provided for production usage.
 
 FROM  mozillamarketplace/centos-python27-mkt:0.5
 
