@@ -65,8 +65,9 @@ define('bango', ['cli'], function(cli) {
             var existingUser = window.localStorage.getItem('userHash');
             window.localStorage.setItem('userHash', userHash);
 
+            console.log('[bango] logout: new user hash', userHash,
+                        'saved hash', existingUser);
             if (existingUser && existingUser !== userHash) {
-                console.log('[bango] logout: new user hash', userHash, '!== saved hash', existingUser);
                 cli.trackWebpayEvent({'action': 'user change detection',
                                       'label': 'User Changed'});
                 doLogout = true;
