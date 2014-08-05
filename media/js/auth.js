@@ -15,7 +15,6 @@ define('auth', ['cli'], function(cli) {
             var result = $.ajax(request)
                 .done(function _resetSuccess(data, textStatus, jqXHR) {
                     console.log('[auth] reset webpay user');
-                    window.localStorage.clear();
                     cli.trackWebpayEvent({'action': 'webpay user reset',
                                           'label': 'Reset User Success'});
                 })
