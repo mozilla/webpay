@@ -51,6 +51,8 @@ REVERIFY_MISSING_URL = 'REVERIFY_MISSING_URL'
 REVERIFY_TIMEOUT = 'REVERIFY_TIMEOUT'
 SIM_DISABLED = 'SIM_DISABLED'
 SIM_ONLY_KEY = 'SIM_ONLY_KEY'
+SIMULATE_FAIL = 'SIMULATE_FAIL'
+SIMULATE_TIMEOUT = 'SIMULATE_TIMEOUT'
 STATUS_COMPLETE_UNDEF = 'STATUS_COMPLETE_UNDEF'
 STATUS_PENDING_UNDEF = 'STATUS_PENDING_UNDEF'
 TRANS_CONFIG_FAILED = 'TRANS_CONFIG_FAILED'
@@ -207,6 +209,8 @@ def _build_legend():
         SIM_DISABLED: _('Payment simulations are disabled at this time.'),
         SIM_ONLY_KEY:
             _('This payment key can only be used to simulate purchases.'),
+        SIMULATE_FAIL: _('Failed to simulate a payment.'),
+        SIMULATE_TIMEOUT: _('The request to simulate a payment timed out.'),
         STATUS_COMPLETE_UNDEF:
             _('Status attributes are not configured correctly.'),
         STATUS_PENDING_UNDEF:

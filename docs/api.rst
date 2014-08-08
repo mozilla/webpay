@@ -108,6 +108,8 @@ Pin Check
 
     The response is the same as for the PIN API.
 
+.. _api-pay:
+
 Pay
 ---
 
@@ -119,16 +121,28 @@ The Pay API lets you start a purchase.
 
     **Request**
 
-    :param req: the JWT request for starting a payment
-    :type req: string
-    :param mnc: the MNC for the device (optional)
-    :type mnc: string
-    :param mcc: The MCC for the device (optional)
-    :type mcc: string
+    :param str req: the JWT request for starting a payment
+    :param str mnc: the MNC (mobile network code) for the device (optional)
+    :param str mcc: The MCC (mobile country code) for the device (optional)
 
     **Response**
 
-    :status 204: successfully updated.
+    :param str status: "ok" if successful
+    :param dict simulation:
+        Indicates the type of simulated payment. If this is a normal payment,
+        not a simulation, it will be ``False``. Otherwise it will be
+        one of the `valid simulation results`_ such as ``{"result": "postback"}``.
+
+    .. _`valid simulation results`: https://developer.mozilla.org/en-US/Marketplace/Monetization/In-app_payments_section/mozPay_iap#Simulating_payments
+
+    .. code-block:: json
+
+        {
+            "status": "ok",
+            "simulation": {"result": "postback"}
+        }
+
+    :status 200: successful.
     :status 400: invalid form data.
 
 .. http:get:: /mozpay/v1/api/pay/
@@ -147,3 +161,30 @@ The Pay API lets you start a purchase.
     :status 200: successfully completed.
     :status 400: trans_id is not set in the session.
     :status 404: transaction could not be found.
+
+Simulate
+--------
+
+If a simulated payment is pending in the current session,
+as indicated by :ref:`the Pay API <api-pay>`,
+you can use this API to execute the simulated payment.
+This sends a server notice to the app that initiated the purchase so it can
+fulfill the simulated purchase.
+
+.. http:post:: /mozpay/v1/api/simulate/
+
+    Execute a pending simulated payment.
+
+    **Request**
+
+    (no parameters)
+
+    **Response**
+
+    (no parameters)
+
+    :status 204: successful.
+    :status 400: invalid request.
+    :status 403:
+        no pending simulation in the current session or invalid user
+        permissions.

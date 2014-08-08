@@ -1,3 +1,4 @@
+from django import http
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 
@@ -8,7 +9,7 @@ from lib.solitude.constants import PROVIDERS_INVERTED
 
 from webpay.auth.utils import set_user_has_pin
 from webpay.base.utils import app_error
-from webpay.pay.views import process_pay_req, configure_transaction
+from webpay.pay.views import configure_transaction, process_pay_req, simulate
 from webpay.pin.forms import CreatePinForm, ResetPinForm, VerifyPinForm
 
 
@@ -102,13 +103,9 @@ class PayViewSet(viewsets.ViewSet):
 
     def create(self, request):
         res = process_pay_req(request, request.DATA)
-        if res:
+        if isinstance(res, http.HttpResponse):
             return res
-        res = configure_transaction(request)
-        if res.status_code == 200:
-            return response.Response(status=204)
-        else:
-            return res
+        return configure_transaction(request)
 
     def retrieve(self, request):
         try:
@@ -127,3 +124,13 @@ class PayViewSet(viewsets.ViewSet):
         else:
             serializer = TransactionSerializer(transaction)
             return response.Response(serializer.data)
+
+
+class SimulateViewSet(viewsets.ViewSet):
+    permission_classes = (Permission,)
+
+    def create(self, request):
+        res = simulate(request)
+        if res.status_code == 200:
+            res = response.Response(status=204)
+        return res
