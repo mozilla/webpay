@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 09:24-0700\n"
-"PO-Revision-Date: 2014-08-07 13:09+0000\n"
+"PO-Revision-Date: 2014-08-08 13:58+0000\n"
 "Last-Translator: Artem <a.polivanchuk@outlook.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: uk\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1407416973.0\n"
+"X-POOTLE-MTIME: 1407506293.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -32,82 +32,82 @@ msgstr ""
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:123
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr ""
+msgstr "Ключ іконки зображення не був об'єктом. Правильний зразок: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:127
 msgid "No one has been registered for this JWT issuer."
-msgstr ""
+msgstr "Нікого не було зареєстровано для цього видавця JWT."
 
 #: webpay/base/dev_messages.py:128
 msgid "The price point is unknown or invalid."
-msgstr ""
+msgstr "Стандартна ціна невідома або недійсна."
 
 #: webpay/base/dev_messages.py:129
 msgid "The request to begin payment was invalid."
-msgstr ""
+msgstr "Запит початку платежу був недійсним."
 
 #: webpay/base/dev_messages.py:131
 msgid "The requested payment simulation result is not supported."
-msgstr ""
+msgstr "Запитаний результат симуляції платежу не підтримується."
 
 #: webpay/base/dev_messages.py:133
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
+msgstr "Провайдер платежів (Bango) повернув помилку при обробці платежу"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:137
 msgid "The JWT has expired."
-msgstr ""
+msgstr "JWT прострочено."
 
 #: webpay/base/dev_messages.py:139
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
+msgstr "Зовнішній обробник платежів повернув помилку при обробці платежу"
 
 #: webpay/base/dev_messages.py:141
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "Закінчився час очікування внутрішнього веб-запиту."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:145
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr ""
+msgstr "Підпис JWT недійсний або JWT неточний."
 
 #: webpay/base/dev_messages.py:146
 msgid "The redirect URL given is not valid."
-msgstr ""
+msgstr "Надана URL перенаправлення не є дійсною."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:149
 msgid "The JWT did not decode to a JSON object."
-msgstr ""
+msgstr "JWT не декодовано в об'єкт JSON."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:152
 msgid "Error decoding JWT."
-msgstr ""
+msgstr "Помилка декодування JWT."
 
 #: webpay/base/dev_messages.py:153
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "У системи вийшов час очікування спроби увійти."
 
 #: webpay/base/dev_messages.py:154
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "У системи вийшов час очікування спроби вийти."
 
 #: webpay/base/dev_messages.py:155
 msgid "The logout URL is missing from configuration."
-msgstr ""
+msgstr "В конфігурації відсутня URL виходу."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:157
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr ""
+msgstr "Неправильний формат URL. Це може бути зворотня URL або URL іконки."
 
 #: webpay/base/dev_messages.py:159
 msgid "The JWT signature is missing or invalid."
