@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 09:24-0700\n"
-"PO-Revision-Date: 2014-08-08 13:58+0000\n"
+"PO-Revision-Date: 2014-08-08 20:30+0000\n"
 "Last-Translator: Artem <a.polivanchuk@outlook.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: uk\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1407506293.0\n"
+"X-POOTLE-MTIME: 1407529855.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -111,63 +111,66 @@ msgstr "Неправильний формат URL. Це може бути зво
 
 #: webpay/base/dev_messages.py:159
 msgid "The JWT signature is missing or invalid."
-msgstr ""
+msgstr "Підпис JWT відсутній або недопустимий."
 
 #: webpay/base/dev_messages.py:161
 msgid "An error code was expected but was not supplied."
-msgstr ""
+msgstr "Код помилки очікувався, але не був наданий."
 
 #: webpay/base/dev_messages.py:162
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
+msgstr "ID транзакції був відсутній в сеансі при обробці повернення платежу."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:166
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
+msgstr "Якщо {0} визначено, тоді ви повинні також визначити {1}."
 
 #. L10n: First argument is the name of the key, 'reason'.
 #: webpay/base/dev_messages.py:170
 msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr ""
+msgstr "У симуляції запитаного повернення відсутній ключ '{0}'."
 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:174
 msgid "{0} function is undefined."
-msgstr ""
+msgstr "Функція {0} невизначена."
 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:177
 msgid "{0} function is undefined"
-msgstr ""
+msgstr "Функція {0} невизначена"
 
 #: webpay/base/dev_messages.py:178
 msgid "The notification service responded with an error while verifying the payment notice"
 msgstr ""
+"При перевірці повідомлення платежу, служба повідомлень відповіла з помилкою"
 
 #: webpay/base/dev_messages.py:180
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr ""
+"При перевірці повідомлення платежу, служба повідомлень видала "
+"непередбачуване виключення"
 
 #: webpay/base/dev_messages.py:183 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
-msgstr ""
+msgstr "Платежі тимчасово відключено."
 
 #: webpay/base/dev_messages.py:185
 msgid "An unexpected error occurred while fetching data."
-msgstr ""
+msgstr "Під час вибірки даних сталась непередбачувана помилка."
 
 #: webpay/base/dev_messages.py:186
 msgid "The request timed out fetching data."
-msgstr ""
+msgstr "Вийшов час очікування вибірки даних."
 
 #: webpay/base/dev_messages.py:188
 msgid "Failed to log out of the payment provider."
-msgstr ""
+msgstr "Не вдалося вийти з провайдера платежів."
 
 #: webpay/base/dev_messages.py:189
 msgid "An error occurred while trying to log out."
-msgstr ""
+msgstr "При спробі вийти сталась помилка."
 
 #: webpay/base/dev_messages.py:191
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
