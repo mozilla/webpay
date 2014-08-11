@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 09:24-0700\n"
-"PO-Revision-Date: 2014-06-02 11:14+0000\n"
+"PO-Revision-Date: 2014-08-11 13:18+0000\n"
 "Last-Translator: Gábor <kelemeng@ubuntu.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n !=1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1401707678.0\n"
+"X-POOTLE-MTIME: 1407763095.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -76,7 +76,7 @@ msgstr "A JWT vagy a JWT aláírása hibás."
 
 #: webpay/base/dev_messages.py:146
 msgid "The redirect URL given is not valid."
-msgstr ""
+msgstr "A megadott átirányítási URL nem érvényes."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -100,7 +100,7 @@ msgstr "Időtúllépés kijelentkezéskor."
 
 #: webpay/base/dev_messages.py:155
 msgid "The logout URL is missing from configuration."
-msgstr ""
+msgstr "A kijelentkezési URL hiányzik a konfigurációból."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:157
@@ -109,11 +109,11 @@ msgstr "Az URL hibás. Ez egy postback vagy egy ikon URL lehet."
 
 #: webpay/base/dev_messages.py:159
 msgid "The JWT signature is missing or invalid."
-msgstr ""
+msgstr "A JWT aláírás hiányzik vagy érvénytelen."
 
 #: webpay/base/dev_messages.py:161
 msgid "An error code was expected but was not supplied."
-msgstr ""
+msgstr "A várt hibakód nem lett megadva."
 
 #: webpay/base/dev_messages.py:162
 msgid "The transaction ID was missing from the session when processing a payment return."
@@ -132,12 +132,12 @@ msgstr "A kért visszafizetési szimulációból hiányzik a „{0}” kulcs."
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:174
 msgid "{0} function is undefined."
-msgstr ""
+msgstr "{0} függvény nincs definiálva."
 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:177
 msgid "{0} function is undefined"
-msgstr ""
+msgstr "{0} függvény nincs definiálva"
 
 #: webpay/base/dev_messages.py:178
 msgid "The notification service responded with an error while verifying the payment notice"
@@ -153,19 +153,19 @@ msgstr "A vásárlás átmenetileg szünetel."
 
 #: webpay/base/dev_messages.py:185
 msgid "An unexpected error occurred while fetching data."
-msgstr ""
+msgstr "Váratlan hiba történt az adatok lekérésekor."
 
 #: webpay/base/dev_messages.py:186
 msgid "The request timed out fetching data."
-msgstr ""
+msgstr "A kérés túllépte az időkorlátot az adatok lekérésekor."
 
 #: webpay/base/dev_messages.py:188
 msgid "Failed to log out of the payment provider."
-msgstr ""
+msgstr "Nem sikerült kijelentkezni a fizetésszolgáltatóból."
 
 #: webpay/base/dev_messages.py:189
 msgid "An error occurred while trying to log out."
-msgstr ""
+msgstr "Hiba történt a kijelentkezés közben."
 
 #: webpay/base/dev_messages.py:191
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
@@ -173,23 +173,24 @@ msgstr "Az erőforrás módosításra került az előző kérés idején belül.
 
 #: webpay/base/dev_messages.py:193
 msgid "Permission denied to re-verify the user."
-msgstr ""
+msgstr "Hozzáférés megtagadva a felhasználó újraellenőrzéséhez."
 
 #: webpay/base/dev_messages.py:194
 msgid "Re-verifying the user failed."
-msgstr ""
+msgstr "A felhasználó újraellenőrzése sikertelen."
 
 #: webpay/base/dev_messages.py:195 webpay/base/dev_messages.py:225
 msgid "The payment provider does not exist"
-msgstr ""
+msgstr "A fizetésszolgáltató nem létezik"
 
 #: webpay/base/dev_messages.py:197
 msgid "The re-verification URL is missing from configuration."
-msgstr ""
+msgstr "Az újraellenőrzési URL hiányzik a beállításokból"
 
 #: webpay/base/dev_messages.py:199
 msgid "The request to the server timed out during re-verification."
 msgstr ""
+"A kiszolgálónak küldött kérés túllépte az időkorlátot az újraellenőrzéskor."
 
 #: webpay/base/dev_messages.py:200
 msgid "Payment simulations are disabled at this time."
@@ -201,11 +202,11 @@ msgstr "Ez a vásárlási kulcs csak szimulációhoz használható."
 
 #: webpay/base/dev_messages.py:204
 msgid "Status attributes are not configured correctly."
-msgstr ""
+msgstr "Az állapotattribútumok nincsenek megfelelően beállítva."
 
 #: webpay/base/dev_messages.py:206
 msgid "Status attributes are not configured correctly"
-msgstr ""
+msgstr "Az állapotattribútumok nincsenek megfelelően beállítva"
 
 #: webpay/base/dev_messages.py:208
 msgid "The configuration of the payment transaction failed."
@@ -225,7 +226,7 @@ msgstr "Időtúllépés a tranzakció indításakor."
 
 #: webpay/base/dev_messages.py:216 webpay/base/dev_messages.py:217
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Váratlan hiba történt."
 
 #: webpay/base/dev_messages.py:219
 msgid "The payment method or price point is not supported for this region or operator."
@@ -237,27 +238,27 @@ msgstr "A felhasználó megszakította a vásárlást."
 
 #: webpay/base/dev_messages.py:222
 msgid "User hash is missing from configuration."
-msgstr ""
+msgstr "A felhasználó ellenőrzőösszege hiányzik a beállításokból."
 
 #: webpay/base/dev_messages.py:223
 msgid "Permission denied to verify the user."
-msgstr ""
+msgstr "Hozzáférés megtagadva a felhasználó ellenőrzéséhez."
 
 #: webpay/base/dev_messages.py:224
 msgid "Verifying the user failed."
-msgstr ""
+msgstr "A felhasználó ellenőrzése sikertelen."
 
 #: webpay/base/dev_messages.py:227
 msgid "The verification URL is missing from configuration."
-msgstr ""
+msgstr "Az ellenőrzési URL hiányzik a beállításokból."
 
 #: webpay/base/dev_messages.py:229
 msgid "The request to the server timed out during verification."
-msgstr ""
+msgstr "A kiszolgálónak küldött kérés túllépte az időkorlátot az ellenőrzéskor."
 
 #: webpay/base/dev_messages.py:230
 msgid "The wait URL is missing from configration."
-msgstr ""
+msgstr "A várakozási URL hiányzik a beállításokból."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
