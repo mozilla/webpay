@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 09:24-0700\n"
-"PO-Revision-Date: 2014-08-08 20:30+0000\n"
+"PO-Revision-Date: 2014-08-11 12:26+0000\n"
 "Last-Translator: Artem <a.polivanchuk@outlook.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: uk\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1407529855.0\n"
+"X-POOTLE-MTIME: 1407759996.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -174,314 +174,329 @@ msgstr "При спробі вийти сталась помилка."
 
 #: webpay/base/dev_messages.py:191
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
+msgstr "Заборонено дозвіл на повторну перевірку користувача."
 
 #: webpay/base/dev_messages.py:193
 msgid "Permission denied to re-verify the user."
-msgstr ""
+msgstr "Відмовлено у дозволі на повторну перевірку користувача."
 
 #: webpay/base/dev_messages.py:194
 msgid "Re-verifying the user failed."
-msgstr ""
+msgstr "Не вдалося провести повторну перевірку користувача."
 
 #: webpay/base/dev_messages.py:195 webpay/base/dev_messages.py:225
 msgid "The payment provider does not exist"
-msgstr ""
+msgstr "Провайдер платежів не існує"
 
 #: webpay/base/dev_messages.py:197
 msgid "The re-verification URL is missing from configuration."
-msgstr ""
+msgstr "В конфігурації відсутня URL повторної перевірки."
 
 #: webpay/base/dev_messages.py:199
 msgid "The request to the server timed out during re-verification."
-msgstr ""
+msgstr "Вийшов час очікування запиту до серверу під час повторної перевірки."
 
 #: webpay/base/dev_messages.py:200
 msgid "Payment simulations are disabled at this time."
-msgstr ""
+msgstr "Симуляції платежів в даний момент відключені."
 
 #: webpay/base/dev_messages.py:202
 msgid "This payment key can only be used to simulate purchases."
-msgstr ""
+msgstr "Цей ключ платежу може бути використаний лише для симуляції покупок."
 
 #: webpay/base/dev_messages.py:204
 msgid "Status attributes are not configured correctly."
-msgstr ""
+msgstr "Атрибути статусу не настроєні правильно."
 
 #: webpay/base/dev_messages.py:206
 msgid "Status attributes are not configured correctly"
-msgstr ""
+msgstr "Атрибути статусу не настроєні правильно"
 
 #: webpay/base/dev_messages.py:208
 msgid "The configuration of the payment transaction failed."
-msgstr ""
+msgstr "Конфігурація транзакції платежу невдала."
 
 #: webpay/base/dev_messages.py:210
 msgid "The purchase cannot be completed because the current transaction has already ended."
 msgstr ""
+"Покупку неможливо завершити через те, що поточна транзакція вже завершилась."
 
 #: webpay/base/dev_messages.py:212
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "Не вдалося знайти ID транзакції."
 
 #: webpay/base/dev_messages.py:214
 msgid "The system timed out while waiting for a transaction to start."
-msgstr ""
+msgstr "У системи завершився час очікування початку транзакції."
 
 #: webpay/base/dev_messages.py:216 webpay/base/dev_messages.py:217
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Сталась непередбачувана помилка."
 
 #: webpay/base/dev_messages.py:219
 msgid "The payment method or price point is not supported for this region or operator."
 msgstr ""
+"Метод платежу чи стандартна ціна не підтримується для цього регіону або "
+"оператора."
 
 #: webpay/base/dev_messages.py:221
 msgid "The user cancelled the payment."
-msgstr ""
+msgstr "Користувач скасував платіж."
 
 #: webpay/base/dev_messages.py:222
 msgid "User hash is missing from configuration."
-msgstr ""
+msgstr "В конфігурації відсутній хеш користувача."
 
 #: webpay/base/dev_messages.py:223
 msgid "Permission denied to verify the user."
-msgstr ""
+msgstr "Відмовлено у дозволі на перевірку користувача."
 
 #: webpay/base/dev_messages.py:224
 msgid "Verifying the user failed."
-msgstr ""
+msgstr "Не вдалося перевірити користувача."
 
 #: webpay/base/dev_messages.py:227
 msgid "The verification URL is missing from configuration."
-msgstr ""
+msgstr "В конфігурації відсутня URL перевірки."
 
 #: webpay/base/dev_messages.py:229
 msgid "The request to the server timed out during verification."
-msgstr ""
+msgstr "Вийшов час очікування запиту до сервера під час перевірки."
 
 #: webpay/base/dev_messages.py:230
 msgid "The wait URL is missing from configration."
-msgstr ""
+msgstr "В конфігурації відсутня URL очікування."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
 #: webpay/base/dev_messages.py:237
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
+msgstr "Значення ключа \"{0}\" перевищує максимальну довжину {1}"
 
 #: webpay/base/utils.py:57
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr ""
+"При налаштуванні платежу сталася помилка. Спробуйте знову або зв'яжіться з "
+"програмою, якщо це не припиниться."
 
 #: webpay/base/utils.py:63
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr ""
+"Сталася внутрішня помилка обробки платежу. Спробуйте знову або зв'яжіться з "
+"Mozilla, якщо це не припиниться."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "Не дозволено"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "Вибачте, але ви не маєте дозволу на цю дію."
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
-msgstr ""
+msgstr "Скасувати"
 
 #: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
 msgid "Page not found"
-msgstr ""
+msgstr "Сторінку не знайдено"
 
 #: webpay/base/templates/404.html:5
 msgid "Sorry, but we couldn't find the page you're looking for."
-msgstr ""
+msgstr "Вибачте, але ми не змогли знайти сторінку, яку ви шукаєте."
 
 #: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
-msgstr ""
+msgstr "Щось пішло не так!"
 
 #: webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
-msgstr ""
+msgstr "При обробці цього запиту сталася помилка."
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
-msgstr ""
+msgstr "Будь ласка, спробуйте ще раз трохи пізніше."
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9 webpay/spa/templates/spa/index.html:9
 msgid "Web Pay"
-msgstr ""
+msgstr "Веб-платежі"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr ""
+msgstr "PIN повинен складатись із 4 цифр."
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr ""
+msgstr "PIN може містити лише цифри."
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
-msgstr ""
+msgstr "Ви увійшли, як інший користувач і повинні почати платіж заново."
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
-msgstr ""
+msgstr "Завантаження"
 
 #: webpay/base/templates/base.html:32
 msgid "Beginning payment&hellip;"
-msgstr ""
+msgstr "Починаю платіж&hellip;"
 
 #: webpay/base/templates/base.html:33
 msgid "Connecting to Persona"
-msgstr ""
+msgstr "Підключення до Persona"
 
 #: webpay/base/templates/base.html:34
 msgid "Payment complete"
-msgstr ""
+msgstr "Оплату завершено"
 
 #: webpay/base/templates/base.html:41
 msgid "Oops&hellip;"
-msgstr ""
+msgstr "Ой&hellip;"
 
 #: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
-msgstr ""
+msgstr "Це триває довше, ніж очікувалось. Спробувати ще раз?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "Щось пішло не так. Спробувати ще раз?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "ОК"
 
 #: webpay/base/templates/base.html:48
 msgid "The transaction failed. You have not been charged for this purchase."
-msgstr ""
+msgstr "Транзакція невдала. З вас не зняли кошти за цю покупку."
 
 #: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
-msgstr ""
+msgstr "Помилка"
 
 #: webpay/pay/forms.py:109
 msgid "Make a real payment"
-msgstr ""
+msgstr "Зробити справжній платіж"
 
 #: webpay/pay/forms.py:110
 msgid "Simulate a payment"
-msgstr ""
+msgstr "Симулювати платіж"
 
 #: webpay/pay/forms.py:113
 msgid "Default network"
-msgstr ""
+msgstr "Типова мережа"
 
 #: webpay/pay/views.py:215 webpay/pin/views.py:96
 msgid "Enter Pin"
-msgstr ""
+msgstr "Введіть PIN"
 
 #: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign In"
-msgstr ""
+msgstr "Увійти"
 
 #: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in to continue with the payment"
-msgstr ""
+msgstr "Увійдіть для продовження оплати"
 
 #: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in"
-msgstr ""
+msgstr "Увійти"
 
 #: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
-msgstr ""
+msgstr "Симулювати платіж"
 
 #: webpay/pay/templates/pay/simulate.html:8
 msgid "You will not be charged."
-msgstr ""
+msgstr "З вас не візьмуть грошей."
 
 #: webpay/pay/templates/pay/simulate.html:10
 msgid "result"
-msgstr ""
+msgstr "результат"
 
 #: webpay/pay/templates/pay/simulate.html:20 webpay/pay/templates/pay/super_simulate.html:17 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
-msgstr ""
+msgstr "Продовжити"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "Ви маєте супер силу"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
-msgstr ""
+msgstr "Налаштування платежу&hellip;"
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
-msgstr ""
+msgstr "Ви вже створили PIN."
 
 #: webpay/pin/forms.py:111
 msgid "Wrong pin"
-msgstr ""
+msgstr "Неправильний PIN"
 
 #: webpay/pin/forms.py:123 webpay/pin/forms.py:146
 msgid "Pins do not match."
-msgstr ""
+msgstr "PIN-коди не співпадають."
 
 #: webpay/pin/views.py:49 webpay/testing/views.py:25
 msgid "Create a Pin"
-msgstr ""
+msgstr "Створити PIN"
 
 #: webpay/pin/views.py:71 webpay/pin/views.py:188
 msgid "Confirm Pin"
-msgstr ""
+msgstr "Підтвердити PIN"
 
 #: webpay/pin/views.py:134 webpay/pin/views.py:160 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
-msgstr ""
+msgstr "Скинути PIN"
 
 #: webpay/pin/views.py:181
 msgid "Pin reset"
-msgstr ""
+msgstr "Скидання PIN-коду"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
 msgstr ""
+"Тільки для тестування. Користувачі Marketplace <b>не повинні</b> "
+"використовувати цей сайт."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
-msgstr ""
+msgstr "Забули свій PIN?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
 msgstr ""
+"Ви неправильно ввели PIN забагато разів. Ваш обліковий запис заблоковано. "
+"Будь ласка, спробуйте здійснити покупку знову через 5 хвилин."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
-msgstr ""
+msgstr "Ваш PIN заблоковано"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
 msgstr ""
+"Ваш PIN заблоковано, тому що ви ввели його невірно забагато разів. Ви можете "
+"продовжити та спробувати ввести його знову або скинути свій PIN."
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
 msgstr ""
+"Ви впевнені, що хочете скинути свій PIN? Щоб зробити це, вам необхідно "
+"увійти у Persona."
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
-msgstr ""
+msgstr "Скинути"
 
 #: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
-msgstr ""
+msgstr "Перевірка платежу&hellip;"
 
 #: webpay/spa/templates/spa/index.html:45
 msgid "Loading..."
-msgstr ""
+msgstr "Завантаження..."
