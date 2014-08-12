@@ -126,6 +126,6 @@ SPA_SETTINGS['validRedirSites'].append('https://zippy.paas.allizom.org')
 
 NOSE_PLUGINS = []
 
-USE_FXA = True
+USE_FXA = False
 FXA_CLIENT_ID = '514dadc7fd674e63'
 FXA_CLIENT_SECRET = 'dd22a0a99bedf2eaf372db7d384dc8033f01d86e68155b03a544130d646bf75b'
