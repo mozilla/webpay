@@ -293,17 +293,20 @@ class TestPay(Base, BaseCase):
         self.solitude.generic.product.get_object.return_value = {
             'secret': 'p.secret', 'access': constants.ACCESS_PURCHASE}
         res = self.post()
-        eq_(res.status_code, 204)
+        eq_(res.status_code, 200)
+        data = json.loads(res.content)
+        eq_(data['status'], 'ok')
+        eq_(data['simulation'], None)
 
     def test_no_mnc_mcc(self):
         res = self.post(mcc='', mnc='')
-        eq_(res.status_code, 204)
+        eq_(res.status_code, 200)
         args = self.start_pay.delay.call_args[0][1]
         eq_(args['network'], {})
 
     def test_stores_mnc_mcc(self):
         res = self.post(mnc='423', mcc='555')
-        eq_(res.status_code, 204)
+        eq_(res.status_code, 200)
         args = self.start_pay.delay.call_args[0][1]
         eq_(args['network'], {'mnc': '423', 'mcc': '555'})
 
@@ -320,7 +323,21 @@ class TestPay(Base, BaseCase):
 
     def test_configures_transaction_success(self):
         res = self.post()
-        eq_(res.status_code, 204)
+        eq_(res.status_code, 200)
+        data = json.loads(res.content)
+        eq_(data['status'], 'ok')
+        eq_(data['simulation'], None)
+
+    def test_configure_simulated_transaction(self):
+        simulate = {'result': 'postback'}
+        req = self.request(
+            payload=self.payload(extra_req={'simulate': simulate}))
+
+        res = self.post(req=req)
+        eq_(res.status_code, 200)
+        data = json.loads(res.content)
+        eq_(data['status'], 'ok')
+        eq_(data['simulation'], simulate)
 
     def test_configures_transaction_fail(self):
         res = self.post(req='')  # cause a form error.
@@ -365,3 +382,42 @@ class TestGetPay(Base, BaseCase):
         assert not solitude_client.get_transaction.called
         eq_(response.status_code, 400)
         eq_(response.data.get('error_code'), 'TRANS_ID_NOT_SET')
+
+
+class TestSimulate(BaseCase):
+
+    def setUp(self):
+        super(TestSimulate, self).setUp()
+
+        p = mock.patch('webpay.pay.tasks.simulate_notify.delay')
+        self.simulate_task = p.start()
+        self.addCleanup(p.stop)
+
+        self.issuer = '<issuer>'
+        self.pay_request = '<pay request>'
+
+    def activate_simulation(self):
+        self.set_session(is_simulation=True,
+                         notes={'pay_request': self.pay_request,
+                                'issuer_key': self.issuer})
+
+    def test_requires_login(self):
+        self.activate_simulation()
+        self.client.logout()
+        res = self.client.post(reverse('api:simulate'))
+        eq_(res.status_code, 403)
+
+    def test_post_required(self):
+        res = self.client.get(reverse('api:simulate'))
+        eq_(res.status_code, 405)
+
+    def test_no_active_simulation(self):
+        res = self.client.post(reverse('api:simulate'))
+        eq_(res.status_code, 403, res)
+
+    def test_simulation(self):
+        self.activate_simulation()
+        res = self.client.post(reverse('api:simulate'))
+        eq_(res.status_code, 204)
+        self.simulate_task.assert_called_with(self.issuer,
+                                              self.pay_request)

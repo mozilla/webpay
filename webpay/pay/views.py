@@ -143,11 +143,15 @@ def configure_transaction(request):
         log.warning('OVERRIDING detected network with: mcc={mcc}, mnc={mnc}'
                     .format(mcc=mcc, mnc=mnc))
 
-    if not tasks.configure_transaction(request, mcc=mcc, mnc=mnc):
+    is_simulation = request.session.get('is_simulation', False)
+    if (not tasks.configure_transaction(request, mcc=mcc, mnc=mnc) and
+            not is_simulation):
         log.error('Configuring transaction failed.')
         return system_error(request, code=msg.TRANS_CONFIG_FAILED)
     else:
-        return {'status': 'ok'}
+        sim = (request.session['notes']['pay_request']['request']['simulate']
+               if is_simulation else None)
+        return {'status': 'ok', 'simulation': sim}
 
 
 def index(request):

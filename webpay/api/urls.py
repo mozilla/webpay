@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from api import PayViewSet, PinCheckViewSet, PinViewSet
+from api import PayViewSet, PinCheckViewSet, PinViewSet, SimulateViewSet
 
 
 # Disable these API's on production until we are sure they are working well.
@@ -13,4 +13,7 @@ urlpatterns = patterns('',
     url('^pay/',
         PayViewSet.as_view({'post': 'create', 'get': 'retrieve'}),
         name='pay'),
+    url('^simulate/',
+        SimulateViewSet.as_view({'post': 'create'}),
+        name='simulate'),
 )
