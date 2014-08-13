@@ -188,8 +188,7 @@ msgstr "Die URL zur erneuten Bestätigung fehlt in dieser Konfiguration."
 
 #: webpay/base/dev_messages.py:199
 msgid "The request to the server timed out during re-verification."
-msgstr ""
-"Zeitüberschreitung der Anfrage an den Server bei der erneuten Bestätigung."
+msgstr "Zeitüberschreitung der Anfrage an den Server bei der erneuten Bestätigung."
 
 #: webpay/base/dev_messages.py:200
 msgid "Payment simulations are disabled at this time."

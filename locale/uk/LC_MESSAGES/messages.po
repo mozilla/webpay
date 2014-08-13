@@ -10,8 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Pootle 2.5.0\n"
 "X-POOTLE-MTIME: 1407759996.0\n"
 
@@ -25,9 +24,7 @@ msgstr "Ваш платіж завершено."
 
 #: webpay/base/dev_messages.py:119
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
-"Mozilla отримала недійсний код від провайдера платежів (Bango) при обробці "
-"платежа"
+msgstr "Mozilla отримала недійсний код від провайдера платежів (Bango) при обробці платежа"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:123
@@ -143,14 +140,11 @@ msgstr "Функція {0} невизначена"
 
 #: webpay/base/dev_messages.py:178
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
-"При перевірці повідомлення платежу, служба повідомлень відповіла з помилкою"
+msgstr "При перевірці повідомлення платежу, служба повідомлень відповіла з помилкою"
 
 #: webpay/base/dev_messages.py:180
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
-msgstr ""
-"При перевірці повідомлення платежу, служба повідомлень видала "
-"непередбачуване виключення"
+msgstr "При перевірці повідомлення платежу, служба повідомлень видала непередбачуване виключення"
 
 #: webpay/base/dev_messages.py:183 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
@@ -218,8 +212,7 @@ msgstr "Конфігурація транзакції платежу невда�
 
 #: webpay/base/dev_messages.py:210
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
-"Покупку неможливо завершити через те, що поточна транзакція вже завершилась."
+msgstr "Покупку неможливо завершити через те, що поточна транзакція вже завершилась."
 
 #: webpay/base/dev_messages.py:212
 msgid "No transaction ID could be found."
@@ -235,9 +228,7 @@ msgstr "Сталась непередбачувана помилка."
 
 #: webpay/base/dev_messages.py:219
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
-"Метод платежу чи стандартна ціна не підтримується для цього регіону або "
-"оператора."
+msgstr "Метод платежу чи стандартна ціна не підтримується для цього регіону або оператора."
 
 #: webpay/base/dev_messages.py:221
 msgid "The user cancelled the payment."
@@ -275,15 +266,11 @@ msgstr "Значення ключа \"{0}\" перевищує максимал�
 
 #: webpay/base/utils.py:57
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr ""
-"При налаштуванні платежу сталася помилка. Спробуйте знову або зв'яжіться з "
-"програмою, якщо це не припиниться."
+msgstr "При налаштуванні платежу сталася помилка. Спробуйте знову або зв'яжіться з програмою, якщо це не припиниться."
 
 #: webpay/base/utils.py:63
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
-"Сталася внутрішня помилка обробки платежу. Спробуйте знову або зв'яжіться з "
-"Mozilla, якщо це не припиниться."
+msgstr "Сталася внутрішня помилка обробки платежу. Спробуйте знову або зв'яжіться з Mozilla, якщо це не припиниться."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -457,9 +444,7 @@ msgstr "Скидання PIN-коду"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
-"Тільки для тестування. Користувачі Marketplace <b>не повинні</b> "
-"використовувати цей сайт."
+msgstr "Тільки для тестування. Користувачі Marketplace <b>не повинні</b> використовувати цей сайт."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
@@ -469,9 +454,7 @@ msgstr "Забули свій PIN?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr ""
-"Ви неправильно ввели PIN забагато разів. Ваш обліковий запис заблоковано. "
-"Будь ласка, спробуйте здійснити покупку знову через 5 хвилин."
+msgstr "Ви неправильно ввели PIN забагато разів. Ваш обліковий запис заблоковано. Будь ласка, спробуйте здійснити покупку знову через 5 хвилин."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
@@ -479,15 +462,11 @@ msgstr "Ваш PIN заблоковано"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
-msgstr ""
-"Ваш PIN заблоковано, тому що ви ввели його невірно забагато разів. Ви можете "
-"продовжити та спробувати ввести його знову або скинути свій PIN."
+msgstr "Ваш PIN заблоковано, тому що ви ввели його невірно забагато разів. Ви можете продовжити та спробувати ввести його знову або скинути свій PIN."
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr ""
-"Ви впевнені, що хочете скинути свій PIN? Щоб зробити це, вам необхідно "
-"увійти у Persona."
+msgstr "Ви впевнені, що хочете скинути свій PIN? Щоб зробити це, вам необхідно увійти у Persona."
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"

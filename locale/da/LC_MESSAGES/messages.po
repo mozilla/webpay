@@ -14,24 +14,17 @@ msgstr ""
 "X-Generator: Poedit 1.6.7\n"
 "X-POOTLE-MTIME: 1402000045.0\n"
 
-#: webpay/bango/templates/bango/cancel.html:10
-#: webpay/base/templates/base.html:35
+#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
 msgstr "Betaling annulleret."
 
-#: webpay/bango/templates/bango/success.html:10
-#: webpay/pay/templates/pay/simulate_done.html:9
-#: webpay/provider/templates/provider/success.html:10
+#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "Din betaling er gennemført."
 
 #: webpay/base/dev_messages.py:119
-msgid ""
-"Mozilla received an invalid code from the payment provider (Bango) when "
-"processing the payment"
-msgstr ""
-"Mozilla modtog en ugyldig kode fra betalingsudbyderen (Bango) da betalingen "
-"blev behandlet"
+msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
+msgstr "Mozilla modtog en ugyldig kode fra betalingsudbyderen (Bango) da betalingen blev behandlet"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:123
@@ -57,11 +50,8 @@ msgid "The requested payment simulation result is not supported."
 msgstr "Den forespurgte simulation af betaling er ikke understøttet."
 
 #: webpay/base/dev_messages.py:133
-msgid ""
-"The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
-"Betalingsudbyderen (Bango) returnerede en fejl under behandlingen af "
-"betalingen"
+msgid "The payment provider (Bango) returned an error while processing the payment"
+msgstr "Betalingsudbyderen (Bango) returnerede en fejl under behandlingen af betalingen"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -70,11 +60,8 @@ msgid "The JWT has expired."
 msgstr "JWT er udløbet."
 
 #: webpay/base/dev_messages.py:139
-msgid ""
-"The external payment processor returned an error while handling the payment"
-msgstr ""
-"Den eksterne betalingsbehandler returnerede en fejl under håndteringen af "
-"betalingen"
+msgid "The external payment processor returned an error while handling the payment"
+msgstr "Den eksterne betalingsbehandler returnerede en fejl under håndteringen af betalingen"
 
 #: webpay/base/dev_messages.py:141
 msgid "An internal web request timed out."
@@ -117,9 +104,7 @@ msgstr "Logout-URL'en mangler fra konfigurationen."
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:157
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr ""
-"En URL er forkert udformet.  Dette kan være en postback URL eller en ikon-"
-"URL."
+msgstr "En URL er forkert udformet.  Dette kan være en postback URL eller en ikon-URL."
 
 #: webpay/base/dev_messages.py:159
 msgid "The JWT signature is missing or invalid."
@@ -130,12 +115,8 @@ msgid "An error code was expected but was not supplied."
 msgstr "En fejlkode var ventet men ikke givet."
 
 #: webpay/base/dev_messages.py:162
-msgid ""
-"The transaction ID was missing from the session when processing a payment "
-"return."
-msgstr ""
-"Transaktions-id manglede fra sessionen under behandling af en "
-"tilbagebetaling."
+msgid "The transaction ID was missing from the session when processing a payment return."
+msgstr "Transaktions-id manglede fra sessionen under behandling af en tilbagebetaling."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:166
@@ -158,19 +139,12 @@ msgid "{0} function is undefined"
 msgstr "Funktionen {0} er udefineret"
 
 #: webpay/base/dev_messages.py:178
-msgid ""
-"The notification service responded with an error while verifying the payment "
-"notice"
-msgstr ""
-"Beskedtjenesten svarede med en fejl under godkendelse af betalingsmeddelelsen"
+msgid "The notification service responded with an error while verifying the payment notice"
+msgstr "Beskedtjenesten svarede med en fejl under godkendelse af betalingsmeddelelsen"
 
 #: webpay/base/dev_messages.py:180
-msgid ""
-"The notification service raised an unexpected exception while verifying the "
-"payment notice"
-msgstr ""
-"Beskedtjenesten raised an unexpected exception under godkendelse af "
-"betalingsmeddelelsen"
+msgid "The notification service raised an unexpected exception while verifying the payment notice"
+msgstr "Beskedtjenesten raised an unexpected exception under godkendelse af betalingsmeddelelsen"
 
 #: webpay/base/dev_messages.py:183 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
@@ -193,12 +167,8 @@ msgid "An error occurred while trying to log out."
 msgstr "Der opstod en fejl under log ud."
 
 #: webpay/base/dev_messages.py:191
-msgid ""
-"The resource has been modified within the timing of the previous request. "
-"The action should be performed again."
-msgstr ""
-"Ressourcen er blevet ændret inden tidspunktet for den næste forespørgsel. "
-"Handlingen skal udføres igen."
+msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
+msgstr "Ressourcen er blevet ændret inden tidspunktet for den næste forespørgsel. Handlingen skal udføres igen."
 
 #: webpay/base/dev_messages.py:193
 msgid "Permission denied to re-verify the user."
@@ -241,12 +211,8 @@ msgid "The configuration of the payment transaction failed."
 msgstr "Konfigurationen af betalingstransaktionen mislykkedes."
 
 #: webpay/base/dev_messages.py:210
-msgid ""
-"The purchase cannot be completed because the current transaction has already "
-"ended."
-msgstr ""
-"Købet kan ikke gennemføres, fordi den aktuelle transaktion allerede er "
-"afsluttet."
+msgid "The purchase cannot be completed because the current transaction has already ended."
+msgstr "Købet kan ikke gennemføres, fordi den aktuelle transaktion allerede er afsluttet."
 
 #: webpay/base/dev_messages.py:212
 msgid "No transaction ID could be found."
@@ -261,12 +227,8 @@ msgid "An unexpected error occurred."
 msgstr "Der opstod en uventet fejl."
 
 #: webpay/base/dev_messages.py:219
-msgid ""
-"The payment method or price point is not supported for this region or "
-"operator."
-msgstr ""
-"Betalingsmetoden eller prisniveauet understøttes for denne region eller "
-"operatør."
+msgid "The payment method or price point is not supported for this region or operator."
+msgstr "Betalingsmetoden eller prisniveauet understøttes for denne region eller operatør."
 
 #: webpay/base/dev_messages.py:221
 msgid "The user cancelled the payment."
@@ -303,20 +265,12 @@ msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
 msgstr "Værdien af nøglen \"{0}\" overskrider den maksimale længde af {1}"
 
 #: webpay/base/utils.py:57
-msgid ""
-"There was an error setting up the payment. Try again or contact the app if "
-"it persists."
-msgstr ""
-"Der opstod en fejl under opsætningen af betalingen. Prøv igen eller kontakt "
-"app'en, hvis det fortsætter."
+msgid "There was an error setting up the payment. Try again or contact the app if it persists."
+msgstr "Der opstod en fejl under opsætningen af betalingen. Prøv igen eller kontakt app'en, hvis det fortsætter."
 
 #: webpay/base/utils.py:63
-msgid ""
-"There was an internal error processing the payment. Try again or contact "
-"Mozilla if it persists."
-msgstr ""
-"Der opstod en intern fejl under behandlingen af betalingen. Prøv igen eller "
-"kontakt Mozilla, hvis det fortsætter."
+msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
+msgstr "Der opstod en intern fejl under behandlingen af betalingen. Prøv igen eller kontakt Mozilla, hvis det fortsætter."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -326,12 +280,8 @@ msgstr "Ikke tilladt"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Beklager, men du har ikke tilladelse til at gøre det."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45
-#: webpay/base/templates/error.html:17
-#: webpay/pay/templates/pay/simulate.html:18
-#: webpay/pin/templates/pin/pin_form.html:39
-#: webpay/pin/templates/pin/pin_form.html:43
-#: webpay/pin/templates/pin/reset_start.html:17
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
+#: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Annuller"
 
@@ -400,8 +350,7 @@ msgstr "Dette tager længere tid end forventet. Prøv igen?"
 msgid "Something went wrong. Try again?"
 msgstr "Noget gik galt. Prøv igen?"
 
-#: webpay/base/templates/base.html:44
-#: webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "OK"
 
@@ -409,8 +358,7 @@ msgstr "OK"
 msgid "The transaction failed. You have not been charged for this purchase."
 msgstr "Transaktionen mislykkedes. Du er ikke blevet opkrævet for dette køb."
 
-#: webpay/base/templates/error.html:9
-#: webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Fejl"
 
@@ -430,23 +378,19 @@ msgstr "Standardnetværk"
 msgid "Enter Pin"
 msgstr "Indtast pinkode"
 
-#: webpay/pay/templates/pay/bounce.html:12
-#: webpay/pay/templates/pay/lobby.html:11
+#: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign In"
 msgstr "Log ind"
 
-#: webpay/pay/templates/pay/bounce.html:13
-#: webpay/pay/templates/pay/lobby.html:12
+#: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in to continue with the payment"
 msgstr "Log ind for at fortsætte med betalingen"
 
-#: webpay/pay/templates/pay/bounce.html:14
-#: webpay/pay/templates/pay/lobby.html:13
+#: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in"
 msgstr "Log ind"
 
-#: webpay/pay/templates/pay/simulate.html:7
-#: webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Simuler betaling"
 
@@ -458,10 +402,7 @@ msgstr "Du vil ikke blive opkrævet."
 msgid "result"
 msgstr "resultat"
 
-#: webpay/pay/templates/pay/simulate.html:20
-#: webpay/pay/templates/pay/super_simulate.html:17
-#: webpay/pin/templates/pin/pin_form.html:46
-#: webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20 webpay/pay/templates/pay/super_simulate.html:17 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Fortsæt"
 
@@ -469,8 +410,7 @@ msgstr "Fortsæt"
 msgid "You have super powers"
 msgstr "Du har superkræfter"
 
-#: webpay/pay/templates/pay/wait-to-start.html:6
-#: webpay/pay/templates/pay/wait-to-start.html:12
+#: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
 msgstr "Opsæt betaling&hellip;"
 
@@ -494,8 +434,7 @@ msgstr "Opret en pinkode"
 msgid "Confirm Pin"
 msgstr "Bekræft pinkode"
 
-#: webpay/pin/views.py:134 webpay/pin/views.py:160
-#: webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:134 webpay/pin/views.py:160 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Nulstil pinkode"
 
@@ -505,51 +444,35 @@ msgstr "Pinkode nulstillet"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
-"Kun til test. Brugere af Marketplace <b>skal ikke</b> bruge dette websted."
+msgstr "Kun til test. Brugere af Marketplace <b>skal ikke</b> bruge dette websted."
 
 #. This is the same as the standard forgot
-#. password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:31
-#: webpay/pin/templates/pin/reset_start.html:13
+#.                  password that most sites have.
+#: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
 msgstr "Glemt din pinkode?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
-msgid ""
-"You entered the wrong pin too many times. Your account is locked. Please try "
-"your purchase again in 5 minutes."
-msgstr ""
-"Du indtastede den forkerte pinkode for mange gange. Din konto er spærret. "
-"Prøv at foretage dit køb igen om 5 minutter."
+msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
+msgstr "Du indtastede den forkerte pinkode for mange gange. Din konto er spærret. Prøv at foretage dit køb igen om 5 minutter."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
 msgstr "Din pinkode er blevet spærret"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
-msgid ""
-"Your pin was locked because you entered it incorrectly too many times. You "
-"can continue and try entering your pin again or reset your pin."
-msgstr ""
-"Din pinkode blev spærret fordi du indtastede den forkert for mange gange. Du "
-"kan fortsætte og prøve at indtaste din pinkode igen eller nulstille din "
-"pinkode."
+msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
+msgstr "Din pinkode blev spærret fordi du indtastede den forkert for mange gange. Du kan fortsætte og prøve at indtaste din pinkode igen eller nulstille din pinkode."
 
 #: webpay/pin/templates/pin/reset_start.html:14
-msgid ""
-"Are you sure you want to reset your pin? You must sign in to Persona to "
-"reset your pin."
-msgstr ""
-"Er du sikker på, at du vil nulstille din pinkode? Du skal logge ind med "
-"Persona for at nulstille din pinkode."
+msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
+msgstr "Er du sikker på, at du vil nulstille din pinkode? Du skal logge ind med Persona for at nulstille din pinkode."
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
 msgstr "Nulstil"
 
-#: webpay/provider/templates/provider/wait-to-finish.html:6
-#: webpay/provider/templates/provider/wait-to-finish.html:12
+#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
 msgstr "Bekræfter betaling&hellip;"
 

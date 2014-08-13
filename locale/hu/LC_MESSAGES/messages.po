@@ -189,8 +189,7 @@ msgstr "Az újraellenőrzési URL hiányzik a beállításokból"
 
 #: webpay/base/dev_messages.py:199
 msgid "The request to the server timed out during re-verification."
-msgstr ""
-"A kiszolgálónak küldött kérés túllépte az időkorlátot az újraellenőrzéskor."
+msgstr "A kiszolgálónak küldött kérés túllépte az időkorlátot az újraellenőrzéskor."
 
 #: webpay/base/dev_messages.py:200
 msgid "Payment simulations are disabled at this time."
