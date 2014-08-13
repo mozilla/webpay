@@ -647,4 +647,4 @@ VERBOSE_LOGGING = False
 IN_TEST_SUITE = False
 
 USE_FXA = False
-FXA_OAUTH_URL = 'https://oauth-marketplace.dev.lcip.org'
+FXA_OAUTH_URL = 'https://oauth-stable.dev.lcip.org'
