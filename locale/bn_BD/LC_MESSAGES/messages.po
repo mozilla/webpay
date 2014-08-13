@@ -1,480 +1,506 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 09:24-0700\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2014-08-13 02:03+0000\n"
+"Last-Translator: Mahay <mahayalamkhan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: bn_BD\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.6.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.0\n"
+"X-POOTLE-MTIME: 1407895425.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
-msgstr ""
+msgstr "পেমেন্ট বাতিল"
 
 #: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
-msgstr ""
+msgstr "আপনার পেমেন্ট সম্পন্ন হয়েছে।"
 
 #: webpay/base/dev_messages.py:119
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
 msgstr ""
+"টাকা দেয়ার সময়, সেবা প্রদানকারী প্রতিষ্ঠান (Bango) এর নিকট থেকে মোজিলা একটি "
+"বাতিল কোড পেয়েছে                "
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:123
 msgid "An image icon key was not an object. Correct example: {0}"
-msgstr ""
+msgstr "চিত্র ভিত্তিক আইকনটি কোন অবজেক্ট ছিল না। সঠিক উদাহরণ: {0}"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:127
 msgid "No one has been registered for this JWT issuer."
-msgstr ""
+msgstr "এই JWT ইস্যুয়ার এর জন্য কেউ নিবন্ধন করেনি।"
 
 #: webpay/base/dev_messages.py:128
 msgid "The price point is unknown or invalid."
-msgstr ""
+msgstr "মূল্যসূচক অজানা অথবা ভুল"
 
 #: webpay/base/dev_messages.py:129
 msgid "The request to begin payment was invalid."
-msgstr ""
+msgstr "পেমেন্ট শুরু করার অনুরোধটি সঠিক নয়।"
 
 #: webpay/base/dev_messages.py:131
 msgid "The requested payment simulation result is not supported."
-msgstr ""
+msgstr "অনুরোধকৃত পেমেন্ট সিম্যুলেশনের ফলাফল সমর্থিত নয়।"
 
 #: webpay/base/dev_messages.py:133
 msgid "The payment provider (Bango) returned an error while processing the payment"
 msgstr ""
+"পেমেন্ট প্রদানকারী প্রতিষ্ঠান (Bango) পেমেন্ট প্রক্রিয়া করার সময় সমস্যা "
+"করেছে।"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:137
 msgid "The JWT has expired."
-msgstr ""
+msgstr "JWT এর মেয়াদ উত্তীর্ণ হয়েছে।"
 
 #: webpay/base/dev_messages.py:139
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
+msgstr "এই পেমেন্টটি গ্রহন করার সময় বাহ্যিক পেমেন্ট প্রক্রিয়াকারী সমস্যা করেছে।"
 
 #: webpay/base/dev_messages.py:141
 msgid "An internal web request timed out."
-msgstr ""
+msgstr "একটি অভ্যন্তরীণ ওয়েব অনুরোধের সময় উত্তীর্ণ হয়েছে।"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:145
 msgid "The JWT signature is invalid or the JWT is malformed."
-msgstr ""
+msgstr "JWT স্বাক্ষরটি ভুল বা JWT ভুল তৈরী হয়েছে।"
 
 #: webpay/base/dev_messages.py:146
 msgid "The redirect URL given is not valid."
-msgstr ""
+msgstr "রিডাইরেক্ট করার জন্য যে লিঙ্ক দেয়া হয়েছে, তা সঠিক নয়।"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:149
 msgid "The JWT did not decode to a JSON object."
-msgstr ""
+msgstr "JWT কে JSON হিসেবে ডি-কোড করা যায়নি।"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
 #: webpay/base/dev_messages.py:152
 msgid "Error decoding JWT."
-msgstr ""
+msgstr "JWT ডি-কোড করতে ত্রুটি।"
 
 #: webpay/base/dev_messages.py:153
 msgid "The system timed out while trying to log in."
-msgstr ""
+msgstr "লগইন করার সময় সিস্টেমের সময় শেষ হয়েছে"
 
 #: webpay/base/dev_messages.py:154
 msgid "The system timed out while trying to log out."
-msgstr ""
+msgstr "লগআউট করার সময় সিস্টেমের সময় শেষ হয়েছে"
 
 #: webpay/base/dev_messages.py:155
 msgid "The logout URL is missing from configuration."
-msgstr ""
+msgstr "কনফিগারেশনে লগআউট লিঙ্ক দেয়া হয়নি।"
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:157
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr ""
+msgstr "লিঙ্কটি ভাইরাস দ্বারা আক্রান্ত।এইটা কোন পূর্বের লিঙ্ক অথবা আইকন লিঙ্ক"
 
 #: webpay/base/dev_messages.py:159
 msgid "The JWT signature is missing or invalid."
-msgstr ""
+msgstr "JWT সিগনেচার পাওয়া যায়নি অথবা সঠিক নয়।"
 
 #: webpay/base/dev_messages.py:161
 msgid "An error code was expected but was not supplied."
-msgstr ""
+msgstr "একটি ইরোর কোড আশা করা হয়েছিলো, কিন্তু পাওয়া যায়নি।"
 
 #: webpay/base/dev_messages.py:162
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
+msgstr "একটি পেমেন্ট ফেরত প্রক্রিয়াকরণ এর সময় সেশন থেকে লেনদেন আইডি হারিয়েছে"
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:166
 msgid "If {0} is defined, then you must also define {1}."
-msgstr ""
+msgstr "যদি {0} সংজ্ঞায়িত করা হয়, তাহলে আপনাকে {1} কে ও সংজ্ঞায়িত করতে হবে"
 
 #. L10n: First argument is the name of the key, 'reason'.
 #: webpay/base/dev_messages.py:170
 msgid "The requested chargeback simulation is missing the key '{0}'."
-msgstr ""
+msgstr "অনুরোধকৃত মূল্যফেরত এর সিম্যুলেশনে '{0}' Key নেই।"
 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:174
 msgid "{0} function is undefined."
-msgstr ""
+msgstr "{0} ফাংশন অসংজ্ঞায়িত"
 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:177
 msgid "{0} function is undefined"
-msgstr ""
+msgstr "{0} ফাংশন অসংজ্ঞায়িত"
 
 #: webpay/base/dev_messages.py:178
 msgid "The notification service responded with an error while verifying the payment notice"
-msgstr ""
+msgstr "পেমেন্ট নোটিশ যাচাই করার সময় নোটিফিকেশন সার্ভিস ত্রুটি দিয়েছে।"
 
 #: webpay/base/dev_messages.py:180
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr ""
+"পেমেন্ট নোটিশ যাচাই করার সময় বিজ্ঞপ্তি সেবা একটি অপ্রত্যাশিত আপত্তি "
+"উত্থাপিত হয়েছে "
 
 #: webpay/base/dev_messages.py:183 webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
-msgstr ""
+msgstr "পেমেন্ট প্রক্রিয়া অস্থায়ীভাবে বন্ধ আছে।"
 
 #: webpay/base/dev_messages.py:185
 msgid "An unexpected error occurred while fetching data."
-msgstr ""
+msgstr "ডাটা আনার সময় অপ্রত্যাশিত ত্রুটি সংঘটিত হয়েছে।"
 
 #: webpay/base/dev_messages.py:186
 msgid "The request timed out fetching data."
-msgstr ""
+msgstr "ডাটা আনার সময় পার হয়ে গেছে।"
 
 #: webpay/base/dev_messages.py:188
 msgid "Failed to log out of the payment provider."
-msgstr ""
+msgstr "পেমেন্ট সরবরাহকারীর কাছ থেকে লগআউট করতে ব্যর্থ হয়েছে।"
 
 #: webpay/base/dev_messages.py:189
 msgid "An error occurred while trying to log out."
-msgstr ""
+msgstr "লগআউট করার সময় সমস্যা হয়েছে।"
 
 #: webpay/base/dev_messages.py:191
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
 msgstr ""
+"পূর্বের অনুরোধের সময় উপাদানগুলো পরিবর্তিত হয়েছে। প্রক্রিয়াটি আবার চালু করতে "
+"হবে।"
 
 #: webpay/base/dev_messages.py:193
 msgid "Permission denied to re-verify the user."
-msgstr ""
+msgstr "পুনরায় ইউজার ভেরিফাই করার অনুমতি নেই।"
 
 #: webpay/base/dev_messages.py:194
 msgid "Re-verifying the user failed."
-msgstr ""
+msgstr "পুনরায় ইউজার ভেরিফাই করার প্রক্রিয়া ব্যার্থ হয়েছে।"
 
 #: webpay/base/dev_messages.py:195 webpay/base/dev_messages.py:225
 msgid "The payment provider does not exist"
-msgstr ""
+msgstr "এমন কোন পেমেন্ট প্রভাইডার নেই"
 
 #: webpay/base/dev_messages.py:197
 msgid "The re-verification URL is missing from configuration."
-msgstr ""
+msgstr "কনফিগারেশনে পুনরায় ভেরিফিকেশন করার লিঙ্ক পাওয়া যায়নি।"
 
 #: webpay/base/dev_messages.py:199
 msgid "The request to the server timed out during re-verification."
-msgstr ""
+msgstr "পুনরায় ভেরিফিকেশনের সময় সার্ভারের সাথে যোগাযোগের সময় শেষ হয়ে গেছে।"
 
 #: webpay/base/dev_messages.py:200
 msgid "Payment simulations are disabled at this time."
-msgstr ""
+msgstr "এখন পেমেন্ট সিমুলেশন বন্ধ আছে।"
 
 #: webpay/base/dev_messages.py:202
 msgid "This payment key can only be used to simulate purchases."
-msgstr ""
+msgstr "এই পেমেন্ট কি শুধু ক্রয় অনুকরণ করতে ব্যবহার করা যাবে।"
 
 #: webpay/base/dev_messages.py:204
 msgid "Status attributes are not configured correctly."
-msgstr ""
+msgstr "স্ট্যাটাস অ্যাট্রিবিউট সমূহ সঠিকভাবে কনফিগার করা হয়নি।"
 
 #: webpay/base/dev_messages.py:206
 msgid "Status attributes are not configured correctly"
-msgstr ""
+msgstr "স্ট্যাটাস অ্যাট্রিবিউট সমূহ সঠিকভাবে কনফিগার করা হয়নি।"
 
 #: webpay/base/dev_messages.py:208
 msgid "The configuration of the payment transaction failed."
-msgstr ""
+msgstr "পেমেন্ট স্থানান্তরের কনফিগারেশন ব্যার্থ হয়েছে।"
 
 #: webpay/base/dev_messages.py:210
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
+msgstr "ক্রয় সম্পন্ন করা যাচ্ছেনা। কারণ, বর্তমান লেনদেন শেষ হয়ে গেছে।"
 
 #: webpay/base/dev_messages.py:212
 msgid "No transaction ID could be found."
-msgstr ""
+msgstr "কোন লেনদেন আইডি পাওয়া যায়নি।"
 
 #: webpay/base/dev_messages.py:214
 msgid "The system timed out while waiting for a transaction to start."
 msgstr ""
+"একটি লেনদেনের শুরু হওয়ার জন্য অপেক্ষা করতে গিয়ে সিস্টেমের সময় শেষ হয়েছে"
 
 #: webpay/base/dev_messages.py:216 webpay/base/dev_messages.py:217
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "একটি অপ্রত্যাশিত সমস্যা হয়েছে।"
 
 #: webpay/base/dev_messages.py:219
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
+msgstr "পেমেন্ট পদ্ধতি বা মূল্য সূচকএই অঞ্চলের বা অপারেটর এর জন্য সমর্থিত নয় ।"
 
 #: webpay/base/dev_messages.py:221
 msgid "The user cancelled the payment."
-msgstr ""
+msgstr "ব্যবহারকারী পেমেন্টটি বাতিল করে দিয়েছেন।"
 
 #: webpay/base/dev_messages.py:222
 msgid "User hash is missing from configuration."
-msgstr ""
+msgstr "কনফিগারেশনে ইউজার হ্যাশ পাওয়া যায়নি।"
 
 #: webpay/base/dev_messages.py:223
 msgid "Permission denied to verify the user."
-msgstr ""
+msgstr "ব্যবহারকারি ভেরিফাই করার অনুমতি নেই।"
 
 #: webpay/base/dev_messages.py:224
 msgid "Verifying the user failed."
-msgstr ""
+msgstr "ব্যবহারকারী ভেরিফাই ব্যর্থ হয়েছে।"
 
 #: webpay/base/dev_messages.py:227
 msgid "The verification URL is missing from configuration."
-msgstr ""
+msgstr "ভেরিফিকেশন URL কনফিগারেশনে নেই।"
 
 #: webpay/base/dev_messages.py:229
 msgid "The request to the server timed out during verification."
 msgstr ""
+"ভেরিফিকেশন এর সময় সার্ভার রিকোয়েস্ট এর সময় অতিক্রান্ত (timed out) হয়েছে।"
 
 #: webpay/base/dev_messages.py:230
 msgid "The wait URL is missing from configration."
-msgstr ""
+msgstr "কনফিগারেশন হতে অপেক্ষার URL হারিয়ে গেছে।"
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
 #: webpay/base/dev_messages.py:237
 msgid "The value for key \"{0}\" exceeds the maximum length of {1}"
-msgstr ""
+msgstr "\"{0}\" Key এর মান {1} এর সর্বোচ্চ মানকে ছাড়িয়ে যায়।"
 
 #: webpay/base/utils.py:57
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
 msgstr ""
+"পেমেন্ট সেট-আপ করতে সমস্যা হচ্ছে। আবার চেষ্টা করুন অথবা এপ এর সাথে যোগাযোগ "
+"করুন।"
 
 #: webpay/base/utils.py:63
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
 msgstr ""
+"পেমেন্টটি প্রক্রিয়া করার সময় অভ্যন্তরীন সমস্যা দেখা দিয়েছে । আবার চেষ্টা "
+"করুন অথবা প্রয়োজনে মজিলার সাথে যোগাযোগ করুন।"
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
-msgstr ""
+msgstr "অনুমোদিত নয়"
 
 #: webpay/base/templates/403.html:5
 msgid "Sorry, you are not allowed to do that."
-msgstr ""
+msgstr "দুঃখিত, এই কাজটি করার জন্য আপনি অনুমোদিত নন।"
 
 #: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
 #: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
-msgstr ""
+msgstr "বাতিল"
 
 #: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
 msgid "Page not found"
-msgstr ""
+msgstr "পাতাটি খুজে পাওয়া যায়নি"
 
 #: webpay/base/templates/404.html:5
 msgid "Sorry, but we couldn't find the page you're looking for."
-msgstr ""
+msgstr "দুঃখিত, আপনি যেই পাতাটি খুজছেন তা আমরা পাইনি।"
 
 #: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
 msgid "Something went wrong!"
-msgstr ""
+msgstr "কোথাও কোন ত্রুটি ঘটেছে !"
 
 #: webpay/base/templates/500.html:5
 msgid "There was an error processing that request."
-msgstr ""
+msgstr "অনুরোধটি প্রক্রিয়া করার সময় ত্রুটি দেখা দিয়েছে।"
 
 #: webpay/base/templates/500.html:6
 msgid "Please try again in a few moments."
-msgstr ""
+msgstr "অনুগ্রহপূর্বক কিছুক্ষণ পর আবার চেষ্টা করুন।"
 
 #. Web Pay is what we call the payment server/flow.
 #: webpay/base/templates/base.html:9 webpay/spa/templates/spa/index.html:9
 msgid "Web Pay"
-msgstr ""
+msgstr "ওয়েব পে"
 
 #: webpay/base/templates/base.html:28
 msgid "Pin must be 4 digits."
-msgstr ""
+msgstr "পিন কোড অবশ্যই ৪ সংখ্যার হবে।"
 
 #: webpay/base/templates/base.html:29
 msgid "Pin can only contain digits."
-msgstr ""
+msgstr "পিন কোড শুধুমাত্র সংখ্যা দ্বারাই হবে।"
 
 #: webpay/base/templates/base.html:30
 msgid "You logged in as a different user, you must start the payment again."
 msgstr ""
+"আপনি অন্য একজন ব্যবহারকারী হিসেবে লগইন করেছেন। আপনাকে অবশ্যই পুনরায় পেমেন্ট "
+"চালু করতে হবে।"
 
 #: webpay/base/templates/base.html:31
 msgid "Loading"
-msgstr ""
+msgstr "লোড হচ্ছে"
 
 #: webpay/base/templates/base.html:32
 msgid "Beginning payment&hellip;"
-msgstr ""
+msgstr "প্রারম্ভকালীন পেমেন্ট&hellip;"
 
 #: webpay/base/templates/base.html:33
 msgid "Connecting to Persona"
-msgstr ""
+msgstr "পারসোনার সাথে সংযোগ হচ্ছে"
 
 #: webpay/base/templates/base.html:34
 msgid "Payment complete"
-msgstr ""
+msgstr "পেমেন্ট সম্পন্ন"
 
 #: webpay/base/templates/base.html:41
 msgid "Oops&hellip;"
-msgstr ""
+msgstr "ওহো&hellip;"
 
 #: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
-msgstr ""
+msgstr "এটা একটু বেশি সময় নিচ্ছে। আবার চেষ্টা করবেন?"
 
 #: webpay/base/templates/base.html:43
 msgid "Something went wrong. Try again?"
-msgstr ""
+msgstr "কোথাও কোন ত্রুটি ঘটেছে. আবার চেষ্টা করবেন?"
 
 #: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
-msgstr ""
+msgstr "ঠিক আছে"
 
 #: webpay/base/templates/base.html:48
 msgid "The transaction failed. You have not been charged for this purchase."
-msgstr ""
+msgstr "লেনদেন ব্যর্থ হয়েছে। এই ক্রয়ের জন্যে আপনার টাকা কাটা হয়নি।"
 
 #: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
-msgstr ""
+msgstr "ত্রুটি"
 
 #: webpay/pay/forms.py:109
 msgid "Make a real payment"
-msgstr ""
+msgstr "একটি আসল পেমেন্ট করুন"
 
 #: webpay/pay/forms.py:110
 msgid "Simulate a payment"
-msgstr ""
+msgstr "পেমেন্ট সিম্যুলেট করুন"
 
 #: webpay/pay/forms.py:113
 msgid "Default network"
-msgstr ""
+msgstr "ডিফল্ট নেটওয়ার্ক"
 
 #: webpay/pay/views.py:215 webpay/pin/views.py:96
 msgid "Enter Pin"
-msgstr ""
+msgstr "পিন কোড প্রবেশ করান"
 
 #: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:11
 msgid "Sign In"
-msgstr ""
+msgstr "সাইন ইন"
 
 #: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in to continue with the payment"
-msgstr ""
+msgstr "পেমেন্ট প্রক্রিয়া চালিয়ে যেতে সাইন ইন করুন                "
 
 #: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in"
-msgstr ""
+msgstr "সাইন ইন"
 
 #: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
-msgstr ""
+msgstr "পেমেন্ট সিম্যুলেট করুন"
 
 #: webpay/pay/templates/pay/simulate.html:8
 msgid "You will not be charged."
-msgstr ""
+msgstr "আপনার টাকা কাটবে না।"
 
 #: webpay/pay/templates/pay/simulate.html:10
 msgid "result"
-msgstr ""
+msgstr "ফলাফল"
 
 #: webpay/pay/templates/pay/simulate.html:20 webpay/pay/templates/pay/super_simulate.html:17 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
-msgstr ""
+msgstr "চালিয়ে যান"
 
 #: webpay/pay/templates/pay/super_simulate.html:4
 msgid "You have super powers"
-msgstr ""
+msgstr "আপনার সুপার ক্ষমতা আছে"
 
 #: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
-msgstr ""
+msgstr "পেমেন্ট সেট আপ হচ্ছে&hellip;"
 
 #: webpay/pin/forms.py:90
 msgid "You have already created a PIN."
-msgstr ""
+msgstr "আপনি ইতিমধ্যেই পিন কোড তৈরি করেছেন।"
 
 #: webpay/pin/forms.py:111
 msgid "Wrong pin"
-msgstr ""
+msgstr "পিন কোড ভুল"
 
 #: webpay/pin/forms.py:123 webpay/pin/forms.py:146
 msgid "Pins do not match."
-msgstr ""
+msgstr "পিন কোডগুলো মেলে না।"
 
 #: webpay/pin/views.py:49 webpay/testing/views.py:25
 msgid "Create a Pin"
-msgstr ""
+msgstr "একটি পিন কোড তৈরি করুন"
 
 #: webpay/pin/views.py:71 webpay/pin/views.py:188
 msgid "Confirm Pin"
-msgstr ""
+msgstr "পিন কোড নিশ্চিত করুন"
 
 #: webpay/pin/views.py:134 webpay/pin/views.py:160 webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
-msgstr ""
+msgstr "পিন কোড রিসেট করুন"
 
 #: webpay/pin/views.py:181
 msgid "Pin reset"
-msgstr ""
+msgstr "পিন কোড রিসেট"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
 msgstr ""
+"শুধুমাত্র পরীক্ষা করার জন্য। মার্কেটপ্লেস ব্যবহারকারীদের এটি ব্যবহার করা "
+"<b>উচিত নয়</b>।"
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
 #: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
-msgstr ""
+msgstr "পিন কোড ভুলে গেছেন?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
 msgstr ""
+"আপনি অনেকবার ভুল পিন প্রবেশ করিয়াছেন ।আপনার অ্যাকাউন্ট লক করা হয়েছে। ৫ "
+"মিনিটের মধ্যে আবার আপনার ক্রয় চেষ্টা করুন।"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
-msgstr ""
+msgstr "আপনার পিনটি লক করা হয়েছে।"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
 msgstr ""
+"অনেকবার ভুল পিন প্রবেশ করার কারণে আপনার পিন লক করা হয়েছে . আপনি চালিয়ে যেতে "
+"পারেন এবং আবার আপনার পিন প্রবেশের চেষ্টা করুন অথবা আপনার পিন পুনরায় সেট "
+"করতে পারেন"
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
 msgstr ""
+"আপনি কি পিন রিসেট করতে চাচ্ছেন? আপনার পিন রিসেট করতে হলে, পারসোনা দিয়ে সাইন "
+"ইন করতে হবে।"
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
-msgstr ""
+msgstr "রিসেট"
 
 #: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
-msgstr ""
+msgstr "পেমেন্ট&hellip ভেরিফাই করা হচ্ছে;"
 
 #: webpay/spa/templates/spa/index.html:45
 msgid "Loading..."
-msgstr ""
+msgstr "লোডিং..."
