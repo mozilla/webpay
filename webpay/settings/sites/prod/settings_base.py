@@ -119,5 +119,7 @@ ALLOW_ADMIN_SIMULATIONS = False
 
 NOSE_PLUGINS = []
 
+SPARTACUS_STATIC = 'https://marketplace.cdn.mozilla.net/mozpay/spa'
+
 SPA_ENABLE = False
 SPA_ENABLE_URLS = False

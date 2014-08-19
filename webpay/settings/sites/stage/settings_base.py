@@ -123,5 +123,7 @@ USAGE_WARNING = True
 
 NOSE_PLUGINS = []
 
+SPARTACUS_STATIC = 'https://marketplace-cdn.allizom.org/mozpay/spa'
+
 SPA_ENABLE = True
 SPA_ENABLE_URLS = True
