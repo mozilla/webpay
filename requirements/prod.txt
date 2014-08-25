@@ -32,6 +32,8 @@ mozpay==2.0.0
 newrelic==2.4.0.4
 # Nose has to be here because django-nose is in installed apps.
 nose==1.2.1
+nosenicedots==0.5
+nose-blockage==0.1.2
 oauth2==1.5.211
 oauthlib==0.6.2
 PyJWT-mozilla==0.1.4.2
