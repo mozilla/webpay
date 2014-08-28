@@ -1,6 +1,11 @@
+
+
 =======
 WebPay
 =======
+
+.. image:: https://travis-ci.org/mozilla/webpay.svg?branch=master
+    :target: https://travis-ci.org/mozilla/webpay
 
 Webpay is an implementation of the `WebPaymentProvider`_ spec.
 It hosts the payment flow inside `navigator.mozPay()`_ when
