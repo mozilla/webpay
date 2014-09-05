@@ -24,9 +24,7 @@ msgstr "Din betalning är klar."
 
 #: webpay/base/dev_messages.py:119
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
-msgstr ""
-"Mozilla har fått en ogiltig kod från betalningsleverantören (Bango) när "
-"betalningen skulle behandlas"
+msgstr "Mozilla har fått en ogiltig kod från betalningsleverantören (Bango) när betalningen skulle behandlas"
 
 #. L10n: First argument is an example of the proper key format.
 #: webpay/base/dev_messages.py:123
@@ -53,9 +51,7 @@ msgstr "Den begärda simuleringen av betalning stöds inte."
 
 #: webpay/base/dev_messages.py:133
 msgid "The payment provider (Bango) returned an error while processing the payment"
-msgstr ""
-"Betalningsleverantören (Bango) returnerade ett fel under behandling av "
-"betalningen"
+msgstr "Betalningsleverantören (Bango) returnerade ett fel under behandling av betalningen"
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -65,9 +61,7 @@ msgstr "JWT har förfallit."
 
 #: webpay/base/dev_messages.py:139
 msgid "The external payment processor returned an error while handling the payment"
-msgstr ""
-"Den externa betalningsbehandlaren returnerade ett fel vid hantering av "
-"betalningen"
+msgstr "Den externa betalningsbehandlaren returnerade ett fel vid hantering av betalningen"
 
 #: webpay/base/dev_messages.py:141
 msgid "An internal web request timed out."
@@ -110,8 +104,7 @@ msgstr "Utloggnings-URL saknas i konfigurationen."
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:157
 msgid "A URL is malformed. This could be a postback URL or an icon URL."
-msgstr ""
-"En URL är felformaterad. Detta kan vara en postback-URL eller en symbol-URL."
+msgstr "En URL är felformaterad. Detta kan vara en postback-URL eller en symbol-URL."
 
 #: webpay/base/dev_messages.py:159
 msgid "The JWT signature is missing or invalid."
@@ -123,9 +116,7 @@ msgstr "En felkod förväntades men har inte specificerats."
 
 #: webpay/base/dev_messages.py:162
 msgid "The transaction ID was missing from the session when processing a payment return."
-msgstr ""
-"Transaktions-ID saknades från sessionen när en återbetalning skulle "
-"behandlas."
+msgstr "Transaktions-ID saknades från sessionen när en återbetalning skulle behandlas."
 
 #. L10n: First and second arguements are the names of keys.
 #: webpay/base/dev_messages.py:166
@@ -177,9 +168,7 @@ msgstr "Ett fel uppstod vid försök att logga ut."
 
 #: webpay/base/dev_messages.py:191
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
-msgstr ""
-"Resursen har ändrats inom tiden för föregående begäran. Åtgärden bör utföras "
-"igen."
+msgstr "Resursen har ändrats inom tiden för föregående begäran. Åtgärden bör utföras igen."
 
 #: webpay/base/dev_messages.py:193
 msgid "Permission denied to re-verify the user."
@@ -223,9 +212,7 @@ msgstr "Konfigurationen av betalningstransaktionen misslyckades."
 
 #: webpay/base/dev_messages.py:210
 msgid "The purchase cannot be completed because the current transaction has already ended."
-msgstr ""
-"Köpet kan inte slutföras eftersom den aktuella transaktionen redan har "
-"avslutats."
+msgstr "Köpet kan inte slutföras eftersom den aktuella transaktionen redan har avslutats."
 
 #: webpay/base/dev_messages.py:212
 msgid "No transaction ID could be found."
@@ -241,9 +228,7 @@ msgstr "Ett oväntat fel uppstod."
 
 #: webpay/base/dev_messages.py:219
 msgid "The payment method or price point is not supported for this region or operator."
-msgstr ""
-"Betalningsmetoden eller prisnivån stöds inte för denna region eller "
-"operatör."
+msgstr "Betalningsmetoden eller prisnivån stöds inte för denna region eller operatör."
 
 #: webpay/base/dev_messages.py:221
 msgid "The user cancelled the payment."
@@ -281,15 +266,11 @@ msgstr "Värdet för nyckeln \"{0}\" överskrider den maximala längden på {1}"
 
 #: webpay/base/utils.py:57
 msgid "There was an error setting up the payment. Try again or contact the app if it persists."
-msgstr ""
-"Det uppstod ett fel när betalningen skulle upprättas. Försök igen eller "
-"kontakta appen om felet kvarstår."
+msgstr "Det uppstod ett fel när betalningen skulle upprättas. Försök igen eller kontakta appen om felet kvarstår."
 
 #: webpay/base/utils.py:63
 msgid "There was an internal error processing the payment. Try again or contact Mozilla if it persists."
-msgstr ""
-"Det uppstod ett internt fel när betalningen skulle hanteras. Försök igen "
-"eller kontakta Mozilla om felet kvarstår."
+msgstr "Det uppstod ett internt fel när betalningen skulle hanteras. Försök igen eller kontakta Mozilla om felet kvarstår."
 
 #: webpay/base/templates/403.html:4
 msgid "Not Allowed"
@@ -463,9 +444,7 @@ msgstr "Återställning PIN-kod"
 
 #: webpay/pin/templates/pin/pin_form.html:13
 msgid "For testing only. Marketplace users <b>should not</b> use this site."
-msgstr ""
-"Endast för testning. Marketplace-användare <b>bör inte</b> använda denna "
-"webbplats."
+msgstr "Endast för testning. Marketplace-användare <b>bör inte</b> använda denna webbplats."
 
 #. This is the same as the standard forgot
 #.                  password that most sites have.
@@ -475,9 +454,7 @@ msgstr "Glömt din PIN-kod?"
 
 #: webpay/pin/templates/pin/pin_is_locked.html:13
 msgid "You entered the wrong pin too many times. Your account is locked. Please try your purchase again in 5 minutes."
-msgstr ""
-"Du har angett fel PIN-kod för många gånger. Ditt konto är låst. Försök göra "
-"ditt köp igen om 5 minuter."
+msgstr "Du har angett fel PIN-kod för många gånger. Ditt konto är låst. Försök göra ditt köp igen om 5 minuter."
 
 #: webpay/pin/templates/pin/pin_was_locked.html:9
 msgid "Your Pin was locked"
@@ -485,16 +462,11 @@ msgstr "Din PIN-kod var låst"
 
 #: webpay/pin/templates/pin/pin_was_locked.html:10
 msgid "Your pin was locked because you entered it incorrectly too many times. You can continue and try entering your pin again or reset your pin."
-msgstr ""
-"Din PIN-kod var låst eftersom du skrev den felaktigt för många gånger. Du "
-"kan fortsätta och försöka skriva in din PIN-kod igen eller återställa PIN-"
-"koden."
+msgstr "Din PIN-kod var låst eftersom du skrev den felaktigt för många gånger. Du kan fortsätta och försöka skriva in din PIN-kod igen eller återställa PIN-koden."
 
 #: webpay/pin/templates/pin/reset_start.html:14
 msgid "Are you sure you want to reset your pin? You must sign in to Persona to reset your pin."
-msgstr ""
-"Är du säker på att du vill återställa din PIN-kod? Du måste logga in på "
-"Persona för att återställa din PIN-kod."
+msgstr "Är du säker på att du vill återställa din PIN-kod? Du måste logga in på Persona för att återställa din PIN-kod."
 
 #: webpay/pin/templates/pin/reset_start.html:20
 msgid "Reset"
