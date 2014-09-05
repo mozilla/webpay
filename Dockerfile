@@ -3,7 +3,7 @@
 
 # NOTE: this is not provided for production usage.
 
-FROM  mozillamarketplace/centos-python27-mkt:0.5
+FROM  mozillamarketplace/centos-python27-mkt:0.6
 
 RUN mkdir -p /pip/{cache,build}
 
