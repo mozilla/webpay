@@ -64,12 +64,14 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
         with statsd.timer('purchase.send_pay_notice'):
             res = requests.post(url, {'notice': signed_notice}, timeout=5)
         res.raise_for_status()  # raise exception for non-200s
-        res_content = res.text
+        res_content = res.text.strip()
 
         # Raise an exception if the content didn't match.
         if res_content != str(trans_id):
-            log.error('URL {0} did not respond with transaction {1} '
-                      'for notification'.format(url, trans_id))
+            response_hint = res_content[:len(trans_id) * 2]
+            log.error('URL {u} did not respond with transaction {t} '
+                      'for notification; response: {r}'
+                      .format(u=url, t=trans_id, r=repr(response_hint)))
             raise ValueError('Incorrect notification response '
                              'from: {0}'.format(url))
 
@@ -78,7 +80,8 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
         log.error('Notice for transaction %s raised exception in URL %s'
                   % (trans_id, url), exc_info=True)
         try:
-            notifier_task.retry(args=task_args,
+            notifier_task.retry(
+                args=task_args,
                 eta=(datetime.now() +
                      timedelta(seconds=settings.POSTBACK_DELAY)),
                 max_retries=settings.POSTBACK_ATTEMPTS,
@@ -115,8 +118,8 @@ def send_pay_notice(url, notice_type, signed_notice, trans_id,
 def notify_failure(url, trans_id):
     statsd.incr('purchase.send_pay_notice.failure')
     client.api.webpay.failure(trans_id).patch({
-                'attempts': settings.POSTBACK_ATTEMPTS,
-                'url': url})
+        'attempts': settings.POSTBACK_ATTEMPTS,
+        'url': url})
     log.exception('Retries failed to %s: %s:' % (url, trans_id))
 
 
@@ -130,8 +133,8 @@ def verify_urls(*urls, **kw):
         # If this is not a simulation, enforce URL schemes on
         # postbacks/chargebacks.
         if (check_postbacks and
-            not is_simulation and
-            parsed.scheme not in settings.ALLOWED_CALLBACK_SCHEMES):
+                not is_simulation and
+                parsed.scheme not in settings.ALLOWED_CALLBACK_SCHEMES):
             raise ValueError('Schema must be one of: %s not %s' %
                              (settings.ALLOWED_CALLBACK_SCHEMES, url))
 
