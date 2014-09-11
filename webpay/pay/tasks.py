@@ -428,9 +428,8 @@ def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED,
 
     signed_notice = jwt.encode(notice, get_secret(notes['issuer_key']),
                                algorithm='HS256')
-    success, last_error = send_pay_notice(url, trans['type'], signed_notice,
-                                          trans['uuid'], notifier_task,
-                                          task_args, simulated=simulated)
+    send_pay_notice(url, trans['type'], signed_notice, trans['uuid'],
+                    notifier_task, task_args, simulated=simulated)
 
 
 def _prepare_notice(trans):

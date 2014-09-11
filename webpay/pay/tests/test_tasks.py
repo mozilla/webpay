@@ -161,8 +161,8 @@ class TestNotifyApp(NotifyTest):
         self.set_secret_mock(slumber, 'f')
         post.side_effect = RequestException('500 error')
         self.notify()
-        assert post.called, 'notification not sent'
-        assert retry.called, 'task was not retried after error'
+        assert post.called, 'notification was sent'
+        assert retry.called, 'task should be retried after error'
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -191,16 +191,26 @@ class TestNotifyApp(NotifyTest):
         self.set_secret_mock(slumber, 'f')
         requests.post.side_effect = RequestException('some http error')
         self.notify()
-        assert retry.called, 'task was not retried after error'
+        assert retry.called, 'task should be retried after error'
 
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.utils.requests')
     @mock.patch('webpay.pay.tasks.payment_notify.retry')
     def test_notify_wrong(self, retry, requests, slumber):
         self.set_secret_mock(slumber, 'f')
-        requests.post.return_value.content = '<not a valid response>'
+        requests.post.return_value.text = '<not a valid response>'
         self.notify()
-        assert retry.called, 'task was not retried after error'
+        assert retry.called, 'task should be retried after error'
+
+    @mock.patch('lib.solitude.api.client.slumber')
+    @mock.patch('webpay.pay.utils.requests')
+    @mock.patch('webpay.pay.tasks.payment_notify.retry')
+    def test_trim_notices(self, retry, requests, slumber):
+        self.set_secret_mock(slumber, 'f')
+        # Add whitespace around transaction ID:
+        requests.post.return_value.text = '\n{0} \n'.format(self.trans_uuid)
+        self.notify()
+        assert not retry.called, 'task should not be retried on success'
 
     @mock.patch('lib.solitude.api.client.slumber')
     @mock.patch('webpay.pay.utils.requests')
@@ -209,7 +219,7 @@ class TestNotifyApp(NotifyTest):
         self.set_secret_mock(slumber, 'f')
         requests.post.side_effect = RequestException('some http error')
         self.notify()
-        assert notify.called, 'notify called'
+        assert notify.called, 'failure notification sent'
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -337,8 +347,8 @@ class TestSimulatedNotifications(NotifyTest):
                                extra_req=req)
         self.notify(payload)
 
-        assert post.called, 'notification not sent'
-        assert retry.called, 'task was not retried after error'
+        assert post.called, 'notification was sent'
+        assert retry.called, 'task should be retried after error'
         retry.assert_called_with(args=['issuer-key', payload],
                                  max_retries=ANY, eta=ANY, exc=ANY)
 
