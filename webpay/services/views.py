@@ -89,7 +89,7 @@ def csp_report(request):
         incoming = [(k, report[k]) for k in whitelist if k in report]
         log.info('CSP reported for {0}: {1}'
                  .format(meta['PATH_INFO'], incoming))
-        log_cef_meta('CSP Violation', meta, request.get_full_path(),
+        log_cef_meta('CSP Violation', meta, request.path_info,
                      cs6=incoming, cs6Label='ContentPolicy')
     except (KeyError, ValueError):
         return http.HttpResponseBadRequest()
