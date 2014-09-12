@@ -6,6 +6,7 @@ import mock
 from nose.tools import eq_
 
 from webpay.base import utils
+from webpay.utils import update_csp
 
 
 @test.utils.override_settings(DEBUG=False)
@@ -49,3 +50,19 @@ class TestSpartacusBuildID(test.TestCase):
     def test_is_always_none_in_debug(self, _cache):
         eq_(utils.spartacus_build_id(), None)
         assert not _cache.set.called
+
+
+class TestSettings(test.TestCase):
+
+    def test_update_csp(self):
+        with self.settings(CSP_IMG_SRC=('https://f.c', 'self', 'http://f.c'),
+                           DEBUG=False):
+            update_csp()
+            self.assertSetEqual(set(settings.CSP_IMG_SRC),
+                                set(('https://f.c', 'self')))
+
+        with self.settings(CSP_IMG_SRC=('https://f.c', 'self', 'http://f.c'),
+                           DEBUG=True):
+            update_csp()
+            self.assertSetEqual(set(settings.CSP_IMG_SRC),
+                                set(('https://f.c', 'self', 'http://f.c')))
