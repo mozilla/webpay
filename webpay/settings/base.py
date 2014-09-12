@@ -301,13 +301,13 @@ CSP_ALLOW = ("'self'",)
 # Note: STATIC_URL will be added to these in the middleware.
 CSP_IMG_SRC = (
     "'self'",
-    'https://ssl.google-analytics.com',
+    'https://*.google-analytics.com',
     'data:'
 )
 CSP_SCRIPT_SRC = (
     "'self'",
     'https://%s' % BROWSERID_DOMAIN,
-    'https://ssl.google-analytics.com',
+    'https://*.google-analytics.com',
 )
 CSP_STYLE_SRC = (
     "'self'",
@@ -318,7 +318,7 @@ CSP_STYLE_SRC = (
 CSP_OBJECT_SRC = ("'none'",)
 CSP_MEDIA_SRC = ("'none'",)
 CSP_FRAME_SRC = (
-    'https://ssl.google-analytics.com',
+    'https://*.google-analytics.com',
     'https://%s' % BROWSERID_DOMAIN,
 )
 CSP_FONT_SRC = ("'self'",)
