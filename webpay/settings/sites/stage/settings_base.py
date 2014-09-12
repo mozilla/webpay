@@ -127,3 +127,6 @@ SPARTACUS_STATIC = 'https://marketplace-cdn.allizom.org/mozpay/spa'
 
 SPA_ENABLE = True
 SPA_ENABLE_URLS = True
+
+SPA_SETTINGS = base.SPA_SETTINGS
+SPA_SETTINGS['ua_tracking_enabled'] = True

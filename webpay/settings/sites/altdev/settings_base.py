@@ -145,5 +145,6 @@ SPARTACUS_STATIC = 'https://%s/mozpay/spa' % STATIC_URL_DOMAIN
 
 SPA_SETTINGS = base.SPA_SETTINGS
 SPA_SETTINGS['validRedirSites'].append('https://zippy.paas.allizom.org')
+SPA_SETTINGS['ua_tracking_enabled'] = True
 
 NOSE_PLUGINS = []

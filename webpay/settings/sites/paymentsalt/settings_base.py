@@ -123,6 +123,7 @@ SPARTACUS_STATIC = 'https://payments-alt-cdn.allizom.org/mozpay/spa'
 
 SPA_SETTINGS = base.SPA_SETTINGS
 SPA_SETTINGS['validRedirSites'].append('https://zippy.paas.allizom.org')
+SPA_SETTINGS['ua_tracking_enabled'] = True
 
 NOSE_PLUGINS = []
 
