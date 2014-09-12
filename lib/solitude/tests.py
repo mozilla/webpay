@@ -378,7 +378,7 @@ class TestBango(TestCase):
         }
         with self.assertRaises(ValueError):
             self.provider.create_product(
-                external_id='ext:id', product_name='product name',
+                external_id='ext:id', product_name=u'Ivan Krsti\u0107',
                 generic_seller={},
                 provider_seller_uuid='provider_seller_uuid',
                 generic_product={'resource_pk': '2',
@@ -392,7 +392,7 @@ class TestBango(TestCase):
         slumber.bango.product.post.return_value = {'resource_uri': 'some:uri',
                                                    'bango_id': '5678'}
         assert self.provider.create_product(
-            external_id='ext:id', product_name='product:name',
+            external_id='ext:id', product_name=u'Ivan Krsti\u0107',
             generic_seller=self.seller, provider_seller_uuid='xyz')
         assert slumber.generic.product.post.called
         kw = slumber.generic.product.post.call_args[0][0]
@@ -473,7 +473,7 @@ class ProviderTestCase(TestCase):
         }
 
     def configure(self, trans_uuid='trans-xyz', seller_uuid='seller-xyz',
-                  product_uuid='product-xyz', product_name='Shiny App',
+                  product_uuid='product-xyz', product_name=u'Ivan Krsti\u0107',
                   success_redirect='/todo/postback',
                   error_redirect='/todo/chargeback',
                   provider_seller_uuid='provider-sel-xyz',
@@ -540,7 +540,7 @@ class TestReferenceProvider(ProviderTestCase):
         })
 
     def test_with_new_prod(self):
-        name = 'Magic Unicorn'
+        name = u'Ivan Krsti\u0107'
         new_product_uuid = 'new-product'
 
         self.slumber.generic.buyer.get_object_or_404.return_value = {

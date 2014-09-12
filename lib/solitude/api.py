@@ -334,7 +334,7 @@ class ProviderHelper:
         log.info('{pr}: creating product with name: {name}, '
                  'external_id: {ext_id}, generic seller: {seller} '
                  'provider seller: {provider_seller_uuid}'
-                 .format(name=product_name, ext_id=external_id,
+                 .format(name=repr(product_name), ext_id=external_id,
                          seller=generic_seller, pr=self.provider.name,
                          provider_seller_uuid=provider_seller_uuid))
 
