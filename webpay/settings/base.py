@@ -323,19 +323,6 @@ CSP_FRAME_SRC = (
 )
 CSP_FONT_SRC = ("'self'",)
 
-# When running in DEBUG mode, we assume you are running locally
-# and are not using SSL. If that's the case, resources might load
-# as http too.
-if DEBUG:
-    for key in ('CSP_IMG_SRC', 'CSP_MEDIA_SRC', 'CSP_SCRIPT_SRC'):
-        values = locals()[key]
-        new = []
-        for value in values:
-            if value.startswith('https://'):
-                new.append(value.replace('https://', 'http://'))
-        locals()[key] = tuple(list(values) + new)
-
-
 # Custom name for csrf cookie.
 # This must be a non-default value so it doesn't collide with zamboni on the
 # same subdomain.
