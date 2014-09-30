@@ -134,7 +134,10 @@ PAY_URLS['reference']['base'] = 'https://zippy-dev.allizom.org'
 SPARTACUS_STATIC = 'https://marketplace-dev.mozflare.net/mozpay/spa'
 
 SPA_SETTINGS = base.SPA_SETTINGS
-SPA_SETTINGS['validRedirSites'].append('https://zippy.paas.allizom.org')
+SPA_SETTINGS['validRedirSites'].extend([
+    'https://zippy-dev.allizom.org',
+    'https://zippy.paas.allizom.org',
+])
 SPA_SETTINGS['ua_tracking_enabled'] = True
 
 NOSE_PLUGINS = []
