@@ -127,20 +127,9 @@ NEWRELIC_INI = '/etc/newrelic.d/marketplace-dev.allizom.org-webpay.ini'
 # reference == Zippy.
 PAYMENT_PROVIDER = 'reference'
 
-
-PAY_URLS = {
-    # Talk to Bango Test.
-    'bango': {
-        'base': 'http://mozilla.test.bango.org',
-        'pay': '/mozpayments/?bcid={uid_pay}',
-        'logout': '/mozpayments/logout/',
-    },
-    'reference': {
-        'base': 'https://zippy.paas.allizom.org',
-        'pay': '/payment/start?tx={uid_pay}',
-        'logout': '/users/reset',
-    },
-}
+PAY_URLS = base.PAY_URLS
+PAY_URLS['bango']['base'] = 'http://mozilla.test.bango.org'
+PAY_URLS['reference']['base'] = 'https://zippy-dev.allizom.org'
 
 SPARTACUS_STATIC = 'https://marketplace-dev.mozflare.net/mozpay/spa'
 
