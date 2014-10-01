@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-01 09:27-0700\n"
-"PO-Revision-Date: 2014-07-16 22:50+0000\n"
+"PO-Revision-Date: 2014-10-01 20:21+0000\n"
 "Last-Translator: Ton <tonnes.mb@gmail.com>\n"
 "Language-Team: none\n"
 "Language: nl\n"
@@ -11,8 +11,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Translate Toolkit 1.9.0\n"
-"X-POOTLE-MTIME: 1405551057.0\n"
+"X-Generator: Pootle 2.5.0\n"
+"X-POOTLE-MTIME: 1412194883.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -212,11 +212,11 @@ msgstr "Deze betalingssleutel kan alleen voor aankoopsimulaties worden gebruikt.
 
 #: webpay/base/dev_messages.py:212
 msgid "Failed to simulate a payment."
-msgstr ""
+msgstr "Simulatie van betaling mislukt."
 
 #: webpay/base/dev_messages.py:213
 msgid "The request to simulate a payment timed out."
-msgstr ""
+msgstr "Time-out bij aanvraag voor het simuleren van een betaling."
 
 #: webpay/base/dev_messages.py:215
 msgid "Status attributes are not configured correctly."
@@ -257,6 +257,8 @@ msgstr "De gebruiker heeft de betaling geannuleerd."
 #: webpay/base/dev_messages.py:237
 msgid "The app failed to set the {0} when handling {1}/{2} Persona callbacks"
 msgstr ""
+"Instellen door app van {0} tijdens verwerken van {1}/{2} Persona-callbacks "
+"mislukt."
 
 #: webpay/base/dev_messages.py:243
 msgid "The verification URL is missing from configuration."
