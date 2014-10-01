@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-01 09:27-0700\n"
-"PO-Revision-Date: 2014-09-30 21:08+0000\n"
+"PO-Revision-Date: 2014-10-01 23:01+0000\n"
 "Last-Translator: Ibai <ibai@oihanguren.com>\n"
 "Language-Team: 89578-OEM-7332157-00211\n"
 "Language: eu\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1412111323.0\n"
+"X-POOTLE-MTIME: 1412204466.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -213,11 +213,11 @@ msgstr "Ordainketa-gako hau erosketak simulatzeko soilik erabil daiteke."
 
 #: webpay/base/dev_messages.py:212
 msgid "Failed to simulate a payment."
-msgstr ""
+msgstr "Huts egin du ordainketa bat simulatzeak."
 
 #: webpay/base/dev_messages.py:213
 msgid "The request to simulate a payment timed out."
-msgstr ""
+msgstr "Ordainketa bat simulatzeko eskaerak denbora-muga gainditu du."
 
 #: webpay/base/dev_messages.py:215
 msgid "Status attributes are not configured correctly."
@@ -258,6 +258,8 @@ msgstr "Erabiltzaileak ordainketa bertan behera utzi du."
 #: webpay/base/dev_messages.py:237
 msgid "The app failed to set the {0} when handling {1}/{2} Persona callbacks"
 msgstr ""
+"Aplikazioak huts egin du {0} ezartzean, {1}/{2} Persona atzeradeia "
+"maneiatzen ari zela"
 
 #: webpay/base/dev_messages.py:243
 msgid "The verification URL is missing from configuration."
