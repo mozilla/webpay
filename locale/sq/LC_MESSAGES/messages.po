@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-01 09:27-0700\n"
-"PO-Revision-Date: 2014-08-22 14:31+0200\n"
+"PO-Revision-Date: 2014-10-02 11:18+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: none\n"
 "Language: sq\n"
@@ -12,15 +12,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1408616995.0\n"
+"X-POOTLE-MTIME: 1412237353.0\n"
 
-#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
+#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/base/templates/base.html:35
 msgid "Payment cancelled."
 msgstr "Pagesa u anulua."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
+#: webpay/bango/templates/bango/success.html:10
+#: webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
-msgstr "Pagimi juaj u plotësua."
+msgstr "Pagesa juaj u krye."
 
 #: webpay/base/dev_messages.py:124
 msgid "Mozilla received an invalid code from the payment provider (Bango) when processing the payment"
@@ -63,15 +66,18 @@ msgstr "JWT-ja ka skaduar."
 msgid "The external payment processor returned an error while handling the payment"
 msgstr "Përpunuesi i jashtëm i pagesave u përgjigj me një gabim, teksa trajtonte pagesën"
 
-#: webpay/base/dev_messages.py:146 webpay/base/dev_messages.py:239
+#: webpay/base/dev_messages.py:146
+#: webpay/base/dev_messages.py:239
 msgid "Permission denied to verify the user."
 msgstr "U mohua leja për verifikim përdoruesi."
 
-#: webpay/base/dev_messages.py:147 webpay/base/dev_messages.py:240
+#: webpay/base/dev_messages.py:147
+#: webpay/base/dev_messages.py:240
 msgid "Verifying the user failed."
 msgstr "Verifikimi i përdoruesit dështoi."
 
-#: webpay/base/dev_messages.py:149 webpay/base/dev_messages.py:245
+#: webpay/base/dev_messages.py:149
+#: webpay/base/dev_messages.py:245
 msgid "The request to the server timed out during verification."
 msgstr "Kërkesës te shërbyesi i mbaroi koha gjatë verifikimit."
 
@@ -158,7 +164,8 @@ msgstr "Shërbimi i njoftimeve u përgjigj me një gabim, teksa verifikonte njof
 msgid "The notification service raised an unexpected exception while verifying the payment notice"
 msgstr "Shërbimi i njoftimeve dha një përjashtim të papritur, tesak verifikonte njoftimin e pagesës"
 
-#: webpay/base/dev_messages.py:192 webpay/pay/views.py:54
+#: webpay/base/dev_messages.py:192
+#: webpay/pay/views.py:54
 msgid "Payments are temporarily disabled."
 msgstr "Pagesat janë përkohësisht të çaktivizuara."
 
@@ -190,7 +197,8 @@ msgstr "U mohua leja për riverifikimin e përdoruesit."
 msgid "Re-verifying the user failed."
 msgstr "Riverifikimi i përdoruesit dështoi."
 
-#: webpay/base/dev_messages.py:204 webpay/base/dev_messages.py:241
+#: webpay/base/dev_messages.py:204
+#: webpay/base/dev_messages.py:241
 msgid "The payment provider does not exist"
 msgstr "Mundësuesi i pagesave nuk ekziston"
 
@@ -212,11 +220,11 @@ msgstr "Kyçi i pagesës mund të përdoret vetëm për të simuluar blerje."
 
 #: webpay/base/dev_messages.py:212
 msgid "Failed to simulate a payment."
-msgstr ""
+msgstr "Dështoi në simulimin e pagesës."
 
 #: webpay/base/dev_messages.py:213
 msgid "The request to simulate a payment timed out."
-msgstr ""
+msgstr "Kërkesës për simulim pagese i mbaroi koha."
 
 #: webpay/base/dev_messages.py:215
 msgid "Status attributes are not configured correctly."
@@ -242,7 +250,8 @@ msgstr "Nuk u gjet dot ID transaksioni"
 msgid "The system timed out while waiting for a transaction to start."
 msgstr "Sistemit i mbaroi koha teksa po priste fillimin e një transaksioni."
 
-#: webpay/base/dev_messages.py:227 webpay/base/dev_messages.py:228
+#: webpay/base/dev_messages.py:227
+#: webpay/base/dev_messages.py:228
 msgid "An unexpected error occurred."
 msgstr "Ndodhi një gabim i papritur."
 
@@ -255,8 +264,9 @@ msgid "The user cancelled the payment."
 msgstr "Përdoruesi e anuloi pagesën."
 
 #: webpay/base/dev_messages.py:237
+#, fuzzy
 msgid "The app failed to set the {0} when handling {1}/{2} Persona callbacks"
-msgstr ""
+msgstr "Zbatimi nuk arrit të caktojë {0} teksa trajtonte {1}/{2} Persona callbacks"
 
 #: webpay/base/dev_messages.py:243
 msgid "The verification URL is missing from configuration."
@@ -288,12 +298,18 @@ msgstr "E Palejuar"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Na ndjeni, nuk ju lejohet ta bëni këtë."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
-#: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
+#: webpay/base/templates/403.html:8
+#: webpay/base/templates/base.html:45
+#: webpay/base/templates/error.html:17
+#: webpay/pay/templates/pay/simulate.html:18
+#: webpay/pin/templates/pin/pin_form.html:39
+#: webpay/pin/templates/pin/pin_form.html:43
+#: webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Anulojeni"
 
-#: webpay/base/templates/404.html:2 webpay/base/templates/404.html:3
+#: webpay/base/templates/404.html:2
+#: webpay/base/templates/404.html:3
 msgid "Page not found"
 msgstr "Nuk u gjet faqe"
 
@@ -301,7 +317,8 @@ msgstr "Nuk u gjet faqe"
 msgid "Sorry, but we couldn't find the page you're looking for."
 msgstr "Na ndjeni, por nuk e gjetëm dot faqen që po kërkoni."
 
-#: webpay/base/templates/500.html:2 webpay/base/templates/500.html:3
+#: webpay/base/templates/500.html:2
+#: webpay/base/templates/500.html:3
 msgid "Something went wrong!"
 msgstr "Diçka shkoi ters!"
 
@@ -314,7 +331,8 @@ msgid "Please try again in a few moments."
 msgstr "Ju lutemi, riprovoni pas pak çastesh."
 
 #. Web Pay is what we call the payment server/flow.
-#: webpay/base/templates/base.html:9 webpay/spa/templates/spa/index.html:9
+#: webpay/base/templates/base.html:9
+#: webpay/spa/templates/spa/index.html:9
 msgid "Web Pay"
 msgstr "Web Pay"
 
@@ -348,7 +366,7 @@ msgstr "Pagim i plotësuar"
 
 #: webpay/base/templates/base.html:41
 msgid "Oops&hellip;"
-msgstr "Oops&hellip;"
+msgstr "Ou&hellip;"
 
 #: webpay/base/templates/base.html:42
 msgid "This is taking longer than expected. Try again?"
@@ -358,7 +376,8 @@ msgstr "Kjo po zgjat më shumë se sa pritej. Të riprovohet?"
 msgid "Something went wrong. Try again?"
 msgstr "Diç shkoi ters. Të riprovohet?"
 
-#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:44
+#: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "OK"
 
@@ -366,7 +385,8 @@ msgstr "OK"
 msgid "The transaction failed. You have not been charged for this purchase."
 msgstr "Transaksioni dështoi. Nuk ju janë mbajtur para për këtë blerje."
 
-#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9
+#: webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Gabim"
 
@@ -382,23 +402,28 @@ msgstr "Simuloni një pagesë"
 msgid "Default network"
 msgstr "Rrjeti parazgjedhje"
 
-#: webpay/pay/views.py:219 webpay/pin/views.py:91
+#: webpay/pay/views.py:219
+#: webpay/pin/views.py:91
 msgid "Enter Pin"
 msgstr "Jepni Pin-in"
 
-#: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:11
+#: webpay/pay/templates/pay/bounce.html:12
+#: webpay/pay/templates/pay/lobby.html:11
 msgid "Sign In"
 msgstr "Hyni"
 
-#: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:12
+#: webpay/pay/templates/pay/bounce.html:13
+#: webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in to continue with the payment"
 msgstr "Bëni hyrjen që të vazhdohet me pagesën"
 
-#: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:13
+#: webpay/pay/templates/pay/bounce.html:14
+#: webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in"
 msgstr "Hyni"
 
-#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7
+#: webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Simuloni Pagesën"
 
@@ -410,7 +435,10 @@ msgstr "Nuk do t'ju vihet në ngarkim ndonjë pagesë."
 msgid "result"
 msgstr "përfundim"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pay/templates/pay/super_simulate.html:17 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20
+#: webpay/pay/templates/pay/super_simulate.html:17
+#: webpay/pin/templates/pin/pin_form.html:46
+#: webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Vazhdoni"
 
@@ -418,7 +446,8 @@ msgstr "Vazhdoni"
 msgid "You have super powers"
 msgstr "Keni super fuqi"
 
-#: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
+#: webpay/pay/templates/pay/wait-to-start.html:6
+#: webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
 msgstr "Po përgatitet pagesa&hellip;"
 
@@ -430,19 +459,24 @@ msgstr "Keni krijuar tashmë një PIN."
 msgid "Wrong pin"
 msgstr "Pin i gabuar"
 
-#: webpay/pin/forms.py:122 webpay/pin/forms.py:145
+#: webpay/pin/forms.py:122
+#: webpay/pin/forms.py:145
 msgid "Pins do not match."
 msgstr "Pin-et nuk përputhen."
 
-#: webpay/pin/views.py:44 webpay/testing/views.py:25
+#: webpay/pin/views.py:44
+#: webpay/testing/views.py:25
 msgid "Create a Pin"
 msgstr "Krijoni një Pin"
 
-#: webpay/pin/views.py:66 webpay/pin/views.py:183
+#: webpay/pin/views.py:66
+#: webpay/pin/views.py:183
 msgid "Confirm Pin"
 msgstr "Konfirmoni Pin-in"
 
-#: webpay/pin/views.py:129 webpay/pin/views.py:155 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:129
+#: webpay/pin/views.py:155
+#: webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Ricaktoni Pin-in"
 
@@ -455,8 +489,9 @@ msgid "For testing only. Marketplace users <b>should not</b> use this site."
 msgstr "Vetëm për testim. Përdoruesit e Marketplace-it <b>nuk duhen</b> ta përdorin këtë sajt."
 
 #. This is the same as the standard forgot
-#.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
+#. password that most sites have.
+#: webpay/pin/templates/pin/pin_form.html:31
+#: webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
 msgstr "Harruat pin-in tuaj?"
 
@@ -480,10 +515,12 @@ msgstr "Jeni i sigurt se doni të ricaktoni pin-in tuaj? Duhet të keni bërë h
 msgid "Reset"
 msgstr "Ricaktoje"
 
-#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+#: webpay/provider/templates/provider/wait-to-finish.html:6
+#: webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
 msgstr "Po verifikohet pagesa&hellip;"
 
 #: webpay/spa/templates/spa/index.html:52
 msgid "Loading..."
 msgstr "Po ngarkohet..."
+
