@@ -22,7 +22,7 @@ class TestAuth(SessionTestCase):
 
         configure_transaction_patch = mock.patch(
             'webpay.auth.views.pay_tasks.configure_transaction')
-        self.config_trans = configure_transaction_patch.start()
+        configure_transaction_patch.start()
         self.addCleanup(configure_transaction_patch.stop)
 
         get_buyer_patch = mock.patch('webpay.auth.utils.client.get_buyer')
