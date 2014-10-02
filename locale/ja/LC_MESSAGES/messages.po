@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-01 09:27-0700\n"
-"PO-Revision-Date: 2014-07-17 09:21-0400\n"
+"PO-Revision-Date: 2014-10-01 21:40-0400\n"
 "Last-Translator: Kohei Yoshino <kohei.yoshino@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -211,11 +211,11 @@ msgstr "この決済キーはシミュレーション購入専用です。"
 
 #: webpay/base/dev_messages.py:212
 msgid "Failed to simulate a payment."
-msgstr ""
+msgstr "決済のシミュレーションに失敗しました。"
 
 #: webpay/base/dev_messages.py:213
 msgid "The request to simulate a payment timed out."
-msgstr ""
+msgstr "決済シミュレーションのリクエストがタイムアウトしました。"
 
 #: webpay/base/dev_messages.py:215
 msgid "Status attributes are not configured correctly."
@@ -255,7 +255,7 @@ msgstr "ユーザが決済をキャンセルしました。"
 
 #: webpay/base/dev_messages.py:237
 msgid "The app failed to set the {0} when handling {1}/{2} Persona callbacks"
-msgstr ""
+msgstr "アプリは {1}/{2} Persona コールバックの処理中に {0} を設定できませんでした。"
 
 #: webpay/base/dev_messages.py:243
 msgid "The verification URL is missing from configuration."
