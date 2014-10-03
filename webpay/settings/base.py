@@ -462,7 +462,8 @@ PAY_URLS = {
         'logout': '/mozpayments/logout/',
     },
     'reference': {
-        'base': 'https://zippy.paas.allizom.org',
+        'base': os.environ.get('ZIPPY_BASE_URL',
+                               'https://zippy.paas.allizom.org'),
         'pay': '/payment/start?tx={uid_pay}',
         'logout': '/users/reset',
     },
