@@ -15,6 +15,7 @@ from lib.solitude import constants
 from lib.solitude.api import client, ProviderHelper
 from multidb.pinning import use_master
 
+from webpay.base import dev_messages
 from webpay.base.utils import gmtime, uri_to_pk
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from .constants import NOT_SIMULATED, SIMULATED_POSTBACK, SIMULATED_CHARGEBACK
@@ -32,10 +33,15 @@ class TransactionOutOfSync(Exception):
 def configure_transaction(request, trans=None, mcc=None, mnc=None):
     """
     Begins a background task to configure a payment transaction.
+
+    Returns a tuple of (was_successful, error_code)
+
+    * was_successful is a boolean
+    * error_code, when not None, is an error code for the failure
     """
     if request.session.get('is_simulation', False):
         log.info('is_simulation: skipping configure payments step')
-        return False
+        return (False, None)
 
     notes = request.session.get('notes', {})
     if mcc and mnc:
@@ -52,7 +58,7 @@ def configure_transaction(request, trans=None, mcc=None, mnc=None):
 
     if not trans and not 'trans_id' in request.session:
         log.error('trans_id: not found in session')
-        return False
+        return (False, dev_messages.TRANS_MISSING)
 
     try:
         if not trans:
@@ -74,7 +80,7 @@ def configure_transaction(request, trans=None, mcc=None, mnc=None):
         log.info('trans %s (status=%r) already configured: '
                  'skipping configure payments step'
                  % (request.session['trans_id'], trans.get('status')))
-        return False
+        return (False, None)
 
     # Prevent configuration from running twice.
     request.session['configured_trans'] = request.session['trans_id']
@@ -98,7 +104,7 @@ def configure_transaction(request, trans=None, mcc=None, mnc=None):
                     request.session['uuid'],
                     [p.name for p in providers])
 
-    return True
+    return (True, None)
 
 
 def _localize_pay_request(request):

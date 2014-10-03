@@ -283,11 +283,20 @@ class TestPay(Base, BaseCase):
             if req is None:
                 req = self.request()
             data = {'req': req, 'mnc': mnc, 'mcc': mcc}
+        kwargs.setdefault('HTTP_ACCEPT', 'application/json')
         return self.client.post(self.url, data=data, **kwargs)
 
     def test_bad(self):
         res = self.post(data={})
         eq_(res.status_code, 400)
+
+    @mock.patch('webpay.pay.tasks.configure_transaction')
+    def test_configuration_failure(self, configure):
+        configure.return_value = (False, 'FAIL_CODE')
+        res = self.post()
+        eq_(res.status_code, 400)
+        data = json.loads(res.content)
+        eq_(data['error_code'], 'FAIL_CODE')
 
     def test_inapp(self):
         self.solitude.generic.product.get_object.return_value = {
