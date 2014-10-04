@@ -404,17 +404,26 @@ class TestConfigureTX(ConfiguredTransactionTest):
         self.start_pay = p.start()
         self.addCleanup(p.stop)
 
+    def configure(self, data={}):
+        return self.client.post(reverse('pay.configure_transaction'),
+                                HTTP_ACCEPT='application/json',
+                                data=data)
+
     @mock.patch('webpay.pay.tasks.configure_transaction')
     def test_configure_transaction_error(self, configure_trans):
-        configure_trans.return_value = False
-        resp = self.client.post(reverse('pay.configure_transaction'),
-                                HTTP_ACCEPT='application/json')
-        eq_(resp.status_code, 400)
+        configure_trans.return_value = (False, 'SOME_ERROR_CODE')
+        resp = self.configure()
+        self.assertContains(resp, 'SOME_ERROR_CODE', status_code=400)
         eq_(resp.get('Content-Type'), 'application/json; charset=utf-8')
-        ok_('TRANS_CONFIG_FAILED' in resp.content)
+
+    @mock.patch('webpay.pay.tasks.configure_transaction')
+    def test_configure_transaction_error_no_code(self, configure_trans):
+        configure_trans.return_value = (False, None)
+        resp = self.configure()
+        self.assertContains(resp, 'TRANS_CONFIG_FAILED', status_code=400)
 
     def test_configure_transaction(self):
-        res = self.client.post(reverse('pay.configure_transaction'))
+        res = self.configure()
         eq_(res.status_code, 200)
         ok_(self.start_pay.delay.called,
             'POST should call configure_transaction')
@@ -422,9 +431,7 @@ class TestConfigureTX(ConfiguredTransactionTest):
     def test_setup_mcc_mnc(self):
         mcc = '123'
         mnc = '45'
-        resp = self.client.post(reverse('pay.configure_transaction'),
-                                {'mcc': mcc, 'mnc': mnc},
-                                HTTP_ACCEPT='application/json')
+        resp = self.configure(data={'mcc': mcc, 'mnc': mnc})
         self.start_pay.delay.assert_called_with(mock.ANY,
                                                 {'network': {'mcc': mcc,
                                                              'mnc': mnc}},
@@ -435,10 +442,9 @@ class TestConfigureTX(ConfiguredTransactionTest):
     @mock.patch.object(settings, 'SIMULATED_NETWORK',
                        {'mcc': '123', 'mnc': '45'})
     def test_simulate_network(self):
-        self.client.post(reverse('pay.configure_transaction'),
-                         # Pretend this is the client posting a real
-                         # network or maybe NULLs.
-                         {'mcc': '111', 'mnc': '01'})
+        # Pretend this is the client posting a real
+        # network or maybe NULLs.
+        self.configure(data={'mcc': '111', 'mnc': '01'})
         # Make sure the posted network was overridden.
         self.start_pay.delay.assert_called_with(mock.ANY,
                                                 {'network': {'mcc': '123',
@@ -446,17 +452,15 @@ class TestConfigureTX(ConfiguredTransactionTest):
                                                 mock.ANY, mock.ANY)
 
     def test_setup_invalid_mcc_mnc(self):
-        self.client.post(reverse('pay.configure_transaction'),
-                         {'mcc': 'abc', 'mnc': '45'})
+        self.configure(data={'mcc': 'abc', 'mnc': '45'})
         eq_(self.client.session.get('notes', {}).get('network', {}), {})
 
     def test_setup_invalid_mcc_mnc_single_digit(self):
-        self.client.post(reverse('pay.configure_transaction'),
-                         {'mcc': '123', 'mnc': '2'})
+        self.configure(data={'mcc': '123', 'mnc': '2'})
         eq_(self.client.session.get('notes', {}).get('network', {}), {})
 
     def test_no_mcc_mnc(self):
-        self.client.post(reverse('pay.configure_transaction'), {})
+        self.configure()
         eq_(self.client.session.get('notes', {}).get('network', {}), {})
 
 
@@ -724,6 +728,17 @@ class TestSuperSimulate(ConfiguredTransactionTest):
         res = self.client.post(reverse('pay.super_simulate'))
         eq_(res.status_code, 403)
         assert not self.fake_notify.delay.called
+
+    @mock.patch('webpay.pay.tasks.configure_transaction')
+    def test_configuration_failure(self, configure):
+        self.set_perms({'admin': True, 'reviewer': False})
+        configure.return_value = (False, 'FAIL_CODE')
+        res = self.post(data={'action': 'real', 'network': '334:020'},
+                        check_status=False,
+                        HTTP_ACCEPT='application/json')
+        eq_(res.status_code, 400)
+        data = json.loads(res.content)
+        eq_(data['error_code'], 'FAIL_CODE')
 
 
 class TestBounce(Base):

@@ -22,6 +22,7 @@ from lib.marketplace.api import client, UnknownPricePoint
 from lib.marketplace.constants import COUNTRIES
 from lib.solitude import api
 from lib.solitude import constants
+from webpay.base import dev_messages
 from webpay.base.utils import gmtime
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from webpay.pay import tasks
@@ -741,13 +742,15 @@ class TestConfigureTransaction(BaseStartPay):
         self.solitude.side_effect = ObjectDoesNotExist
         session = {}
         ok_(self.start(session=session))
-        ok_(not self.start(session=session))  # Second call should do nothing.
+        successful, error = self.start(session=session)
+        eq_(successful, False)  # Second call should do nothing.
         eq_(self.start_pay.call_count, 1)
 
     def test_no_trans_id(self):
         request = RequestFactory().get('/')
         request.session = {}
-        eq_(self.start(request=request), False)
+        eq_(self.start(request=request),
+            (False, dev_messages.TRANS_MISSING))
 
     def test_restart_certain_transactions(self):
         for st in constants.STATUS_RETRY_OK:
@@ -768,8 +771,9 @@ class TestConfigureTransaction(BaseStartPay):
             'notest': {}
         }
         session = {}
-        ok_(self.start(session=session))
-        ok_(self.start(session=session))  # Second call should still configure.
+        ok_(self.start(session=session)[0])
+        # Second call should still configure.
+        ok_(self.start(session=session)[0])
         eq_(self.start_pay.call_count, 2)
 
     def test_use_locale_name(self):
@@ -785,7 +789,7 @@ class TestConfigureTransaction(BaseStartPay):
             'status': constants.STATUS_CANCELLED, 'resource_pk': '1',
             'notes': self.notes
         }
-        ok_(self.start(locale='de'))
+        ok_(self.start(locale='de')[0])
         start_pay = self.start_pay
         assert start_pay.called
         eq_(start_pay.call_args[0][1]['pay_request']['request']['name'],

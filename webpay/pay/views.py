@@ -144,10 +144,12 @@ def configure_transaction(request):
                     .format(mcc=mcc, mnc=mnc))
 
     is_simulation = request.session.get('is_simulation', False)
-    if (not tasks.configure_transaction(request, mcc=mcc, mnc=mnc) and
-            not is_simulation):
-        log.error('Configuring transaction failed.')
-        return system_error(request, code=msg.TRANS_CONFIG_FAILED)
+    ok, error_code = tasks.configure_transaction(request, mcc=mcc, mnc=mnc)
+    if not ok and not is_simulation:
+        if not error_code:
+            error_code = msg.TRANS_CONFIG_FAILED
+        log.error('Configuring transaction failed: {er}'.format(er=error_code))
+        return system_error(request, code=error_code)
     else:
         sim = (request.session['notes']['pay_request']['request']['simulate']
                if is_simulation else None)
@@ -256,9 +258,13 @@ def super_simulate(request):
         if form.cleaned_data['action'] == 'real':
             if form.cleaned_data['network']:
                 mcc, mnc = form.cleaned_data['network']
-                if not reconfigure_transaction(request, mcc, mnc):
-                    log.error('Re-configuring transaction failed.')
-                    return system_error(request, code=msg.TRANS_CONFIG_FAILED)
+                ok, error_code = reconfigure_transaction(request, mcc, mnc)
+                if not ok:
+                    if not error_code:
+                        error_code = msg.TRANS_CONFIG_FAILED
+                    log.error('Re-configuring transaction failed: {er}'
+                              .format(er=error_code))
+                    return system_error(request, code=error_code)
 
             # Continue to the wait screen.
             return redirect(reverse('pay.wait_to_start'))
