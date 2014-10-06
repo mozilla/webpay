@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: marketplace-webpay\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-01 09:27-0700\n"
-"PO-Revision-Date: 2014-09-02 18:28+0000\n"
+"PO-Revision-Date: 2014-10-06 18:16+0000\n"
 "Last-Translator: Marco Aurélio <ouesten@me.com>\n"
 "Language-Team: Português (Brasil) <dev-l10n-pt-br@lists.mozilla.org>\n"
 "Language: pt_BR\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Pootle 2.5.0\n"
-"X-POOTLE-MTIME: 1409682493.0\n"
+"X-POOTLE-MTIME: 1412619401.0\n"
 
 #: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
 msgid "Payment cancelled."
@@ -215,11 +215,11 @@ msgstr "Esta chave de pagamento só pode ser usada para simular compras."
 
 #: webpay/base/dev_messages.py:212
 msgid "Failed to simulate a payment."
-msgstr ""
+msgstr "A simulação de pagamento falhou."
 
 #: webpay/base/dev_messages.py:213
 msgid "The request to simulate a payment timed out."
-msgstr ""
+msgstr "O pedido de simulação de um pagamento expirou."
 
 #: webpay/base/dev_messages.py:215
 msgid "Status attributes are not configured correctly."
@@ -260,6 +260,8 @@ msgstr "O usuário cancelou o pagamento."
 #: webpay/base/dev_messages.py:237
 msgid "The app failed to set the {0} when handling {1}/{2} Persona callbacks"
 msgstr ""
+"O aplicativo não conseguiu definir o {0} ao manusear chamadas {1}/{2} do "
+"Persona"
 
 #: webpay/base/dev_messages.py:243
 msgid "The verification URL is missing from configuration."
