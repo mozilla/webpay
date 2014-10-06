@@ -742,8 +742,8 @@ class TestConfigureTransaction(BaseStartPay):
         self.solitude.side_effect = ObjectDoesNotExist
         session = {}
         ok_(self.start(session=session))
-        successful, error = self.start(session=session)
-        eq_(successful, False)  # Second call should do nothing.
+        configured, error = self.start(session=session)
+        eq_(configured, False)  # Second call should do nothing.
         eq_(self.start_pay.call_count, 1)
 
     def test_no_trans_id(self):
