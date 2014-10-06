@@ -34,9 +34,9 @@ def configure_transaction(request, trans=None, mcc=None, mnc=None):
     """
     Begins a background task to configure a payment transaction.
 
-    Returns a tuple of (was_successful, error_code)
+    Returns a tuple of (was_configured, error_code)
 
-    * was_successful is a boolean
+    * was_configured is a boolean
     * error_code, when not None, is an error code for the failure
     """
     if request.session.get('is_simulation', False):
