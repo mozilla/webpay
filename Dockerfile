@@ -15,7 +15,7 @@ RUN pip install -b /pip/build --download-cache /pip/cache --no-deps -r /pip/requ
 
 ENV SPARTACUS_STATIC /spartacus
 ENV SOLITUDE_URL http://solitude:2602
-ENV MARKETPLACE_URL http://zamboni:2600
+ENV MARKETPLACE_URL http://mp.dev
 ENV MEMCACHE_URL memcache:11211
 
 EXPOSE 2601
