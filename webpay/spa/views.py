@@ -6,8 +6,8 @@ from django.shortcuts import render
 from django_paranoia.decorators import require_GET
 
 from lib.solitude.api import ProviderHelper
+from webpay.base.helpers import fxa_auth_info
 from webpay.base.logger import getLogger
-
 log = getLogger('w.spa')
 
 
@@ -17,5 +17,8 @@ def index(request, view_name=None):
 
     if not settings.SPA_ENABLE:
         return http.HttpResponseForbidden()
+    ctx = {}
+    if settings.USE_FXA:
+        ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
 
-    return render(request, 'spa/index.html')
+    return render(request, 'spa/index.html', ctx)

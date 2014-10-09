@@ -84,9 +84,10 @@ def json(s):
     return jsonlib.dumps(s)
 
 
-@register.function
-def fxa_auth_info():
-    state = uuid.uuid4().hex
+def fxa_auth_info(request):
+    if not request.session.get('fxa-state'):
+        request.session['fxa-state'] = uuid.uuid4().hex
+    state = request.session['fxa-state']
     return (state,
             urlparams(
                 urlparse.urljoin(settings.FXA_OAUTH_URL,
@@ -94,3 +95,4 @@ def fxa_auth_info():
                 client_id=settings.FXA_CLIENT_ID,
                 state=state,
                 scope='profile'))
+

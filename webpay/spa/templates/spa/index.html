@@ -19,7 +19,6 @@
     data-unverified-issuer="{{ settings.BROWSERID_UNVERIFIED_ISSUER }}"
     data-build-id="{{ spartacus_build_id() }}"
     {% if settings.USE_FXA %}
-      {% set fxa_state, fxa_auth_url = fxa_auth_info() %}
       data-fxa-state="{{ fxa_state }}"
       data-fxa-auth-url="{{ fxa_auth_url }}"
       data-fxa-callback-url="{{ url('auth.fxa_login') }}"
