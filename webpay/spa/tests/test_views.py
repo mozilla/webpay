@@ -8,7 +8,7 @@ import mock
 from nose.tools import eq_, ok_
 from pyquery import PyQuery as pq
 
-from webpay.provider.tests.test_views import ProviderTestCase
+from webpay.pay.tests import Base
 
 
 @mock.patch.object(settings, 'SPA_ENABLE', True)
@@ -51,3 +51,39 @@ class TestSpaDataAttrs(test.TestCase):
         eq_(doc('body').attr('data-bango-logout-url'),
             settings.PAY_URLS['bango']['base'] +
             settings.PAY_URLS['bango']['logout'])
+
+        
+@test.utils.override_settings(SPA_ENABLE=True, SPA_ENABLE_URLS=True)
+class TestBuyerEmailAuth(Base):
+    @test.utils.override_settings(KEY='marketplace.mozilla.com',
+                                  SECRET='test secret')
+    def test_marketplace_purchase(self):
+        jwt = self.request(
+            iss='marketplace.mozilla.com', app_secret='test secret',
+            extra_req={'productData':
+                       'my_product_id=1234&buyer_email=user@example.com'})
+        res = self.client.get('/mozpay/', {'req': jwt})
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-logged-in-user'), 'user@example.com')
+
+    @test.utils.override_settings(KEY='marketplace.mozilla.com',
+                                  SECRET='test secret')
+    def test_bad_sig(self):
+        jwt = self.request(
+            iss='marketplace.mozilla.com', app_secret='wrong secret',
+            extra_req={'productData':
+                       'my_product_id=1234&buyer_email=user@example.com'})
+        res = self.client.get('/mozpay/', {'req': jwt})
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-logged-in-user'), '')
+
+    @test.utils.override_settings(KEY='marketplace.mozilla.com',
+                                  SECRET='test secret')
+    def test_non_marketplace(self):
+        jwt = self.request(
+            iss='example.com', app_secret='test secret',
+            extra_req={'productData':
+                       'my_product_id=1234&buyer_email=user@example.com'})
+        res = self.client.get('/mozpay/', {'req': jwt})
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-logged-in-user'), '')
