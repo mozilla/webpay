@@ -1,14 +1,11 @@
 import urlparse
 from django import http
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.shortcuts import render
 
 from django_paranoia.decorators import require_GET
 from mozpay.verify import InvalidJWT, _get_issuer, verify_sig
-from lib.solitude.api import ProviderHelper
-
-from webpay.auth import utils
+from webpay.auth.utils import set_user
 from webpay.base.helpers import fxa_auth_info
 from webpay.base.logger import getLogger
 log = getLogger('w.spa')
@@ -35,6 +32,7 @@ def index(request, view_name=None):
             product_data = urlparse.parse_qs(data)
             emails = product_data.get('buyer_email')
             if emails:
-                log.info("Creating session for marketplace user " + str(emails))
-                utils.set_user(request, emails[0])
+                log.info("Creating session for marketplace user " +
+                         str(emails))
+                set_user(request, emails[0], verified=False)
     return render(request, 'spa/index.html', ctx)

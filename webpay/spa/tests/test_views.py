@@ -1,11 +1,9 @@
-import os
-
 from django import test
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
 import mock
-from nose.tools import eq_, ok_
+from nose.tools import eq_
 from pyquery import PyQuery as pq
 
 from webpay.pay.tests import Base
@@ -25,7 +23,8 @@ class TestSpaViews(test.TestCase):
         self.assertTemplateUsed(res, 'spa/index.html')
 
     def test_reversal(self):
-        eq_(reverse('spa:index', args=['create-pin']), '/mozpay/spa/create-pin')
+        eq_(reverse('spa:index', args=['create-pin']),
+            '/mozpay/spa/create-pin')
 
 
 @mock.patch('webpay.base.utils.spartacus_build_id')
@@ -53,15 +52,14 @@ class TestSpaDataAttrs(test.TestCase):
             settings.PAY_URLS['bango']['logout'])
 
 
-@test.utils.override_settings(SPA_ENABLE=True, SPA_ENABLE_URLS=True)
+@test.utils.override_settings(SPA_ENABLE=True,
+                              SPA_ENABLE_URLS=True,
+                              KEY='marketplace.mozilla.com',
+                              SECRET='test secret')
 class TestBuyerEmailAuth(Base):
-    @test.utils.override_settings(KEY='marketplace.mozilla.com',
-                                  SECRET='test secret')
     @mock.patch('webpay.auth.utils.client')
     def test_marketplace_purchase(self, solitude):
-        solitude.get_buyer.return_value = {'uuid': 'some:uuid'}
-        solitude.create_buyer.return_value = ''
-
+        solitude.get_buyer.return_value = {'uuid': 'some-uuid'}
         jwt = self.request(
             iss='marketplace.mozilla.com', app_secret='test secret',
             extra_req={'productData':
@@ -70,8 +68,16 @@ class TestBuyerEmailAuth(Base):
         doc = pq(res.content)
         eq_(doc('body').attr('data-logged-in-user'), 'user@example.com')
 
-    @test.utils.override_settings(KEY='marketplace.mozilla.com',
-                                  SECRET='test secret')
+    @mock.patch('webpay.spa.views.set_user')
+    def test_set_user_is_unverified(self, set_user):
+        jwt = self.request(
+            iss='marketplace.mozilla.com', app_secret='test secret',
+            extra_req={'productData':
+                       'my_product_id=1234&buyer_email=user@example.com'})
+        self.client.get('/mozpay/', {'req': jwt})
+        set_user.assert_called_with(
+            mock.ANY, 'user@example.com', verified=False)
+
     def test_bad_sig(self):
         jwt = self.request(
             iss='marketplace.mozilla.com', app_secret='wrong secret',
@@ -81,8 +87,6 @@ class TestBuyerEmailAuth(Base):
         doc = pq(res.content)
         eq_(doc('body').attr('data-logged-in-user'), '')
 
-    @test.utils.override_settings(KEY='marketplace.mozilla.com',
-                                  SECRET='test secret')
     def test_non_marketplace(self):
         jwt = self.request(
             iss='example.com', app_secret='test secret',

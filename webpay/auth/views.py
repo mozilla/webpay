@@ -17,7 +17,6 @@ from session_csrf import anonymous_csrf_exempt
 from lib.marketplace.api import client as mkt_client
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
-from webpay.pay import tasks as pay_tasks
 from webpay.pin.utils import check_pin_status
 from .utils import get_uuid, set_user
 
@@ -169,7 +168,6 @@ def store_mkt_permissions(request, email, assertion, audience):
 def get_fxa_session(**kwargs):
     if settings.DEBUG:
         # In DEBUG mode, don't require HTTPS for FxA oauth redirects.
-        import os
         os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
     return OAuth2Session(
@@ -180,15 +178,13 @@ def get_fxa_session(**kwargs):
 
 def _fxa_authorize(fxa, client_secret, request, auth_response):
     token = fxa.fetch_token(
-        urlparse.urljoin(settings.FXA_OAUTH_URL,
-                         'v1/token'),
+        urlparse.urljoin(settings.FXA_OAUTH_URL, 'v1/token'),
         authorization_response=auth_response,
         client_secret=client_secret)
     res = fxa.post(
-        urlparse.urljoin(settings.FXA_OAUTH_URL,
-                         'v1/verify'),
-                   data=json.dumps({'token': token['access_token']}),
-                   headers={'Content-Type': 'application/json'})
+        urlparse.urljoin(settings.FXA_OAUTH_URL, 'v1/verify'),
+        data=json.dumps({'token': token['access_token']}),
+        headers={'Content-Type': 'application/json'})
     return res.json()
 
 
@@ -202,4 +198,5 @@ def fxa_login(request):
         request,
         request.POST.get('auth_response'))
     log.info("FxA login response:" + repr(data,))
-    return {'user_hash': set_user(request, data['email'])}
+    user_hash = set_user(request, data['email'], verified=True)
+    return {'user_hash': user_hash, 'user_email': data['email']}

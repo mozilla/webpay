@@ -13,22 +13,8 @@ from webpay.auth.decorators import user_can_simulate
 from . import good_assertion, SessionTestCase, set_up_no_mkt_account
 
 
-class Base(SessionTestCase):
-
-    def setUp(self):
-        super(Base, self).setUp()
-        patch = mock.patch('webpay.auth.views.pay_tasks')
-        patch.start()
-        self.patches = [patch]
-
-    def tearDown(self):
-        super(Base, self).tearDown()
-        for p in self.patches:
-            p.stop()
-
-
 @mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
-class TestBuyerHasPin(Base):
+class TestBuyerHasPin(SessionTestCase):
 
     def setUp(self):
         super(TestBuyerHasPin, self).setUp()
@@ -83,7 +69,7 @@ class TestBuyerHasPin(Base):
 
 
 @mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
-class TestBuyerHasResetFlag(Base):
+class TestBuyerHasResetFlag(SessionTestCase):
 
     def setUp(self):
         super(TestBuyerHasResetFlag, self).setUp()
@@ -120,7 +106,7 @@ class TestBuyerHasResetFlag(Base):
 
 
 @mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
-class TestBuyerLockedPinFlags(Base):
+class TestBuyerLockedPinFlags(SessionTestCase):
 
     def setUp(self):
         super(TestBuyerLockedPinFlags, self).setUp()
@@ -147,7 +133,7 @@ class TestBuyerLockedPinFlags(Base):
         eq_(self.client.session.get('uuid_pin_was_locked'), True)
 
 
-class TestUserCanSimulate(Base):
+class TestUserCanSimulate(SessionTestCase):
 
     def setUp(self):
         super(TestUserCanSimulate, self).setUp()

@@ -53,7 +53,7 @@ def get_user(request):
                        'did you use the user_verified decorator?')
 
 
-def set_user(request, email):
+def set_user(request, email, verified=None):
     if not check_whitelist(email):
         log.warning('Whitelist denied access to: {0}'.format(email))
         raise PermissionDenied
@@ -63,6 +63,9 @@ def set_user(request, email):
     request.session['uuid'] = uuid
     # This is only used by navigator.id.watch()
     request.session['logged_in_user'] = email
+    # Leave previous was_verified behaviour for Persona.
+    if verified is not None:
+        request.session['was_reverified'] = verified
 
     buyer = client.get_buyer(uuid)
     if not buyer:

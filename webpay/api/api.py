@@ -90,7 +90,11 @@ class PinCheckViewSet(viewsets.ViewSet):
     def check(self, request):
         form = VerifyPinForm(uuid=request.session['uuid'], data=request.DATA)
         try:
-            status = 200 if form.is_valid() else 400
+            if form.is_valid():
+                status = 200
+                request.session['was_reverified'] = False
+            else:
+                status = 400
         except ObjectDoesNotExist:
             raise Http404
         res = client.get_buyer(request.session['uuid'])

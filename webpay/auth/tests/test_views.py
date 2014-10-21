@@ -20,11 +20,6 @@ class TestAuth(SessionTestCase):
         self.url = reverse('auth.verify')
         self.reverify_url = reverse('auth.reverify')
 
-        configure_transaction_patch = mock.patch(
-            'webpay.auth.views.pay_tasks.configure_transaction')
-        configure_transaction_patch.start()
-        self.addCleanup(configure_transaction_patch.stop)
-
         get_buyer_patch = mock.patch('webpay.auth.utils.client.get_buyer')
         self.get_buyer = get_buyer_patch.start()
         self.get_buyer.return_value = {'pin': False, 'needs_pin_reset': False}
@@ -117,7 +112,6 @@ class TestMktPermissions(SessionTestCase):
     def setUp(self):
         super(TestMktPermissions, self).setUp()
         self.url = reverse('auth.verify')
-        self.patch('webpay.auth.views.pay_tasks.configure_transaction')
         self.patch('webpay.auth.utils.client.get_buyer')
         self.patch('webpay.auth.views.set_user').return_value = '<user_hash>'
         v = self.patch('webpay.auth.views.verify_assertion')
@@ -172,3 +166,38 @@ class TestResetUser(BasicSessionCase):
     def test_when_no_user(self):
         # This should not blow up when no user is in the session.
         self.client.post(reverse('auth.reset_user'))
+
+
+@mock.patch.object(settings, 'DOMAIN', 'web.pay')
+class TestFxALogin(SessionTestCase):
+
+    def setUp(self):
+        super(TestFxALogin, self).setUp()
+        self.url = reverse('auth.fxa_login')
+        self.solitude_client = self.patch('webpay.auth.utils.client')
+        self.solitude_client.get_buyer.return_value = {
+            'pin': False,
+            'needs_pin_reset': False,
+        }
+        self._fxa_authorize = self.patch('webpay.auth.views._fxa_authorize')
+        self._fxa_authorize.return_value = {'email': 'fxa@example.com'}
+
+    def patch(self, path):
+        p = mock.patch(path)
+        self.addCleanup(p.stop)
+        return p.start()
+
+    def login(self):
+        return self.client.post(
+            self.url, {'state': 'some-state', 'auth_response': 'response'})
+
+    def test_email_is_returned(self):
+        response = self.login()
+        eq_(response.status_code, 200)
+        eq_(json.loads(response.content)['user_email'], 'fxa@example.com')
+
+    def test_was_verified_is_set(self):
+        eq_(self.client.session.get('was_reverified'), None)
+        response = self.login()
+        eq_(response.status_code, 200)
+        eq_(self.client.session['was_reverified'], True)

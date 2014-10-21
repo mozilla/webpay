@@ -67,6 +67,32 @@ class TestUUID(test.TestCase):
             get_uuid('f@f.com')
 
 
+class TestWasReverified(test.TestCase):
+    def setUp(self):
+        solitude_client_patcher = mock.patch('webpay.auth.utils.client')
+        self.solitude_client = solitude_client_patcher.start()
+        self.solitude_client.get_buyer.return_value = {'uuid': '10'}
+        self.addCleanup(solitude_client_patcher.stop)
+
+    def test_is_unchanged_if_not_specified(self):
+        request = mock.MagicMock()
+        request.session = {'was_reverified': 'no way'}
+        set_user(request, 'foo@bar.com')
+        eq_(request.session['was_reverified'], 'no way')
+
+    def test_is_set_to_true_if_verified(self):
+        request = mock.MagicMock()
+        request.session = {'was_reverified': 'no way'}
+        set_user(request, 'foo@bar.com', verified=True)
+        eq_(request.session['was_reverified'], True)
+
+    def test_is_set_to_false_if_verified(self):
+        request = mock.MagicMock()
+        request.session = {'was_reverified': 'no way'}
+        set_user(request, 'foo@bar.com', verified=False)
+        eq_(request.session['was_reverified'], False)
+
+
 class TestWhitelist(test.TestCase):
 
     def test_none(self):
