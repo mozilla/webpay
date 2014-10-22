@@ -7,6 +7,8 @@ from django.shortcuts import render
 from django_paranoia.decorators import require_GET
 from mozpay.verify import InvalidJWT, _get_issuer, verify_sig
 from lib.solitude.api import ProviderHelper
+
+from webpay.auth import utils
 from webpay.base.helpers import fxa_auth_info
 from webpay.base.logger import getLogger
 log = getLogger('w.spa')
@@ -34,5 +36,5 @@ def index(request, view_name=None):
             emails = product_data.get('buyer_email')
             if emails:
                 log.info("Creating session for marketplace user " + str(emails))
-                request.session['logged_in_user'] = emails[0]
+                utils.set_user(request, emails[0])
     return render(request, 'spa/index.html', ctx)
