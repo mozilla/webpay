@@ -52,12 +52,16 @@ class TestSpaDataAttrs(test.TestCase):
             settings.PAY_URLS['bango']['base'] +
             settings.PAY_URLS['bango']['logout'])
 
-        
+
 @test.utils.override_settings(SPA_ENABLE=True, SPA_ENABLE_URLS=True)
 class TestBuyerEmailAuth(Base):
     @test.utils.override_settings(KEY='marketplace.mozilla.com',
                                   SECRET='test secret')
-    def test_marketplace_purchase(self):
+    @mock.patch('webpay.auth.utils.client')
+    def test_marketplace_purchase(self, solitude):
+        solitude.get_buyer.return_value = {'uuid': 'some:uuid'}
+        solitude.create_buyer.return_value = ''
+
         jwt = self.request(
             iss='marketplace.mozilla.com', app_secret='test secret',
             extra_req={'productData':
