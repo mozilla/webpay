@@ -11,6 +11,7 @@ from slumber.exceptions import HttpClientError
 from lib.solitude.api import client
 from webpay.bango.auth import basic, NoHeader, WrongHeader
 from webpay.base import dev_messages as msg
+from webpay.base.helpers import fxa_auth_info
 from webpay.base.logger import getLogger
 from webpay.base.utils import system_error
 from webpay.pay import tasks
@@ -100,8 +101,10 @@ def success(request):
     tasks.payment_notify.delay(request.GET.get('MerchantTransactionId'))
 
     if settings.SPA_ENABLE:
-        return render(request, 'spa/index.html',
-                      {'start_view': 'payment-success'})
+        ctx = {'start_view': 'payment-success'}
+        if settings.USE_FXA:
+            ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
+        return render(request, 'spa/index.html', ctx)
 
     return render(request, 'bango/success.html')
 
