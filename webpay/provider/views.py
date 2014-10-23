@@ -11,6 +11,7 @@ from lib.solitude.api import client, ProviderHelper
 from lib.solitude.constants import PROVIDERS_INVERTED, STATUS_COMPLETED
 from webpay.base import dev_messages as msg
 from webpay.base.decorators import json_view
+from webpay.base.helpers import fxa_auth_info
 from webpay.base.logger import getLogger
 from webpay.base.utils import log_cef, system_error
 from webpay.pay import tasks
@@ -39,9 +40,13 @@ def wait_to_finish(request, provider_name):
     trans_url = reverse('provider.transaction_status', args=[trans_uuid])
 
     if settings.SPA_ENABLE:
-        return render(request, 'spa/index.html', {
+        ctx = {
             'transaction_status_url': trans_url,
-            'start_view': 'wait-to-finish'})
+            'start_view': 'wait-to-finish'
+        }
+        if settings.USE_FXA:
+            ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
+        return render(request, 'spa/index.html', ctx)
 
     return render(request, 'provider/wait-to-finish.html',
                   {'transaction_status_url': trans_url})
@@ -89,8 +94,10 @@ def success(request, provider_name):
     tasks.payment_notify.delay(transaction_id)
 
     if settings.SPA_ENABLE:
-        return render(request, 'spa/index.html',
-                      {'start_view': 'payment-success'})
+        ctx = {'start_view': 'payment-success'}
+        if settings.USE_FXA:
+            ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
+        return render(request, 'spa/index.html', ctx)
 
     return render(request, 'provider/success.html')
 
