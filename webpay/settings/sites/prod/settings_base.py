@@ -127,7 +127,7 @@ SPA_ENABLE_URLS = True
 SPA_SETTINGS = base.SPA_SETTINGS
 SPA_SETTINGS['ua_tracking_enabled'] = True
 
-USE_FXA = False
+USE_FXA = True
 FXA_OAUTH_URL = 'https://oauth.accounts.firefox.com'
 FXA_CLIENT_ID = private.FXA_CLIENT_ID
 FXA_CLIENT_SECRET = private.FXA_CLIENT_SECRET
