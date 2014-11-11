@@ -11,6 +11,7 @@ from django.shortcuts import render
 from cef import log_cef as _log_cef
 from tower import ugettext as _
 
+from webpay.base.helpers import fxa_auth_info
 from webpay.base.logger import getLogger
 
 log = getLogger('w.cef')
@@ -75,9 +76,13 @@ def custom_error(request, user_message, code=None, status=400):
             status=status)
 
     if settings.SPA_ENABLE:
-        return render(request, 'spa/index.html',
-                      {'start_view': 'payment-failed',
-                       'error_code': code}, status=status)
+        ctx = {'start_view': 'payment-failed',
+               'error_code': code}
+
+        if settings.USE_FXA:
+            ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
+
+        return render(request, 'spa/index.html', ctx, status=status)
 
     return render(request, 'error.html', error, status=status)
 
