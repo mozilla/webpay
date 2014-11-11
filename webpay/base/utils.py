@@ -11,7 +11,6 @@ from django.shortcuts import render
 from cef import log_cef as _log_cef
 from tower import ugettext as _
 
-from webpay.base.helpers import fxa_auth_info
 from webpay.base.logger import getLogger
 
 log = getLogger('w.cef')
@@ -80,6 +79,8 @@ def custom_error(request, user_message, code=None, status=400):
                'error_code': code}
 
         if settings.USE_FXA:
+            # Avoid circular import.
+            from webpay.base.helpers import fxa_auth_info
             ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
 
         return render(request, 'spa/index.html', ctx, status=status)
