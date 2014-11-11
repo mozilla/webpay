@@ -8,7 +8,6 @@ from django.conf import settings
 import jinja2
 from jingo import register
 
-from webpay.base import utils
 
 
 @register.filter
@@ -56,6 +55,8 @@ def static(context, url):
 
 @register.function
 def spartacus_build_id():
+    # Avoid circular import.
+    from webpay.base import utils
     return utils.spartacus_build_id()
 
 
