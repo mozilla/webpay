@@ -5,8 +5,9 @@ from django.test import TestCase
 import mock
 from curling.lib import HttpServerError
 from nose.tools import eq_, raises
+from requests.exceptions import ConnectionError
 
-from lib.marketplace.api import client, UnknownPricePoint
+from lib.marketplace.api import client, NUMBER_ATTEMPTS, UnknownPricePoint
 from lib.solitude.constants import PROVIDER_BOKU
 
 
@@ -66,3 +67,25 @@ class SolitudeAPITest(TestCase):
             prices = client.get_price(1)
             eq_(slumber.webpay.prices.call_count, 1)  # This stays the same.
             eq_(prices, sample_price)
+
+    def test_connection_error_raises(self, slumber):
+        slumber.webpay.prices.side_effect = ConnectionError
+        with self.assertRaises(ConnectionError):
+            client.get_price(1)
+
+        eq_(slumber.webpay.prices.call_count, NUMBER_ATTEMPTS)
+
+    def test_connection_flaky(self, slumber):
+        sample = mock.Mock()
+        sample.get_object.return_value = sample_price
+
+        self.count = 1
+        def failure():
+            if self.count == 3:
+                return sample
+            self.count += 1
+            raise ConnectionError
+
+        slumber.webpay.prices.side_effect = failure
+        client.get_price(1)
+        eq_(slumber.webpay.prices.call_count, 3)
