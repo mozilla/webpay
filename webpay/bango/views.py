@@ -101,9 +101,10 @@ def success(request):
     tasks.payment_notify.delay(request.GET.get('MerchantTransactionId'))
 
     if settings.SPA_ENABLE:
-        ctx = {'start_view': 'payment-success'}
-        if settings.USE_FXA:
-            ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
+        state, fxa_url = fxa_auth_info(request)
+        ctx = {'start_view': 'payment-success',
+               'fxa_state': state,
+               'fxa_auth_url': fxa_url}
         return render(request, 'spa/index.html', ctx)
 
     return render(request, 'bango/success.html')

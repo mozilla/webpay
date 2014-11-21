@@ -54,7 +54,6 @@
       <div id="overlay" class="overlay"></div>
     </main>
     {%block site_js -%}
-    <script src="{{ settings.BROWSERID_JS_URL }}"></script>
     {% if settings.SPA_USE_MIN_JS %}
       <script src="{{ spartacus_static("/js/main.min.js") }}"></script>
     {% else %}

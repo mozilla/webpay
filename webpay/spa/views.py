@@ -17,8 +17,7 @@ def index(request, view_name=None):
     if not settings.SPA_ENABLE:
         return http.HttpResponseForbidden()
     ctx = {}
-    if settings.USE_FXA:
-        ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
+    ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
     jwt = request.GET.get('req')
     # If this is a Marketplace-issued JWT, verify its signature and skip login
     # for the purchaser named in it.

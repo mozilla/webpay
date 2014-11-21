@@ -121,6 +121,5 @@ base.JS_SETTINGS['zamboni_raven_url'] = ''
 
 NOSE_PLUGINS = []
 
-USE_FXA = False
 FXA_CLIENT_ID = private.FXA_CLIENT_ID
 FXA_CLIENT_SECRET = private.FXA_CLIENT_SECRET

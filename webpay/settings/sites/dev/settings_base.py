@@ -142,6 +142,5 @@ SPA_SETTINGS['ua_tracking_enabled'] = True
 
 NOSE_PLUGINS = []
 
-USE_FXA = True
 FXA_CLIENT_ID = private.FXA_CLIENT_ID
 FXA_CLIENT_SECRET = private.FXA_CLIENT_SECRET

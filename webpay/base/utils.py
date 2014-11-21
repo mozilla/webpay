@@ -75,14 +75,12 @@ def custom_error(request, user_message, code=None, status=400):
             status=status)
 
     if settings.SPA_ENABLE:
+        from webpay.base.helpers import fxa_auth_info
+        state, fxa_url = fxa_auth_info(request)
         ctx = {'start_view': 'payment-failed',
-               'error_code': code}
-
-        if settings.USE_FXA:
-            # Avoid circular import.
-            from webpay.base.helpers import fxa_auth_info
-            ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
-
+               'error_code': code,
+               'fxa_state': state,
+               'fxa_auth_url': fxa_url}
         return render(request, 'spa/index.html', ctx, status=status)
 
     return render(request, 'error.html', error, status=status)
