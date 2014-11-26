@@ -16,7 +16,7 @@ def index(request, view_name=None):
     """Page that serves the static Single Page App (Spartacus)."""
     if not settings.SPA_ENABLE:
         return http.HttpResponseForbidden()
-    ctx = {}
+    ctx = {'mkt_user': False}
     ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
     jwt = request.GET.get('req')
     # If this is a Marketplace-issued JWT, verify its signature and skip login
@@ -34,4 +34,5 @@ def index(request, view_name=None):
                 log.info("Creating session for marketplace user " +
                          str(emails))
                 set_user(request, emails[0], verified=False)
+                ctx['mkt_user'] = True
     return render(request, 'spa/index.html', ctx)
