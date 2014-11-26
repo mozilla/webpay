@@ -71,7 +71,8 @@ def set_user(request, email, verified=None):
     if not buyer:
         buyer = client.create_buyer(uuid, email)
 
-    log.info('Buyer uuid is: {0}'.format(uuid))
+    log.info('Buyer uuid is {uuid} for email {email}'
+             .format(uuid=uuid, email=email))
     return update_session(request, uuid, new_uuid, email, buyer=buyer)
 
 
