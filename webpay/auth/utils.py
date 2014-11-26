@@ -70,6 +70,8 @@ def set_user(request, email, verified=None):
     buyer = client.get_buyer(uuid)
     if not buyer:
         buyer = client.create_buyer(uuid, email)
+        log.info('Created buyer {uuid} for email {email}'
+                 .format(uuid=uuid, email=email))
 
     log.info('Buyer uuid is {uuid} for email {email}'
              .format(uuid=uuid, email=email))
