@@ -10,6 +10,7 @@
   </head>
   <body class="spartacus"
     data-logged-in-user="{{ session.get('logged_in_user', '') }}"
+    data-mkt-user="{% if mkt_user %}true{% else %}false{% endif %}"
     data-privacy-policy="https://marketplace.firefox.com/privacy-policy"
     data-reset-user-url="{{ url('auth.reset_user') }}"
     data-static-url="{{ settings.SPARTACUS_STATIC }}"

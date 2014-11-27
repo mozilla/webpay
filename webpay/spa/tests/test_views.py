@@ -67,6 +67,7 @@ class TestBuyerEmailAuth(Base):
         res = self.client.get('/mozpay/', {'req': jwt})
         doc = pq(res.content)
         eq_(doc('body').attr('data-logged-in-user'), 'user@example.com')
+        eq_(doc('body').attr('data-mkt-user'), 'true')
 
     @mock.patch('webpay.spa.views.set_user')
     def test_set_user_is_unverified(self, set_user):
@@ -95,3 +96,4 @@ class TestBuyerEmailAuth(Base):
         res = self.client.get('/mozpay/', {'req': jwt})
         doc = pq(res.content)
         eq_(doc('body').attr('data-logged-in-user'), '')
+        eq_(doc('body').attr('data-mkt-user'), 'false')
