@@ -555,7 +555,7 @@ SITE_URL = host.rstrip('/')
 SOLITUDE_URL = os.environ.get('SOLITUDE_URL', 'http://localhost:2602')
 
 # The OAuth tokens for solitude.
-SOLITUDE_OAUTH = {'key': '', 'secret': ''}
+SOLITUDE_OAUTH = {'key': 'webpay', 'secret': 'please change this'}
 
 SPARTACUS_BUILD_ID_KEY = 'spartacus-build-id'
 SPARTACUS_STATIC = os.environ.get('SPARTACUS_STATIC', 'http://localhost:2604')
