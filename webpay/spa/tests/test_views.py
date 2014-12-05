@@ -20,6 +20,9 @@ class TestSpaViews(test.TestCase):
     def test_enter_pin(self):
         res = self.client.get(reverse('spa:index', args=['enter-pin']))
         eq_(res.status_code, 200)
+        doc = pq(res.content)
+        # data-mkt-user should be falsey.
+        eq_(doc('body').attr('data-mkt-user'), '')
         self.assertTemplateUsed(res, 'spa/index.html')
 
     def test_reversal(self):

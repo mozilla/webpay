@@ -12,13 +12,17 @@ log = getLogger('w.spa')
 
 
 @require_GET
-def index(request, view_name=None):
+def index(request, view_name=None, start_view=None):
     """Page that serves the static Single Page App (Spartacus)."""
     if not settings.SPA_ENABLE:
         return http.HttpResponseForbidden()
-    ctx = {'mkt_user': False}
+    ctx = {}
     ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
     jwt = request.GET.get('req')
+
+    if jwt:
+        ctx['mkt_user'] = False
+
     # If this is a Marketplace-issued JWT, verify its signature and skip login
     # for the purchaser named in it.
     if jwt and _get_issuer(jwt) == settings.KEY:
