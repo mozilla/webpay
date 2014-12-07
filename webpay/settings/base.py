@@ -411,7 +411,13 @@ JS_SETTINGS = {
 MARKETPLACE_URL = host
 
 # The OAuth config from the marketplace.
-MARKETPLACE_OAUTH = {'key': '', 'secret': ''}
+#
+# These are the default ones set in the initdata in zamboni. They are
+# overridden on every server.
+MARKETPLACE_OAUTH = {
+    'key': 'mkt:default:1:amckay+docker-api@mozilla.com',
+    'secret': 'some-secret-eh?'
+}
 
 # Configure our test runner for some nice test output.
 NOSE_PLUGINS = [
