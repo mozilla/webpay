@@ -12,8 +12,11 @@ from webpay.auth.decorators import user_can_simulate
 
 from . import good_assertion, SessionTestCase, set_up_no_mkt_account
 
+m = mock.Mock()
+m().get_verifier().verify()._response = good_assertion
 
-@mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
+
+@mock.patch.object(auth_views, 'BrowserIDBackend', m)
 class TestBuyerHasPin(SessionTestCase):
 
     def setUp(self):
@@ -68,7 +71,7 @@ class TestBuyerHasPin(SessionTestCase):
         eq_(data['redirect_url'], None)
 
 
-@mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
+@mock.patch.object(auth_views, 'BrowserIDBackend', m)
 class TestBuyerHasResetFlag(SessionTestCase):
 
     def setUp(self):
@@ -105,7 +108,7 @@ class TestBuyerHasResetFlag(SessionTestCase):
         eq_(self.client.session.get('uuid_needs_pin_reset'), True)
 
 
-@mock.patch.object(auth_views, 'verify_assertion', lambda *a: good_assertion)
+@mock.patch.object(auth_views, 'BrowserIDBackend', m)
 class TestBuyerLockedPinFlags(SessionTestCase):
 
     def setUp(self):

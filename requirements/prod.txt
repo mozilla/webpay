@@ -58,7 +58,6 @@ translate-toolkit==1.9.0
 
 -e git://github.com/fwenzel/django-sha2.git@f4519bf0cc9b1dd7a7d78394fa4aec4504bc86e9#egg=django-sha2
 -e git://github.com/fwenzel/django-mozilla-product-details.git@f5a3c3c846fb75e12ad890b22ed5375d5b85ccb4#egg=django-mozilla-product-details
-
--e git://github.com/mozilla/django-browserid.git@72009f28f55c91c8ed1bb79930bc84f88dc00211#egg=django-browserid
+-e git+https://github.com/washort/django-browserid.git@5a6ebfa#egg=django-browserid
 -e git://github.com/mozilla/django-session-csrf.git@94e2858a427a6b278e41c051643f3c226f096f21#egg=django-session-csrf
 -e git://github.com/mozilla/nuggets.git@96e80a64aa4bfcfef4f43fc3ab6966450ccd7325#egg=nuggets

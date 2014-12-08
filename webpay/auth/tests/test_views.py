@@ -27,15 +27,12 @@ class TestAuth(SessionTestCase):
 
         set_up_no_mkt_account(self)
 
-    @mock.patch('webpay.auth.views.verify_assertion')
+    @mock.patch('webpay.auth.views.BrowserIDBackend')
     @mock.patch('webpay.auth.views.set_user')
     @mock.patch('webpay.auth.views.store_mkt_permissions')
-    def test_good_verified(self, store_mkt, set_user_mock, verify_assertion):
+    def test_good_verified(self, store_mkt, set_user_mock, BrowserIDBackend):
         set_user_mock.return_value = '<user_hash>'
-        assertion = dict(good_assertion)
-        del assertion['unverified-email']
-        assertion['email'] = 'a@a.com'
-        verify_assertion.return_value = assertion
+        BrowserIDBackend().get_verifier().verify()._response = good_assertion
         res = self.client.post(self.url, {'assertion': 'good'})
         eq_(res.status_code, 200)
         data = json.loads(res.content)
@@ -44,62 +41,50 @@ class TestAuth(SessionTestCase):
         assert store_mkt.called, (
             'After login, marketplace permissions should be stored')
 
-    @mock.patch('webpay.auth.views.verify_assertion')
-    @mock.patch('webpay.auth.views.set_user')
-    def test_good_unverified(self, set_user_mock, verify_assertion):
-        set_user_mock.return_value = '<user_hash>'
-        verify_assertion.return_value = good_assertion
-        res = self.client.post(self.url, {'assertion': 'good'})
-        eq_(res.status_code, 200)
-        set_user_mock.assert_called_with(mock.ANY, 'a+unverified@a.com')
-
-    @mock.patch('webpay.auth.views.verify_assertion')
+    @mock.patch('webpay.auth.views.BrowserIDBackend')
     @mock.patch('webpay.auth.utils.client.update_buyer')
-    def test_session(self, update_buyer, verify_assertion):
-        verify_assertion.return_value = good_assertion
+    def test_session(self, update_buyer, BrowserIDBackend):
+        BrowserIDBackend().get_verifier().verify()._response = good_assertion
         self.client.post(self.url, {'assertion': 'good'})
         assert self.client.session['uuid'].startswith('web.pay:')
 
-    @mock.patch('webpay.auth.views.verify_assertion')
+    @mock.patch('webpay.auth.views.BrowserIDBackend')
     @mock.patch('webpay.auth.utils.client.update_buyer')
-    def test_session_sets_email(self, update_buyer, verify_assertion):
-        verify_assertion.return_value = good_assertion
+    def test_session_sets_email(self, update_buyer, BrowserIDBackend):
+        BrowserIDBackend().get_verifier().verify()._response = good_assertion
         self.client.post(self.url, {'assertion': 'good'})
         assert self.client.session['uuid'].startswith('web.pay:')
         update_buyer.assert_called_with(
-            self.client.session['uuid'], email='a+unverified@a.com')
+            self.client.session['uuid'], email='a@a.com')
 
-    @mock.patch('webpay.auth.views.verify_assertion')
-    def test_bad(self, verify_assertion):
-        verify_assertion.return_value = False
+    @mock.patch('webpay.auth.views.BrowserIDBackend')
+    def test_bad(self, BrowserIDBackend):
+        BrowserIDBackend().get_verifier().verify.return_value = None
         eq_(self.client.post(self.url, {'assertion': 'bad'}).status_code, 400)
         eq_(self.client.session.get('was_reverified'), None)
 
-    @mock.patch('webpay.auth.views.verify_assertion')
-    def test_session_cleaned(self, verify_assertion):
+    @mock.patch('webpay.auth.views.BrowserIDBackend')
+    def test_session_cleaned(self, BrowserIDBackend):
         self.verify('fake_uuid', 'fake_email')
-        verify_assertion.return_value = False
+        BrowserIDBackend().get_verifier().verify.return_value = None
         eq_(self.client.post(self.url, {'assertion': 'bad'}).status_code, 400)
         eq_(self.client.session.get('uuid'), None)
 
-    @mock.patch('webpay.auth.views.verify_assertion')
+    @mock.patch('webpay.auth.views.BrowserIDBackend')
     @mock.patch('webpay.auth.views.store_mkt_permissions')
-    def test_reverify(self, store_mkt, verify_assertion):
-        verify_assertion.return_value = dict(good_assertion)
+    def test_reverify(self, store_mkt, BrowserIDBackend):
+        BrowserIDBackend().get_verifier().verify()._response = good_assertion
         res = self.client.post(self.reverify_url, {'assertion': 'good'})
         eq_(res.status_code, 200)
         data = json.loads(res.content)
-        eq_(data['user_hash'], get_uuid(good_assertion['unverified-email']))
-        v = verify_assertion.call_args[0][2]
-        assert v['experimental_forceAuthentication'], (
-            verify_assertion.call_args)
+        eq_(data['user_hash'], get_uuid('a@a.com'))
         eq_(self.client.session['was_reverified'], True)
         assert store_mkt.called, (
             'After reverify, marketplace permissions should be stored')
 
-    @mock.patch('webpay.auth.views.verify_assertion')
-    def test_reverify_failed(self, verify_assertion):
-        verify_assertion.return_value = dict(good_assertion)
+    @mock.patch('webpay.auth.views.BrowserIDBackend')
+    def test_reverify_failed(self, BrowserIDBackend):
+        BrowserIDBackend().get_verifier().verify()._response = good_assertion
         self.session['uuid'] = 'not-the-same'
         self.save_session()
 
@@ -114,8 +99,8 @@ class TestMktPermissions(SessionTestCase):
         self.url = reverse('auth.verify')
         self.patch('webpay.auth.utils.client.get_buyer')
         self.patch('webpay.auth.views.set_user').return_value = '<user_hash>'
-        v = self.patch('webpay.auth.views.verify_assertion')
-        v.return_value = good_assertion
+        v = self.patch('webpay.auth.views.BrowserIDBackend')
+        v().get_verifier().verify()._response = good_assertion
 
         mkt = self.patch('lib.marketplace.api.client.api')
         login = mock.Mock()

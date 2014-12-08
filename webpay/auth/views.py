@@ -8,9 +8,8 @@ from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
 from curling.lib import HttpClientError
-from django_browserid import (get_audience as get_aud_from_request,
-                              verify as verify_assertion)
-from django_browserid.forms import BrowserIDForm
+from django_browserid import (BrowserIDBackend,
+                              get_audience as get_aud_from_request)
 from requests_oauthlib import OAuth2Session
 from session_csrf import anonymous_csrf_exempt
 
@@ -43,40 +42,44 @@ def reset_user(request):
     return http.HttpResponse('OK')
 
 
+def native_fxa_authenticate(audience, assertion):
+    url = settings.NATIVE_FXA_VERIFICATION_URL
+    log.info('verifying Native FxA assertion. url: %s, audience: %s, '
+             'assertion: %s' % (url, audience, assertion))
+
+    v = BrowserIDBackend().get_verifier()
+    v.verification_service_url = url
+    result = v.verify(assertion, audience, url=url)
+    if result:
+        log.info('Native FxA assertion ok: %s' % result)
+        if (result._response.get('issuer') == settings.NATIVE_FXA_ISSUER and
+           'fxa-verifiedEmail' in result._response.get('idpClaims', {})):
+            return result._response['idpClaims']['fxa-verifiedEmail']
+        else:
+            return result._response.get('email')
+
+
 @anonymous_csrf_exempt
 @require_POST
 @json_view
 def reverify(request):
-    form = BrowserIDForm(data=request.POST)
-    if form.is_valid():
-        url = settings.BROWSERID_VERIFICATION_URL
-        audience = get_audience(request)
-        extra_params = {
-            'experimental_forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
-            'experimental_forceAuthentication': 'true',
-            'experimental_allowUnverified': 'true'
-        }
+    audience = get_audience(request)
+    assertion = request.POST.get('assertion')
+    email = native_fxa_authenticate(audience, assertion)
+    log.info('Reverify got result: %s' % email)
+    if email:
+        store_mkt_permissions(request, email, assertion, audience)
+        logged_user = request.session.get('uuid')
+        reverified_user = get_uuid(email)
+        if logged_user and logged_user != reverified_user:
+            log.error('User %r tried to reverify as '
+                      'new email: %s' % (logged_user, email))
+            return http.HttpResponseBadRequest()
 
-        assertion = form.cleaned_data['assertion']
-        log.info('Re-verifying Persona assertion. url: %s, audience: %s, '
-                 'extra_params: %s' % (url, audience, extra_params))
-        result = verify_assertion(assertion, audience, extra_params)
+        request.session['was_reverified'] = True
+        return {'user_hash': reverified_user}
 
-        log.info('Reverify got result: %s' % result)
-        if result:
-            email = result.get('unverified-email', result.get('email'))
-            store_mkt_permissions(request, email, assertion, audience)
-            logged_user = request.session.get('uuid')
-            reverified_user = get_uuid(email)
-            if logged_user and logged_user != reverified_user:
-                log.error('User %r tried to reverify as '
-                          'new email: %s' % (logged_user, email))
-                return http.HttpResponseBadRequest()
-
-            request.session['was_reverified'] = True
-            return {'user_hash': reverified_user}
-
-        log.error('Persona assertion failed.')
+    log.error('Persona assertion failed.')
 
     request.session.clear()
     return http.HttpResponseBadRequest()
@@ -86,34 +89,22 @@ def reverify(request):
 @require_POST
 @json_view
 def verify(request):
-    form = BrowserIDForm(data=request.POST)
-    if form.is_valid():
-        url = settings.BROWSERID_VERIFICATION_URL
-        audience = get_audience(request)
-        extra_params = {
-            'experimental_forceIssuer': settings.BROWSERID_UNVERIFIED_ISSUER,
-            'experimental_allowUnverified': 'true'
+    audience = get_audience(request)
+    assertion = request.POST.get('assertion')
+    email = native_fxa_authenticate(audience, assertion)
+    if email:
+        store_mkt_permissions(request, email, assertion, audience)
+        user_uuid = set_user(request, email)
+
+        redirect_url = check_pin_status(request)
+
+        return {
+            'needs_redirect': redirect_url is not None,
+            'redirect_url': redirect_url,
+            'user_hash': user_uuid
         }
-        assertion = form.cleaned_data['assertion']
-        log.info('verifying Persona assertion. url: %s, audience: %s, '
-                 'extra_params: %s, assertion: %s' % (url, audience,
-                                                      extra_params, assertion))
-        result = verify_assertion(assertion, audience, extra_params)
-        if result:
-            log.info('Persona assertion ok: %s' % result)
-            email = result.get('unverified-email', result.get('email'))
-            store_mkt_permissions(request, email, assertion, audience)
-            user_uuid = set_user(request, email)
-
-            redirect_url = check_pin_status(request)
-
-            return {
-                'needs_redirect': redirect_url is not None,
-                'redirect_url': redirect_url,
-                'user_hash': user_uuid
-            }
-
-        log.error('Persona assertion failed.')
+    else:
+        log.error('Native FxA assertion failed.')
 
     request.session.flush()
     return http.HttpResponseBadRequest()

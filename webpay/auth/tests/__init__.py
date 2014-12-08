@@ -10,8 +10,9 @@ from webpay.base.tests import BasicSessionCase
 good_assertion = {u'status': u'okay',
                   u'audience': u'http://some.site',
                   u'expires': 1351707833170,
-                  u'unverified-email': u'a+unverified@a.com',
-                  u'forceIssuer': u'native-persona.org'}
+                  u'email': u'1234567890@accounts.firefox.com',
+                  u'issuer': settings.NATIVE_FXA_ISSUER,
+                  u'idpClaims': {u'fxa-verifiedEmail': 'a@a.com'}}
 
 
 class SessionTestCase(BasicSessionCase):

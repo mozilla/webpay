@@ -269,15 +269,10 @@ APP_PURCHASE_SECRET = SECRET = 'please change this'
 # We won't be persisting users in the DB.
 BROWSERID_CREATE_USER = False
 
-# Control which Persona server you use for logins.
-# This is useful for switching to a development Persona server.
-BROWSERID_DOMAIN = 'login.persona.org'
-BROWSERID_JS_URL = 'https://%s/include.js' % BROWSERID_DOMAIN
-# We only trust one issuer to grant us unverified emails.
-# If UNVERIFIED_ISSUER is set to None, forceIssuer will not
-# be sent to the client or the verifier.
-BROWSERID_UNVERIFIED_ISSUER = 'firefoxos.persona.org'
-BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
+BROWSERID_AUDIENCES = [host.rstrip('/')]
+# Native-FxA uses a browserid verifier with slightly different behavior.
+NATIVE_FXA_VERIFICATION_URL = 'https://verifier.accounts.firefox.com/v2'
+NATIVE_FXA_ISSUER = 'api.accounts.firefox.com'
 
 CACHEBUST_IMGS = True
 
@@ -306,7 +301,6 @@ CSP_IMG_SRC = (
 )
 CSP_SCRIPT_SRC = (
     "'self'",
-    'https://%s' % BROWSERID_DOMAIN,
     'https://*.google-analytics.com',
 )
 CSP_STYLE_SRC = (
@@ -319,7 +313,6 @@ CSP_OBJECT_SRC = ("'none'",)
 CSP_MEDIA_SRC = ("'none'",)
 CSP_FRAME_SRC = (
     'https://*.google-analytics.com',
-    'https://%s' % BROWSERID_DOMAIN,
 )
 CSP_FONT_SRC = ("'self'",)
 
@@ -608,7 +601,6 @@ STYLUS_BIN = 'stylus'
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'jingo_minify.helpers.build_ids',
-    'django_browserid.context_processors.browserid',
     'webpay.base.context_processors.defaults',
 ]
 
