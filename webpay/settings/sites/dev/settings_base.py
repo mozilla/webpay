@@ -53,6 +53,7 @@ SITE_URL = 'https://' + DOMAIN
 MARKETPLACE_URL = SITE_URL
 MARKETPLACE_OAUTH = {'key': private.MARKETPLACE_OAUTH_KEY,
                      'secret': private.MARKETPLACE_OAUTH_SECRET}
+BROWSERID_AUDIENCES = [SITE_URL]
 
 STATIC_URL_DOMAIN = 'marketplace-dev-cdn.allizom.org'
 STATIC_URL = 'https://%s/' % STATIC_URL_DOMAIN
