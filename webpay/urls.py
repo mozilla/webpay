@@ -25,11 +25,5 @@ if settings.SPA_ENABLE_URLS:
         url(r'^mozpay/v1/api/', include('webpay.api.urls', namespace='api'))
     )
 
-# Test/Development only urls.
-if settings.TEMPLATE_DEBUG:
-    urlpatterns += patterns('',
-        url(r'^', include('webpay.testing.urls')),
-    )
-
 # Ensure that 403 is routed through a view.
 handler403 = 'webpay.auth.views.denied'
