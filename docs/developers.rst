@@ -83,12 +83,6 @@ or UI testing::
 
     pip install -r requirements/test.txt
 
-To run UI tests you need `casperjs`_ 1.1 or greater. With `homebrew`_ on
-Mac OS X you can install it like this::
-
-    brew install --devel casperjs
-
-
 Running Tests
 ~~~~~~~~~~~~~
 
@@ -97,33 +91,6 @@ or test public functions and classes directly.
 You can run the test suite like this::
 
     python manage.py test
-
-Running UI Tests
-~~~~~~~~~~~~~~~~
-
-Webpay has a test suite that sets up a couple mocks then runs tests
-against the web UI in a headless browser. From the root of Webpay and
-within your Python virualenv, run the tests like this::
-
-    make test-ui
-
-To hack on tests, add a file like ``uitests/tests/*.js``.
-All JS files in that directory are run automatically.
-
-Debugging UI Tests
-~~~~~~~~~~~~~~~~~~
-
-If something catastrophic goes wrong, check the output of
-``tmp/supervisord.log`` and/or ``tmp/webpay.log`` for clues.
-
-In the case of timeout failures, you'll see a message in the console showing you
-where to find a screenshot of the browser page when the test timed out. It will
-be something like this: ``uitests/captures/timeout-oye23zirsf0qkt9.png``.
-
-For more debugging see the `casperjs`_ docs.
-
-.. _casperjs: http://docs.casperjs.org/en/latest/
-.. _homebrew: http://brew.sh/
 
 Building the Docs
 ~~~~~~~~~~~~~~~~~
@@ -135,18 +102,6 @@ do this from your webpay root::
     make -C docs/ html
 
 Then open ``docs/_build/html/index.html`` in a browser.
-
-Working on the UI
-~~~~~~~~~~~~~~~~~
-
-The webpay server has a very minimal UI. It lets you log in and
-create/enter/reset a PIN but after that it redirects you to a
-payment processor. You can work on the login and PIN by setting this
-in your ``webpay/settings/local.py``::
-
-    TEST_PIN_UI = True
-
-Then load the front page: http://localhost:8001/mozpay/
 
 Overriding JS settings from Django settings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
