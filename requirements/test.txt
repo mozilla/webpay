@@ -6,4 +6,3 @@ fudge==1.0.3
 meld3==0.6.10
 polib==1.0.3
 pyquery==1.2.8
-supervisor==3.0
