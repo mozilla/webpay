@@ -270,7 +270,7 @@ APP_PURCHASE_SECRET = SECRET = 'please change this'
 BROWSERID_CREATE_USER = False
 
 BROWSERID_DOMAIN = 'login.persona.org'
-BROWSERID_AUDIENCES = [SITE_URL]
+BROWSERID_AUDIENCES = [host.rstrip('/')]
 BROWSERID_VERIFICATION_URL = 'https://%s/verify' % BROWSERID_DOMAIN
 
 # Native-FxA uses a browserid verifier with slightly different behavior.
