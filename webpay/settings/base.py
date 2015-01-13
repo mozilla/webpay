@@ -607,11 +607,6 @@ TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'webpay.base.context_processors.defaults',
 ]
 
-# Special just for front-end folks! When True, it lets you hit the main page
-# without a JWT. You can create/enter PINs but it won't let you get very far
-# beyond that.
-TEST_PIN_UI = False
-
 UGLIFY_BIN = 'uglifyjs'
 
 # When True, use the marketplace API to get product icons.
