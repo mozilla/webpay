@@ -45,8 +45,8 @@ def compress_assets(arg=''):
 
 
 @task
-def schematic():
-    with lcd(WEBPAY):
+def schematic(run_dir=WEBPAY):
+    with lcd(run_dir):
         local("%s %s/bin/schematic migrations" %
               (PYTHON, VIRTUALENV))
 
@@ -89,6 +89,32 @@ def pre_update(ref=settings.UPDATE_REF):
     local('date')
     execute(helpers.git_update, WEBPAY, ref)
     execute(update_info, ref)
+
+
+@task
+def build():
+    execute(create_virtualenv)
+    execute(update_locales)
+    execute(compress_assets)
+
+
+@task
+def deploy_jenkins():
+    rpm = helpers.build_rpm(name='webpay',
+                            env=settings.ENV,
+                            cluster=settings.CLUSTER,
+                            domain=settings.DOMAIN,
+                            root=ROOT,
+                            package_dirs=['webpay', 'venv'])
+
+    rpm.local_install()
+
+    execute(schematic, os.path.join(rpm.install_to, 'webpay'))
+
+    rpm.remote_install(['web', 'celery'])
+
+    helpers.restart_uwsgi(getattr(settings, 'UWSGI', []))
+    execute(update_celery)
 
 
 @task
