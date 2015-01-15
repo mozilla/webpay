@@ -37,6 +37,7 @@ class TestAuth(SessionTestCase):
         eq_(res.status_code, 200)
         data = json.loads(res.content)
         eq_(data['user_hash'], '<user_hash>')
+        eq_(data['user_email'], 'a@a.com')
         set_user_mock.assert_called_with(mock.ANY, 'a@a.com')
         assert store_mkt.called, (
             'After login, marketplace permissions should be stored')
@@ -78,6 +79,7 @@ class TestAuth(SessionTestCase):
         eq_(res.status_code, 200)
         data = json.loads(res.content)
         eq_(data['user_hash'], get_uuid('a@a.com'))
+        eq_(data['user_email'], 'a@a.com')
         eq_(self.client.session['was_reverified'], True)
         assert store_mkt.called, (
             'After reverify, marketplace permissions should be stored')

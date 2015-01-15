@@ -77,7 +77,7 @@ def reverify(request):
             return http.HttpResponseBadRequest()
 
         request.session['was_reverified'] = True
-        return {'user_hash': reverified_user}
+        return {'user_hash': reverified_user, 'user_email': email}
 
     log.error('Persona assertion failed.')
 
@@ -101,6 +101,7 @@ def verify(request):
         return {
             'needs_redirect': redirect_url is not None,
             'redirect_url': redirect_url,
+            'user_email': email,
             'user_hash': user_uuid
         }
     else:
