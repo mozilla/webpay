@@ -6,16 +6,19 @@ import mock
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 
+from webpay.base.tests import BasicSessionCase
 from webpay.pay.tests import Base
 
 
 @mock.patch.object(settings, 'SPA_ENABLE', True)
-class TestSpaViews(test.TestCase):
+class TestSpaViews(BasicSessionCase):
 
     def test_index(self):
         res = self.client.get(reverse('pay.lobby'))
         eq_(res.status_code, 200)
         self.assertTemplateUsed(res, 'spa/index.html')
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-super-powers'), 'false')
 
     def test_enter_pin(self):
         res = self.client.get(reverse('spa:index', args=['enter-pin']))
@@ -28,6 +31,16 @@ class TestSpaViews(test.TestCase):
     def test_reversal(self):
         eq_(reverse('spa:index', args=['create-pin']),
             '/mozpay/spa/create-pin')
+
+    def test_expose_super_powers(self):
+        session = self.client.session
+        session['super_powers'] = True
+        self.save_session(session)
+        res = self.client.get(reverse('pay.lobby'))
+        eq_(res.status_code, 200)
+        self.assertTemplateUsed(res, 'spa/index.html')
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-super-powers'), 'true')
 
 
 @mock.patch('webpay.base.utils.spartacus_build_id')

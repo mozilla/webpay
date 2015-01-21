@@ -189,6 +189,21 @@ def fxa_login(request):
         settings.FXA_CLIENT_SECRET,
         request,
         request.POST.get('auth_response'))
-    log.info("FxA login response:" + repr(data,))
+    log.info("FxA login response: " + repr(data))
+
+    if data.get('error'):
+        # All errors look like:
+        # https://github.com/mozilla/fxa-oauth-server/blob/master
+        # /docs/api.md#errors
+        log.info('FxA login error: {data}'.format(data=data))
+        return http.HttpResponseForbidden()
+
     user_hash = set_user(request, data['email'], verified=True)
-    return {'user_hash': user_hash, 'user_email': data['email']}
+
+    super_powers = data['email'] in settings.USERS_WITH_SUPER_POWERS
+    log.info('user has super powers? {user}: {powers}'
+             .format(user=data['email'], powers=super_powers))
+    request.session['super_powers'] = super_powers
+
+    return {'user_hash': user_hash, 'user_email': data['email'],
+            'super_powers': super_powers}

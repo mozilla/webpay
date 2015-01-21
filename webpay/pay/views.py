@@ -115,7 +115,7 @@ def process_pay_req(request, data=None):
 
 @require_POST
 @json_view
-def configure_transaction(request):
+def configure_transaction(request, data=None):
     """
     Configures a transaction so the user can be redirected to a buy screen.
 
@@ -127,7 +127,7 @@ def configure_transaction(request):
 
     """
 
-    form = NetCodeForm(request.POST)
+    form = NetCodeForm(data or request.POST)
 
     mcc = None
     mnc = None
@@ -136,6 +136,9 @@ def configure_transaction(request):
         mnc = form.cleaned_data['mnc']
         log.info('Client detected network: mcc={mcc}, mnc={mnc}'
                  .format(mcc=mcc, mnc=mnc))
+    else:
+        log.info('Network form was invalid, no codes were applied.')
+        log.debug('Network form errors: {e}'.format(e=form.errors.as_text()))
 
     if settings.SIMULATED_NETWORK:
         mcc = settings.SIMULATED_NETWORK['mcc']
