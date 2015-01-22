@@ -5,6 +5,8 @@
 
 FROM  mozillamarketplace/centos-python27-mkt:0.6
 
+RUN yum install -y supervisor
+
 RUN mkdir -p /pip/{cache,build}
 
 ADD requirements /pip/requirements
