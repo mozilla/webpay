@@ -304,6 +304,7 @@ CSP_IMG_SRC = (
 )
 CSP_SCRIPT_SRC = (
     "'self'",
+    'https://*.bango.net',
     'https://*.google-analytics.com',
 )
 CSP_STYLE_SRC = (
