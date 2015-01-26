@@ -23,6 +23,7 @@
     data-fxa-callback-url="{{ url('auth.fxa_login') }}"
     data-verify-url="{{ url('auth.verify') }}"
     data-reverify-url="{{ url('auth.reverify') }}"
+    data-super-powers="{% if super_powers %}true{% else %}false{% endif %}"
     {% if transaction_status_url %}
       data-trans-start-url="{{ transaction_status_url }}"
     {% else %}

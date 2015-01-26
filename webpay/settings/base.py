@@ -634,3 +634,7 @@ IN_TEST_SUITE = False
 FXA_OAUTH_URL = 'https://oauth-stable.dev.lcip.org'
 FXA_CLIENT_ID = 'f69290928139452e'
 FXA_CLIENT_SECRET = 'f6d74bf347fe8dab38c0103b421ae12f276c47ba4914cf85b9927041667c3237'
+
+# Set of email addresses for users that gain super powers once authenticated.
+# For example, they will see an admin screen to simulate certain things.
+USERS_WITH_SUPER_POWERS = set([])

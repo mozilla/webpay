@@ -249,6 +249,9 @@ class ProviderHelper:
         # Always allow the default provider.
         supported_providers.append(settings.PAYMENT_PROVIDER)
 
+        log.info('supported payment providers: {p}'
+                 .format(p=', '.join(supported_providers)))
+
         return [cls(provider_name) for provider_name in supported_providers]
 
     def start_transaction(self, transaction_uuid,

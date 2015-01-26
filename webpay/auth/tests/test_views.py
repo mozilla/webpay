@@ -188,3 +188,22 @@ class TestFxALogin(SessionTestCase):
         response = self.login()
         eq_(response.status_code, 200)
         eq_(self.client.session['was_reverified'], True)
+        eq_(self.client.session['super_powers'], False)
+
+    def test_oauth_error_response(self):
+        self._fxa_authorize.return_value = {
+            'code': 400,
+            'errno': 101,
+            'error': 'Bad Request',
+            'message': 'Unknown client',
+        }
+        response = self.login()
+        eq_(response.status_code, 403, response)
+
+    @mock.patch.object(settings, 'USERS_WITH_SUPER_POWERS',
+                       ['tom@myspace.com'])
+    def test_super_powers(self):
+        self._fxa_authorize.return_value = {'email': 'tom@myspace.com'}
+        response = self.login()
+        eq_(response.status_code, 200)
+        eq_(self.client.session['super_powers'], True)

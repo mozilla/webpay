@@ -106,10 +106,10 @@ class PayViewSet(viewsets.ViewSet):
     permission_classes = (Permission,)
 
     def create(self, request):
-        res = process_pay_req(request, request.DATA)
+        res = process_pay_req(request, data=request.DATA)
         if isinstance(res, http.HttpResponse):
             return res
-        return configure_transaction(request)
+        return configure_transaction(request, data=request.DATA)
 
     def retrieve(self, request):
         try:
