@@ -76,12 +76,6 @@ class TestBangoReturn(BasicSessionCase):
         assert slumber.bango.notification.post.called
         self.assertTemplateUsed(res, 'error.html')
 
-    def test_cancel(self, payment_notify, slumber):
-        res = self.call(overrides={'ResponseCode': 'CANCEL'},
-                        url='bango.error',
-                        expected_status=200)
-        self.assertTemplateUsed(res, 'bango/cancel.html')
-
     def test_not_error(self, payment_notify, slumber):
         self.call(overrides={'ResponseCode': 'OK'}, url='bango.error',
                   expected_status=400)
@@ -99,6 +93,15 @@ class TestBangoReturn(BasicSessionCase):
         res = self.call()
         doc = pq(res.content)
         eq_(doc('body').attr('data-start-view'), 'payment-success')
+        self.assertTemplateUsed('spa/index.html')
+
+    @mock.patch.object(settings, 'SPA_ENABLE', True)
+    def test_cancel_spa(self, payment_notify, slumber):
+        res = self.call(overrides={'ResponseCode': 'CANCEL'},
+                        url='bango.error',
+                        expected_status=400)
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-start-view'), 'payment-failed')
         self.assertTemplateUsed('spa/index.html')
 
     @mock.patch.object(settings, 'SPA_ENABLE', True)

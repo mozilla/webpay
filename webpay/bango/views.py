@@ -125,8 +125,7 @@ def error(request):
         return system_error(request, code=result)
 
     if request.GET.get('ResponseCode') == 'CANCEL':
-        return render(request, 'bango/cancel.html',
-                      {'error_code': msg.USER_CANCELLED})
+        return system_error(request, code=msg.USER_CANCELLED)
 
     if request.GET.get('ResponseCode') == 'NOT_SUPPORTED':
         # This is a credit card or price point / region mismatch.
