@@ -135,3 +135,10 @@ SPA_SETTINGS['ua_tracking_enabled'] = True
 FXA_OAUTH_URL = 'https://oauth.accounts.firefox.com'
 FXA_CLIENT_ID = private.FXA_CLIENT_ID
 FXA_CLIENT_SECRET = private.FXA_CLIENT_SECRET
+
+USERS_WITH_SUPER_POWERS = [
+    'kmcmillan@mozilla.com',
+    'amckay@mozilla.com',
+    'kraj@mozilla.com',
+    'lsaunders@mozilla.com',
+]
