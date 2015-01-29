@@ -75,6 +75,12 @@ def set_user(request, email, verified=None):
 
     log.info('Buyer uuid is {uuid} for email {email}'
              .format(uuid=uuid, email=email))
+
+    super_powers = email in settings.USERS_WITH_SUPER_POWERS
+    log.info('user has super powers? {user}: {powers}'
+             .format(user=email, powers=super_powers))
+    request.session['super_powers'] = super_powers
+
     return update_session(request, uuid, new_uuid, email, buyer=buyer)
 
 

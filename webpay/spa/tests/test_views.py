@@ -84,6 +84,23 @@ class TestBuyerEmailAuth(Base):
         doc = pq(res.content)
         eq_(doc('body').attr('data-logged-in-user'), 'user@example.com')
         eq_(doc('body').attr('data-mkt-user'), 'true')
+        eq_(doc('body').attr('data-super-powers'), 'false')
+
+    @mock.patch('webpay.auth.utils.client')
+    def test_marketplace_user_can_get_super_powers(self, solitude):
+        email = 'user@example.com'
+        solitude.get_buyer.return_value = {'uuid': 'some-uuid'}
+        jwt = self.request(
+            iss='marketplace.mozilla.com', app_secret='test secret',
+            extra_req={'productData':
+                       'my_product_id=1234&buyer_email={e}'.format(e=email)})
+
+        with self.settings(USERS_WITH_SUPER_POWERS=[email]):
+            res = self.client.get('/mozpay/', {'req': jwt})
+
+        doc = pq(res.content)
+        eq_(doc('body').attr('data-logged-in-user'), email)
+        eq_(doc('body').attr('data-super-powers'), 'true')
 
     @mock.patch('webpay.spa.views.set_user')
     def test_set_user_is_unverified(self, set_user):
