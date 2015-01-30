@@ -40,5 +40,6 @@ def index(request, view_name=None, start_view=None):
                 set_user(request, emails[0], verified=False)
                 ctx['mkt_user'] = True
 
+    # This has to come after set_user as set_user modifies the session.
     ctx['super_powers'] = request.session.get('super_powers', False)
     return render(request, 'spa/index.html', ctx)
