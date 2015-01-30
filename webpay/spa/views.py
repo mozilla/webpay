@@ -18,7 +18,6 @@ def index(request, view_name=None, start_view=None):
         return http.HttpResponseForbidden()
     ctx = {}
     ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
-    ctx['super_powers'] = request.session.get('super_powers', False)
     jwt = request.GET.get('req')
 
     if jwt:
@@ -40,4 +39,6 @@ def index(request, view_name=None, start_view=None):
                          str(emails))
                 set_user(request, emails[0], verified=False)
                 ctx['mkt_user'] = True
+
+    ctx['super_powers'] = request.session.get('super_powers', False)
     return render(request, 'spa/index.html', ctx)

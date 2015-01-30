@@ -200,10 +200,5 @@ def fxa_login(request):
 
     user_hash = set_user(request, data['email'], verified=True)
 
-    super_powers = data['email'] in settings.USERS_WITH_SUPER_POWERS
-    log.info('user has super powers? {user}: {powers}'
-             .format(user=data['email'], powers=super_powers))
-    request.session['super_powers'] = super_powers
-
     return {'user_hash': user_hash, 'user_email': data['email'],
-            'super_powers': super_powers}
+            'super_powers': request.session.get('super_powers', False)}
