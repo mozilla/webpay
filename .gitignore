@@ -26,4 +26,5 @@ settings/local.py
 settings_local.py
 tmp/*
 uitests/captures/*
-logs/*.log
+logs/*
+supervisord.pid
