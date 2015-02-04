@@ -1,16 +1,17 @@
 from datetime import datetime
 
-from django import http, test
+from django import http
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 
 import mock
 from nose.tools import eq_
 from webpay.auth.utils import check_whitelist, get_uuid, set_user
+from webpay.base.tests import TestCase
 
 
 @mock.patch.object(settings, 'DOMAIN', 'web.pay')
-class TestUUID(test.TestCase):
+class TestUUID(TestCase):
 
     def test_good(self):
         res = get_uuid('f@f.com')
@@ -67,7 +68,7 @@ class TestUUID(test.TestCase):
             get_uuid('f@f.com')
 
 
-class TestWasReverified(test.TestCase):
+class TestWasReverified(TestCase):
     def setUp(self):
         solitude_client_patcher = mock.patch('webpay.auth.utils.client')
         self.solitude_client = solitude_client_patcher.start()
@@ -93,7 +94,7 @@ class TestWasReverified(test.TestCase):
         eq_(request.session['was_reverified'], False)
 
 
-class TestWhitelist(test.TestCase):
+class TestWhitelist(TestCase):
 
     def test_none(self):
         with self.settings(USER_WHITELIST=[]):

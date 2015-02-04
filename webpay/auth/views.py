@@ -1,6 +1,7 @@
 import os
 import json
 import urlparse
+from datetime import datetime
 
 from django import http
 from django.conf import settings
@@ -16,7 +17,7 @@ from session_csrf import anonymous_csrf_exempt
 from lib.marketplace.api import client as mkt_client
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
-from webpay.pin.utils import check_pin_status
+from webpay.base.utils import gmtime
 from .utils import get_uuid, set_user
 
 log = getLogger('w.auth')
@@ -39,6 +40,14 @@ def reset_user(request):
         # This isn't strictly necessary since permissions are reset on
         # login but it's good for paranoia.
         del request.session['mkt_permissions']
+
+    # Set the starting timestamp of the reset for later use when verifying
+    # their Firefox Accounts password entry.
+    start_ts = gmtime()
+    request.session['user_reset'] = {'start_ts': start_ts}
+    log.info('PIN reset start: {r}'
+             .format(r=datetime.utcfromtimestamp(start_ts)))
+
     return http.HttpResponse('OK')
 
 
@@ -96,11 +105,7 @@ def verify(request):
         store_mkt_permissions(request, email, assertion, audience)
         user_uuid = set_user(request, email)
 
-        redirect_url = check_pin_status(request)
-
         return {
-            'needs_redirect': redirect_url is not None,
-            'redirect_url': redirect_url,
             'user_email': email,
             'user_hash': user_uuid
         }
@@ -168,7 +173,36 @@ def get_fxa_session(**kwargs):
         **kwargs)
 
 
+def _process_fxa_auth_ts(token, request):
+    """
+    Process and store the last FxA authentication time for this token.
+    """
+    fxa_auth_ts = token.get('auth_at')
+    if not isinstance(fxa_auth_ts, (int, float)):
+        log.info('Got non-numeric FxA auth_at timestamp: {a}'
+                 .format(a=fxa_auth_ts))
+        fxa_auth_ts = None
+    if not fxa_auth_ts:
+        raise ValueError(
+            'Cannot safely reset PIN, FxA token "auth_at" value '
+            'was invalid; token: {t}'.format(t=token))
+    request.session.setdefault('user_reset', {})
+    request.session['user_reset']['fxa_auth_ts'] = fxa_auth_ts
+
+    start_ts = request.session['user_reset'].get('start_ts')
+    log.info('FxA auth_at: "{a}"; PIN reset start: "{r}"'
+             .format(r=start_ts and datetime.utcfromtimestamp(start_ts),
+                     a=datetime.utcfromtimestamp(fxa_auth_ts)))
+
+
 def _fxa_authorize(fxa, client_secret, request, auth_response):
+    """
+    Fetch and verify an FxA oauth token.
+
+    Returns a tuple of JSON dicts: (verification_response, token_response)
+    """
+    log.info('fetching FxA token from auth_response: "{a}"'
+             .format(a=auth_response))
     token = fxa.fetch_token(
         urlparse.urljoin(settings.FXA_OAUTH_URL, 'v1/token'),
         authorization_response=auth_response,
@@ -177,28 +211,31 @@ def _fxa_authorize(fxa, client_secret, request, auth_response):
         urlparse.urljoin(settings.FXA_OAUTH_URL, 'v1/verify'),
         data=json.dumps({'token': token['access_token']}),
         headers={'Content-Type': 'application/json'})
-    return res.json()
+    return res.json(), token
 
 
 @anonymous_csrf_exempt
 @json_view
 def fxa_login(request):
     session = get_fxa_session(state=request.POST.get('state'))
-    data = _fxa_authorize(
+    result, token = _fxa_authorize(
         session,
         settings.FXA_CLIENT_SECRET,
         request,
         request.POST.get('auth_response'))
-    log.info("FxA login response: " + repr(data))
 
-    if data.get('error'):
+    log.info("FxA token verification response. result={r}; token={t}"
+             .format(r=result, t=token))
+
+    if result.get('error'):
         # All errors look like:
         # https://github.com/mozilla/fxa-oauth-server/blob/master
         # /docs/api.md#errors
-        log.info('FxA login error: {data}'.format(data=data))
+        log.info('FxA login error: {r}'.format(r=result))
         return http.HttpResponseForbidden()
 
-    user_hash = set_user(request, data['email'], verified=True)
+    _process_fxa_auth_ts(token, request)
+    user_hash = set_user(request, result['email'], verified=False)
 
-    return {'user_hash': user_hash, 'user_email': data['email'],
+    return {'user_hash': user_hash, 'user_email': result['email'],
             'super_powers': request.session.get('super_powers', False)}

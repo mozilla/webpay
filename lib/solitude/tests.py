@@ -13,8 +13,8 @@ from slumber.exceptions import HttpClientError
 from lib.solitude.api import (BokuProvider, client,
                               ProviderHelper, SellerNotConfigured)
 from lib.solitude import constants
-from lib.solitude.errors import ERROR_STRINGS
 from lib.solitude.exceptions import ResourceModified, ResourceNotModified
+from webpay.base import dev_messages as msg
 
 
 @mock.patch('lib.solitude.api.client.slumber')
@@ -33,7 +33,7 @@ class SolitudeAPITest(TestCase):
 
     def create_error_response(self, status_code=400, content=None):
         if content is None:
-            content = {'ERROR': [ERROR_STRINGS['FIELD_REQUIRED']]}
+            content = {'ERROR': [msg.FIELD_REQUIRED]}
 
         class FakeResponse(object):
             pass
@@ -127,41 +127,38 @@ class SolitudeAPITest(TestCase):
     def test_create_buyer_with_alpha_pin(self, slumber):
         slumber.generic.buyer.post.side_effect = HttpClientError(
             response=self.create_error_response(content={
-                'pin': ['PIN_ONLY_NUMBERS']
+                'pin': [msg.PIN_ONLY_NUMBERS]
             }))
         buyer = client.create_buyer('with_alpha_pin', self.email, pin='lame')
         assert buyer.get('errors')
-        eq_(buyer['errors'].get('pin'), [ERROR_STRINGS['PIN_ONLY_NUMBERS']])
+        eq_(buyer['errors'].get('pin'), [msg.PIN_ONLY_NUMBERS])
 
     def test_create_buyer_with_short_pin(self, slumber):
         slumber.generic.buyer.post.side_effect = HttpClientError(
             response=self.create_error_response(content={
-                'pin': ['PIN_4_NUMBERS_LONG']
+                'pin': [msg.PIN_4_NUMBERS_LONG]
             }))
         buyer = client.create_buyer('with_short_pin', self.email, pin='123')
         assert buyer.get('errors')
-        eq_(buyer['errors'].get('pin'),
-            [ERROR_STRINGS['PIN_4_NUMBERS_LONG']])
+        eq_(buyer['errors'].get('pin'), [msg.PIN_4_NUMBERS_LONG])
 
     def test_create_buyer_with_long_pin(self, slumber):
         slumber.generic.buyer.post.side_effect = HttpClientError(
             response=self.create_error_response(content={
-                'pin': ['PIN_4_NUMBERS_LONG']
+                'pin': [msg.PIN_4_NUMBERS_LONG]
             }))
         buyer = client.create_buyer('with_long_pin', self.email, pin='12345')
         assert buyer.get('errors')
-        eq_(buyer['errors'].get('pin'),
-            [ERROR_STRINGS['PIN_4_NUMBERS_LONG']])
+        eq_(buyer['errors'].get('pin'), [msg.PIN_4_NUMBERS_LONG])
 
     def test_create_buyer_with_existing_uuid(self, slumber):
         slumber.generic.buyer.post.side_effect = HttpClientError(
             response=self.create_error_response(content={
-                'uuid': ['BUYER_UUID_ALREADY_EXISTS']
+                'uuid': [msg.BUYER_UUID_ALREADY_EXISTS]
             }))
         buyer = client.create_buyer(self.uuid, self.email, pin='1234')
         assert buyer.get('errors')
-        eq_(buyer['errors'].get('uuid'),
-            [ERROR_STRINGS['BUYER_UUID_ALREADY_EXISTS']])
+        eq_(buyer['errors'].get('uuid'), [msg.BUYER_UUID_ALREADY_EXISTS])
 
     def test_create_buyer_with_email(self, slumber):
         uuid = 'with_email'
@@ -192,7 +189,7 @@ class SolitudeAPITest(TestCase):
     def test_verify_alpha_pin(self, slumber):
         slumber.generic.verify_pin.post.side_effect = HttpClientError(
             response=self.create_error_response(content={
-                'pin': ['PIN_ONLY_NUMBERS']
+                'pin': [msg.PIN_ONLY_NUMBERS]
             }))
         assert 'pin' in client.verify_pin(self.uuid, 'lame')['errors']
 
@@ -209,13 +206,12 @@ class SolitudeAPITest(TestCase):
         buyer = mock.Mock(return_value=self.buyer_data)
         buyer.patch.side_effect = HttpClientError(
             response=self.create_error_response(content={
-                'new_pin': ['PIN_ONLY_NUMBERS']
+                'new_pin': [msg.PIN_ONLY_NUMBERS]
             }))
         slumber.generic.buyer.return_value = buyer
         res = client.set_new_pin(self.uuid, 'meow')
         assert res.get('errors')
-        eq_(res['errors'].get('new_pin'),
-            [ERROR_STRINGS['PIN_ONLY_NUMBERS']])
+        eq_(res['errors'].get('new_pin'), [msg.PIN_ONLY_NUMBERS])
 
     def test_set_new_pin_for_reset_with_wrong_etag(self, slumber):
         wrong_etag = 'etag:wrong'

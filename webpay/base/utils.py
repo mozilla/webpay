@@ -11,6 +11,7 @@ from django.shortcuts import render
 from cef import log_cef as _log_cef
 from tower import ugettext as _
 
+from webpay.base import dev_messages as msg
 from webpay.base.logger import getLogger
 
 log = getLogger('w.cef')
@@ -66,7 +67,7 @@ def system_error(request, **kw):
     return custom_error(request, user_message, **kw)
 
 
-def custom_error(request, user_message, code=None, status=400):
+def custom_error(request, user_message, code=msg.UNEXPECTED_ERROR, status=400):
     error = {'error': user_message, 'error_code': code}
     if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
         return HttpResponse(

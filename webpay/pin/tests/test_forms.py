@@ -5,6 +5,7 @@ from mock import patch
 from nose.tools import eq_
 
 from lib.solitude.api import client
+from webpay.base import dev_messages as msg
 from webpay.pin import forms
 
 
@@ -39,9 +40,8 @@ class CreatePinFormTest(BasePinFormTestCase):
     def test_has_pin(self):
         form = forms.CreatePinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
-        assert 'You have already created a PIN.' in str(form.errors)
         eq_(len(form.pin_error_codes), 1)
-        eq_(form.pin_error_codes, ['PIN_ALREADY_CREATED'])
+        eq_(form.pin_error_codes, [msg.PIN_ALREADY_CREATED])
 
     def test_too_long_pin(self):
         self.data.update({'pin': 'way too long pin'})
@@ -75,10 +75,9 @@ class VerifyPinFormTest(BasePinFormTestCase):
     def test_incorrect_pin(self):
         form = forms.VerifyPinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
-        assert 'Wrong pin' in str(form.errors['pin'])
         assert not form.pin_is_locked
         eq_(len(form.pin_error_codes), 1)
-        eq_(form.pin_error_codes, ['WRONG_PIN'])
+        eq_(form.pin_error_codes, [msg.WRONG_PIN])
 
     def test_too_long_pin(self):
         self.data.update({'pin': 'way too long pin'})
@@ -92,47 +91,3 @@ class VerifyPinFormTest(BasePinFormTestCase):
         form = forms.VerifyPinForm(uuid=self.uuid, data=self.data)
         assert not form.is_valid()
         assert form.pin_is_locked
-
-
-class ConfirmPinFormTest(BasePinFormTestCase):
-
-    @patch.object(client, 'confirm_pin', lambda x, y: True)
-    def test_correct_pin(self):
-        form = forms.ConfirmPinForm(uuid=self.uuid, data=self.data)
-        assert form.is_valid()
-
-    @patch.object(client, 'confirm_pin', lambda x, y: False)
-    def test_incorrect_pin(self):
-        form = forms.ConfirmPinForm(uuid=self.uuid, data=self.data)
-        assert not form.is_valid()
-        assert "Pins do not match." in form.errors['pin']
-        eq_(len(form.pin_error_codes), 1)
-        eq_(form.pin_error_codes, ['PINS_DONT_MATCH'])
-
-    def test_too_long_pin(self):
-        self.data.update({'pin': 'way too long pin'})
-        form = forms.ConfirmPinForm(uuid=self.uuid, data=self.data)
-        assert not form.is_valid()
-        assert 'has at most 4' in str(form.errors['pin'])
-
-
-class ResetConfirmPinFormTest(BasePinFormTestCase):
-
-    @patch.object(client, 'reset_confirm_pin', lambda x, y: True)
-    def test_correct_pin(self):
-        form = forms.ResetConfirmPinForm(uuid=self.uuid, data=self.data)
-        assert form.is_valid()
-
-    @patch.object(client, 'reset_confirm_pin', lambda x, y: False)
-    def test_incorrect_pin(self):
-        form = forms.ResetConfirmPinForm(uuid=self.uuid, data=self.data)
-        assert not form.is_valid()
-        assert "Pins do not match." in form.errors['pin']
-        eq_(len(form.pin_error_codes), 1)
-        eq_(form.pin_error_codes, ['PINS_DONT_MATCH'])
-
-    def test_too_long_pin(self):
-        self.data.update({'pin': 'way too long pin'})
-        form = forms.ResetConfirmPinForm(uuid=self.uuid, data=self.data)
-        assert not form.is_valid()
-        assert 'has at most 4' in str(form.errors['pin'])

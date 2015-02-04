@@ -6,7 +6,7 @@ import mock
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 
-from webpay.base.tests import BasicSessionCase
+from webpay.base.tests import BasicSessionCase, TestCase
 from webpay.pay.tests import Base
 
 
@@ -45,7 +45,7 @@ class TestSpaViews(BasicSessionCase):
 
 @mock.patch('webpay.base.utils.spartacus_build_id')
 @test.utils.override_settings(SPA_ENABLE=True, SPA_ENABLE_URLS=True)
-class TestSpartacusCacheBusting(test.TestCase):
+class TestSpartacusCacheBusting(TestCase):
     def test_build_id_is_set(self, spartacus_build_id):
         build_id = 'the-build-id-for-spartacus'
         spartacus_build_id.return_value = build_id
@@ -57,7 +57,7 @@ class TestSpartacusCacheBusting(test.TestCase):
 
 
 @test.utils.override_settings(SPA_ENABLE=True, SPA_ENABLE_URLS=True)
-class TestSpaDataAttrs(test.TestCase):
+class TestSpaDataAttrs(TestCase):
 
     def test_has_bango_logout_url(self):
         res = self.client.get('/mozpay/')

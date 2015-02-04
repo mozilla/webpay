@@ -1,13 +1,13 @@
-from django import test
 from django.test.utils import override_settings
 
 from nose.tools import raises
 
+from webpay.base.tests import TestCase
 from webpay.pay.utils import verify_urls
 
 
 @override_settings(ALLOWED_CALLBACK_SCHEMES=['http', 'https'])
-class TestVerifyURLs(test.TestCase):
+class TestVerifyURLs(TestCase):
 
     @raises(ValueError)
     def test_bad(self):

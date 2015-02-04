@@ -2,7 +2,6 @@
 import urllib2
 from urllib import urlencode
 
-from django import test
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import RequestFactory
@@ -23,6 +22,7 @@ from lib.marketplace.constants import COUNTRIES
 from lib.solitude import api
 from lib.solitude import constants
 from webpay.base import dev_messages
+from webpay.base.tests import TestCase
 from webpay.base.utils import gmtime
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from webpay.pay import tasks
@@ -31,7 +31,7 @@ from webpay.pay.samples import JWTtester
 from .test_views import sample
 
 
-class NotifyTest(JWTtester, test.TestCase):
+class NotifyTest(JWTtester, TestCase):
 
     def setUp(self):
         super(NotifyTest, self).setUp()
@@ -917,7 +917,7 @@ class TestGetIconURL(test_utils.TestCase):
                                size='48', ext_size='48')
 
 
-class TestConfigureTrans(test.TestCase):
+class TestConfigureTrans(TestCase):
 
     @mock.patch('lib.solitude.api.client.get_transaction')
     def configure(self, get_trans):

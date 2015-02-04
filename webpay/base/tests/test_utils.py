@@ -6,11 +6,12 @@ import mock
 from nose.tools import eq_
 
 from webpay.base import utils
+from webpay.base.tests import TestCase
 from webpay.utils import update_csp
 
 
 @test.utils.override_settings(DEBUG=False)
-class TestSpartacusBuildID(test.TestCase):
+class TestSpartacusBuildID(TestCase):
     def setUp(self):
         super(TestSpartacusBuildID, self).setUp()
         self.cache_key = settings.SPARTACUS_BUILD_ID_KEY
@@ -52,7 +53,7 @@ class TestSpartacusBuildID(test.TestCase):
         assert not _cache.set.called
 
 
-class TestSettings(test.TestCase):
+class TestSettings(TestCase):
 
     def test_update_csp(self):
         with self.settings(CSP_IMG_SRC=('https://f.c', 'self', 'http://f.c'),

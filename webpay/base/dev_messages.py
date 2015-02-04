@@ -15,7 +15,9 @@ BAD_PRICE_POINT = 'BAD_PRICE_POINT'
 BAD_REQUEST = 'BAD_REQUEST'
 BAD_SIM_RESULT = 'BAD_SIM_RESULT'
 BANGO_ERROR = 'BANGO_ERROR'
+BUYER_UUID_ALREADY_EXISTS = 'BUYER_UUID_ALREADY_EXISTS'
 EXPIRED_JWT = 'EXPIRED_JWT'
+FIELD_REQUIRED = 'FIELD_REQUIRED'
 EXT_ERROR = 'EXT_ERROR'
 FXA_DENIED = 'FXA_DENIED'
 FXA_FAILED = 'FXA_FAILED'
@@ -23,6 +25,7 @@ FXA_TIMEOUT = 'FXA_TIMEOUT'
 INTERNAL_TIMEOUT = 'INTERNAL_TIMEOUT'
 INVALID_JWT = 'INVALID_JWT'
 INVALID_JWT_OBJ = 'INVALID_JWT_OBJ'
+INVALID_PIN_REAUTH = 'INVALID_PIN_REAUTH'
 INVALID_REDIR_URL = 'INVALID_REDIR_URL'
 JWT_DECODE_ERR = 'JWT_DECODE_ERR'
 LOGIN_TIMEOUT = 'LOGIN_TIMEOUT'
@@ -39,6 +42,9 @@ NO_SIM_REASON = 'NO_SIM_REASON'
 NOTICE_ERROR = 'NOTICE_ERROR'
 NOTICE_EXCEPTION = 'NOTICE_EXCEPTION'
 PAY_DISABLED = 'PAY_DISABLED'
+PIN_4_NUMBERS_LONG = 'PIN_4_NUMBERS_LONG'
+PIN_ALREADY_CREATED = 'PIN_ALREADY_CREATED'
+PIN_ONLY_NUMBERS = 'PIN_ONLY_NUMBERS'
 PIN_STATE_ERROR = 'PIN_STATE_ERROR'
 PIN_STATE_TIMEOUT = 'PIN_STATE_TIMEOUT'
 PROVIDER_LOGOUT_FAIL = 'PROVIDER_LOGOUT_FAIL'
@@ -73,6 +79,7 @@ VERIFY_MISSING_PROVIDER = 'VERIFY_MISSING_PROVIDER'
 VERIFY_MISSING_URL = 'VERIFY_MISSING_URL'
 VERIFY_TIMEOUT = 'VERIFY_TIMEOUT'
 WAIT_URL_NOT_SET = 'WAIT_URL_NOT_SET'
+WRONG_PIN = 'WRONG_PIN'
 
 SHORT_FIELDS = ('chargebackURL',
                 'defaultLocale',
@@ -120,9 +127,9 @@ class DevMessage(Exception):
 
 def _build_legend():
     _legend = {
-        BAD_BANGO_CODE:
-            _('Mozilla received an invalid code from the payment '
-              'provider (Bango) when processing the payment'),
+        BAD_BANGO_CODE: _(
+            'Mozilla received an invalid code from the payment '
+            'provider (Bango) when processing the payment'),
         BAD_ICON_KEY:
             # L10n: First argument is an example of the proper key format.
             _('An image icon key was not an object. Correct example: {0}')
@@ -137,12 +144,15 @@ def _build_legend():
         BANGO_ERROR:
             _('The payment provider (Bango) returned an error while '
               'processing the payment'),
+        BUYER_UUID_ALREADY_EXISTS:
+            _('Buyer with this UUID already exists.'),
         # L10n: JWT stands for JSON Web Token and does not need to be
         # localized.
         EXPIRED_JWT: _('The JWT has expired.'),
         EXT_ERROR:
             _('The external payment processor returned an error while '
               'handling the payment'),
+        FIELD_REQUIRED: _('This field is required.'),
         FXA_DENIED: _('Permission denied to verify the user.'),
         FXA_FAILED: _('Verifying the user failed.'),
         FXA_TIMEOUT:
@@ -152,6 +162,9 @@ def _build_legend():
             # L10n: JWT stands for JSON Web Token and does not need to be
             # localized.
             _('The JWT signature is invalid or the JWT is malformed.'),
+        INVALID_PIN_REAUTH:
+            _('The user account was not re-authenticated correctly for '
+              'a PIN reset.'),
         INVALID_REDIR_URL: _('The redirect URL given is not valid.'),
         # L10n: JWT stands for JSON Web Token and does not need to be
         # localized.
@@ -190,6 +203,10 @@ def _build_legend():
                             'unexpected exception while verifying the '
                             'payment notice'),
         PAY_DISABLED: _('Payments are temporarily disabled.'),
+        PIN_4_NUMBERS_LONG: _('PIN must be exactly 4 numbers long'),
+        PIN_ALREADY_CREATED:
+            _('The user cannot create a PIN because they already have a PIN.'),
+        PIN_ONLY_NUMBERS: _('PIN must be exactly 4 numbers long'),
         PIN_STATE_ERROR:
             _('An unexpected error occurred while fetching data.'),
         PIN_STATE_TIMEOUT: _('The request timed out fetching data.'),
@@ -244,6 +261,7 @@ def _build_legend():
         VERIFY_TIMEOUT:
             _('The request to the server timed out during verification.'),
         WAIT_URL_NOT_SET: _('The wait URL is missing from configration.'),
+        WRONG_PIN: _('The user entered the wrong PIN.'),
     }
 
     # Define all short field too long errors.

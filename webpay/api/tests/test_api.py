@@ -6,23 +6,13 @@ from django.test.client import Client
 from django.test.utils import override_settings
 
 import mock
-from curling.lib import HttpClientError
-from nose import SkipTest
 from nose.tools import eq_, ok_
 
-from lib.marketplace.api import client as marketplace
 from lib.solitude import constants
-from lib.solitude.api import client as solitude
 from lib.solitude.constants import STATUS_PENDING
-from webpay.base.tests import BasicSessionCase
 from webpay.pay.tests import Base, sample
 
-
-class Response():
-
-    def __init__(self, code, content=''):
-        self.status_code = code
-        self.content = content
+from .base import BaseAPICase
 
 
 class APIClient(Client):
@@ -44,228 +34,10 @@ class APIClient(Client):
         return super(APIClient, self).get(url, data, self._wrap(**kw))
 
 
-class BaseCase(BasicSessionCase):
-
-    def setUp(self, *args, **kw):
-        super(BaseCase, self).setUp(*args, **kw)
-        self.uuid = 'fake-uuid'
-        self.email = 'fake@user.com'
-        self.set_session(uuid=self.uuid)
-        self.set_session(logged_in_user=self.email)
-
-        p = mock.patch.object(solitude, 'slumber', name='patched:solitude')
-        self.solitude = p.start()
-        self.addCleanup(p.stop)
-
-        m = mock.patch.object(marketplace, 'api', name='patched:market')
-        prices = mock.Mock()
-        prices.get_object.return_value = 1
-        self.marketplace = m.start()
-        self.marketplace.webpay.prices.return_value = prices
-        self.addCleanup(m.stop)
-
-    def set_session(self, **kwargs):
-        self.session.update(kwargs)
-        self.save_session()
-
-    def error(self, status):
-        error = HttpClientError
-        error.response = Response(404)
-        return error
-
-
-class PIN(BaseCase):
-
-    def setUp(self, *args, **kw):
-        super(PIN, self).setUp(*args, **kw)
-        self.url = reverse('api:pin')
-
-
-class TestError(PIN):
-
-    def test_error(self):
-        # A test that the API returns JSON.
-        res = self.client.post(self.url, {}, HTTP_ACCEPT='application/json')
-        eq_(res.status_code, 400)
-        ok_('error_code', json.loads(res.content))
-
-
-class TestGet(PIN):
-
-    def test_anon(self):
-        self.set_session(uuid=None)
-        eq_(self.client.get(self.url).status_code, 403)
-
-    def test_no_pin(self):
-        self.solitude.generic.buyer.get_object_or_404.side_effect = (
-            ObjectDoesNotExist)
-        res = self.client.get(self.url)
-        eq_(res.status_code, 200)
-        eq_(json.loads(res.content)['pin'], False)
-
-    def test_some_pin(self):
-        self.solitude.generic.buyer.get_object_or_404.return_value = {
-            'pin': True}
-        res = self.client.get(self.url)
-        self.solitude.generic.buyer.get_object_or_404.assert_called_with(
-            headers={}, uuid=self.uuid)
-        eq_(json.loads(res.content)['pin'], True)
-
-    def test_user_not_reverified(self):
-        self.solitude.generic.buyer.get_object_or_404.return_value = {
-            'pin': True}
-        res = self.client.get(self.url)
-        eq_(json.loads(res.content)['pin_reset_started'], False)
-
-    def test_user_was_reverified(self):
-        self.solitude.generic.buyer.get_object_or_404.return_value = {
-            'pin': True}
-        self.session.update({'was_reverified': True})
-        self.save_session()
-        res = self.client.get(self.url)
-        eq_(json.loads(res.content)['pin_reset_started'], True)
-
-
-class TestPost(PIN):
-
-    def test_anon(self):
-        self.set_session(uuid=None)
-        eq_(self.client.post(self.url, {}).status_code, 403)
-
-    def test_no_data(self):
-        res = self.client.post(self.url, {})
-        eq_(res.status_code, 400)
-
-    @mock.patch('webpay.api.api.client')
-    def test_user(self, solitude_client):
-        self.solitude.generic.buyer.get_object_or_404.return_value = {
-            'pin': False, 'resource_pk': 'abc'}
-        res = self.client.post(self.url, {'pin': '1234'})
-        eq_(res.status_code, 204)
-        solitude_client.change_pin.assert_called_with(
-            self.uuid, '1234', etag='', pin_confirmed=True,
-            clear_was_locked=True)
-
-    def test_user_with_pin(self):
-        self.solitude.generic.buyer.get_object_or_404.return_value = {
-            'pin': True, 'resource_pk': 'abc'}
-        res = self.client.post(self.url, {'pin': '1234'})
-        eq_(res.status_code, 400)
-
-
-class TestPatch(PIN):
-
-    def setUp(self):
-        super(TestPatch, self).setUp()
-        self.uuid = '1120933'
-        self.set_session(was_reverified=True, uuid=self.uuid)
-        solitude_client_patcher = mock.patch('webpay.api.api.client')
-        self.solitude_client = solitude_client_patcher.start()
-        self.addCleanup(solitude_client_patcher.stop)
-
-    def patch(self, url, data=None):
-        """
-        A wrapper around self.client.generic until we upgrade Django
-        and get the patch method in the test client.
-        """
-        data = data or {}
-        return self.client.generic('PATCH', url, data=json.dumps(data),
-                                   content_type='application/json')
-
-    def test_anon(self):
-        self.set_session(uuid=None)
-        eq_(self.patch(self.url, {}).status_code, 403)
-
-    def test_no_data(self):
-        res = self.patch(self.url, data={})
-        eq_(res.status_code, 400)
-
-    def test_no_user(self):
-        # TODO: it looks like the PIN flows doesn't take this into account.
-        raise SkipTest
-
-    def test_not_reverified(self):
-        self.set_session(was_reverified=False)
-        res = self.patch(self.url, data={})
-        eq_(res.status_code, 400)
-
-    def test_change(self):
-        self.solitude_client.change_pin.return_value = {}
-        res = self.patch(self.url, data={'pin': '1234'})
-        eq_(res.status_code, 204)
-        self.solitude_client.change_pin.assert_called_with(
-            self.uuid, '1234', pin_confirmed=True, clear_was_locked=True)
-
-    def test_reverified(self):
-        self.solitude_client.change_pin.return_value = {}
-        assert self.client.session['was_reverified']
-        res = self.patch(self.url, data={'pin': '1234'})
-        eq_(res.status_code, 204)
-        assert not self.client.session['was_reverified']
-
-
-class TestCheck(PIN):
-
-    def setUp(self):
-        super(TestCheck, self).setUp()
-        self.url = reverse('api:pin.check')
-
-    def test_anon(self):
-        self.set_session(uuid=None)
-        eq_(self.client.post(self.url).status_code, 403)
-
-    def test_no_data(self):
-        res = self.client.post(self.url, data={})
-        eq_(res.status_code, 400)
-
-    def test_good(self):
-        self.solitude.generic.verify_pin.post.return_value = {'valid': True}
-        res = self.client.post(self.url, data={'pin': 1234})
-        eq_(res.status_code, 200)
-
-    def test_good_clears_was_verified(self):
-        self.set_session(was_reverified=True)
-        self.solitude.generic.verify_pin.post.return_value = {'valid': True}
-        res = self.client.post(self.url, data={'pin': 1234})
-        eq_(res.status_code, 200)
-        eq_(self.client.session['was_reverified'], False)
-
-    def test_locked(self):
-        self.solitude.generic.verify_pin.post.return_value = {'locked': True}
-        res = self.client.post(self.url, data={'pin': 1234})
-        eq_(res.status_code, 400)
-
-    def test_wrong(self):
-        self.solitude.generic.verify_pin.post.return_value = {'valid': False}
-        self.solitude.generic.buyer.get_object_or_404.return_value = {
-            'pin': True, 'resource_pk': 'abc'}
-        res = self.client.post(self.url, data={'pin': 1234})
-        eq_(res.status_code, 400)
-
-    def test_404(self):
-        self.solitude.generic.verify_pin.post.side_effect = (
-            ObjectDoesNotExist)
-        res = self.client.post(self.url, data={'pin': 1234})
-        eq_(res.status_code, 404)
-
-    def test_output(self):
-        self.solitude.generic.verify_pin.post.return_value = {'valid': False}
-        self.solitude.generic.buyer.get_object_or_404.return_value = {
-            'pin': True, 'resource_pk': 'abc'}
-        res = self.client.post(self.url, data={'pin': 1234})
-        eq_(res.status_code, 400)
-        data = json.loads(res.content)
-        eq_(data, {'pin': True,
-                   'pin_locked_out': None,
-                   'pin_is_locked_out': None,
-                   'pin_was_locked_out': None,
-                   'pin_reset_started': None})
-
-
 @override_settings(
     KEY='marketplace.mozilla.org', SECRET='marketplace.secret', DEBUG=True,
     ISSUER='marketplace.mozilla.org', INAPP_KEY_PATHS={None: sample})
-class TestPay(Base, BaseCase):
+class TestPay(Base, BaseAPICase):
 
     def setUp(self):
         super(TestPay, self).setUp()
@@ -361,7 +133,7 @@ class TestPay(Base, BaseCase):
 
 
 @mock.patch('webpay.api.api.client')
-class TestGetPay(Base, BaseCase):
+class TestGetPay(Base, BaseAPICase):
     def setUp(self):
         super(TestGetPay, self).setUp()
         self.url = reverse('api:pay')
@@ -400,7 +172,7 @@ class TestGetPay(Base, BaseCase):
         eq_(response.data.get('error_code'), 'TRANS_ID_NOT_SET')
 
 
-class TestSimulate(BaseCase):
+class TestSimulate(BaseAPICase):
 
     def setUp(self):
         super(TestSimulate, self).setUp()

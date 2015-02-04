@@ -22,7 +22,6 @@ from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
 from webpay.base.utils import app_error, custom_error, system_error
 from webpay.pin.forms import VerifyPinForm
-from webpay.pin.utils import check_pin_status
 
 from lib.marketplace.api import client as marketplace, UnknownPricePoint
 from lib.solitude import constants

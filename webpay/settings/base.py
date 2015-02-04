@@ -27,6 +27,9 @@ DATABASES = {
 DEBUG = True
 DEBUG_PROPAGATE_EXCEPTIONS = True
 
+# Tell Django to do everything in UTC.
+USE_TZ = True
+
 INSTALLED_APPS = [
     # Local apps
     'funfactory',  # Content common to most playdoh-based apps.
@@ -71,9 +74,9 @@ LOGGING = {
         'webpay': {
             '()': 'webpay.base.logger.WebpayFormatter',
             'format':
-                '%(name)s:%(levelname)s '
-                '%(REMOTE_ADDR)s:%(TRANSACTION_ID)s:%(CLIENT_ID)s '
-                '%(message)s :%(pathname)s:%(lineno)s'
+            '%(name)s:%(levelname)s '
+            '%(REMOTE_ADDR)s:%(TRANSACTION_ID)s:%(CLIENT_ID)s '
+            '%(message)s :%(pathname)s:%(lineno)s'
         }
     },
     'loggers': {
@@ -536,8 +539,8 @@ PRODUCT_ICON_SIZE = 64
 PROJECT_MODULE = 'webpay'
 
 # Maximum value for "short" fields in a product JWT. These are fields (like
-# 'name') that have an implied short length. Values that exceed the maximum will
-# trigger form errors.
+# 'name') that have an implied short length. Values that exceed the maximum
+# will trigger form errors.
 SHORT_FIELD_MAX_LENGTH = 255
 
 # This is the typ for signature checking JWTs.
@@ -631,9 +634,18 @@ VERBOSE_LOGGING = False
 
 IN_TEST_SUITE = False
 
+# The Firefox Accounts server for development. You can also
+# use https://oauth-latest.dev.lcip.org for the master branch.
 FXA_OAUTH_URL = 'https://oauth-stable.dev.lcip.org'
 FXA_CLIENT_ID = 'f69290928139452e'
-FXA_CLIENT_SECRET = 'f6d74bf347fe8dab38c0103b421ae12f276c47ba4914cf85b9927041667c3237'
+FXA_CLIENT_SECRET = (
+    'f6d74bf347fe8dab38c0103b421ae12f276c47ba4914cf85b9927041667c3237')
+
+# The time (in seconds) that a user must re-authenticate after beginning
+# a PIN reset. This is a paranoid defense in depth measure to maybe protect
+# against replays and second-tries but oauth token verification should fail
+# before we get this far.
+FXA_PIN_REAUTH_EXPIRY = 60 * 10
 
 # Set of email addresses for users that gain super powers once authenticated.
 # For example, they will see an admin screen to simulate certain things.
