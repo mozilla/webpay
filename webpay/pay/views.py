@@ -1,5 +1,6 @@
 import re
 import time
+import uuid
 
 from django import http
 from django.conf import settings
@@ -157,7 +158,12 @@ def configure_transaction(request, data=None):
     else:
         sim = (request.session['notes']['pay_request']['request']['simulate']
                if is_simulation else None)
-        return {'status': 'ok', 'simulation': sim}
+        client_trans_id = 'client-trans:{u}'.format(u=uuid.uuid4())
+        log.info('Assigned client trans ID {client_trans} to trans ID {trans}'
+                 .format(trans=request.session['trans_id'],
+                         client_trans=client_trans_id))
+        return {'status': 'ok', 'simulation': sim,
+                'client_trans_id': client_trans_id}
 
 
 def index(request):

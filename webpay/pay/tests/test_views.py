@@ -427,6 +427,9 @@ class TestConfigureTX(ConfiguredTransactionTest):
         eq_(res.status_code, 200)
         ok_(self.start_pay.delay.called,
             'POST should call configure_transaction')
+        data = json.loads(res.content)
+        eq_(data['status'], 'ok')
+        ok_('client_trans_id' in data, 'Unexpected: {d}'.format(d=data))
 
     def test_setup_mcc_mnc(self):
         mcc = '123'
