@@ -49,20 +49,6 @@ class TestGet(PIN):
             headers={}, uuid=self.uuid)
         eq_(json.loads(res.content)['pin'], True)
 
-    def test_user_not_reverified(self):
-        self.solitude.generic.buyer.get_object_or_404.return_value = {
-            'pin': True}
-        res = self.client.get(self.url)
-        eq_(json.loads(res.content)['pin_reset_started'], False)
-
-    def test_user_was_reverified(self):
-        self.solitude.generic.buyer.get_object_or_404.return_value = {
-            'pin': True}
-        self.session.update({'was_reverified': True})
-        self.save_session()
-        res = self.client.get(self.url)
-        eq_(json.loads(res.content)['pin_reset_started'], True)
-
 
 class TestPost(PIN):
 
@@ -235,13 +221,6 @@ class TestCheck(PIN):
         res = self.client.post(self.url, data={'pin': 1234})
         eq_(res.status_code, 200)
 
-    def test_good_clears_was_verified(self):
-        self.set_session(was_reverified=True)
-        self.solitude.generic.verify_pin.post.return_value = {'valid': True}
-        res = self.client.post(self.url, data={'pin': 1234})
-        eq_(res.status_code, 200)
-        eq_(self.client.session['was_reverified'], False)
-
     def test_locked(self):
         self.solitude.generic.verify_pin.post.return_value = {'locked': True}
         res = self.client.post(self.url, data={'pin': 1234})
@@ -270,5 +249,4 @@ class TestCheck(PIN):
         eq_(data, {'pin': True,
                    'pin_locked_out': None,
                    'pin_is_locked_out': None,
-                   'pin_was_locked_out': None,
-                   'pin_reset_started': None})
+                   'pin_was_locked_out': None})
