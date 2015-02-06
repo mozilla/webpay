@@ -714,9 +714,6 @@ class BokuProvider(PayProvider):
             'callback_url': absolutify(reverse('provider.notification',
                                                args=[self.name])),
             'country': country.alpha2,
-            # TODO: figure out error callbacks in bug 987843.
-            # 'error_url': absolutify(reverse('provider.error',
-            #                                 args=[self.name])),
             'price': price,
             'seller_uuid': provider_seller_uuid,
             'transaction_uuid': transaction_uuid,
