@@ -693,12 +693,13 @@ class BokuProvider(PayProvider):
         country = mobile_codes.mcc(mcc)
         # TODO: consider using get_price_country here?
         mcc_region = COUNTRIES[mcc]
-        price = None
+        price = currency = None
         for mktpl_price in prices:
             # Given a list of all prices + currencies for this price point,
             # send Boku the one that matches the user's network/region.
             if mktpl_price['region'] == mcc_region:
                 price = mktpl_price['price']
+                currency = mktpl_price['currency']
                 break
         if not price:
             log.error('No Boku price for region {r}: mcc={mcc}; mnc={mnc} '
@@ -718,6 +719,7 @@ class BokuProvider(PayProvider):
             # 'error_url': absolutify(reverse('provider.error',
             #                                 args=[self.name])),
             'price': price,
+            'currency': currency,
             'seller_uuid': provider_seller_uuid,
             'transaction_uuid': transaction_uuid,
             'user_uuid': user_uuid,

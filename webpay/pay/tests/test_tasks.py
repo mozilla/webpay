@@ -392,7 +392,7 @@ class BaseStartPay(test_utils.TestCase):
                             'icons': {'64': 'http://app/i.png'},
                             'name': 'Virtual Sword',
                             'description': 'A fancy sword'}}}
-        self.prices = {'prices': [{'price': 1, 'currency': 'EUR'}]}
+        self.prices = {'prices': [{'price': '0.89', 'currency': 'EUR'}]}
 
 
 class TestStartPay(BaseStartPay):
@@ -471,6 +471,7 @@ class TestStartPay(BaseStartPay):
         mcc, mnc = api.BokuProvider.network_data.keys()[0]
         country = COUNTRIES[mcc]
         self.prices['prices'][0]['region'] = country
+        price = self.prices['prices'][0]
         self.notes['network'] = {
             'mcc': mcc,
             'mnc': mnc,
@@ -494,7 +495,8 @@ class TestStartPay(BaseStartPay):
             'forward_url': 'http://testserver/mozpay/'
                            'provider/boku/wait-to-finish',
             'country': 'MX',
-            'price': 1,
+            'currency': price['currency'],
+            'price': price['price'],
             'transaction_uuid': 'webpay:some-id',
             'callback_url': 'http://testserver/mozpay/'
                             'provider/boku/notification',
