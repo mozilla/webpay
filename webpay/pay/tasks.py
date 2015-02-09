@@ -275,7 +275,8 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_names, **kw):
             'status': constants.STATUS_PENDING
         })
     except Exception, exc:
-        log.exception('while configuring for payment')
+        log.exception('while configuring payment for transaction {t}'
+                      .format(t=transaction_uuid))
         etype, val, tb = sys.exc_info()
         raise exc, None, tb
 
