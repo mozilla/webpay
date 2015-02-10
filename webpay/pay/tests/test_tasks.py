@@ -497,6 +497,7 @@ class TestStartPay(BaseStartPay):
             'country': 'MX',
             'currency': price['currency'],
             'price': price['price'],
+            'product_name': 'Virtual Sword',
             'transaction_uuid': 'webpay:some-id',
             'callback_url': 'http://testserver/mozpay/'
                             'provider/boku/notification',
