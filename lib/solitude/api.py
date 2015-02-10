@@ -714,6 +714,7 @@ class BokuProvider(PayProvider):
                                               args=[self.name])),
             'callback_url': absolutify(reverse('provider.notification',
                                                args=[self.name])),
+            'product_name': product_name,
             'country': country.alpha2,
             'price': price,
             'currency': currency,
