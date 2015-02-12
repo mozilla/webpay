@@ -104,5 +104,17 @@ For example, the Firefox Marketplace has a complimentary
     :status 200: the JWT is valid.
     :status 400: the JWT is invalid.
 
+Exception Tester
+================
+
+You can use this endpoint to test how the application handles exceptions.
+When you make a GET request it will trigger an exception.
+
+.. http:get:: /mozpay/services/exception/
+
+    **Response**
+
+    :status 500: internal error.
+
 .. _`sell products via Firefox Marketplace`: https://marketplace.firefox.com/developers/docs/payments
 .. _`signature check API`: http://firefox-marketplace-api.readthedocs.org/en/latest/topics/payment.html#signature-check

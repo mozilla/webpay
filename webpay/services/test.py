@@ -8,7 +8,7 @@ from django.test import TestCase
 import jwt
 import mock
 from curling.lib import HttpClientError
-from nose.tools import eq_
+from nose.tools import eq_, raises
 
 from lib.marketplace.api import client as marketplace
 from lib.solitude.api import client as solitude
@@ -95,9 +95,10 @@ class TestSigCheck(TestCase):
         key = 'marketplace'
         self.patch_issuer()
         with self.settings(KEY=key, SECRET='first'):
-            res = self.client.post(reverse('services.sig_check'),
-                        {'sig_check_jwt': self.jwt(issuer=key,
-                                                   secret='second')})
+            res = self.client.post(
+                reverse('services.sig_check'),
+                {'sig_check_jwt': self.jwt(issuer=key,
+                                           secret='second')})
         eq_(res.status_code, 400)
         data = json.loads(res.content)
         eq_(data['result'], 'error')
@@ -117,8 +118,9 @@ class TestSigCheck(TestCase):
     def test_unknown_issuer(self):
         getter = self.patch_issuer()
         getter.side_effect = UnknownIssuer
-        res = self.client.post(reverse('services.sig_check'),
-                        {'sig_check_jwt': self.jwt(issuer='non-existant')})
+        res = self.client.post(
+            reverse('services.sig_check'),
+            {'sig_check_jwt': self.jwt(issuer='non-existant')})
         eq_(res.status_code, 400)
         data = json.loads(res.content)
         eq_(data['result'], 'error')
@@ -129,9 +131,10 @@ class TestSigCheck(TestCase):
         getter = self.patch_issuer()
         getter.return_value = {'secret': 'mismatched'}
 
-        res = self.client.post(reverse('services.sig_check'),
-                    {'sig_check_jwt': self.jwt(issuer='some-app',
-                                               secret='not matching')})
+        res = self.client.post(
+            reverse('services.sig_check'),
+            {'sig_check_jwt': self.jwt(issuer='some-app',
+                                       secret='not matching')})
         eq_(res.status_code, 400)
         data = json.loads(res.content)
         eq_(data['result'], 'error')
@@ -140,8 +143,9 @@ class TestSigCheck(TestCase):
 
     def test_bad_jwt_typ(self):
         self.patch_issuer()
-        res = self.client.post(reverse('services.sig_check'),
-                        {'sig_check_jwt': self.jwt(typ='not a real typ')})
+        res = self.client.post(
+            reverse('services.sig_check'),
+            {'sig_check_jwt': self.jwt(typ='not a real typ')})
         eq_(res.status_code, 400)
         data = json.loads(res.content)
         eq_(data['result'], 'error')
@@ -200,3 +204,10 @@ class TestErrorLegend(TestCase):
         eq_(res.status_code, 400, res)
         data = json.loads(res.content)
         assert data['errors'], data
+
+
+class TestAPIException(TestCase):
+
+    @raises(RuntimeError)
+    def test(self):
+        self.client.get(reverse('services.exception'))
