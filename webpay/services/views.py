@@ -6,6 +6,7 @@ from django.views.decorators.http import require_POST
 from django.utils import translation
 
 from curling.lib import HttpClientError, HttpServerError
+from rest_framework import viewsets
 
 from lib.marketplace.api import client as marketplace
 from lib.solitude.api import client as solitude
@@ -111,3 +112,9 @@ def error_legend(request):
     data['locale'] = form.cleaned_data['locale'] or data['locale']
     data['legend'] = legend(locale=data['locale'])
     return data
+
+
+class APIException(viewsets.ViewSet):
+
+    def retrieve(self, request):
+        raise RuntimeError('this exception was intentional')
