@@ -92,7 +92,8 @@ class VerifyForm(ParanoidForm):
             raise forms.ValidationError(msg.BAD_ICON_KEY)
 
         for fn in msg.SHORT_FIELDS:
-            if (len(payload['request'].get(fn, '')) >
+            # These fields might be NULL so make sure they are strings:
+            if (len(payload['request'].get(fn, None) or '') >
                     settings.SHORT_FIELD_MAX_LENGTH):
                 raise forms.ValidationError(msg.SHORT_FIELD_TOO_LONG_CODE[fn])
 

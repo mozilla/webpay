@@ -141,6 +141,16 @@ class TestVerifyForm(Base):
         eq_(form.key, settings.KEY)
         eq_(form.secret, settings.SECRET)
 
+    def test_empty_locales_and_null_default(self):
+        payload = self.payload(extra_req={
+            'locales': {},
+            'defaultLocale': None,
+        })
+        req = self.request(iss=self.key, app_secret=self.secret,
+                           payload=payload)
+        form = VerifyForm({'req': req})
+        assert form.is_valid()
+
     def test_locales_and_without_defaultLocale(self):
         payload = self.payload(extra_req={
             'locales': {
