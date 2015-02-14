@@ -3,21 +3,24 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-01 09:27-0700\n"
-"PO-Revision-Date: 2013-09-02 16:55+0200\n"
+"PO-Revision-Date: 2015-02-14 23:44+0200\n"
 "Last-Translator: Mihail Chilyashev <chilyashev@gmail.com>\n"
 "Language-Team: Bulgarian (bg)\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.6.10\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: webpay/bango/templates/bango/cancel.html:10 webpay/base/templates/base.html:35
+#: webpay/bango/templates/bango/cancel.html:10
+#: webpay/base/templates/base.html:35
 msgid "Payment cancelled."
 msgstr "Плащането отказано."
 
-#: webpay/bango/templates/bango/success.html:10 webpay/pay/templates/pay/simulate_done.html:9 webpay/provider/templates/provider/success.html:10
+#: webpay/bango/templates/bango/success.html:10
+#: webpay/pay/templates/pay/simulate_done.html:9
+#: webpay/provider/templates/provider/success.html:10
 msgid "Your payment is complete."
 msgstr "Плащането ви е завършено"
 
@@ -64,15 +67,15 @@ msgstr "Външната услуга за обработване на плащ�
 
 #: webpay/base/dev_messages.py:146 webpay/base/dev_messages.py:239
 msgid "Permission denied to verify the user."
-msgstr ""
+msgstr "Разрепението за проверка на потребителя отказано."
 
 #: webpay/base/dev_messages.py:147 webpay/base/dev_messages.py:240
 msgid "Verifying the user failed."
-msgstr ""
+msgstr "Проверяването на потребителя се провали."
 
 #: webpay/base/dev_messages.py:149 webpay/base/dev_messages.py:245
 msgid "The request to the server timed out during verification."
-msgstr ""
+msgstr "Заявката към сървъра отне прекалено дълго по време на потвърждаването."
 
 #: webpay/base/dev_messages.py:150
 msgid "An internal web request timed out."
@@ -86,7 +89,7 @@ msgstr "JWT подписът е невалиден или JWT не е форма
 
 #: webpay/base/dev_messages.py:155
 msgid "The redirect URL given is not valid."
-msgstr ""
+msgstr "Предоставеният URL за пренасочване е невалиден."
 
 #. L10n: JWT stands for JSON Web Token and does not need to be
 #. localized.
@@ -110,7 +113,7 @@ msgstr "Опитът за изход отне прекалено много вр
 
 #: webpay/base/dev_messages.py:164
 msgid "The logout URL is missing from configuration."
-msgstr ""
+msgstr "Предоставеният URL за изход липсва в конфигурацията."
 
 #. L10n: 'postback' is a term that means a URL accepting HTTP posts.
 #: webpay/base/dev_messages.py:166
@@ -119,11 +122,11 @@ msgstr "Има грешка в адрес. Може да е обратен ад�
 
 #: webpay/base/dev_messages.py:168
 msgid "The JWT signature is missing or invalid."
-msgstr ""
+msgstr "JWT подпис липсва или е невалиден."
 
 #: webpay/base/dev_messages.py:170
 msgid "An error code was expected but was not supplied."
-msgstr ""
+msgstr "Очакваше се код за грешка, но такъв не бе предоставен."
 
 #: webpay/base/dev_messages.py:171
 msgid "The transaction ID was missing from the session when processing a payment return."
@@ -142,12 +145,12 @@ msgstr "Ключът '{0}' липсва в заявената симулация
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:183
 msgid "{0} function is undefined."
-msgstr ""
+msgstr "функция {0} не е дефинирана."
 
 #. L10n: First argument is the name of a function.
 #: webpay/base/dev_messages.py:186
 msgid "{0} function is undefined"
-msgstr ""
+msgstr "функция {0} не е дефинирана"
 
 #: webpay/base/dev_messages.py:187
 msgid "The notification service responded with an error while verifying the payment notice"
@@ -163,19 +166,19 @@ msgstr "Плащанията са временно спрени"
 
 #: webpay/base/dev_messages.py:194
 msgid "An unexpected error occurred while fetching data."
-msgstr ""
+msgstr "Възникна неочаквана грешка при изтегляне на данните."
 
 #: webpay/base/dev_messages.py:195
 msgid "The request timed out fetching data."
-msgstr ""
+msgstr "Заявката за изтегляне на данни отне прекалено дълго."
 
 #: webpay/base/dev_messages.py:197
 msgid "Failed to log out of the payment provider."
-msgstr ""
+msgstr "Неуспешно излизане от доставчика на платежни услуги."
 
 #: webpay/base/dev_messages.py:198
 msgid "An error occurred while trying to log out."
-msgstr ""
+msgstr "Възникна грешка при опит за излизане."
 
 #: webpay/base/dev_messages.py:200
 msgid "The resource has been modified within the timing of the previous request. The action should be performed again."
@@ -183,23 +186,23 @@ msgstr "Ресурсът е модифициран по време на пред
 
 #: webpay/base/dev_messages.py:202
 msgid "Permission denied to re-verify the user."
-msgstr ""
+msgstr "Разрешението за повторна проверка на потребителя отказано."
 
 #: webpay/base/dev_messages.py:203
 msgid "Re-verifying the user failed."
-msgstr ""
+msgstr "Повторното потвърждаване на потребителя се провали."
 
 #: webpay/base/dev_messages.py:204 webpay/base/dev_messages.py:241
 msgid "The payment provider does not exist"
-msgstr ""
+msgstr "Доставчикът на платежни услуги не съществува"
 
 #: webpay/base/dev_messages.py:206
 msgid "The re-verification URL is missing from configuration."
-msgstr ""
+msgstr "URL за повторно потвърждаване липсва от конфигурацията."
 
 #: webpay/base/dev_messages.py:208
 msgid "The request to the server timed out during re-verification."
-msgstr ""
+msgstr "Заявката към сървъра отне прекалено дълго по време на повторното потвърждаване."
 
 #: webpay/base/dev_messages.py:209
 msgid "Payment simulations are disabled at this time."
@@ -211,19 +214,19 @@ msgstr "Този ключ може да се използва само за си
 
 #: webpay/base/dev_messages.py:212
 msgid "Failed to simulate a payment."
-msgstr ""
+msgstr "Симулирането на плащане се провали."
 
 #: webpay/base/dev_messages.py:213
 msgid "The request to simulate a payment timed out."
-msgstr ""
+msgstr "Заявката за симулиране на плащане отне прекалено дълго."
 
 #: webpay/base/dev_messages.py:215
 msgid "Status attributes are not configured correctly."
-msgstr ""
+msgstr "Атрибутите на състоянието не са настроени правилно."
 
 #: webpay/base/dev_messages.py:217
 msgid "Status attributes are not configured correctly"
-msgstr ""
+msgstr "Атрибутите на състоянието не са настроени правилно"
 
 #: webpay/base/dev_messages.py:219
 msgid "The configuration of the payment transaction failed."
@@ -243,7 +246,7 @@ msgstr "Времето за чакане изтече, докато се оча�
 
 #: webpay/base/dev_messages.py:227 webpay/base/dev_messages.py:228
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Възникна неочаквана грешка."
 
 #: webpay/base/dev_messages.py:230
 msgid "The payment method or price point is not supported for this region or operator."
@@ -255,15 +258,15 @@ msgstr "Потребителят отказа плащането"
 
 #: webpay/base/dev_messages.py:237
 msgid "The app failed to set the {0} when handling {1}/{2} Persona callbacks"
-msgstr ""
+msgstr "Приложението не е задало {0}, докато обработва обратно повикване от Persona {1}/{2}"
 
 #: webpay/base/dev_messages.py:243
 msgid "The verification URL is missing from configuration."
-msgstr ""
+msgstr "URL за потвърждаване липсва от конфигурацията."
 
 #: webpay/base/dev_messages.py:246
 msgid "The wait URL is missing from configration."
-msgstr ""
+msgstr "URL за изчакване липсва от конфигурацията."
 
 #. L10n: First argument is the name of a key. Second
 #. argument is a number.
@@ -287,8 +290,12 @@ msgstr "Не е разрешено"
 msgid "Sorry, you are not allowed to do that."
 msgstr "Съжаляваме, нямате право да правите това."
 
-#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45 webpay/base/templates/error.html:17 webpay/pay/templates/pay/simulate.html:18 webpay/pin/templates/pin/pin_form.html:39
-#: webpay/pin/templates/pin/pin_form.html:43 webpay/pin/templates/pin/reset_start.html:17
+#: webpay/base/templates/403.html:8 webpay/base/templates/base.html:45
+#: webpay/base/templates/error.html:17
+#: webpay/pay/templates/pay/simulate.html:18
+#: webpay/pin/templates/pin/pin_form.html:39
+#: webpay/pin/templates/pin/pin_form.html:43
+#: webpay/pin/templates/pin/reset_start.html:17
 msgid "Cancel"
 msgstr "Отказ"
 
@@ -357,7 +364,8 @@ msgstr "Това отнема повече, отколкото се очаква
 msgid "Something went wrong. Try again?"
 msgstr "Нещо се обърка. Опитване отново?"
 
-#: webpay/base/templates/base.html:44 webpay/pin/templates/pin/pin_is_locked.html:17
+#: webpay/base/templates/base.html:44
+#: webpay/pin/templates/pin/pin_is_locked.html:17
 msgid "OK"
 msgstr "ОК"
 
@@ -365,7 +373,8 @@ msgstr "ОК"
 msgid "The transaction failed. You have not been charged for this purchase."
 msgstr "Транзакцията се провали. Не бяхте таксувани за тази покупка."
 
-#: webpay/base/templates/error.html:9 webpay/pin/templates/pin/pin_is_locked.html:12
+#: webpay/base/templates/error.html:9
+#: webpay/pin/templates/pin/pin_is_locked.html:12
 msgid "Error"
 msgstr "Грешка"
 
@@ -385,19 +394,23 @@ msgstr "Мрежа по подразбиране"
 msgid "Enter Pin"
 msgstr "Въведете ПИН"
 
-#: webpay/pay/templates/pay/bounce.html:12 webpay/pay/templates/pay/lobby.html:11
+#: webpay/pay/templates/pay/bounce.html:12
+#: webpay/pay/templates/pay/lobby.html:11
 msgid "Sign In"
 msgstr "Вход"
 
-#: webpay/pay/templates/pay/bounce.html:13 webpay/pay/templates/pay/lobby.html:12
+#: webpay/pay/templates/pay/bounce.html:13
+#: webpay/pay/templates/pay/lobby.html:12
 msgid "Sign in to continue with the payment"
 msgstr "Влезте, за да продължите с плащането"
 
-#: webpay/pay/templates/pay/bounce.html:14 webpay/pay/templates/pay/lobby.html:13
+#: webpay/pay/templates/pay/bounce.html:14
+#: webpay/pay/templates/pay/lobby.html:13
 msgid "Sign in"
 msgstr "Вход"
 
-#: webpay/pay/templates/pay/simulate.html:7 webpay/pay/templates/pay/simulate_done.html:8
+#: webpay/pay/templates/pay/simulate.html:7
+#: webpay/pay/templates/pay/simulate_done.html:8
 msgid "Simulate Payment"
 msgstr "Симулирай плащане"
 
@@ -409,7 +422,10 @@ msgstr "Няма да бъдете таксувани"
 msgid "result"
 msgstr "резултат"
 
-#: webpay/pay/templates/pay/simulate.html:20 webpay/pay/templates/pay/super_simulate.html:17 webpay/pin/templates/pin/pin_form.html:46 webpay/pin/templates/pin/pin_was_locked.html:16
+#: webpay/pay/templates/pay/simulate.html:20
+#: webpay/pay/templates/pay/super_simulate.html:17
+#: webpay/pin/templates/pin/pin_form.html:46
+#: webpay/pin/templates/pin/pin_was_locked.html:16
 msgid "Continue"
 msgstr "Продължи"
 
@@ -417,7 +433,8 @@ msgstr "Продължи"
 msgid "You have super powers"
 msgstr "Имате супер сили"
 
-#: webpay/pay/templates/pay/wait-to-start.html:6 webpay/pay/templates/pay/wait-to-start.html:12
+#: webpay/pay/templates/pay/wait-to-start.html:6
+#: webpay/pay/templates/pay/wait-to-start.html:12
 msgid "Setting up payment&hellip;"
 msgstr "Настройване на плащането&hellip;"
 
@@ -441,7 +458,8 @@ msgstr "Създай ПИН"
 msgid "Confirm Pin"
 msgstr "Потвърди ПИН"
 
-#: webpay/pin/views.py:129 webpay/pin/views.py:155 webpay/pin/templates/pin/pin_was_locked.html:13
+#: webpay/pin/views.py:129 webpay/pin/views.py:155
+#: webpay/pin/templates/pin/pin_was_locked.html:13
 msgid "Reset Pin"
 msgstr "Изчисти пин"
 
@@ -454,8 +472,9 @@ msgid "For testing only. Marketplace users <b>should not</b> use this site."
 msgstr "Само за тестване. Потребителите <b>не трябва</b> да използват този сайт."
 
 #. This is the same as the standard forgot
-#.                  password that most sites have.
-#: webpay/pin/templates/pin/pin_form.html:31 webpay/pin/templates/pin/reset_start.html:13
+#. password that most sites have.
+#: webpay/pin/templates/pin/pin_form.html:31
+#: webpay/pin/templates/pin/reset_start.html:13
 msgid "Forgot your pin?"
 msgstr "Забравили сте вашия ПИН?"
 
@@ -479,7 +498,8 @@ msgstr "Сигурни ли сте, че искате да изчистите в
 msgid "Reset"
 msgstr "Изчистване"
 
-#: webpay/provider/templates/provider/wait-to-finish.html:6 webpay/provider/templates/provider/wait-to-finish.html:12
+#: webpay/provider/templates/provider/wait-to-finish.html:6
+#: webpay/provider/templates/provider/wait-to-finish.html:12
 msgid "Verifying payment&hellip;"
 msgstr "Потвърждаване на плащането&hellip;"
 
