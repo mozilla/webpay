@@ -47,9 +47,8 @@ class SlumberWrapper(object):
                           'has been made.')
                 raise ResourceModified()
             else:
+                # Solitude returns error codes rather than error text.
+                # For example: {"pin": ["PIN_ONLY_NUMBERS"]}.
                 res = self.parse_res(e.response.content)
-                for key, value in res.iteritems():
-                    res[key] = [self.errors[v] for v in value
-                                if v in self.errors]
             return {'errors': res}
         return res

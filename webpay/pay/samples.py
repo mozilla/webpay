@@ -1,15 +1,15 @@
 # Copied from mozpay. Will remove when tests are included in bundle.
 import json
-import unittest
 
 from django.conf import settings
 
 import jwt
 
+from webpay.base.tests import TestCase
 from webpay.base.utils import gmtime
 
 
-class JWTtester(unittest.TestCase):
+class JWTtester(TestCase):
     key = 'Application key granted by Mozilla Marketplace'
     secret = 'Application secret granted by Mozilla Marketplace'
 

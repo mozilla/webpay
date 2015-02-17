@@ -3,22 +3,23 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 
 import json
-
 import mock
 from nose.tools import eq_
-
 from pyquery import PyQuery as pq
+
+from webpay.base.tests import TestCase
 
 TEST_JS_SETTINGS = {'foo': 'bar'}
 
-class TestJsSettingsOutput(test.TestCase):
+
+class TestJsSettingsOutput(TestCase):
 
     def setUp(self):
         super(TestJsSettingsOutput, self).setUp()
         self.client = test.Client()
 
-    @mock.patch.object(settings, 'TEST_PIN_UI', True)
-    @mock.patch.object(settings, 'JS_SETTINGS', TEST_JS_SETTINGS)
+    @mock.patch.object(settings, 'SPA_ENABLE', True)
+    @mock.patch.object(settings, 'SPA_SETTINGS', TEST_JS_SETTINGS)
     def test_js_error_settings_output(self):
         url = reverse('pay.lobby')
         res = self.client.get(url)

@@ -15,7 +15,6 @@ urlpatterns = patterns('',
     (r'^mozpay/bango/', include('webpay.bango.urls')),
     (r'^mozpay/provider/', include('webpay.provider.urls')),
     (r'^mozpay/services/', include('webpay.services.urls')),
-    (r'^mozpay/pin/', include('webpay.pin.urls')),
     (r'^mozpay/', include('webpay.pay.urls'))
 )
 

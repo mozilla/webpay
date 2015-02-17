@@ -16,7 +16,6 @@ from webpay.base import dev_messages as msg
 from webpay.base.helpers import absolutify
 
 from . import constants as solitude_const
-from .errors import ERROR_STRINGS
 from .exceptions import ResourceNotModified
 from ..utils import SlumberWrapper
 
@@ -40,7 +39,6 @@ class SolitudeAPI(SlumberWrapper):
 
     :param url: URL of the solitude endpoint.
     """
-    errors = ERROR_STRINGS
 
     def __init__(self, *args, **kw):
         super(SolitudeAPI, self).__init__(*args, **kw)

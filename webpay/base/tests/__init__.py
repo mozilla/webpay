@@ -1,9 +1,33 @@
+import time
+from datetime import timedelta
+
 from django import test
 from django.conf import settings
+from django.utils import timezone
 from django.utils.importlib import import_module
 
 
-class BasicSessionCase(test.TestCase):
+class TestCase(test.TestCase):
+
+    def assertCloseToNow(self, dt, now=None):
+        """
+        Make sure the datetime is within a minute from `now`.
+        """
+        if not dt:
+            raise AssertionError('Expected datetime; got {d}'.format(d=dt))
+
+        dt_later_ts = time.mktime((dt + timedelta(minutes=1)).timetuple())
+        dt_earlier_ts = time.mktime((dt - timedelta(minutes=1)).timetuple())
+        if not now:
+            now = timezone.now()
+        now_ts = time.mktime(now.timetuple())
+
+        assert dt_earlier_ts < now_ts < dt_later_ts, (
+            'Expected datetime {dt} to be within a minute of {now}.'
+            .format(now=now, dt=dt))
+
+
+class BasicSessionCase(TestCase):
 
     def _fixture_setup(self):
         pass
@@ -35,3 +59,7 @@ class BasicSessionCase(test.TestCase):
         session.save()
         # This pretty much only exists for cookie sessions.
         self.client.cookies[settings.SESSION_COOKIE_NAME] = session.session_key
+
+    def set_session(self, **kwargs):
+        self.session.update(kwargs)
+        self.save_session()
