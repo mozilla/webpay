@@ -163,36 +163,6 @@ MINIFY_BUNDLES = {
             'css/pay/simulate.styl',
         ),
     },
-    'js': {
-        'pay': (
-            'js/lib/jquery-1.8.js',
-            'js/lib/require.js',
-            'js/settings.js',
-            'js/lib/underscore.js',
-            'js/lib/format.js',
-            'js/lib/longtext.js',
-            'js/lib/tracking.js',
-            'js/lib/raven.min.js',
-            'js/lib/raven-proxy.js',
-
-            # These are modules used by others.
-            # The order is important, do not alphabetize.
-            'js/raven-init.js',
-            'js/cli.js',
-            'js/id.js',
-            'js/auth.js',
-            'js/lib/l10n.js',
-            'js/pay/bango.js',
-
-            # These are top-level modules.
-            'js/pay/messages.js',
-            'js/pay/pay.js',
-            'js/pay/wait.js',
-            'js/pay/cancel.js',
-            'js/pin/pin.js',
-            'js/pin/reset.js',
-        ),
-    }
 }
 
 ROOT_URLCONF = 'webpay.urls'
