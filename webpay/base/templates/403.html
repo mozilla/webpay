@@ -1,11 +1,6 @@
-{% extends "base.html" %}
-
-{% block content %}
-  <h2>{{ _('Not Allowed') }}</h2>
-  <p class="centered">{{ _('Sorry, you are not allowed to do that.') }}</p>
-  <p class="centered">
-    <a class="button cancel" href="#">
-      {{ _('Cancel') }}
-    </a>
-  </p>
+{% extends "base_error.html" %}
+{% block error_title %}{{ _('Not Allowed') }}{% endblock %}
+{% block error_heading %}{{ _('Not Allowed') }}{% endblock %}
+{% block error_content -%}
+    <p>{{ _('Sorry, you are not allowed to do that.') }}</p>
 {% endblock %}
