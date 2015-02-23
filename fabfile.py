@@ -40,11 +40,6 @@ def update_locales():
 
 
 @task
-def compress_assets(arg=''):
-    managecmd('compress_assets -t %s' % arg)
-
-
-@task
 def schematic(run_dir=WEBPAY):
     with lcd(run_dir):
         local("%s %s/bin/schematic migrations" %
@@ -95,7 +90,6 @@ def pre_update(ref=settings.UPDATE_REF):
 def build():
     execute(create_virtualenv)
     execute(update_locales)
-    execute(compress_assets)
 
 
 @task
@@ -121,7 +115,6 @@ def deploy_jenkins():
 def update():
     execute(create_virtualenv)
     execute(update_locales)
-    execute(compress_assets)
     execute(schematic)
 
 

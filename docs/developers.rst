@@ -14,7 +14,7 @@ like `stylus`_ for minifying JS/CSS.
 Install system requirements with `homebrew`_ (Mac OS X)::
 
     brew tap homebrew/versions
-    brew install python mysql swig nodejs
+    brew install python mysql swig
 
 To develop locally you also need:
 
@@ -40,18 +40,6 @@ set yourself up with::
 Install with::
 
     pip install --no-deps -r requirements/dev.txt
-
-Node dependencies are included in the source tree.
-For node to find them add this to your bash profile::
-
-    # Get the bin for any local NodeJS module on cwd.
-    PATH="./node_modules/.bin:${PATH}"
-
-Make sure you see a valid path when you type::
-
-    which stylus
-    which cleancss
-    which uglifyjs
 
 Out of the box, webpay makes some assumptions in the settings file and should
 not need a custom settings files. Some environment variables are configurable
@@ -151,7 +139,6 @@ number of keys logged and the time spent in views::
 .. _`Gaia Hacking`: https://wiki.mozilla.org/Gaia/Hacking
 .. _virtualenvwrapper: http://pypi.python.org/pypi/virtualenvwrapper
 .. _less: http://lesscss.org/
-.. _npm: https://npmjs.org/
 .. _`nightly B2G desktop`: http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/
 .. _`stylus`: http://learnboost.github.io/stylus/
 .. _`Solitude`: https://solitude.readthedocs.org/en/latest/index.html
