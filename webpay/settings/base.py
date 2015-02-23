@@ -62,7 +62,6 @@ INSTALLED_APPS = [
     'webpay.services',
     'webpay.spa',
     'raven.contrib.django',
-    'jingo_minify',
 ]
 
 LOCALE_PATHS = (
@@ -150,20 +149,6 @@ MIDDLEWARE_CLASSES = (
     'django_paranoia.sessions.ParanoidSessionMiddleware',
     'webpay.base.logger.LoggerMiddleware',
 )
-
-MINIFY_BUNDLES = {
-    'css': {
-        'pay/pay': (
-            'css/pay/normalize.styl',
-            'css/pay/util.styl',
-            'css/pay/fonts.styl',
-            'css/pay/throbber.styl',
-            'css/pay/messages.styl',
-            'css/pay/pay.styl',
-            'css/pay/simulate.styl',
-        ),
-    },
-}
 
 ROOT_URLCONF = 'webpay.urls'
 
@@ -256,8 +241,6 @@ CACHEBUST_IMGS = True
 # new PREFIX in the CACHE setttings. Overridden on all prod servers.
 CACHE_PREFIX = 'webpay'
 
-CLEANCSS_BIN = 'cleancss'
-
 # When True, compress session cookie data with zlib to improve network
 # performance and avoid maxing out HTTP header length.
 COMPRESS_ENCRYPTED_COOKIE = True
@@ -342,9 +325,6 @@ JINGO_EXCLUDE_APPS = [
     'admin',
     'registration',
 ]
-
-# Tell jingo-minify to use the media URL instead.
-JINGO_MINIFY_USE_STATIC = False
 
 JS_SETTINGS = {
     # Allow tracking of events.
@@ -573,15 +553,9 @@ SPA_SETTINGS = {
 
 STATSD_CLIENT = 'django_statsd.clients.normal'
 
-# Stylus / Uglify / CleanCSS.
-STYLUS_BIN = 'stylus'
-
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
-    'jingo_minify.helpers.build_ids',
     'webpay.base.context_processors.defaults',
 ]
-
-UGLIFY_BIN = 'uglifyjs'
 
 # When True, use the marketplace API to get product icons.
 USE_PRODUCT_ICONS = True

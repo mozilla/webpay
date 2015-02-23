@@ -54,12 +54,6 @@ def update_locales(ctx):
 
 
 @task
-def compress_assets(ctx, arg=''):
-    with ctx.lcd(settings.SRC_DIR):
-        ctx.local("%s manage.py compress_assets %s" % (settings.PYTHON, arg))
-
-
-@task
 def schematic(ctx):
     with ctx.lcd(settings.SRC_DIR):
         ctx.local("%s %s/bin/schematic migrations" %
@@ -119,5 +113,4 @@ def pre_update(ctx, ref=settings.UPDATE_REF):
 @task
 def update(ctx):
     create_virtualenv()
-    compress_assets()
     schematic()
