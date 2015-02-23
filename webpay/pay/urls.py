@@ -1,10 +1,12 @@
+from django.conf import settings
 from django.conf.urls.defaults import patterns, url
 
 import views
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='pay.lobby'),
-    url(r'^configure-transaction$', views.configure_transaction, name='pay.configure_transaction'),
+    url(r'^configure-transaction$', views.configure_transaction,
+        name='pay.configure_transaction'),
     # Be careful if you change this because it could be hard
     # coded into settings. See settings.PAY_URLS.
     url(r'^fake-bango-url$', views.fake_bango_url,
@@ -20,3 +22,18 @@ urlpatterns = patterns('',
     url(r'^callback_error_url$', views.callback_error_url,
         name='pay.callback_error_url'),
 )
+
+
+if settings.DEBUG:
+
+    from django.views.defaults import (
+        page_not_found,
+        permission_denied,
+        server_error,
+    )
+
+    urlpatterns += patterns('',
+        url(r'^403$', permission_denied, name="error_403"),
+        url(r'^404$', page_not_found, name="error_404"),
+        url(r'^500$', server_error, name="error_500"),
+    )
