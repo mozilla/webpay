@@ -260,14 +260,12 @@ CSP_IMG_SRC = (
 )
 CSP_SCRIPT_SRC = (
     "'self'",
+    # For logout from bango.
     'https://*.bango.net',
     'https://*.google-analytics.com',
 )
 CSP_STYLE_SRC = (
     "'self'",
-    # Because CSRF and persona both use style="".
-    "'unsafe-inline'",
-    'https://static.login.persona.org'
 )
 CSP_OBJECT_SRC = ("'none'",)
 CSP_MEDIA_SRC = ("'none'",)
