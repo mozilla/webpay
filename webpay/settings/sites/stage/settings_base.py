@@ -138,7 +138,6 @@ FXA_CLIENT_SECRET = private.FXA_CLIENT_SECRET
 
 USERS_WITH_SUPER_POWERS = [
     'kmcmillan@mozilla.com',
-    'amckay@mozilla.com',
     'kraj@mozilla.com',
     'lsaunders@mozilla.com',
     'scolville@mozilla.com',
