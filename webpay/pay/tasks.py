@@ -370,6 +370,31 @@ def simulate_notify(issuer_key, pay_request, trans_uuid=None, **kw):
             simulated=sim_flag, task_args=[issuer_key, pay_request])
 
 
+@task(**notify_kw)
+@use_master
+def free_notify(notes, solitude_buyer_uuid, **kw):
+    """
+    Post JWT notice to an app about a pricePoint 0 product.
+
+    This isn't really much different from a regular notice except
+    that a fake transaction_uuid is created because solitude isn't
+    involved at all.
+
+    """
+
+    # No real transaction is created as this is a free product.
+    trans = {
+        'uuid': 'free:{u}'.format(u=uuid.uuid4()),
+        'notes': notes,
+        'amount': None,
+        'currency': None,
+        'type': constants.TYPE_PAYMENT,
+    }
+    extra_response = {'solitude_buyer_uuid': solitude_buyer_uuid}
+    log.info("Sending free notice: trans['uuid']={u}".format(u=trans['uuid']))
+    _notify(free_notify, trans, extra_response=extra_response)
+
+
 def get_icon_url(request):
     """
     Given a payment request dict, this finds the best icon URL to cache.

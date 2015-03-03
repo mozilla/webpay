@@ -1,10 +1,11 @@
 import time
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from django import test
 from django.conf import settings
-from django.utils import timezone
 from django.utils.importlib import import_module
+
+import pytz
 
 
 class TestCase(test.TestCase):
@@ -16,15 +17,16 @@ class TestCase(test.TestCase):
         if not dt:
             raise AssertionError('Expected datetime; got {d}'.format(d=dt))
 
+        dt = pytz.utc.localize(dt)
         dt_later_ts = time.mktime((dt + timedelta(minutes=1)).timetuple())
         dt_earlier_ts = time.mktime((dt - timedelta(minutes=1)).timetuple())
         if not now:
-            now = timezone.now()
+            now = pytz.utc.localize(datetime.utcnow())
         now_ts = time.mktime(now.timetuple())
 
         assert dt_earlier_ts < now_ts < dt_later_ts, (
             'Expected datetime {dt} to be within a minute of {now}.'
-            .format(now=now, dt=dt))
+            .format(now=now.timetuple(), dt=dt.timetuple()))
 
 
 class BasicSessionCase(TestCase):

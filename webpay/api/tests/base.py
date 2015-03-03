@@ -28,7 +28,22 @@ class BaseAPICase(BasicSessionCase):
 
         m = mock.patch.object(marketplace, 'api', name='patched:market')
         prices = mock.Mock()
-        prices.get_object.return_value = 1
+
+        def side_effect(*args, **kwargs):
+            if kwargs['pricePoint'] == '0':
+                return {
+                    'name': 'Tier 0',
+                    'price': '0.00',
+                    'pricePoint': '0',
+                }
+
+            return {
+                'name': 'Tier 1',
+                'price': '0.10',
+                'pricePoint': '1',
+            }
+
+        prices.get_object.side_effect = side_effect
         self.marketplace = m.start()
         self.marketplace.webpay.prices.return_value = prices
         self.addCleanup(m.stop)

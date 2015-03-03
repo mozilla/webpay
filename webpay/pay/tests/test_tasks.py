@@ -262,6 +262,30 @@ class TestNotifyApp(NotifyTest):
 
 
 @mock.patch('lib.solitude.api.client.slumber')
+class TestFreeInAppNotifications(NotifyTest):
+
+    def notify(self, notes=None, solitude_buyer_uuid='<buyer:uuid>'):
+        if not notes:
+            notes = {
+                'issuer_key': 'whatever',
+                'pay_request': {
+                    'request': {
+                        'postbackURL': 'foo'
+                    }
+                }
+            }
+        tasks.free_notify(notes, solitude_buyer_uuid)
+
+    @mock.patch('webpay.pay.utils.requests')
+    @mock.patch('webpay.pay.tasks.free_notify.retry')
+    def test_notify_retries(self, retry, requests, slumber):
+        self.set_secret_mock(slumber, 'f')
+        requests.post.side_effect = RequestException('some http error')
+        self.notify()
+        assert retry.called, 'task should be retried after error'
+
+
+@mock.patch('lib.solitude.api.client.slumber')
 class TestSimulatedNotifications(NotifyTest):
 
     @mock.patch.object(client, 'get_price')
