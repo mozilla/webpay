@@ -482,9 +482,10 @@ def _trim_pay_request(req):
     # size unexpectedly.
     req['request']['description'] = _trim(req['request']['description'])
     if req['request'].get('locales'):
-        for k, v in req['request']['locales'].items():
-            d = _trim(v['description'])
-            req['request']['locales'][k]['description'] = d
+        for slug, locale in req['request']['locales'].items():
+            if 'description' in locale:
+                desc = _trim(locale['description'])
+                req['request']['locales'][slug]['description'] = desc
 
 
 _android_user_agent = re.compile(r'^Mozilla.*Android.*Gecko.*Firefox')
