@@ -173,32 +173,6 @@ class TestVerify(Base):
         payload = self.request(payload=payjwt)
         eq_(self.get(payload).status_code, 400)
 
-    @mock.patch.object(settings, 'PRODUCT_DESCRIPTION_LENGTH', 255)
-    def test_truncate_long_description(self):
-        raise SkipTest('old pay views have not been deleted yet')
-        payjwt = self.payload()
-        payjwt['request']['description'] = 'x' * 256
-        payload = self.request(payload=payjwt)
-        eq_(self.get(payload).status_code, 200)
-        req = self.client.session['notes']['pay_request']['request']
-        eq_(len(req['description']), 255)
-        assert req['description'].endswith('...'), 'ellipsis added'
-
-    @mock.patch.object(settings, 'PRODUCT_DESCRIPTION_LENGTH', 255)
-    def test_truncate_long_locale_description(self):
-        raise SkipTest('old pay views have not been deleted yet')
-        payjwt = self.payload()
-        payjwt['request']['defaultLocale'] = 'en'
-        payjwt['request']['locales'] = {
-            'it': {
-                'description': 'x' * 256
-            }
-        }
-        payload = self.request(payload=payjwt)
-        eq_(self.get(payload).status_code, 200)
-        req = self.client.session['notes']['pay_request']['request']
-        eq_(len(req['locales']['it']['description']), 255)
-
     def test_missing_name(self):
         payjwt = self.payload()
         del payjwt['request']['name']

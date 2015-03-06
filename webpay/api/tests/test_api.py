@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.test.client import Client
@@ -130,6 +131,48 @@ class TestPay(Base, BaseAPICase):
     def test_configures_transaction_fail(self):
         res = self.post(req='')  # cause a form error.
         eq_(res.status_code, 400)
+
+    @mock.patch.object(settings, 'PRODUCT_DESCRIPTION_LENGTH', 255)
+    def test_truncate_long_locale_description(self):
+        payjwt = self.payload()
+        payjwt['request']['defaultLocale'] = 'en'
+        payjwt['request']['locales'] = {
+            'it': {
+                'description': 'x' * 257
+            }
+        }
+        req = self.request(payload=payjwt)
+        res = self.post(req=req)
+
+        eq_(res.status_code, 200)
+        req = self.client.session['notes']['pay_request']['request']
+        eq_(len(req['locales']['it']['description']), 255)
+
+    @mock.patch.object(settings, 'PRODUCT_DESCRIPTION_LENGTH', 255)
+    def test_truncate_long_description(self):
+        payjwt = self.payload()
+        payjwt['request']['description'] = 'x' * 257
+        req = self.request(payload=payjwt)
+        res = self.post(req=req)
+
+        eq_(res.status_code, 200)
+        req = self.client.session['notes']['pay_request']['request']
+        eq_(len(req['description']), 255)
+        assert req['description'].endswith('...'), 'ellipsis added'
+
+    def test_partial_locale_data(self):
+        payjwt = self.payload()
+        payjwt['request']['defaultLocale'] = 'en'
+        payjwt['request']['locales'] = {
+            'it': {
+                'name': 'Some Name'
+                # This is intentionally missing a description.
+            }
+        }
+        req = self.request(payload=payjwt)
+        # This was raising a KeyError. See bug 1140484.
+        res = self.post(req=req)
+        eq_(res.status_code, 200)
 
 
 @mock.patch('webpay.api.api.client')
