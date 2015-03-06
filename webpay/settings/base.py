@@ -248,7 +248,7 @@ COMPRESS_ENCRYPTED_COOKIE = True
 # CSP Settings
 CSP_REPORT_URI = '/mozpay/services/csp/report'
 CSP_POLICY_URI = '/mozpay/services/csp/policy'
-CSP_REPORT_ONLY = True
+CSP_REPORT_ONLY = False
 
 CSP_ALLOW = ("'self'",)
 
