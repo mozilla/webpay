@@ -136,5 +136,5 @@ class TestCSPMiddleware(TestCase):
         stubbed_source = 'I totally get used'
         get_sources.return_value = (stubbed_source,)
         response = self.client.get('/')
-        csp = response['content-security-policy-report-only']
+        csp = response['content-security-policy']
         ok_(stubbed_source in csp)
