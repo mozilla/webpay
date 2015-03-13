@@ -147,22 +147,34 @@ def configure_transaction(request, data=None):
                     .format(mcc=mcc, mnc=mnc))
 
     is_simulation = request.session.get('is_simulation', False)
-    was_configured, error_code = tasks.configure_transaction(request,
-                                                             mcc=mcc, mnc=mnc)
-    if not was_configured and not is_simulation:
-        if not error_code:
-            error_code = msg.TRANS_CONFIG_FAILED
-        log.error('Configuring transaction failed: {er}'.format(er=error_code))
-        return system_error(request, code=error_code)
+    pay_req = request.session.get('notes', {}).get('pay_request')
+    payment_required = (
+        pay_req['request']['pricePoint'] != '0' if pay_req else True)
+
+    if payment_required:
+        was_configured, error_code = tasks.configure_transaction(
+            request, mcc=mcc, mnc=mnc)
+        if not was_configured and not is_simulation:
+            if not error_code:
+                error_code = msg.TRANS_CONFIG_FAILED
+            log.error('Configuring transaction failed: {er}'
+                      .format(er=error_code))
+            return system_error(request, code=error_code)
     else:
-        sim = (request.session['notes']['pay_request']['request']['simulate']
-               if is_simulation else None)
-        client_trans_id = 'client-trans:{u}'.format(u=uuid.uuid4())
-        log.info('Assigned client trans ID {client_trans} to trans ID {trans}'
-                 .format(trans=request.session['trans_id'],
-                         client_trans=client_trans_id))
-        return {'status': 'ok', 'simulation': sim,
-                'client_trans_id': client_trans_id}
+        solitude_buyer_uuid = request.session['uuid']
+        log.info('Notifying for free in-app trans_id={t}; with '
+                 'solitude_buyer_uuid={u}'.format(
+                     t=request.session['trans_id'], u=solitude_buyer_uuid))
+        tasks.free_notify.delay(request.session['notes'], solitude_buyer_uuid)
+
+    sim = pay_req['request']['simulate'] if is_simulation else None
+    client_trans_id = 'client-trans:{u}'.format(u=uuid.uuid4())
+    log.info('Assigned client trans ID {client_trans} to trans ID {trans}'
+             .format(trans=request.session['trans_id'],
+                     client_trans=client_trans_id))
+    return {'status': 'ok', 'simulation': sim,
+            'client_trans_id': client_trans_id,
+            'payment_required': payment_required}
 
 
 def index(request):

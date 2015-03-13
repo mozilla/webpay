@@ -174,6 +174,26 @@ class TestPay(Base, BaseAPICase):
         res = self.post(req=req)
         eq_(res.status_code, 200)
 
+    def test_paid_product(self):
+        req = self.request(
+            payload=self.payload(extra_req={'pricePoint': '1'}))
+        res = self.post(req=req)
+        eq_(res.status_code, 200)
+        data = json.loads(res.content)
+        eq_(data['payment_required'], True)
+
+    def test_free_product(self):
+        p = mock.patch('webpay.pay.tasks.free_notify.delay')
+        self.free_task = p.start()
+        self.addCleanup(p.stop)
+        req = self.request(
+            payload=self.payload(extra_req={'pricePoint': '0'}))
+        res = self.post(req=req)
+        eq_(res.status_code, 200)
+        data = json.loads(res.content)
+        ok_(self.free_task.called)
+        eq_(data['payment_required'], False)
+
 
 @mock.patch('webpay.api.api.client')
 class TestGetPay(Base, BaseAPICase):
