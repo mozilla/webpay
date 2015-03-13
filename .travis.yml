@@ -1,5 +1,10 @@
 language: python
 sudo: true
+cache:
+  # Workaround for
+  # https://github.com/travis-ci/travis-ci/issues/3239
+  directories:
+    - ~/.cache/pip
 python:
   - "2.7"
 virtualenv:
