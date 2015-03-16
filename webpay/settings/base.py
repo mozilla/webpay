@@ -261,6 +261,7 @@ CSP_IMG_SRC = (
 CSP_SCRIPT_SRC = (
     "'self'",
     # For logout from bango.
+    'https://bango.net',
     'https://*.bango.net',
     'https://*.google-analytics.com',
 )
