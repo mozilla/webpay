@@ -139,6 +139,7 @@ class ResetPinForm(BasePinForm):
         Check that the user re-authenticated with Firefox Accounts
         sometime after they requested the PIN reset.
         """
+
         reauth_ok = False
         log.info('PIN reset: user_reset from session: {reset}'
                  .format(reset=self.user_reset))
@@ -156,6 +157,9 @@ class ResetPinForm(BasePinForm):
         elif not fxa_auth_ts:
             log.warning(
                 'PIN reset error: user_reset[fxa_auth_ts] not in session')
+            if not settings.REQUIRE_REAUTH_TS_FOR_PIN_RESET:
+                log.warning('missing fxa_auth_ts ignored for PIN reset')
+                reauth_ok = True
         elif fxa_auth_ts < start_ts:
             log.warning(
                 'PIN reset error: fxa_auth_ts {f} occurred before reset {r}'
