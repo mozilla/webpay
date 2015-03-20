@@ -590,6 +590,15 @@ FXA_CLIENT_SECRET = (
 # before we get this far.
 FXA_PIN_REAUTH_EXPIRY = 60 * 10
 
+# If True, require the Firefox Accounts server(s) to provide us
+# with a timestamp of the last time the user re-entered their password
+# before allowing a PIN reset. This prevents client side tampering
+# to reset a PIN without knowing the user's Firefox Account password.
+# When False, a server provided timestamp will still be honored if it
+# exists. This means the oauth flow is still secure when this setting
+# is False. See bug 1141514.
+REQUIRE_REAUTH_TS_FOR_PIN_RESET = False
+
 # Set of email addresses for users that gain super powers once authenticated.
 # For example, they will see an admin screen to simulate certain things.
 USERS_WITH_SUPER_POWERS = []

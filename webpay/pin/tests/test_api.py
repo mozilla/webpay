@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 
@@ -110,6 +111,7 @@ class TestPost(PIN):
         eq_(data['error_code'], msg.PIN_ONLY_NUMBERS)
 
 
+@mock.patch.object(settings, 'REQUIRE_REAUTH_TS_FOR_PIN_RESET', True)
 class TestPatch(PIN):
 
     def setUp(self):
@@ -186,6 +188,28 @@ class TestPatch(PIN):
         self.set_session(user_reset={'start_ts': self.start_ts,
                                      'fxa_auth_ts': auth_at})
         with self.settings(FXA_PIN_REAUTH_EXPIRY=expiry):
+            res = self.patch(self.url)
+        eq_(res.status_code, 400)
+        data = json.loads(res.content)
+        eq_(data['error_code'], msg.INVALID_PIN_REAUTH)
+
+    def test_bypass_reauth_check_from_settings(self):
+        self.solitude_client.change_pin.return_value = {}
+        # Simulate a native (B2G >= 2.1) device where fxa_auth_ts isn't set.
+        self.set_session(user_reset={'start_ts': self.start_ts})
+        with self.settings(REQUIRE_REAUTH_TS_FOR_PIN_RESET=False):
+            res = self.patch(self.url)
+        eq_(res.status_code, 204)
+
+    def test_bypassed_reauth_doesnt_apply_to_oauth(self):
+        self.solitude_client.change_pin.return_value = {}
+        # Make an invalid auth time.
+        auth_at = self.start_ts - 60
+        self.set_session(user_reset={'start_ts': self.start_ts,
+                                     'fxa_auth_ts': auth_at})
+        # Even though we bypass the reauth check here, it should still fail
+        # since a reauth timestamp exists.
+        with self.settings(REQUIRE_REAUTH_TS_FOR_PIN_RESET=False):
             res = self.patch(self.url)
         eq_(res.status_code, 400)
         data = json.loads(res.content)
