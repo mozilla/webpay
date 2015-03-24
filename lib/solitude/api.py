@@ -837,8 +837,6 @@ class BangoProvider(PayProvider):
         redirect_url_onsuccess = absolutify(reverse('bango.success'))
         redirect_url_onerror = absolutify(reverse('bango.error'))
 
-        # This API call also creates a generic
-        # transaction automatically.
         res = self.api.billing.post({
             'pageTitle': product_name,
             'prices': prices,
@@ -851,10 +849,26 @@ class BangoProvider(PayProvider):
             'application_size': application_size,
             'source': source
         })
+
         bill_id = res['billingConfigurationId']
-        log.info('transaction {tr}: billing config ID: {bill}; '
-                 'prices: {pr}'
-                 .format(tr=transaction_uuid, bill=bill_id, pr=prices))
+        log.info('{pr}: made trans billing config ID: {bill}; '
+                 'transaction {tr}; prices: {prices}'
+                 .format(tr=transaction_uuid, bill=bill_id, prices=prices,
+                         pr=self.name))
+
+        trans = self.slumber.generic.transaction.post({
+            'provider': solitude_const.PROVIDERS[self.name],
+            'buyer': generic_buyer['resource_uri'],
+            'seller': generic_seller['resource_uri'],
+            'seller_product': generic_product['resource_uri'],
+            'source': source,
+            'status': solitude_const.STATUS_PENDING,
+            'type': solitude_const.TYPE_PAYMENT,
+            'uuid': transaction_uuid,
+            'uid_pay': bill_id
+        })
+        log.info('{pr}: made solitude trans {trans}'
+                 .format(pr=self.name, trans=trans))
 
         return bill_id, self._formatted_payment_url(bill_id)
 

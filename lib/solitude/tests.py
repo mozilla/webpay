@@ -437,6 +437,40 @@ class TestBango(TestCase):
 
         eq_(pay_url, 'http://bango/pay?bcid={b}'.format(b=bill_id))
 
+    def test_transaction_created(self):
+        slumber = self.slumber
+        slumber.bango.billing.post.return_value = {
+            'billingConfigurationId': 'uid:pay'
+        }
+        slumber.generic.buyer.get_object_or_404.return_value = {
+            'resource_pk': '1',
+            'resource_uri': '/generic/buyer/1/'
+        }
+        slumber.generic.product.get_object_or_404.return_value = {
+            'external_id': 'ext:id',
+            'resource_pk': '1',
+            'resource_uri': '/generic/product/1/'
+        }
+        slumber.generic.seller.get_object_or_404.return_value = {
+            'resource_pk': '1',
+            'resource_uri': '/generic/seller/1/'
+        }
+
+        data = {
+            'status': constants.STATUS_PENDING,
+            'source': 'unknown',
+            'uid_pay': 'uid:pay',
+            'uuid': 0,
+            'provider': constants.PROVIDER_BANGO,
+            'buyer': '/generic/buyer/1/',
+            'seller_product': '/generic/product/1/',
+            'type': constants.TYPE_PAYMENT,
+            'seller': '/generic/seller/1/',
+        }
+
+        self.start()
+        slumber.generic.transaction.post.assert_called_with(data)
+
 
 class ProviderTestCase(TestCase):
 
