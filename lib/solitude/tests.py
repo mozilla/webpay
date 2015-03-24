@@ -7,6 +7,7 @@ from django.test import TestCase
 
 import mobile_codes
 import mock
+from mpconstants import countries
 from nose.tools import eq_, raises
 from slumber.exceptions import HttpClientError
 
@@ -507,8 +508,12 @@ class ProviderTestCase(TestCase):
                   success_redirect='/todo/postback',
                   error_redirect='/todo/chargeback',
                   provider_seller_uuid='provider-sel-xyz',
-                  prices=[{'price': '0.89', 'currency': 'EUR', 'region': 14},
-                          {'price': '55.00', 'currency': 'MXN', 'region': 12}],
+                  prices=[{'price': '0.89', 'currency': 'EUR',
+                           'region': countries.COUNTRY_DETAILS['DEU']['id']},
+                          {'price': '55.00', 'currency': 'MXN',
+                           'region': countries.COUNTRY_DETAILS['MEX']['id']},
+                          {'price': '1.99', 'currency': 'USD',
+                           'region': countries.COUNTRY_DETAILS['USA']['id']}],
                   icon_url='/todo/icons', user_uuid='user-xyz',
                   app_size=1024 * 5, mcc=None, mnc=None):
         return self.provider.start_transaction(
@@ -555,9 +560,9 @@ class TestReferenceProvider(ProviderTestCase):
         eq_(kw['seller_product__external_id'], 'app-xyz')
 
         self.slumber.generic.transaction.post.assert_called_with({
-            'amount': '0.99',
+            'amount': '1.99',
             'carrier': 'USA_TMOBILE',
-            'currency': 'EUR',
+            'currency': 'USD',
             'provider': constants.PROVIDER_REFERENCE,
             'region': '123',
             'buyer': self.buyer_uri,
@@ -628,9 +633,9 @@ class TestReferenceProvider(ProviderTestCase):
         assert kw['error_url'].endswith('/provider/reference/error'), (
             'Unexpected: {0}'.format(kw['error_url']))
         self.slumber.generic.transaction.post.assert_called_with({
-            'amount': '0.99',
+            'amount': '1.99',
             'carrier': 'USA_TMOBILE',
-            'currency': 'EUR',
+            'currency': 'USD',
             'provider': constants.PROVIDER_REFERENCE,
             'region': '123',
             'buyer': self.buyer_uri,
@@ -668,6 +673,10 @@ class TestReferenceProvider(ProviderTestCase):
         self.configure(seller_uuid='seller-xyz', product_uuid='app-xyz')
         is_valid = self.provider.is_callback_token_valid({'foo': 'bar'})
         eq_(is_valid, False)
+
+    @raises(ValueError)
+    def test_no_usd(self):
+        self.configure(prices={})
 
 
 class TestBoku(ProviderTestCase):

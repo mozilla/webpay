@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 
 import mobile_codes
+from mpconstants import countries
 from slumber.exceptions import HttpClientError
 
 from lib.marketplace.constants import COUNTRIES
@@ -591,9 +592,18 @@ class ReferenceProvider(PayProvider):
         carrier = 'USA_TMOBILE'
         region = '123'
         pay_method = 'OPERATOR'
-        # Note: most providers will use the prices array.
-        price = '0.99'
-        currency = 'EUR'
+        # How do we decide what price to show? Normally Bango does this
+        # by deciding based on region detection. For our purposes, let's just
+        # choose the USD price.
+        #
+        # USD is set up by default in zamboni, so this will work out of the
+        # box.
+        for p in prices:
+            if p['region'] == countries.COUNTRY_DETAILS['USA']['id']:
+                currency, price = p['currency'], p['price']
+                break
+        else:
+            raise ValueError('No USD price tier defined.')
 
         provider_trans = self.api.transactions.post({
             'product_id': provider_product[self.name]['uuid'],
