@@ -53,12 +53,16 @@ class JWTtester(TestCase):
             payload['response'] = res
         return payload
 
-    def request(self, app_secret=None, payload=None, **payload_kw):
+    def request(self, app_secret=None, payload=None, jwt_kwargs=None,
+                **payload_kw):
         if not app_secret:
             app_secret = self.secret
         if not payload:
             payload = self.payload(**payload_kw)
-        encoded = jwt.encode(payload, app_secret, algorithm='HS256')
+        if not jwt_kwargs:
+            jwt_kwargs = {}
+        jwt_kwargs.setdefault('algorithm', 'HS256')
+        encoded = jwt.encode(payload, app_secret, **jwt_kwargs)
         return unicode(encoded)  # e.g. django always passes unicode.
 
     def verify(self, request=None, update=None, update_request=None,
