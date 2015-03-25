@@ -20,7 +20,6 @@ STATUS_RETRY_OK = (STATUS_FAILED, STATUS_CANCELLED)
 ACCESS_PURCHASE = 1
 ACCESS_SIMULATE = 2
 
-PROVIDER_PAYPAL = 0
 PROVIDER_BANGO = 1
 PROVIDER_REFERENCE = 2
 PROVIDER_BOKU = 3
@@ -28,7 +27,6 @@ PROVIDER_BOKU = 3
 # These are constants for Solitude but not necessarily for Webpay.
 # See PAYMENT_PROVIDER in settings.
 PROVIDERS = {
-    'paypal': PROVIDER_PAYPAL,
     'bango': PROVIDER_BANGO,
     'reference': PROVIDER_REFERENCE,
     'boku': PROVIDER_BOKU
