@@ -1,3 +1,5 @@
+import json
+
 from django import forms
 from django.conf import settings
 
@@ -54,6 +56,15 @@ class VerifyForm(ParanoidForm):
             # error. If it becomes a headache for developers we can make a
             # guess and check the string for a JSON object.
             log.info('JWT was not a dict, it was %r' % type(payload))
+            raise forms.ValidationError(msg.INVALID_JWT_OBJ)
+
+        # The decode method already parses the header like this
+        # but does not give us access to it so we need to re-parse it.
+        header = json.loads(jwt.base64url_decode(jwt_data.split('.')[0]))
+        if header['alg'] not in settings.SUPPORTED_JWT_ALGORITHMS:
+            log.debug(
+                'JWT header alg is {alg} which is not supported. JWT: {jwt}'
+                .format(alg=header['alg'], jwt=jwt_data))
             raise forms.ValidationError(msg.INVALID_JWT_OBJ)
 
         try:

@@ -602,3 +602,6 @@ REQUIRE_REAUTH_TS_FOR_PIN_RESET = False
 # Set of email addresses for users that gain super powers once authenticated.
 # For example, they will see an admin screen to simulate certain things.
 USERS_WITH_SUPER_POWERS = []
+
+# These are the JWT algorithms we trust. All others will be rejected.
+SUPPORTED_JWT_ALGORITHMS = ['HS256']

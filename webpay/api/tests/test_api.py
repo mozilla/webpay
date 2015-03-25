@@ -57,11 +57,12 @@ class TestPay(Base, BaseAPICase):
             'notes': {}
         }
 
-    def post(self, data=None, req=None, mcc='423', mnc='555', **kwargs):
+    def post(self, data=None, req=None, mcc='423', mnc='555',
+             request_kwargs=None, **kwargs):
         if data is None:
             data = {}
             if req is None:
-                req = self.request()
+                req = self.request(**(request_kwargs or {}))
             data = {'req': req, 'mnc': mnc, 'mcc': mcc}
         kwargs.setdefault('HTTP_ACCEPT', 'application/json')
         return self.client.post(self.url, data=data, **kwargs)
@@ -130,6 +131,14 @@ class TestPay(Base, BaseAPICase):
 
     def test_configures_transaction_fail(self):
         res = self.post(req='')  # cause a form error.
+        eq_(res.status_code, 400)
+
+    def test_unsupported_jwt_algorithm(self):
+        with self.settings(SUPPORTED_JWT_ALGORITHMS=['HS256']):
+            res = self.post(
+                request_kwargs={'jwt_kwargs': {'algorithm': 'none'}})
+        eq_(json.loads(res.content)['error_code'], 'INVALID_JWT_OBJ',
+            res.content)
         eq_(res.status_code, 400)
 
     @mock.patch.object(settings, 'PRODUCT_DESCRIPTION_LENGTH', 255)
