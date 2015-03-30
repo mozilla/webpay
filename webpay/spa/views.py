@@ -27,10 +27,12 @@ def index(request, view_name=None, start_view=None):
     # for the purchaser named in it.
     if jwt and _get_issuer(jwt) == settings.KEY:
         try:
-            data = verify_sig(jwt, settings.SECRET)
+            data = verify_sig(jwt, settings.SECRET,
+                              expected_aud=settings.DOMAIN)
             data = data['request'].get('productData', '')
-        except InvalidJWT:
-            pass
+        except InvalidJWT, exc:
+            log.debug('ignoring invalid Marketplace JWT error: {e}'
+                      .format(e=exc))
         else:
             product_data = urlparse.parse_qs(data)
             emails = product_data.get('buyer_email')

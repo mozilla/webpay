@@ -71,16 +71,20 @@ class TestSpaDataAttrs(TestCase):
 @test.utils.override_settings(SPA_ENABLE=True,
                               SPA_ENABLE_URLS=True,
                               KEY='marketplace.mozilla.com',
+                              DOMAIN='marketplace.mozilla.com',
                               SECRET='test secret')
 class TestBuyerEmailAuth(Base):
+
     @mock.patch('webpay.auth.utils.client')
     def test_marketplace_purchase(self, solitude):
         solitude.get_buyer.return_value = {'uuid': 'some-uuid'}
-        jwt = self.request(
-            iss='marketplace.mozilla.com', app_secret='test secret',
+        pay_request = self.request(
+            # Make a purchase issued by Marketplace for Marketplace.
+            iss=settings.KEY, aud=settings.KEY, app_secret='test secret',
             extra_req={'productData':
                        'my_product_id=1234&buyer_email=user@example.com'})
-        res = self.client.get('/mozpay/', {'req': jwt})
+        res = self.client.get('/mozpay/', {'req': pay_request})
+        eq_(res.status_code, 200)
         doc = pq(res.content)
         eq_(doc('body').attr('data-logged-in-user'), 'user@example.com')
         eq_(doc('body').attr('data-mkt-user'), 'true')
@@ -127,6 +131,7 @@ class TestBuyerEmailAuth(Base):
             extra_req={'productData':
                        'my_product_id=1234&buyer_email=user@example.com'})
         res = self.client.get('/mozpay/', {'req': jwt})
+        eq_(res.status_code, 200)
         doc = pq(res.content)
         eq_(doc('body').attr('data-logged-in-user'), '')
         eq_(doc('body').attr('data-mkt-user'), 'false')

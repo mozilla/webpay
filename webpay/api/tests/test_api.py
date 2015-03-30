@@ -134,10 +134,10 @@ class TestPay(Base, BaseAPICase):
         eq_(res.status_code, 400)
 
     def test_unsupported_jwt_algorithm(self):
-        with self.settings(SUPPORTED_JWT_ALGORITHMS=['HS256']):
+        with self.settings(SUPPORTED_JWT_ALGORITHMS=['HS384']):
             res = self.post(
-                request_kwargs={'jwt_kwargs': {'algorithm': 'none'}})
-        eq_(json.loads(res.content)['error_code'], 'INVALID_JWT_OBJ',
+                request_kwargs={'jwt_kwargs': {'algorithm': 'HS256'}})
+        eq_(json.loads(res.content)['error_code'], 'INVALID_JWT',
             res.content)
         eq_(res.status_code, 400)
 

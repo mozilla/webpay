@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
-
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -123,16 +121,6 @@ class TestVerifyForm(Base):
             # This means we've successfully looked up the InappConfig.
             eq_(form.key, self.key)
             eq_(form.secret, self.secret)
-
-    def test_double_encoded_jwt(self):
-        payload = self.payload()
-        # Some jwt libraries are doing this, I think.
-        payload = json.dumps(payload)
-        req = self.request(iss=self.key, app_secret=self.secret,
-                           payload=payload)
-        with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
-            form = VerifyForm({'req': req})
-            assert not form.is_valid()
 
     def test_valid_purchase(self):
         payload = self.request(iss=settings.KEY, app_secret=settings.SECRET)
