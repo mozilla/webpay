@@ -453,6 +453,8 @@ def _notify(notifier_task, trans, extra_response=None, simulated=NOT_SIMULATED,
                          'currency': trans['currency']}
     issued_at = gmtime()
     notice = {'iss': settings.NOTIFY_ISSUER,
+              # The original issuer of the request will now become the
+              # audience of the notice.
               'aud': notes['issuer_key'],
               'typ': typ,
               'iat': issued_at,

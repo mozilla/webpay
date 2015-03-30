@@ -60,15 +60,18 @@ def process_pay_req(request, data=None):
             form.cleaned_data['req'],
             settings.DOMAIN,  # JWT audience.
             form.secret,
+            algorithms=settings.SUPPORTED_JWT_ALGORITHMS,
             required_keys=('request.id',
-                           'request.pricePoint',  # A price tier we'll lookup.
+                           'request.pricePoint',  # A price tier we'll look up.
                            'request.name',
                            'request.description',
                            'request.postbackURL',
                            'request.chargebackURL'))
     except RequestExpired, exc:
+        log.debug('exception in mozpay.verify_jwt(): {e}'.format(e=exc))
         er = msg.EXPIRED_JWT
     except InvalidJWT, exc:
+        log.debug('exception in mozpay.verify_jwt(): {e}'.format(e=exc))
         er = msg.INVALID_JWT
 
     if exc:
@@ -106,6 +109,7 @@ def process_pay_req(request, data=None):
     # Otherwise it is used for simulations and fake payments.
     notes = request.session.get('notes', {})
     notes['pay_request'] = pay_req
+    # The issuer key points to the app that issued the payment request.
     notes['issuer_key'] = form.key
     request.session['notes'] = notes
     tx = trans_id()

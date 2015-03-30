@@ -36,6 +36,15 @@ class NotifyTest(JWTtester, TestCase):
     def setUp(self):
         super(NotifyTest, self).setUp()
         self.trans_uuid = 'some:uuid'
+        # This points to the app that issued the original payment request.
+        # It will become the audience when receiving a notice about the
+        # payment.
+        self.payment_issuer = 'some-apps-public-id'
+
+    def payload(self, **kw):
+        # Create a notice for the original issuer of the payment.
+        kw.setdefault('aud', self.payment_issuer)
+        return super(NotifyTest, self).payload(**kw)
 
     def set_secret_mock(self, slumber, s):
         slumber.generic.product.get_object_or_404.return_value = {'secret': s}
@@ -46,31 +55,29 @@ class NotifyTest(JWTtester, TestCase):
 
 class TestNotifyApp(NotifyTest):
 
-    @mock.patch('lib.solitude.api.client.get_transaction')
-    def do_chargeback(self, reason, get_transaction):
-        get_transaction.return_value = {
-            'amount': 1,
-            'currency': 'USD',
-            'status': constants.STATUS_COMPLETED,
-            'notes': {'pay_request': self.payload(),
-                      'issuer_key': 'k'},
-            'type': constants.TYPE_REFUND,
+    def transaction(self, amount=1, currency='USD',
+                    status=constants.STATUS_COMPLETED, payload=None,
+                    trans_type=constants.TYPE_PAYMENT):
+        return {
+            'amount': amount,
+            'currency': currency,
+            'status': status,
+            'notes': {'pay_request': payload or self.payload(),
+                      'issuer_key': self.payment_issuer},
+            'type': trans_type,
             'uuid': self.trans_uuid
         }
+
+    @mock.patch('lib.solitude.api.client.get_transaction')
+    def do_chargeback(self, reason, get_transaction):
+        get_transaction.return_value = self.transaction(
+            trans_type=constants.TYPE_REFUND)
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             tasks.chargeback_notify(self.trans_uuid, reason=reason)
 
     @mock.patch('lib.solitude.api.client.get_transaction')
-    def notify(self, get_transaction):
-        get_transaction.return_value = {
-            'amount': 1,
-            'currency': 'USD',
-            'status': constants.STATUS_COMPLETED,
-            'notes': {'pay_request': self.payload(),
-                      'issuer_key': 'k'},
-            'type': constants.TYPE_PAYMENT,
-            'uuid': self.trans_uuid,
-        }
+    def notify(self, get_transaction, **trans_kw):
+        get_transaction.return_value = self.transaction(**trans_kw)
         with self.settings(INAPP_KEY_PATHS={None: sample}, DEBUG=True):
             tasks.payment_notify('some:uuid')
 
@@ -87,7 +94,8 @@ class TestNotifyApp(NotifyTest):
             eq_(dd['typ'], payload['typ'])
             eq_(dd['response']['price']['amount'], 1)
             eq_(dd['response']['price']['currency'], u'USD')
-            jwt.decode(req['notice'], 'f', verify=True)
+            jwt.decode(req['notice'], 'f', verify=True,
+                       audience=self.payment_issuer)
             return True
 
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
@@ -95,7 +103,8 @@ class TestNotifyApp(NotifyTest):
                                  .returns_fake()
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
-        self.notify()
+
+        self.notify(payload=payload)
 
     @fudge.patch('webpay.pay.utils.requests')
     @mock.patch('lib.solitude.api.client.slumber')
@@ -110,7 +119,8 @@ class TestNotifyApp(NotifyTest):
             eq_(dd['typ'], payload['typ'])
             eq_(dd['response']['transactionID'], self.trans_uuid)
             eq_(dd['response']['reason'], 'refund')
-            jwt.decode(req['notice'], 'f', verify=True)
+            jwt.decode(req['notice'], 'f', verify=True,
+                       audience=self.payment_issuer)
             return True
 
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
@@ -118,6 +128,7 @@ class TestNotifyApp(NotifyTest):
                                  .returns_fake()
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
+
         self.do_chargeback('refund')
 
     @fudge.patch('webpay.pay.utils.requests')
@@ -234,7 +245,7 @@ class TestNotifyApp(NotifyTest):
         # includes the same payment data that the app originally sent.
         def is_valid(payload):
             data = jwt.decode(payload['notice'], 'f',  # secret key
-                              verify=True)
+                              verify=True, audience=self.payment_issuer)
             eq_(data['iss'], settings.NOTIFY_ISSUER)
             eq_(data['typ'], TYP_POSTBACK)
             eq_(data['request']['pricePoint'], 1)
@@ -258,7 +269,8 @@ class TestNotifyApp(NotifyTest):
                                  .returns_fake()
                                  .has_attr(text='some:uuid')
                                  .provides('raise_for_status'))
-        self.notify()
+
+        self.notify(payload=app_payment)
 
 
 @mock.patch('lib.solitude.api.client.slumber')
@@ -292,7 +304,7 @@ class TestSimulatedNotifications(NotifyTest):
     def notify(self, payload, get_price, prices=None):
         get_price.return_value = (
             prices or {'prices': [{'price': '0.99', 'currency': 'USD'}]})
-        tasks.simulate_notify('issuer-key', payload,
+        tasks.simulate_notify(self.payment_issuer, payload,
                               trans_uuid=self.trans_uuid)
 
     @fudge.patch('webpay.pay.utils.requests')
@@ -306,7 +318,8 @@ class TestSimulatedNotifications(NotifyTest):
             dd = jwt.decode(req['notice'], verify=False)
             eq_(dd['request'], payload['request'])
             eq_(dd['typ'], payload['typ'])
-            jwt.decode(req['notice'], 'f', verify=True)
+            jwt.decode(req['notice'], 'f', verify=True,
+                       audience=self.payment_issuer)
             return True
 
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
@@ -328,7 +341,8 @@ class TestSimulatedNotifications(NotifyTest):
             dd = jwt.decode(req['notice'], verify=False)
             eq_(dd['request'], payload['request'])
             eq_(dd['typ'], payload['typ'])
-            jwt.decode(req['notice'], 'f', verify=True)
+            jwt.decode(req['notice'], 'f', verify=True,
+                       audience=self.payment_issuer)
             return True
 
         (fake_req.expects('post').with_args(url, arg.passes_test(req_ok),
@@ -336,6 +350,7 @@ class TestSimulatedNotifications(NotifyTest):
                                  .returns_fake()
                                  .has_attr(text=self.trans_uuid)
                                  .expects('raise_for_status'))
+
         self.notify(payload)
 
     @fudge.patch('webpay.pay.utils.requests')
@@ -374,7 +389,7 @@ class TestSimulatedNotifications(NotifyTest):
 
         assert post.called, 'notification was sent'
         assert retry.called, 'task should be retried after error'
-        retry.assert_called_with(args=['issuer-key', payload],
+        retry.assert_called_with(args=[self.payment_issuer, payload],
                                  max_retries=ANY, eta=ANY, exc=ANY)
 
     @mock.patch('webpay.pay.utils.requests.post')

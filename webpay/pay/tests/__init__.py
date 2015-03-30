@@ -30,6 +30,7 @@ class Base(BasicSessionCase, JWTtester):
     def request(self, **kw):
         # This simulates payment requests which do not have response.
         kw.setdefault('include_response', False)
+        # By default, Marketplace will issue payment requests.
         kw.setdefault('iss', settings.KEY)
         kw.setdefault('app_secret', settings.SECRET)
         return super(Base, self).request(**kw)
