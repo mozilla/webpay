@@ -242,8 +242,10 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_names, **kw):
         # Note: the get_price_country API might be more helpful.
         prices = mkt_client.get_price(pay['request']['pricePoint'],
                                       provider=provider_helper.provider.name)
-        log.debug('pricePoint=%s prices=%s' % (pay['request']['pricePoint'],
-                                               prices['prices']))
+        log.debug('pricePoint={point} provider={provider} prices={prices}'
+                  .format(point=pay['request']['pricePoint'],
+                          prices=prices['prices'],
+                          provider=provider_helper.provider.name))
         try:
             icon_url = (get_icon_url(pay['request'])
                         if settings.USE_PRODUCT_ICONS else None)
