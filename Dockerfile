@@ -13,7 +13,7 @@ ADD requirements /pip/requirements
 
 # Setting cwd to /pip ensures egg-links for git installed deps are created in /pip/src
 WORKDIR /pip
-RUN pip install -b /pip/build --download-cache /pip/cache --no-deps -r /pip/requirements/docker.txt
+RUN pip install -b /pip/build --download-cache /pip/cache --no-deps -r /pip/requirements/docker.txt --find-links https://pyrepo.addons.mozilla.org/
 
 ENV SPARTACUS_STATIC /spartacus
 ENV SOLITUDE_URL http://solitude:2602

@@ -527,6 +527,16 @@ class TestWaitToStart(Base):
         eq_(data['url'], None)
         eq_(data['status'], constants.STATUS_RECEIVED)
 
+    def test_start_errored(self):
+        self.fake_transaction(
+            status=constants.STATUS_ERRORED,
+            status_reason='NO_PUBLICID_IN_JWT'
+        )
+        res = self.client.get(self.start, HTTP_ACCEPT='application/json')
+        eq_(res.status_code, 400, res.content)
+        data = json.loads(res.content)
+        eq_(data['error_code'], 'NO_PUBLICID_IN_JWT')
+
     def wait_ended_transaction(self, status):
         with self.settings(VERBOSE_LOGGING=True):
             self.fake_transaction(status=status)
