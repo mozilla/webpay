@@ -432,8 +432,11 @@ def trans_start_url(request):
     if trans and trans['status'] == constants.STATUS_ERRORED:
         statsd.incr('purchase.payment_time.errored')
         log.exception('Purchase configuration failed: {0} with status {1}'
-                      'with status {1}'.format(trans_id, trans['status']))
-        return system_error(request, code=getattr(msg, trans['status_reason']))
+                      .format(trans_id, trans['status']))
+        return system_error(
+            request,
+            code=getattr(msg, trans.get('status_reason', 'UNEXPECTED_ERROR'))
+        )
 
     return data
 

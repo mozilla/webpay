@@ -281,15 +281,22 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_names, **kw):
         })
     except Exception, exc:
         etype, val, tb = sys.exc_info()
-        pay_error_handler(
-            error_type=etype,
-            provider_helper=provider_helper,
-            source=source,
-            uuid=transaction_uuid,
-        )
+        # Log locally first.
         log.exception('while configuring payment for transaction {t}: '
                       '{exc.__class__.__name__}: {exc}'
                       .format(t=transaction_uuid, exc=exc))
+        try:
+            # Then try record the error in solitude.
+            pay_error_handler(
+                error_type=etype,
+                provider_helper=provider_helper,
+                source=source,
+                transaction_uuid=transaction_uuid,
+            )
+        except:
+            log.exception('while recording reason for failure {t}'
+                          .format(t=transaction_uuid))
+        # Re-raise the original error,
         raise exc, None, tb
 
 
@@ -297,7 +304,7 @@ def pay_error_handler(
         error_type,
         provider_helper,
         source,
-        uuid):
+        transaction_uuid):
     """
     Record a transaction error into solitude. At this point the transaction
     may, or may not exist in solitude.
@@ -308,7 +315,7 @@ def pay_error_handler(
     pk = None
     api = client.slumber.generic.transaction
     try:
-        pk = api.get_object_or_404(uuid=uuid)
+        pk = api.get_object_or_404(uuid=transaction_uuid)['resource_pk']
     except ObjectDoesNotExist:
         pass
 
@@ -318,26 +325,32 @@ def pay_error_handler(
     if provider_helper:
         provider = constants.PROVIDERS[provider_helper.name]
 
+    # Add error_codes onto Exceptions to have them recorded as that error
+    # in the solitude transaction.
+    reason = getattr(error_type, 'error_code', 'UNEXPECTED_ERROR')
+
     if pk:
         # For a transaction to exist, everything up to creating the
         # transaction in the payment provider has worked and something post
         # that (eg in getting and patching the transaction) has failed.
         #
         # This should be pretty unusual.
-        log.info('Updating transaction as error for: {0}'.format(uuid))
+        log.info('Updating transaction as error for: {0}'
+                 .format(transaction_uuid))
         api(pk).patch({
-            'status_reason': 'POST_CREATION_FAILURE',
             'status': constants.STATUS_ERRORED,
+            'status_reason': reason,
         })
 
     else:
-        log.info('Creating transaction error for: {0}'.format(uuid))
+        log.info('Creating transaction error for: {0}'
+                 .format(transaction_uuid))
         api.post({
             'provider': provider,
-            'status_reason': getattr(error_type, 'solitude', 'UNKNOWN'),
             'source': source,
             'status': constants.STATUS_ERRORED,
-            'uuid': uuid
+            'status_reason': reason,
+            'uuid': transaction_uuid
         })
 
 

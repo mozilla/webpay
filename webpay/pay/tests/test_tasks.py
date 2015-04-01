@@ -16,7 +16,6 @@ from nose.tools import eq_, ok_, raises
 from requests.exceptions import RequestException, Timeout
 import test_utils
 
-
 from lib.marketplace.api import client, UnknownPricePoint
 from lib.marketplace.constants import COUNTRIES
 from lib.solitude import api
@@ -733,17 +732,20 @@ class TestStartPayError(BaseStartPay):
         self.solitude = p.start()
         self.addCleanup(p.stop)
 
-        self.data = {
+    def data(self, **kw):
+        data = {
             'error_type': InvalidPublicID,
             'provider_helper': api.ProviderHelper('bango'),
             'source': 'marketplace',
-            'uuid': 'some:uid',
+            'transaction_uuid': 'some:uid',
         }
+        data.update(**kw)
+        return data
 
     def test_no_transaction(self):
         self.solitude.generic.transaction.get_object_or_404.side_effect = (
             ObjectDoesNotExist)
-        tasks.pay_error_handler(**self.data)
+        tasks.pay_error_handler(**self.data())
         self.solitude.generic.transaction.post.assert_called_with({
             'status_reason': 'NO_PUBLICID_IN_JWT',
             'provider': constants.PROVIDER_BANGO,
@@ -753,12 +755,30 @@ class TestStartPayError(BaseStartPay):
         })
 
     def test_transaction(self):
-        self.solitude.generic.transaction.get_object_or_404.returns = {
+        self.solitude.generic.transaction.get_object_or_404.return_value = {
             'resource_pk': 1,
             'transaction_uuid': 'some:uid'
         }
-        tasks.pay_error_handler(**self.data)
-        assert self.solitude.generic.transaction.patch.is_called
+        transaction = mock.Mock()
+        self.solitude.generic.transaction.return_value = transaction
+
+        tasks.pay_error_handler(**self.data())
+        transaction.patch.assert_called_with({
+            'status_reason': 'NO_PUBLICID_IN_JWT',
+            'status': 7,
+        })
+
+    def test_no_error_type(self):
+        self.solitude.generic.transaction.get_object_or_404.side_effect = (
+            ObjectDoesNotExist)
+        tasks.pay_error_handler(**self.data(error_type=ZeroDivisionError))
+        self.solitude.generic.transaction.post.assert_called_with({
+            'status_reason': 'UNEXPECTED_ERROR',
+            'provider': constants.PROVIDER_BANGO,
+            'source': 'marketplace',
+            'uuid': 'some:uid',
+            'status': 7,
+        })
 
 
 class TestConfigureTransaction(BaseStartPay):

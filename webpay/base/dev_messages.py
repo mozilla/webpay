@@ -148,6 +148,8 @@ def _build_legend():
         BANGO_ERROR:
             _('The payment provider (Bango) returned an error while '
               'processing the payment'),
+        BUYER_NOT_CONFIGURED:
+            _('Buyer not configured.'),
         BUYER_UUID_ALREADY_EXISTS:
             _('Buyer with this UUID already exists.'),
         # L10n: JWT stands for JSON Web Token and does not need to be
@@ -201,6 +203,11 @@ def _build_legend():
         NO_PAY_SUCCESS_FUNC:
             # L10n: First argument is the name of a function.
             _('{0} function is undefined').format('paymentSuccess'),
+        NO_PUBLICID_IN_JWT:
+            _('No public_id set in productData by the Marketplace'),
+        NO_VALID_SELLER:
+            _('No seller could be found for this product and payment '
+              'provider combination.'),
         NOTICE_ERROR: _('The notification service responded with an '
                         'error while verifying the payment notice'),
         NOTICE_EXCEPTION: _('The notification service raised an '
@@ -227,6 +234,8 @@ def _build_legend():
             _('The re-verification URL is missing from configuration.'),
         REVERIFY_TIMEOUT:
             _('The request to the server timed out during re-verification.'),
+        SELLER_NOT_CONFIGURED:
+            _('Seller not configured.'),
         SIM_DISABLED: _('Payment simulations are disabled at this time.'),
         SIM_ONLY_KEY:
             _('This payment key can only be used to simulate purchases.'),
