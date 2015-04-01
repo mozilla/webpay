@@ -15,6 +15,7 @@ BAD_PRICE_POINT = 'BAD_PRICE_POINT'
 BAD_REQUEST = 'BAD_REQUEST'
 BAD_SIM_RESULT = 'BAD_SIM_RESULT'
 BANGO_ERROR = 'BANGO_ERROR'
+BUYER_NOT_CONFIGURED = 'BUYER_NOT_CONFIGURED'
 BUYER_UUID_ALREADY_EXISTS = 'BUYER_UUID_ALREADY_EXISTS'
 EXPIRED_JWT = 'EXPIRED_JWT'
 FIELD_REQUIRED = 'FIELD_REQUIRED'
@@ -38,7 +39,9 @@ NO_ACTIVE_TRANS = 'NO_ACTIVE_TRANS'
 NO_DEFAULT_LOC = 'NO_DEFAULT_LOC'
 NO_PAY_FAILED_FUNC = 'NO_PAY_FAILED_FUNC'
 NO_PAY_SUCCESS_FUNC = 'NO_PAY_SUCCESS_FUNC'
+NO_PUBLICID_IN_JWT = 'NO_PUBLICID_IN_JWT'
 NO_SIM_REASON = 'NO_SIM_REASON'
+NO_VALID_SELLER = 'NO_VALID_SELLER'
 NOTICE_ERROR = 'NOTICE_ERROR'
 NOTICE_EXCEPTION = 'NOTICE_EXCEPTION'
 PAY_DISABLED = 'PAY_DISABLED'
@@ -55,6 +58,7 @@ REVERIFY_FAILED = 'REVERIFY_FAILED'
 REVERIFY_MISSING_PROVIDER = 'REVERIFY_MISSING_PROVIDER'
 REVERIFY_MISSING_URL = 'REVERIFY_MISSING_URL'
 REVERIFY_TIMEOUT = 'REVERIFY_TIMEOUT'
+SELLER_NOT_CONFIGURED = 'SELLER_NOT_CONFIGURED'
 SIM_DISABLED = 'SIM_DISABLED'
 SIM_ONLY_KEY = 'SIM_ONLY_KEY'
 SIMULATE_FAIL = 'SIMULATE_FAIL'
@@ -144,6 +148,8 @@ def _build_legend():
         BANGO_ERROR:
             _('The payment provider (Bango) returned an error while '
               'processing the payment'),
+        BUYER_NOT_CONFIGURED:
+            _('Buyer not configured.'),
         BUYER_UUID_ALREADY_EXISTS:
             _('Buyer with this UUID already exists.'),
         # L10n: JWT stands for JSON Web Token and does not need to be
@@ -197,6 +203,11 @@ def _build_legend():
         NO_PAY_SUCCESS_FUNC:
             # L10n: First argument is the name of a function.
             _('{0} function is undefined').format('paymentSuccess'),
+        NO_PUBLICID_IN_JWT:
+            _('No public_id set in productData by the Marketplace'),
+        NO_VALID_SELLER:
+            _('No seller could be found for this product and payment '
+              'provider combination.'),
         NOTICE_ERROR: _('The notification service responded with an '
                         'error while verifying the payment notice'),
         NOTICE_EXCEPTION: _('The notification service raised an '
@@ -223,6 +234,8 @@ def _build_legend():
             _('The re-verification URL is missing from configuration.'),
         REVERIFY_TIMEOUT:
             _('The request to the server timed out during re-verification.'),
+        SELLER_NOT_CONFIGURED:
+            _('Seller not configured.'),
         SIM_DISABLED: _('Payment simulations are disabled at this time.'),
         SIM_ONLY_KEY:
             _('This payment key can only be used to simulate purchases.'),

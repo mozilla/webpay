@@ -394,6 +394,7 @@ def wait_to_start(request):
         log.info('immediately redirecting to payment URL {url} '
                  'for trans {tr}'.format(url=url, tr=trans))
         return http.HttpResponseRedirect(url)
+
     return render(request, 'pay/wait-to-start.html')
 
 
@@ -406,7 +407,7 @@ def trans_start_url(request):
     """
     trans = None
     trans_id = request.session.get('trans_id')
-    data = {'url': None, 'status': None}
+    data = {'url': None, 'status': None, 'provider': None}
 
     if not trans_id:
         log.error('trans_start_url(): no transaction ID in session')
@@ -416,7 +417,7 @@ def trans_start_url(request):
         with statsd.timer('purchase.payment_time.get_transaction'):
             trans = solitude.get_transaction(trans_id)
         data['status'] = trans['status']
-        data['provider'] = constants.PROVIDERS_INVERTED[trans['provider']]
+        data['provider'] = constants.PROVIDERS_INVERTED.get(trans['provider'])
     except ObjectDoesNotExist:
         log.error('trans_start_url() transaction does not exist: {t}'
                   .format(t=trans_id))
@@ -431,6 +432,16 @@ def trans_start_url(request):
         log.info('async call got payment URL {url} for trans {tr}'
                  .format(url=url, tr=trans))
         data['url'] = url
+
+    if trans and trans['status'] == constants.STATUS_ERRORED:
+        statsd.incr('purchase.payment_time.errored')
+        log.exception('Purchase configuration failed: {0} with status {1}'
+                      .format(trans_id, trans['status']))
+        return system_error(
+            request,
+            code=getattr(msg, trans.get('status_reason', 'UNEXPECTED_ERROR'))
+        )
+
     return data
 
 

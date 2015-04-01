@@ -27,10 +27,12 @@ client = None
 
 class BuyerNotConfigured(Exception):
     """The buyer has not yet been configured for the payment."""
+    error_code = 'BUYER_NOT_CONFIGURED'
 
 
 class SellerNotConfigured(Exception):
     """The seller has not yet been configued for the payment."""
+    error_code = 'SELLER_NOT_CONFIGURED'
 
 
 class SolitudeAPI(SlumberWrapper):

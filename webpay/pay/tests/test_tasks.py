@@ -16,7 +16,6 @@ from nose.tools import eq_, ok_, raises
 from requests.exceptions import RequestException, Timeout
 import test_utils
 
-
 from lib.marketplace.api import client, UnknownPricePoint
 from lib.marketplace.constants import COUNTRIES
 from lib.solitude import api
@@ -26,6 +25,7 @@ from webpay.base.tests import TestCase
 from webpay.base.utils import gmtime
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from webpay.pay import tasks
+from webpay.pay.errors import InvalidPublicID
 from webpay.pay.samples import JWTtester
 
 from .test_views import sample
@@ -606,14 +606,15 @@ class TestStartPay(BaseStartPay):
         )
 
     @raises(api.SellerNotConfigured)
-    def test_no_seller(self):
+    @mock.patch('webpay.pay.tasks.pay_error_handler')
+    def test_no_seller(self, pay_error_handler):
         raise SkipTest
         self.mkt.webpay.prices.return_value = self.prices
         self.solitude.generic.seller.get.return_value = {
             'meta': {'total_count': 0}
         }
         self.start()
-        #eq_(self.get_trans().status, TRANS_STATE_FAILED)
+        assert pay_error_handler.is_called
 
     def test_transaction_called(self):
         self.solitude.generic.transaction.get_object.return_value = {
@@ -671,14 +672,12 @@ class TestStartPay(BaseStartPay):
             self.start()
 
     @raises(RuntimeError)
-    def test_exception_fails_transaction(self):
-        raise SkipTest
-        self.solitude.slumber.generic.seller.get.side_effect = RuntimeError
+    @mock.patch('webpay.pay.tasks.pay_error_handler')
+    def test_exception_fails_transaction(self, pay_error_handler):
+        self.solitude.generic.seller.get_object_or_404.side_effect = (
+            RuntimeError)
         self.start()
-        #trans = self.get_trans()
-        # Currently solitude doesn't have the concept of a failed transaction.
-        # Perhaps we should add that?
-        #eq_(trans.status, TRANS_STATE_FAILED)
+        assert pay_error_handler.is_called
 
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
     def test_pay_url_saved(self):
@@ -730,13 +729,71 @@ class TestStartPay(BaseStartPay):
         args = self.solitude.bango.billing.post.call_args
         eq_(args[0][0]['application_size'], None)
 
-    @raises(ValueError)
+    @raises(InvalidPublicID)
     @mock.patch.object(settings, 'KEY', 'marketplace-domain')
     @mock.patch('webpay.pay.tasks.client')
     def test_marketplace_missing_public_id(self, cli):
         self.notes['issuer_key'] = settings.KEY
         self.notes['pay_request']['request']['productData'] = 'foo-bar'
         self.start()
+
+
+class TestStartPayError(BaseStartPay):
+
+    def setUp(self):
+        super(TestStartPayError, self).setUp()
+
+        p = mock.patch('lib.solitude.api.client.slumber')
+        self.solitude = p.start()
+        self.addCleanup(p.stop)
+
+    def data(self, **kw):
+        data = {
+            'error_type': InvalidPublicID,
+            'provider_helper': api.ProviderHelper('bango'),
+            'source': 'marketplace',
+            'transaction_uuid': 'some:uid',
+        }
+        data.update(**kw)
+        return data
+
+    def test_no_transaction(self):
+        self.solitude.generic.transaction.get_object_or_404.side_effect = (
+            ObjectDoesNotExist)
+        tasks.pay_error_handler(**self.data())
+        self.solitude.generic.transaction.post.assert_called_with({
+            'status_reason': 'NO_PUBLICID_IN_JWT',
+            'provider': constants.PROVIDER_BANGO,
+            'source': 'marketplace',
+            'uuid': 'some:uid',
+            'status': 7,
+        })
+
+    def test_transaction(self):
+        self.solitude.generic.transaction.get_object_or_404.return_value = {
+            'resource_pk': 1,
+            'transaction_uuid': 'some:uid'
+        }
+        transaction = mock.Mock()
+        self.solitude.generic.transaction.return_value = transaction
+
+        tasks.pay_error_handler(**self.data())
+        transaction.patch.assert_called_with({
+            'status_reason': 'NO_PUBLICID_IN_JWT',
+            'status': 7,
+        })
+
+    def test_no_error_type(self):
+        self.solitude.generic.transaction.get_object_or_404.side_effect = (
+            ObjectDoesNotExist)
+        tasks.pay_error_handler(**self.data(error_type=ZeroDivisionError))
+        self.solitude.generic.transaction.post.assert_called_with({
+            'status_reason': 'UNEXPECTED_ERROR',
+            'provider': constants.PROVIDER_BANGO,
+            'source': 'marketplace',
+            'uuid': 'some:uid',
+            'status': 7,
+        })
 
 
 class TestConfigureTransaction(BaseStartPay):

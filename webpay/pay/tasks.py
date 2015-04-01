@@ -18,6 +18,7 @@ from multidb.pinning import use_master
 from webpay.base import dev_messages
 from webpay.base.utils import gmtime, uri_to_pk
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
+from webpay.pay.errors import InvalidPublicID, NoValidSeller
 from .constants import NOT_SIMULATED, SIMULATED_POSTBACK, SIMULATED_CHARGEBACK
 from .utils import send_pay_notice, trans_id
 
@@ -157,7 +158,7 @@ def get_provider_seller_uuid(issuer_key, product_data, provider_names):
         try:
             public_id = product_data['public_id'][0]
         except KeyError:
-            raise ValueError(
+            raise InvalidPublicID(
                 'Marketplace {key} did not put a '
                 'public_id in productData: {product_data}'.format(
                     key=settings.KEY, product_data=product_data
@@ -186,7 +187,7 @@ def get_provider_seller_uuid(issuer_key, product_data, provider_names):
             return (ProviderHelper(provider), provider_seller_uuid,
                     generic_seller_uuid)
 
-    raise ValueError(
+    raise NoValidSeller(
         'Unable to find a valid seller_uuid for public_id {public_id} '
         'using providers: {providers}'.format(
             public_id=public_id, providers=provider_names))
@@ -224,9 +225,13 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_names, **kw):
 
     """
     key = notes['issuer_key']
+    source = 'marketplace' if is_marketplace(key) else 'other'
     pay = notes['pay_request']
     network = notes.get('network', {})
     product_data = urlparse.parse_qs(pay['request'].get('productData', ''))
+    provider_helper, provider_seller_uuid, generic_seller_uuid = (
+        None, None, None)
+
     try:
         (provider_helper,
          provider_seller_uuid,
@@ -264,7 +269,7 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_names, **kw):
             icon_url=icon_url,
             user_uuid=user_uuid,
             application_size=application_size,
-            source='marketplace' if is_marketplace(key) else 'other',
+            source=source,
             mcc=network.get('mcc'),
             mnc=network.get('mnc')
         )
@@ -277,11 +282,78 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_names, **kw):
             'status': constants.STATUS_PENDING
         })
     except Exception, exc:
+        etype, val, tb = sys.exc_info()
+        # Log locally first.
         log.exception('while configuring payment for transaction {t}: '
                       '{exc.__class__.__name__}: {exc}'
                       .format(t=transaction_uuid, exc=exc))
-        etype, val, tb = sys.exc_info()
+        try:
+            # Then try record the error in solitude.
+            pay_error_handler(
+                error_type=etype,
+                provider_helper=provider_helper,
+                source=source,
+                transaction_uuid=transaction_uuid,
+            )
+        except:
+            log.exception('while recording reason for failure {t}'
+                          .format(t=transaction_uuid))
+        # Re-raise the original error,
         raise exc, None, tb
+
+
+def pay_error_handler(
+        error_type,
+        provider_helper,
+        source,
+        transaction_uuid):
+    """
+    Record a transaction error into solitude. At this point the transaction
+    may, or may not exist in solitude.
+
+    Unfortunately many things (buyer, seller, seller_product) are buried inside
+    start_transaction, which might need its own wrapper.
+    """
+    pk = None
+    api = client.slumber.generic.transaction
+    try:
+        pk = api.get_object_or_404(uuid=transaction_uuid)['resource_pk']
+    except ObjectDoesNotExist:
+        pass
+
+    # If the provider_helper is None, then no provider was found.
+    provider = None
+    # Convert the helper into a solitude constant.
+    if provider_helper:
+        provider = constants.PROVIDERS[provider_helper.name]
+
+    # Add error_codes onto Exceptions to have them recorded as that error
+    # in the solitude transaction.
+    reason = getattr(error_type, 'error_code', 'UNEXPECTED_ERROR')
+
+    if pk:
+        # For a transaction to exist, everything up to creating the
+        # transaction in the payment provider has worked and something post
+        # that (eg in getting and patching the transaction) has failed.
+        #
+        # This should be pretty unusual.
+        log.info('Updating transaction as error for: {0}'
+                 .format(transaction_uuid))
+        api(pk).patch({
+            'status': constants.STATUS_ERRORED,
+            'status_reason': reason,
+        })
+
+    else:
+        log.info('Creating transaction error for: {0}'
+                 .format(transaction_uuid))
+        api.post({
+            'provider': provider,
+            'source': source,
+            'status': constants.STATUS_ERRORED,
+            'status_reason': reason,
+            'uuid': transaction_uuid
+        })
 
 
 @task(**notify_kw)
