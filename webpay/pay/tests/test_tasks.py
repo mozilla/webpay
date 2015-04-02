@@ -898,6 +898,29 @@ class TestConfigureTransaction(BaseStartPay):
         eq_(start_pay.call_args[0][1]['pay_request']['request']['description'],
             description)
 
+    def test_fallback_locale_name(self):
+        name = u'Fall ☃'
+        description = u'Back'
+        self.notes['pay_request']['request']['name'] = name
+        self.notes['pay_request']['request']['description'] = description
+        self.notes['pay_request']['request']['locales'] = {
+            'de': {
+                'name': None,
+                'description': None,
+            }
+        }
+        self.solitude.get_transaction.return_value = {
+            'status': constants.STATUS_CANCELLED, 'resource_pk': '1',
+            'notes': self.notes
+        }
+        ok_(self.start(locale='de')[0])
+        start_pay = self.start_pay
+        assert start_pay.called
+        eq_(start_pay.call_args[0][1]['pay_request']['request']['name'],
+            name)
+        eq_(start_pay.call_args[0][1]['pay_request']['request']['description'],
+            description)
+
 
 class TestLocalizePayRequest(test_utils.TestCase):
 

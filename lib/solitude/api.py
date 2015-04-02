@@ -1,5 +1,6 @@
 import json
 import logging
+import sys
 import uuid
 import warnings
 
@@ -17,7 +18,7 @@ from webpay.base import dev_messages as msg
 from webpay.base.helpers import absolutify
 
 from . import constants as solitude_const
-from .exceptions import ResourceNotModified
+from .exceptions import ProviderTransactionError, ResourceNotModified
 from ..utils import SlumberWrapper
 
 
@@ -849,18 +850,24 @@ class BangoProvider(PayProvider):
         redirect_url_onsuccess = absolutify(reverse('bango.success'))
         redirect_url_onerror = absolutify(reverse('bango.error'))
 
-        res = self.api.billing.post({
-            'pageTitle': product_name,
-            'prices': prices,
-            'transaction_uuid': transaction_uuid,
-            'seller_product_bango': provider_product['resource_uri'],
-            'redirect_url_onsuccess': redirect_url_onsuccess,
-            'redirect_url_onerror': redirect_url_onerror,
-            'icon_url': icon_url,
-            'user_uuid': user_uuid,
-            'application_size': application_size,
-            'source': source
-        })
+        try:
+            res = self.api.billing.post({
+                'pageTitle': product_name,
+                'prices': prices,
+                'transaction_uuid': transaction_uuid,
+                'seller_product_bango': provider_product['resource_uri'],
+                'redirect_url_onsuccess': redirect_url_onsuccess,
+                'redirect_url_onerror': redirect_url_onerror,
+                'icon_url': icon_url,
+                'user_uuid': user_uuid,
+                'application_size': application_size,
+                'source': source
+            })
+        except HttpClientError:
+            exc_type, exc_name, tb = sys.exc_info()
+            raise ProviderTransactionError(
+                'Bango transaction create failed for transaction: {tr}'
+                .format(tr=transaction_uuid)), None, tb
 
         bill_id = res['billingConfigurationId']
         log.info('{pr}: made trans billing config ID: {bill}; '

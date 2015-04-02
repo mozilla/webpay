@@ -51,6 +51,7 @@ PIN_ONLY_NUMBERS = 'PIN_ONLY_NUMBERS'
 PIN_STATE_ERROR = 'PIN_STATE_ERROR'
 PIN_STATE_TIMEOUT = 'PIN_STATE_TIMEOUT'
 PROVIDER_LOGOUT_FAIL = 'PROVIDER_LOGOUT_FAIL'
+PROVIDER_TRANSACTION = 'PROVIDER_TRANSACTION'
 REAUTH_LOGOUT_ERROR = 'REAUTH_LOGOUT_ERROR'
 RESOURCE_MODIFIED = 'RESOURCE_MODIFIED'
 REVERIFY_DENIED = 'REVERIFY_DENIED'
@@ -148,6 +149,9 @@ def _build_legend():
         BANGO_ERROR:
             _('The payment provider (Bango) returned an error while '
               'processing the payment'),
+        PROVIDER_TRANSACTION:
+            _('The payment provider (Bango) returned an error while '
+              'setting up the transaction'),
         BUYER_NOT_CONFIGURED:
             _('Buyer not configured.'),
         BUYER_UUID_ALREADY_EXISTS:
