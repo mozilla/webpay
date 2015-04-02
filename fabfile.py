@@ -110,6 +110,8 @@ def deploy_jenkins():
     helpers.restart_uwsgi(getattr(settings, 'UWSGI', []))
     execute(update_celery)
 
+    rpm.clean()
+
 
 @task
 def update():
