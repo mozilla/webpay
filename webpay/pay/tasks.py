@@ -135,8 +135,9 @@ def _localize_pay_request(request):
                                                    trans_id))
                 return
 
-            req['name'] = loc.get('name', req['name'])
-            req['description'] = loc.get('description', req['description'])
+
+            req['name'] = loc.get('name') or req['name']
+            req['description'] = loc.get('description') or req['description']
 
 
 def get_secret(issuer_key):
