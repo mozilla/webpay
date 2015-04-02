@@ -15,6 +15,7 @@ ADD requirements /pip/requirements
 WORKDIR /pip
 RUN pip install -b /pip/build --download-cache /pip/cache --no-deps -r /pip/requirements/docker.txt --find-links https://pyrepo.addons.mozilla.org/
 
+ENV CELERY_BROKER_URL redis://redis:6379/0
 ENV SPARTACUS_STATIC /spartacus
 ENV SOLITUDE_URL http://solitude:2602
 ENV MARKETPLACE_URL http://mp.dev
