@@ -179,7 +179,7 @@ TEST_RUNNER = 'test_utils.runner.NoDBTestSuiterunner'
 ##############################################################################
 # Celery settings
 #
-CELERY_ALWAYS_EAGER = True
+CELERY_ALWAYS_EAGER = False
 
 ###############################################################################
 # Project settings
