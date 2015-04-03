@@ -149,9 +149,6 @@ def _build_legend():
         BANGO_ERROR:
             _('The payment provider (Bango) returned an error while '
               'processing the payment'),
-        PROVIDER_TRANSACTION:
-            _('The payment provider (Bango) returned an error while '
-              'setting up the transaction'),
         BUYER_NOT_CONFIGURED:
             _('Buyer not configured.'),
         BUYER_UUID_ALREADY_EXISTS:
@@ -227,6 +224,9 @@ def _build_legend():
         PIN_STATE_TIMEOUT: _('The request timed out fetching data.'),
         PROVIDER_LOGOUT_FAIL:
             _('Failed to log out of the payment provider.'),
+        PROVIDER_TRANSACTION:
+            _('The payment provider returned an error while '
+              'setting up the transaction'),
         REAUTH_LOGOUT_ERROR: _('An error occurred while trying to log out.'),
         RESOURCE_MODIFIED:
             _('The resource has been modified within the timing of the '
