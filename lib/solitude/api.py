@@ -592,8 +592,8 @@ class ReferenceProvider(PayProvider):
         # In the case of Zippy, it does not detect any of these values
         # itself. All other providers will detect these values without
         # help from Webpay.
-        carrier = 'USA_TMOBILE'
-        region = '123'
+        carrier = 'FAKE'
+        region = 'CAN'
         pay_method = 'OPERATOR'
         # How do we decide what price to show? Normally Bango does this
         # by deciding based on region detection. For our purposes, let's just
