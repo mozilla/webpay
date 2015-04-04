@@ -561,10 +561,10 @@ class TestReferenceProvider(ProviderTestCase):
 
         self.slumber.generic.transaction.post.assert_called_with({
             'amount': '1.99',
-            'carrier': 'USA_TMOBILE',
+            'carrier': 'FAKE',
             'currency': 'USD',
             'provider': constants.PROVIDER_REFERENCE,
-            'region': '123',
+            'region': 'CAN',
             'buyer': self.buyer_uri,
             'seller': self.seller_uri,
             'seller_product': self.product_uri,
@@ -634,10 +634,10 @@ class TestReferenceProvider(ProviderTestCase):
             'Unexpected: {0}'.format(kw['error_url']))
         self.slumber.generic.transaction.post.assert_called_with({
             'amount': '1.99',
-            'carrier': 'USA_TMOBILE',
+            'carrier': 'FAKE',
             'currency': 'USD',
             'provider': constants.PROVIDER_REFERENCE,
-            'region': '123',
+            'region': 'CAN',
             'buyer': self.buyer_uri,
             'seller': self.seller_uri,
             'seller_product': self.product_uri,

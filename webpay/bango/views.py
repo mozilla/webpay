@@ -59,6 +59,7 @@ def _record(request):
             'bango_token': qs.get('Token'),
             'amount': qs.get('Price'),
             'currency': qs.get('Currency'),
+            'network': qs.get('Network')
         })
     except HttpClientError, err:
         log.error('Bango payment notice for transaction uuid %r '
