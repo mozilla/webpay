@@ -24,6 +24,7 @@ log = getLogger('w.auth')
 
 
 @require_POST
+@json_view
 def reset_user(request):
     """
     Reset the logged in Persona user.
@@ -48,7 +49,7 @@ def reset_user(request):
     log.info('PIN reset start: {r}'
              .format(r=datetime.utcfromtimestamp(start_ts)))
 
-    return http.HttpResponse('OK')
+    return {'status': 'OK'}
 
 
 def native_fxa_authenticate(audience, assertion):

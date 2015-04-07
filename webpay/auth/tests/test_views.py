@@ -64,7 +64,8 @@ class TestResetUser(BasicSessionCase):
         session['uuid'] = uuid
         self.save_session(session)
 
-        self.client.post(reverse('auth.reset_user'))
+        res = self.client.post(reverse('auth.reset_user'))
+        eq_(json.loads(res.content)['status'], 'OK')
         eq_(self.client.session.get('logged_in_user'), None)
         eq_(self.client.session.get('uuid'), uuid)
         eq_(self.client.session.get('mkt_permissions'), None)
