@@ -10,7 +10,7 @@ import fudge
 from fudge.inspector import arg
 import jwt
 import mock
-from mock import ANY
+from mock import ANY, call
 from nose.exc import SkipTest
 from nose.tools import eq_, ok_, raises
 from requests.exceptions import RequestException, Timeout
@@ -25,7 +25,7 @@ from webpay.base.tests import TestCase
 from webpay.base.utils import gmtime
 from webpay.constants import TYP_CHARGEBACK, TYP_POSTBACK
 from webpay.pay import tasks
-from webpay.pay.errors import InvalidPublicID
+from webpay.pay.errors import InvalidPublicID, NoValidSeller
 from webpay.pay.samples import JWTtester
 
 from .test_views import sample
@@ -577,6 +577,58 @@ class TestStartPay(BaseStartPay):
             seller_product__external_id='external_id'
         )
 
+    def test_bango_used_when_boku_supported_but_no_price(self):
+        mcc, mnc = api.BokuProvider.network_data.keys()[0]
+        self.providers = api.ProviderHelper.supported_providers(
+            mcc=mcc, mnc=mnc)
+
+        self.solitude.generic.seller.get_object_or_404.return_value = {
+            'resource_pk': 1,
+            'uuid': self.boku_seller_uuid,
+            'resource_uri': '/generic/seller/1/'
+        }
+
+        self.solitude.generic.product.get_object_or_404.return_value = {
+            'resource_uri': '/generic/product/1/',
+            'public_id': 'public_id',
+            'seller_uuids': {
+                'bango': self.bango_seller_uuid,
+                'boku': self.boku_seller_uuid,
+            },
+            'seller': '/generic/seller/1',
+            'external_id': 'external_id',
+        }
+
+        def no_boku_price(pricePoint, provider):
+            if provider == 'boku':
+                return {'prices': []}
+            return {'prices': [{'price': '0.99'}]}
+
+        pricey = mock.Mock()
+        pricey.get_object.side_effect = no_boku_price
+        self.mkt.webpay.prices.return_value = pricey
+
+        tasks.start_pay(self.transaction_uuid, self.notes, self.user_uuid,
+                        [p.name for p in self.providers])
+
+        self.solitude.bango.product.get_object_or_404.assert_called_with(
+            seller_product__seller=1,
+            seller_product__external_id='external_id'
+        )
+        self.solitude.bango.billing.post.assert_called_with({
+            'application_size': None,
+            'icon_url': mock.ANY,
+            'pageTitle': 'Virtual Sword',
+            'prices': [{'price': '0.99'}],
+            'redirect_url_onerror': 'http://testserver/mozpay/bango/error',
+            'redirect_url_onsuccess': 'http://testserver/mozpay/bango/success',
+            'seller_product_bango': mock.ANY,
+            'source': 'other',
+            'transaction_uuid': 'webpay:some-id',
+            'user_uuid': 'some-user-uuid'
+        })
+        ok_(self.mkt.webpay.prices.call_count, 2)
+
     def test_bango_used_when_boku_not_supported(self):
         self.providers = api.ProviderHelper.supported_providers()
         eq_(len(self.providers), 1)
@@ -794,6 +846,61 @@ class TestStartPayError(BaseStartPay):
             'uuid': 'some:uid',
             'status': 7,
         })
+
+
+@mock.patch.object(client, 'get_price')
+class TestBestProvider(BaseStartPay):
+
+    def default(self, **kw):
+        data = {
+            'price_point': '10',
+            'seller_uuids': {
+                'boku': 'uid:boku',
+                'bango': 'uid:bango',
+                'reference': 'uid:reference'
+            },
+            'provider_names': ['bango', 'boku', 'reference']
+        }
+        data.update(**kw)
+        return data
+
+    def test_no_price(self, get_price):
+        get_price.return_value = {'prices': []}
+
+        with self.assertRaises(NoValidSeller):
+            tasks.get_best_provider(**self.default())
+        eq_(get_price.call_args_list,
+            [call('10', provider='bango'),
+             call('10', provider='boku'),
+             call('10', provider='reference')])
+
+    def test_bango_fallback(self, get_price):
+        def no_boku_price(point, provider):
+            if provider == 'boku':
+                return {'prices': []}
+            return {'prices': [{'price': '0.99'}]}
+
+        get_price.side_effect = no_boku_price
+        provider, uid, prices = tasks.get_best_provider(**self.default())
+        eq_(uid, 'uid:bango')
+
+    def test_bango_requested_only(self, get_price):
+        get_price.return_value = {'prices': [{'price': '0.99'}]}
+
+        provider, uid, prices = tasks.get_best_provider(
+            **self.default(provider_names=['bango']))
+        eq_(uid, 'uid:bango')
+        eq_(get_price.call_args_list,
+            [call('10', provider='bango')])
+
+    def test_boku_available_only(self, get_price):
+        get_price.return_value = {'prices': [{'price': '0.99'}]}
+
+        provider, uid, prices = tasks.get_best_provider(
+            **self.default(seller_uuids={'boku': 'uid:boku'}))
+        eq_(uid, 'uid:boku')
+        eq_(get_price.call_args_list,
+            [call('10', provider='boku')])
 
 
 class TestConfigureTransaction(BaseStartPay):

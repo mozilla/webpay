@@ -135,7 +135,6 @@ def _localize_pay_request(request):
                                                    trans_id))
                 return
 
-
             req['name'] = loc.get('name') or req['name']
             req['description'] = loc.get('description') or req['description']
 
@@ -177,21 +176,33 @@ def get_provider_seller_uuid(issuer_key, product_data, provider_names):
     seller = (client.slumber.generic.seller(uri_to_pk(product['seller']))
               .get_object_or_404())
     generic_seller_uuid = seller['uuid']
+    return product, seller, generic_seller_uuid
 
+
+def get_best_provider(price_point, seller_uuids, provider_names):
+    """
+    Looks through the providers requested by user. Check the provider exists on
+    the seller and then check the price point exists in the marketplace.
+    """
+    log.info('Choosing best provider, requested: {p}'.format(p=provider_names))
     for provider in provider_names:
-        if product['seller_uuids'].get(provider, None) is not None:
-            provider_seller_uuid = product['seller_uuids'][provider]
-            log.info('Using provider seller uuid {s} for provider '
-                     '{p} and for public_id {i}, generic seller uuid {u}'
-                     .format(s=provider_seller_uuid, u=generic_seller_uuid,
-                             p=provider, i=public_id))
-            return (ProviderHelper(provider), provider_seller_uuid,
-                    generic_seller_uuid)
+        provider_seller_uuid = seller_uuids.get(provider)
+        log.info('Provider: {p} {s} in sellers account'
+                 .format(p=provider,
+                         s='found' if provider_seller_uuid else 'NOT FOUND'))
+
+        if provider_seller_uuid:
+            prices = mkt_client.get_price(price_point, provider=provider)
+            if not prices['prices']:
+                log.info('No prices for provider: {p}'.format(p=provider))
+                continue
+
+            log.info('Price found for provider: {p}' .format(p=provider))
+            return ProviderHelper(provider), provider_seller_uuid, prices
 
     raise NoValidSeller(
-        'Unable to find a valid seller_uuid for public_id {public_id} '
-        'using providers: {providers}'.format(
-            public_id=public_id, providers=provider_names))
+        'Unable to find a valid seller_uuid '
+        'using providers: {providers}'.format(providers=provider_names))
 
 
 def is_marketplace(issuer_key):
@@ -234,24 +245,23 @@ def start_pay(transaction_uuid, notes, user_uuid, provider_names, **kw):
         None, None, None)
 
     try:
-        (provider_helper,
-         provider_seller_uuid,
-         generic_seller_uuid) = get_provider_seller_uuid(key,
-                                                         product_data,
-                                                         provider_names)
+        product, seller, generic_seller_uuid = get_provider_seller_uuid(
+            key, product_data, provider_names)
+
         try:
             application_size = int(product_data['application_size'][0])
         except (KeyError, ValueError):
             application_size = None
 
         # Ask the marketplace for a valid price point.
-        # Note: the get_price_country API might be more helpful.
-        prices = mkt_client.get_price(pay['request']['pricePoint'],
-                                      provider=provider_helper.provider.name)
+        provider_helper, provider_seller_uuid, prices = get_best_provider(
+            pay['request']['pricePoint'], product['seller_uuids'],
+            provider_names)
         log.debug('pricePoint={point} provider={provider} prices={prices}'
                   .format(point=pay['request']['pricePoint'],
                           prices=prices['prices'],
                           provider=provider_helper.provider.name))
+
         try:
             icon_url = (get_icon_url(pay['request'])
                         if settings.USE_PRODUCT_ICONS else None)
