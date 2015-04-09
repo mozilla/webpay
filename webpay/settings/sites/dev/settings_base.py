@@ -59,8 +59,6 @@ STATIC_URL_DOMAIN = 'marketplace-dev-cdn.allizom.org'
 STATIC_URL = 'https://%s/' % STATIC_URL_DOMAIN
 MEDIA_URL = STATIC_URL + 'mozpay/media/'
 
-#LOGIN_URL = '/mozpay'
-
 # Playdoh ships with Bcrypt+HMAC by default because it's the most secure.
 # To use bcrypt, fill in a secret HMAC key. It cannot be blank.
 HMAC_KEYS = private.HMAC_KEYS

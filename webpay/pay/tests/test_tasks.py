@@ -28,7 +28,7 @@ from webpay.pay import tasks
 from webpay.pay.errors import InvalidPublicID, NoValidSeller
 from webpay.pay.samples import JWTtester
 
-from .test_views import sample
+from . import sample
 
 
 class NotifyTest(JWTtester, TestCase):

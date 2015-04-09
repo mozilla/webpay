@@ -1,7 +1,6 @@
 import os
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
 
 from lib.solitude import constants
 
@@ -15,7 +14,6 @@ class Base(BasicSessionCase, JWTtester):
 
     def setUp(self):
         super(Base, self).setUp()
-        self.url = reverse('pay.lobby')
         self.key = 'public.key'
         self.secret = 'private.secret'
 

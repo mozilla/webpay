@@ -2,10 +2,8 @@ import base64
 import urllib
 
 from django.core.urlresolvers import reverse
-from django.conf import settings
 
 import mock
-from mock import ANY
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 from slumber.exceptions import HttpClientError
@@ -71,12 +69,6 @@ class TestBangoReturn(BasicSessionCase):
                   expected_status=400)
         assert not slumber.bango.notification.post.called
 
-    def test_error(self, payment_notify, slumber):
-        res = self.call(overrides={'ResponseCode': 'NOT OK'},
-                        url='bango.error', expected_status=400)
-        assert slumber.bango.notification.post.called
-        self.assertTemplateUsed(res, 'error.html')
-
     def test_not_error(self, payment_notify, slumber):
         self.call(overrides={'ResponseCode': 'OK'}, url='bango.error',
                   expected_status=400)
@@ -89,14 +81,12 @@ class TestBangoReturn(BasicSessionCase):
         self.call(overrides={'ResponseCode': 'NOT_OK'}, url='bango.success',
                   expected_status=400)
 
-    @mock.patch.object(settings, 'SPA_ENABLE', True)
     def test_success_spa(self, payment_notify, slumber):
         res = self.call()
         doc = pq(res.content)
         eq_(doc('body').attr('data-start-view'), 'payment-success')
         self.assertTemplateUsed('spa/index.html')
 
-    @mock.patch.object(settings, 'SPA_ENABLE', True)
     def test_cancel_spa(self, payment_notify, slumber):
         res = self.call(overrides={'ResponseCode': 'CANCEL'},
                         url='bango.error',
@@ -105,7 +95,6 @@ class TestBangoReturn(BasicSessionCase):
         eq_(doc('body').attr('data-start-view'), 'payment-failed')
         self.assertTemplateUsed('spa/index.html')
 
-    @mock.patch.object(settings, 'SPA_ENABLE', True)
     def test_error_spa(self, payment_notify, slumber):
         res = self.call(overrides={'ResponseCode': 'NOT_OK'},
                         url='bango.error', expected_status=400)

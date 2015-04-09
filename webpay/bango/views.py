@@ -1,5 +1,3 @@
-import uuid
-
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
@@ -101,14 +99,11 @@ def success(request):
     # Signature verification was successful; fulfill the payment.
     tasks.payment_notify.delay(request.GET.get('MerchantTransactionId'))
 
-    if settings.SPA_ENABLE:
-        state, fxa_url = fxa_auth_info(request)
-        ctx = {'start_view': 'payment-success',
-               'fxa_state': state,
-               'fxa_auth_url': fxa_url}
-        return render(request, 'spa/index.html', ctx)
-
-    return render(request, 'bango/success.html')
+    state, fxa_url = fxa_auth_info(request)
+    ctx = {'start_view': 'payment-success',
+           'fxa_state': state,
+           'fxa_auth_url': fxa_url}
+    return render(request, 'spa/index.html', ctx)
 
 
 @require_GET

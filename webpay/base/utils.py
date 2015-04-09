@@ -68,6 +68,7 @@ def system_error(request, **kw):
 
 
 def custom_error(request, user_message, code=msg.UNEXPECTED_ERROR, status=400):
+    from webpay.base.helpers import fxa_auth_info
     error = {'error': user_message, 'error_code': code}
     if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
         return HttpResponse(
@@ -75,16 +76,12 @@ def custom_error(request, user_message, code=msg.UNEXPECTED_ERROR, status=400):
             content_type='application/json; charset=utf-8',
             status=status)
 
-    if settings.SPA_ENABLE:
-        from webpay.base.helpers import fxa_auth_info
-        state, fxa_url = fxa_auth_info(request)
-        ctx = {'start_view': 'payment-failed',
-               'error_code': code,
-               'fxa_state': state,
-               'fxa_auth_url': fxa_url}
-        return render(request, 'spa/index.html', ctx, status=status)
-
-    return render(request, 'error.html', error, status=status)
+    state, fxa_url = fxa_auth_info(request)
+    ctx = {'start_view': 'payment-failed',
+           'error_code': code,
+           'fxa_state': state,
+           'fxa_auth_url': fxa_url}
+    return render(request, 'spa/index.html', ctx, status=status)
 
 
 def uri_to_pk(uri):

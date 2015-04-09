@@ -300,58 +300,6 @@ class SolitudeAPITest(TestCase):
                                         'pin_was_locked_out': False},
                                        headers={'If-Match': ''})
 
-    def test_set_needs_pin_reset(self, slumber):
-        buyer = mock.Mock(return_value=self.buyer_data)
-        buyer.patch.return_value = {}
-        slumber.generic.buyer.return_value = buyer
-        res = client.set_needs_pin_reset(self.uuid)
-        eq_(res, {})
-
-    def test_set_needs_pin_reset_with_good_etag(self, slumber):
-        etag = 'etag:good'
-        buyer = mock.Mock(return_value=self.buyer_data)
-        buyer.patch.return_value = {}
-        slumber.generic.buyer.return_value = buyer
-        res = client.set_needs_pin_reset(self.uuid, etag=etag)
-        eq_(res, {})
-
-    def test_set_needs_pin_reset_with_wrong_etag(self, slumber):
-        wrong_etag = 'etag:wrong'
-        buyer = mock.Mock(return_value=self.buyer_data)
-        buyer.patch.side_effect = HttpClientError(
-            response=self.create_error_response(
-                status_code=412,
-                content={'ERROR': ['RESOURCE_MODIFIED']}))
-        slumber.generic.buyer.return_value = buyer
-        with self.assertRaises(ResourceModified):
-            client.set_needs_pin_reset(self.uuid, etag=wrong_etag)
-
-    def test_unset_needs_pin_reset(self, slumber):
-        buyer = mock.Mock(return_value=self.buyer_data)
-        buyer.patch.return_value = {}
-        slumber.generic.buyer.return_value = buyer
-        res = client.set_needs_pin_reset(self.uuid, False)
-        eq_(res, {})
-
-    def test_unset_needs_pin_reset_with_good_etag(self, slumber):
-        etag = 'etag:good'
-        buyer = mock.Mock(return_value=self.buyer_data)
-        buyer.patch.return_value = {}
-        slumber.generic.buyer.return_value = buyer
-        res = client.set_needs_pin_reset(self.uuid, False, etag=etag)
-        eq_(res, {})
-
-    def test_unset_needs_pin_reset_with_wrong_etag(self, slumber):
-        wrong_etag = 'etag:wrong'
-        buyer = mock.Mock(return_value=self.buyer_data)
-        buyer.patch.side_effect = HttpClientError(
-            response=self.create_error_response(
-                status_code=412,
-                content={'ERROR': ['RESOURCE_MODIFIED']}))
-        slumber.generic.buyer.return_value = buyer
-        with self.assertRaises(ResourceModified):
-            client.set_needs_pin_reset(self.uuid, False, etag=wrong_etag)
-
 
 class TestBango(TestCase):
     uuid = 'some:pin'

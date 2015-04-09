@@ -10,11 +10,10 @@ from webpay.base.tests import BasicSessionCase, TestCase
 from webpay.pay.tests import Base
 
 
-@mock.patch.object(settings, 'SPA_ENABLE', True)
 class TestSpaViews(BasicSessionCase):
 
     def test_index(self):
-        res = self.client.get(reverse('pay.lobby'))
+        res = self.client.get(reverse('index'))
         eq_(res.status_code, 200)
         self.assertTemplateUsed(res, 'spa/index.html')
         doc = pq(res.content)
@@ -36,7 +35,7 @@ class TestSpaViews(BasicSessionCase):
         session = self.client.session
         session['super_powers'] = True
         self.save_session(session)
-        res = self.client.get(reverse('pay.lobby'))
+        res = self.client.get(reverse('index'))
         eq_(res.status_code, 200)
         self.assertTemplateUsed(res, 'spa/index.html')
         doc = pq(res.content)
@@ -44,19 +43,17 @@ class TestSpaViews(BasicSessionCase):
 
 
 @mock.patch('webpay.base.utils.spartacus_build_id')
-@test.utils.override_settings(SPA_ENABLE=True, SPA_ENABLE_URLS=True)
 class TestSpartacusCacheBusting(TestCase):
     def test_build_id_is_set(self, spartacus_build_id):
         build_id = 'the-build-id-for-spartacus'
         spartacus_build_id.return_value = build_id
-        url = reverse('pay.lobby')
+        url = reverse('index')
         response = test.Client().get(url)
         doc = pq(response.content)
         build_id_from_dom = doc('body').attr('data-build-id')
         eq_(build_id_from_dom, build_id)
 
 
-@test.utils.override_settings(SPA_ENABLE=True, SPA_ENABLE_URLS=True)
 class TestSpaDataAttrs(TestCase):
 
     def test_has_bango_logout_url(self):
@@ -68,9 +65,7 @@ class TestSpaDataAttrs(TestCase):
             settings.PAY_URLS['bango']['logout'])
 
 
-@test.utils.override_settings(SPA_ENABLE=True,
-                              SPA_ENABLE_URLS=True,
-                              KEY='marketplace.mozilla.com',
+@test.utils.override_settings(KEY='marketplace.mozilla.com',
                               DOMAIN='marketplace.mozilla.com',
                               SECRET='test secret')
 class TestBuyerEmailAuth(Base):
