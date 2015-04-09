@@ -14,6 +14,8 @@ before_install:
   - sudo apt-get install swig
   - sudo apt-get install python-m2crypto
   - sudo apt-get install python-lxml
+before_script:
+  - flake8 . --exclude=./docs/conf.py
 install:
   - pip install --no-deps -r requirements/test.txt --use-mirrors
 script: ./manage.py test

@@ -41,7 +41,7 @@ def enforce_sequence(func):
             # This is just a warning for developers trying to use webpay if
             # they haven't set their settings correctly.
             if (not request.session.keys() and settings.SESSION_COOKIE_SECURE
-                and settings.DEBUG):
+                    and settings.DEBUG):
                 log.warning('No session data. '
                             'Try setting SESSION_COOKIE_SECURE to False')
             log_cef('No UUID in session, not verified', request, severity=7)
@@ -132,11 +132,6 @@ def get_locked_step(request, step):
     :rtype: HttpResponse or None or False
 
     """
-    try:
-        step_index = flow['locked'].index(step)
-    except ValueError:
-        step_index = -1
-
     if request.session.get('uuid_pin_is_locked'):
         if step != 'is_locked':
             log_redirect(request, step, 'is_locked')

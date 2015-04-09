@@ -31,9 +31,9 @@ def monitor(request):
     except (HttpServerError, HttpClientError), err:
         all_good = False
         msg = ('Server error: status {0}, content: {1}'.format(
-                    err.response.status_code,
-                    err.response.content or 'empty')
-               if err.response else 'Server error: no response')
+            err.response.status_code,
+            err.response.content or 'empty')
+            if err.response else 'Server error: no response')
     else:
         if not perms['permissions'].get('webpay', False):
             all_good = False

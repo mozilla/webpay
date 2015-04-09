@@ -95,4 +95,3 @@ def fxa_auth_info(request):
                 client_id=settings.FXA_CLIENT_ID,
                 state=state,
                 scope='profile'))
-

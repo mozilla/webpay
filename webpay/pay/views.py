@@ -1,36 +1,23 @@
 import re
-import time
 import uuid
 
-from django import http
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse
-from django.shortcuts import redirect, render
-from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.http import require_POST
 
-from django_statsd.clients import statsd
 from mozpay.exc import InvalidJWT, RequestExpired
 from mozpay.verify import verify_jwt
-from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
-from webpay.auth.decorators import user_can_simulate, user_verified
-from webpay.auth import utils as auth_utils
 from webpay.base import dev_messages as msg
 from webpay.base.decorators import json_view
 from webpay.base.logger import getLogger
 from webpay.base.utils import app_error, custom_error, system_error
-from webpay.pin.forms import VerifyPinForm
 
 from lib.marketplace.api import client as marketplace, UnknownPricePoint
-from lib.solitude import constants
-from lib.solitude.api import client as solitude
-from lib.solitude.exceptions import ResourceModified
 
 from . import tasks
-from .forms import SuperSimulateForm, VerifyForm, NetCodeForm
-from .utils import clear_messages, trans_id, verify_urls
+from .forms import VerifyForm, NetCodeForm
+from .utils import trans_id, verify_urls
 
 log = getLogger('w.pay')
 

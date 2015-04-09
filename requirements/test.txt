@@ -6,3 +6,9 @@ fudge==1.0.3
 meld3==0.6.10
 polib==1.0.3
 pyquery==1.2.8
+
+# Flake8 requirements
+flake8==2.3.0
+pyflakes==0.8.1
+pep8==1.5.7
+mccabe==0.3

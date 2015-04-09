@@ -1,5 +1,4 @@
 """private_base will be populated from puppet and placed in this directory"""
-import logging.handlers
 import dj_database_url
 import private_base as private
 
@@ -72,21 +71,17 @@ SECRET_KEY = private.SECRET_KEY
 # Should robots.txt allow web crawlers?  Set this to True for production
 ENGAGE_ROBOTS = False
 
-## Celery
+# Celery
 BROKER_URL = private.BROKER_URL
 CELERY_ALWAYS_EAGER = False
 CELERY_IGNORE_RESULT = True
 CELERY_DISABLE_RATE_LIMITS = True
 CELERYD_PREFETCH_MULTIPLIER = 1
 
-## Log settings
+# Log settings
 
 SYSLOG_TAG = private.SYSLOG_TAG
-#LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))
-
-# Common Event Format logging parameters
-#CEF_PRODUCT = 'Playdoh'
-#CEF_VENDOR = 'Mozilla'
+# LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))
 
 # Uncomment this line if you are running a local development install without
 # HTTPS to disable HTTPS-only cookies.
@@ -119,7 +114,8 @@ ENCRYPTED_COOKIE_KEY = private.ENCRYPTED_COOKIE_KEY
 ALLOW_ADMIN_SIMULATIONS = True
 
 base.JS_SETTINGS['tracking_enabled'] = True
-base.JS_SETTINGS['zamboni_raven_url'] = 'https://none@marketplace-dev.allizom.org/api/v1/fireplace/report_error/3'
+base.JS_SETTINGS['zamboni_raven_url'] = (
+    'https://none@marketplace-dev.allizom.org/api/v1/fireplace/report_error/3')
 
 NEWRELIC_INI = '/etc/newrelic.d/marketplace-dev.allizom.org-webpay.ini'
 

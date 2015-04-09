@@ -57,7 +57,7 @@ def configure_transaction(request, trans=None, mcc=None, mnc=None):
     log.info('configuring transaction {0} from client'
              .format(request.session.get('trans_id')))
 
-    if not trans and not 'trans_id' in request.session:
+    if not trans and 'trans_id' not in request.session:
         log.error('trans_id: not found in session')
         return (False, dev_messages.TRANS_MISSING)
 
