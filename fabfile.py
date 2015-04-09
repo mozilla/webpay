@@ -40,13 +40,6 @@ def update_locales():
 
 
 @task
-def schematic(run_dir=WEBPAY):
-    with lcd(run_dir):
-        local("%s %s/bin/schematic migrations" %
-              (PYTHON, VIRTUALENV))
-
-
-@task
 def update_info(ref='origin/master'):
     helpers.git_info(WEBPAY)
     with lcd(WEBPAY):
@@ -103,8 +96,6 @@ def deploy_jenkins():
 
     rpm.local_install()
 
-    execute(schematic, os.path.join(rpm.install_to, 'webpay'))
-
     rpm.remote_install(['web', 'celery'])
 
     helpers.restart_uwsgi(getattr(settings, 'UWSGI', []))
@@ -117,7 +108,6 @@ def deploy_jenkins():
 def update():
     execute(create_virtualenv)
     execute(update_locales)
-    execute(schematic)
 
 
 @task

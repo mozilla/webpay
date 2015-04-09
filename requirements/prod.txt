@@ -44,7 +44,6 @@ pytz==2010e
 raven==4.2.3
 requests==2.0.0
 requests_oauthlib==0.4.1
-schematic==0.2
 six==1.2.0
 slumber==0.5.3
 statsd==2.0.3
