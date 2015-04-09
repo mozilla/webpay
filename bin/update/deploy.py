@@ -42,9 +42,6 @@ def update_locales(ctx):
 def update_assets(ctx):
     with ctx.lcd(settings.SRC_DIR):
         ctx.local("python2.6 manage.py collectstatic --noinput")
-        # un-comment if you haven't moved to django-compressor yet
-        ## LANG=en_US.UTF-8 is sometimes necessary for the YUICompressor.
-        #ctx.local('LANG=en_US.UTF8 python2.6 manage.py compress_assets')
 
 
 @task
@@ -78,14 +75,16 @@ def checkin_changes(ctx):
     ctx.local(settings.DEPLOY_SCRIPT)
 
 
-@hostgroups(settings.WEB_HOSTGROUP, remote_kwargs={'ssh_key': settings.SSH_KEY})
+@hostgroups(settings.WEB_HOSTGROUP,
+            remote_kwargs={'ssh_key': settings.SSH_KEY})
 def deploy_app(ctx):
     """Call the remote update script to push changes to webheads."""
     ctx.remote(settings.REMOTE_UPDATE_SCRIPT)
     ctx.remote('/bin/touch %s' % settings.REMOTE_WSGI)
 
 
-@hostgroups(settings.CELERY_HOSTGROUP, remote_kwargs={'ssh_key': settings.SSH_KEY})
+@hostgroups(settings.CELERY_HOSTGROUP,
+            remote_kwargs={'ssh_key': settings.SSH_KEY})
 def update_celery(ctx):
     """Update and restart Celery."""
     ctx.remote(settings.REMOTE_UPDATE_SCRIPT)

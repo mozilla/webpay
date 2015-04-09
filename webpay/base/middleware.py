@@ -64,7 +64,7 @@ class LocaleMiddleware(object):
         """
         if request.META.get('HTTP_ACCEPT_LANGUAGE'):
             best = self.get_best_language(
-                            request.META['HTTP_ACCEPT_LANGUAGE'])
+                request.META['HTTP_ACCEPT_LANGUAGE'])
             if best:
                 return best
         return settings.LANGUAGE_CODE
@@ -76,7 +76,7 @@ class LocaleMiddleware(object):
         LUM = settings.LANGUAGE_URL_MAP
         langs = LUM.copy()
         langs.update((k.split('-')[0], v) for k, v in LUM.items() if
-                      k.split('-')[0] not in langs)
+                     k.split('-')[0] not in langs)
         ranked = parse_accept_lang_header(accept_lang)
         for lang, _ in ranked:
             lang = lang.lower()

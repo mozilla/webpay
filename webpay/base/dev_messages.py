@@ -285,8 +285,8 @@ def _build_legend():
     for field, key in SHORT_FIELD_TOO_LONG_CODE.iteritems():
         # L10n: First argument is the name of a key. Second
         # argument is a number.
-        _legend[key] = _('The value for key "{0}" exceeds the maximum '
-                         'length of {1}').format(
-                                field, settings.SHORT_FIELD_MAX_LENGTH)
+        _legend[key] = _(
+            'The value for key "{0}" exceeds the maximum '
+            'length of {1}').format(field, settings.SHORT_FIELD_MAX_LENGTH)
 
     return _legend

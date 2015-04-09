@@ -1,5 +1,4 @@
 """private_base will be populated from puppet and placed in this directory"""
-import logging.handlers
 import dj_database_url
 import private_base as private
 
@@ -59,17 +58,17 @@ SECRET_KEY = private.SECRET_KEY
 
 ENGAGE_ROBOTS = False
 
-## Celery
+# Celery
 BROKER_URL = private.BROKER_URL
 CELERY_ALWAYS_EAGER = False
 CELERY_IGNORE_RESULT = True
 CELERY_DISABLE_RATE_LIMITS = True
 CELERYD_PREFETCH_MULTIPLIER = 1
 
-## Log settings
+# Log settings
 
 SYSLOG_TAG = private.SYSLOG_TAG
-#LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))
+# LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))
 
 # HTTPS to disable HTTPS-only cookies.
 SESSION_COOKIE_SECURE = True
@@ -114,7 +113,8 @@ ENCRYPTED_COOKIE_KEY = private.ENCRYPTED_COOKIE_KEY
 ALLOW_ADMIN_SIMULATIONS = True
 
 base.JS_SETTINGS['tracking_enabled'] = True
-base.JS_SETTINGS['zamboni_raven_url'] = 'https://none@payments-alt.allizom.org/api/v1/fireplace/report_error/8'
+base.JS_SETTINGS['zamboni_raven_url'] = (
+    'https://none@payments-alt.allizom.org/api/v1/fireplace/report_error/8')
 
 NEWRELIC_INI = '/etc/newrelic.d/payments-alt.allizom.org-webpay.ini'
 

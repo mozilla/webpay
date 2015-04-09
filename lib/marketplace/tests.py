@@ -80,6 +80,7 @@ class SolitudeAPITest(TestCase):
         sample.get_object.return_value = sample_price
 
         self.count = 1
+
         def failure():
             if self.count == 3:
                 return sample

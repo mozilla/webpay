@@ -49,8 +49,8 @@ class SigCheckForm(ParanoidForm):
 
 class ErrorLegendForm(ParanoidForm):
     locale = forms.TypedChoiceField(
-                required=False,
-                # TODO: maybe support more standard language codes and/or
-                # handle short code conversion?
-                choices=zip(settings.PROD_LANGUAGES,
-                            settings.PROD_LANGUAGES))
+        required=False,
+        # TODO: maybe support more standard language codes and/or
+        # handle short code conversion?
+        choices=zip(settings.PROD_LANGUAGES,
+                    settings.PROD_LANGUAGES))

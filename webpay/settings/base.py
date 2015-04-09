@@ -2,7 +2,7 @@ import os
 import logging.handlers
 from urlparse import urlparse
 
-from funfactory.settings_base import *
+from funfactory.settings_base import *  # noqa
 
 host = os.environ.get('MARKETPLACE_URL', 'http://localhost')
 

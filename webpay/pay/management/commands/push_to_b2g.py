@@ -5,7 +5,6 @@ import tempfile
 import textwrap
 
 from django.core.management.base import BaseCommand
-from django.conf import settings
 
 
 def sh(*args, **kw):

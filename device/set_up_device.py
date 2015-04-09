@@ -121,7 +121,9 @@ def set_up_device(opt):
     mc.switch_to_frame()
     all_apps = set(a['manifest']['name'] for a in get_installed(apps))
     if 'Marketplace Dev' not in all_apps:
-        mc.execute_script('navigator.mozApps.install("https://marketplace-dev.allizom.org/manifest.webapp");')
+        mc.execute_script(
+            'navigator.mozApps.install'
+            '("https://marketplace-dev.allizom.org/manifest.webapp");')
         wait_for_element_displayed(mc, 'id', 'app-install-install-button')
         yes = mc.find_element('id', 'app-install-install-button')
         mc.tap(yes)
@@ -148,7 +150,7 @@ export NSPR_LOG_FILE=/data/local/tmp/http.log
 /system/bin/b2g.sh
 
 SHELL
-        """, shell=True)
+        """, shell=True)  # noqa
     try:
         print 'Get output with adb logcat'
         p.wait()
