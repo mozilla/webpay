@@ -1,5 +1,4 @@
 import urlparse
-from django import http
 from django.conf import settings
 from django.shortcuts import render
 
@@ -14,8 +13,6 @@ log = getLogger('w.spa')
 @require_GET
 def index(request, view_name=None, start_view=None):
     """Page that serves the static Single Page App (Spartacus)."""
-    if not settings.SPA_ENABLE:
-        return http.HttpResponseForbidden()
     ctx = {}
     ctx['fxa_state'], ctx['fxa_auth_url'] = fxa_auth_info(request)
     jwt = request.GET.get('req')

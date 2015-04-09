@@ -17,7 +17,6 @@ TEMPLATE_DEBUG = True
 SITE_URL = 'http://testserver'
 
 ALLOW_SIMULATE = True
-TEST_PIN_UI = False
 
 BROWSERID_DOMAIN = 'nowhereatall.org'
 BROWSERID_UNVERIFIED_ISSUER = BROWSERID_DOMAIN
@@ -55,9 +54,6 @@ CACHES = {
 }
 
 CACHE_PREFIX = 'webpay:test'
-
-SPA_ENABLE = False
-SPA_ENABLE_URLS = True
 
 SPARTACUS_BUILD_ID_KEY = 'spartacus-build-id'
 SPARTACUS_STATIC = '/mozpay/media'

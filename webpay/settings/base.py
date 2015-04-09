@@ -126,10 +126,6 @@ LOGGING = {
     },
 }
 
-LOGIN_URL = 'pay.lobby'
-LOGIN_REDIRECT_URL = 'pay.lobby'
-LOGIN_REDIRECT_URL_FAILURE = 'pay.lobby'
-
 MEDIA_URL = '/mozpay/media/'
 
 MIDDLEWARE_CLASSES = (
@@ -517,8 +513,6 @@ SPARTACUS_STATIC = os.environ.get('SPARTACUS_STATIC', 'http://localhost:2604')
 
 # Spartacus path settings.
 SPA_BASE_URL = '/mozpay/spa/'
-SPA_ENABLE = True
-SPA_ENABLE_URLS = True
 SPA_URLS = [
     'create-pin',
     'enter-pin',

@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import (HttpResponseForbidden, HttpResponseNotFound,
@@ -39,19 +38,15 @@ def wait_to_finish(request, provider_name):
 
     trans_url = reverse('provider.transaction_status', args=[trans_uuid])
 
-    if settings.SPA_ENABLE:
-        state, fxa_url = fxa_auth_info(request)
-        ctx = {
-            'transaction_status_url': trans_url,
-            'start_view': 'wait-to-finish',
-            'fxa_state': state,
-            'fxa_auth_url': fxa_url,
-        }
+    state, fxa_url = fxa_auth_info(request)
+    ctx = {
+        'transaction_status_url': trans_url,
+        'start_view': 'wait-to-finish',
+        'fxa_state': state,
+        'fxa_auth_url': fxa_url,
+    }
 
-        return render(request, 'spa/index.html', ctx)
-
-    return render(request, 'provider/wait-to-finish.html',
-                  {'transaction_status_url': trans_url})
+    return render(request, 'spa/index.html', ctx)
 
 
 @json_view(status_code=203)
@@ -95,14 +90,11 @@ def success(request, provider_name):
 
     tasks.payment_notify.delay(transaction_id)
 
-    if settings.SPA_ENABLE:
-        state, fxa_url = fxa_auth_info(request)
-        ctx = {'start_view': 'payment-success',
-               'fxa_state': state,
-               'fxa_auth_url': fxa_url}
-        return render(request, 'spa/index.html', ctx)
-
-    return render(request, 'provider/success.html')
+    state, fxa_url = fxa_auth_info(request)
+    ctx = {'start_view': 'payment-success',
+           'fxa_state': state,
+           'fxa_auth_url': fxa_url}
+    return render(request, 'spa/index.html', ctx)
 
 
 @require_GET

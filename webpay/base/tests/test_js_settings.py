@@ -18,10 +18,9 @@ class TestJsSettingsOutput(TestCase):
         super(TestJsSettingsOutput, self).setUp()
         self.client = test.Client()
 
-    @mock.patch.object(settings, 'SPA_ENABLE', True)
     @mock.patch.object(settings, 'SPA_SETTINGS', TEST_JS_SETTINGS)
     def test_js_error_settings_output(self):
-        url = reverse('pay.lobby')
+        url = reverse('index')
         res = self.client.get(url)
         eq_(res.status_code, 200)
         doc = pq(res.content)

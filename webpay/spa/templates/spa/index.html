@@ -27,7 +27,7 @@
     {% if transaction_status_url %}
       data-trans-start-url="{{ transaction_status_url }}"
     {% else %}
-      data-trans-start-url="{{ url('pay.trans_start_url') }}"
+      data-trans-start-url="{{ url('api:pay.trans_start_url') }}"
     {% endif %}
     data-trans-status-completed="{{ solitude_constants.STATUS_COMPLETED }}"
     data-trans-status-pending="{{ solitude_constants.STATUS_PENDING }}"

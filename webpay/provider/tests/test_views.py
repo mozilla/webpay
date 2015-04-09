@@ -81,21 +81,6 @@ class TestProviderSuccess(ProviderTestCase):
         self.assertContains(res, msg.NO_ACTIVE_TRANS,
                             status_code=400)
 
-    def test_success(self):
-        self.trust_notice()
-        res = self.success()
-        eq_(res.status_code, 200)
-        self.payment_notify.delay.assert_called_with(self.trans_id)
-        self.assertTemplateUsed(res, 'provider/success.html')
-
-    def test_error(self):
-        self.trust_notice()
-        res = self.error()
-        eq_(res.status_code, 400)
-        assert not self.payment_notify.delay.called, (
-            'did not expect a notification on error')
-        self.assertTemplateUsed(res, 'error.html')
-
     def test_invalid_notice_on_success(self):
         post = self.slumber.provider.reference.notices.post
         post.return_value = {'result': 'FAIL'}
@@ -117,7 +102,6 @@ class TestProviderSuccess(ProviderTestCase):
         res = self.error()
         eq_(res.status_code, 400)
 
-    @mock.patch.object(settings, 'SPA_ENABLE', True)
     def test_success_spa(self):
         self.trust_notice()
         res = self.success()
@@ -125,7 +109,6 @@ class TestProviderSuccess(ProviderTestCase):
         eq_(doc('body').attr('data-start-view'), 'payment-success')
         self.assertTemplateUsed('spa/index.html')
 
-    @mock.patch.object(settings, 'SPA_ENABLE', True)
     def test_error_spa(self):
         self.trust_notice()
         res = self.error()
@@ -154,7 +137,6 @@ class TestWaitToFinish(ProviderTestCase):
         eq_(res.context['transaction_status_url'], url)
         eq_(res.status_code, 200)
 
-    @mock.patch.object(settings, 'SPA_ENABLE', True)
     def test_spa_wait_to_finish(self):
         res = self.wait()
         eq_(res.status_code, 200)

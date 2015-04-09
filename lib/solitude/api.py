@@ -108,27 +108,6 @@ class SolitudeAPI(SlumberWrapper):
             return res
         return {}
 
-    def set_needs_pin_reset(self, uuid, value=True, etag=''):
-        """Set flag for user to go through reset flow or not on next log in.
-
-        :param uuid: String to identify the buyer by.
-        :param value: Boolean for whether they should go into the reset flow or
-                      not, defaults to True
-        :rtype: dictionary
-        """
-        return self.update_buyer(uuid,
-                                 etag=etag,
-                                 needs_pin_reset=value,
-                                 new_pin=None)
-
-    def unset_was_locked(self, uuid, etag=''):
-        """Unsets the flag to view the was_locked screen.
-
-        :param uuid: String to identify the buyer by.
-        :rtype: dictionary
-        """
-        return self.update_buyer(uuid, etag=etag, pin_was_locked_out=False)
-
     def change_pin(self, uuid, pin, etag='', pin_confirmed=False,
                    clear_was_locked=False):
         """Changes the pin of a buyer, for use with buyers who exist without
@@ -616,9 +595,9 @@ class ReferenceProvider(PayProvider):
             'currency': currency,
             'pay_method': pay_method,
             'callback_success_url': absolutify(
-                reverse('pay.callback_success_url')),
+                reverse('api:pay.callback_success_url')),
             'callback_error_url': absolutify(
-                reverse('pay.callback_error_url')),
+                reverse('api:pay.callback_error_url')),
             'ext_transaction_id': transaction_uuid,
             'success_url': absolutify(reverse('provider.success',
                                       args=[self.name])),

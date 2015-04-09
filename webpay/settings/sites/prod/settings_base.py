@@ -121,9 +121,6 @@ NOSE_PLUGINS = []
 
 SPARTACUS_STATIC = 'https://marketplace.cdn.mozilla.net/mozpay/spa'
 
-SPA_ENABLE = True
-SPA_ENABLE_URLS = True
-
 SPA_SETTINGS = base.SPA_SETTINGS
 SPA_SETTINGS['ua_tracking_enabled'] = True
 

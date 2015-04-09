@@ -1,15 +1,12 @@
 from django.conf.urls import include, patterns, url
 
-from .api import PayViewSet, SimulateViewSet
+from .api import SimulateViewSet
 
-
-# Disable these API's on production until we are sure they are working well.
 urlpatterns = patterns(
     '',
     url('^pin/', include('webpay.pin.urls')),
-    url('^pay/',
-        PayViewSet.as_view({'post': 'create', 'get': 'retrieve'}),
-        name='pay'),
+    url('^pay/', include('webpay.pay.urls')),
+    # TODO: move /simulate to /pay/simulate after updating Spartacus.
     url('^simulate/',
         SimulateViewSet.as_view({'post': 'create'}),
         name='simulate'),
