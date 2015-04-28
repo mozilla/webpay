@@ -25,7 +25,9 @@ DATABASES = {
 }
 
 DEBUG = True
-DEBUG_PROPAGATE_EXCEPTIONS = True
+# If set to True, you can see tracebacks in the console
+# for local development.
+DEBUG_PROPAGATE_EXCEPTIONS = False
 
 # Tell Django to do everything in UTC.
 USE_TZ = True
