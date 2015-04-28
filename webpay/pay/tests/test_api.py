@@ -56,7 +56,11 @@ class PayTester(Base, BaseAPICase):
             data = {}
             if req is None:
                 req = self.request(**(request_kwargs or {}))
-            data = {'req': req, 'mnc': mnc, 'mcc': mcc}
+            data = {'req': req}
+            if mnc:
+                data['mnc'] = mnc
+            if mcc:
+                data['mcc'] = mcc
         kwargs.setdefault('HTTP_ACCEPT', 'application/json')
         return self.client.post(self.url, data=data, **kwargs)
 
@@ -185,6 +189,10 @@ class TestPay(PayTester):
         eq_(res.status_code, 200)
         args = self.start_pay.delay.call_args[0][1]
         eq_(args['network'], {'mnc': '423', 'mcc': '555'})
+
+    def test_non_ascii_form_error(self):
+        # This was triggering a non-ascii error in a logger.
+        self.post(mnc=None, mcc=None, HTTP_ACCEPT_LANGUAGE='zh-CN')
 
     @mock.patch.object(settings, 'SIMULATED_NETWORK',
                        {'mcc': '123', 'mnc': '45'})

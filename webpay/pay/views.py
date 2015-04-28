@@ -129,7 +129,7 @@ def configure_transaction(request, data=None):
                  .format(mcc=mcc, mnc=mnc))
     else:
         log.info('Network form was invalid, no codes were applied.')
-        log.debug('Network form errors: {e}'.format(e=form.errors.as_text()))
+        log.debug(u'Network form errors: {e}'.format(e=form.errors.as_text()))
 
     if settings.SIMULATED_NETWORK:
         mcc = settings.SIMULATED_NETWORK['mcc']
