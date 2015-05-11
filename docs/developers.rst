@@ -6,8 +6,15 @@ Developers
 Hello, developers! This will get you set up with a local WebPay server.
 You can also :ref:`use a hosted <use-hosted>` WebPay server.
 
-Install
-~~~~~~~
+Install With Docker
+~~~~~~~~~~~~~~~~~~
+
+The easiest way to set up Webpay and all of its dependencies is
+to install everything with Docker according to the
+`marketplace-env <https://github.com/mozilla/marketplace-env>`_ instructions.
+
+Install Manually
+~~~~~~~~~~~~~~~
 
 You need Python 2.7, and MySQL, and a few NodeJS commands
 like `stylus`_ for minifying JS/CSS.
@@ -39,7 +46,7 @@ set yourself up with::
 
 Install with::
 
-    pip install --no-deps -r requirements/dev.txt
+    pip install --no-deps -r requirements/dev.txt --find-links https://pyrepo.addons.mozilla.org/
 
 Out of the box, webpay makes some assumptions in the settings file and should
 not need a custom settings files. Some environment variables are configurable
