@@ -114,7 +114,6 @@ ENCRYPTED_COOKIE_KEY = private.ENCRYPTED_COOKIE_KEY
 base.JS_SETTINGS['tracking_enabled'] = True
 base.JS_SETTINGS['zamboni_raven_url'] = ''
 
-ALLOW_ANDROID_PAYMENTS = False
 ALLOW_ADMIN_SIMULATIONS = False
 
 NOSE_PLUGINS = []
