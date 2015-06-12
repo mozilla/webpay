@@ -87,6 +87,12 @@ if confirm "Process your debug language?"; then
     podebug --rewrite=unicode locale/templates/LC_MESSAGES/messages.pot locale/dbg/LC_MESSAGES/messages.po
 fi
 
+if confirm "Convert Cyrillic Serbian to Latin?"; then
+    pushd locale > /dev/null
+    msgfilter -i sr/LC_MESSAGES/messages.po -o sr_Latn/LC_MESSAGES/messages.po recode-sr-latin
+    popd > /dev/null
+fi
+
 if [ -z "$(git status --porcelain)" ]; then
     echo "Looks like there are no new strings to commit."
     exit 0
