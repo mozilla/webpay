@@ -1,5 +1,4 @@
 """private_base will be populated from puppet and placed in this directory"""
-import dj_database_url
 import private_base as private
 
 from webpay.settings import base
@@ -8,18 +7,6 @@ from .. import splitstrip
 
 DOMAIN = 'payments-alt.allizom.org'
 ALLOWED_HOSTS = [DOMAIN]
-
-DATABASES = {}
-DATABASES['default'] = dj_database_url.parse(private.DATABASES_DEFAULT_URL)
-DATABASES['default']['ENGINE'] = 'django.db.backends.mysql'
-DATABASES['default']['OPTIONS'] = {'init_command': 'SET storage_engine=InnoDB'}
-
-
-DATABASES['slave'] = dj_database_url.parse(private.DATABASES_SLAVE_URL)
-DATABASES['slave']['ENGINE'] = 'django.db.backends.mysql'
-DATABASES['slave']['OPTIONS'] = {'init_command': 'SET storage_engine=InnoDB'}
-
-SLAVE_DATABASES = ['slave']
 
 CACHE_PREFIX = private.CACHE_PREFIX
 
