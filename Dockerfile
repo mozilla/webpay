@@ -1,19 +1,14 @@
-# This is designed to be run from fig as part of a
-# Marketplace development environment.
-
 # NOTE: this is not provided for production usage.
 
-FROM  mozillamarketplace/centos-python27-mkt:0.6
+FROM  mozillamarketplace/centos-python27-mkt:latest
 
-RUN yum install -y supervisor
+RUN yum install -y supervisor && yum clean all
 
-RUN mkdir -p /pip/{cache,build}
+COPY requirements /srv/webpay/requirements
+RUN pip install --no-deps -r /srv/webpay/requirements/docker.txt --find-links https://pyrepo.addons.mozilla.org/
 
-ADD requirements /pip/requirements
-
-# Setting cwd to /pip ensures egg-links for git installed deps are created in /pip/src
-WORKDIR /pip
-RUN pip install -b /pip/build --download-cache /pip/cache --no-deps -r /pip/requirements/docker.txt --find-links https://pyrepo.addons.mozilla.org/
+COPY . /srv/webpay
+RUN cd /srv/webpay && git show -s --pretty="format:%h" > git-rev.txt
 
 ENV CELERY_BROKER_URL redis://redis:6379/0
 ENV SPARTACUS_STATIC /spartacus
