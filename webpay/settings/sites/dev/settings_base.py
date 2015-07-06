@@ -126,4 +126,4 @@ NOSE_PLUGINS = []
 # This is all temporary for testing https://bugzilla.mozilla.org/show_bug.cgi?id=1170574
 FXA_OAUTH_URL = 'https://oauth-mp-android.dev.lcip.org'
 FXA_CLIENT_ID = 'a7f280e790cd8cc0'
-FXA_CLIENT_SECRET = '6bd8e35a8eef3f3cec658166aa4c9e9a9db520a2d33e63834b9083f3902dbaf4'
+FXA_CLIENT_SECRET = '6bd8e35a8eef3f3cec658166aa4c9e9a9db520a2d33e63834b9083f3902dbaf4'T
