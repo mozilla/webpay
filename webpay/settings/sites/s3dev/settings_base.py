@@ -111,7 +111,7 @@ PAY_URLS = base.PAY_URLS
 PAY_URLS['bango']['base'] = 'http://mozilla.test.bango.org'
 PAY_URLS['reference']['base'] = 'https://zippy-dev.allizom.org'
 
-SPARTACUS_STATIC = '%s/mozpay/spa' % STATIC_URL
+SPARTACUS_STATIC = 'https://%s/mozpay/spa' % STATIC_URL_DOMAIN
 
 SPA_SETTINGS = base.SPA_SETTINGS
 SPA_SETTINGS['validRedirSites'].extend([
