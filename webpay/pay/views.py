@@ -183,7 +183,7 @@ def _trim_pay_request(req):
     if req['request'].get('locales'):
         for slug, locale in req['request']['locales'].items():
             if 'description' in locale:
-                desc = _trim(locale['description'])
+                desc = _trim(locale['description'] or '')
                 req['request']['locales'][slug]['description'] = desc
 
 

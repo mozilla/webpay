@@ -132,6 +132,17 @@ class TestPay(PayTester):
         req = self.client.session['notes']['pay_request']['request']
         eq_(len(req['locales']['it']['description']), 255)
 
+    def test_handle_none_type_locale_description(self):
+        payjwt = self.payload()
+        payjwt['request']['defaultLocale'] = 'en'
+        payjwt['request']['locales'] = {
+            'it': {
+                'description': None
+            }
+        }
+        res = self.post(req=self.request(payload=payjwt))
+        eq_(res.status_code, 200)
+
     @mock.patch.object(settings, 'PRODUCT_DESCRIPTION_LENGTH', 255)
     def test_truncate_long_description(self):
         payjwt = self.payload()
