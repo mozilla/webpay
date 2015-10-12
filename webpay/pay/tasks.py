@@ -83,9 +83,6 @@ def configure_transaction(request, trans=None, mcc=None, mnc=None):
                  % (request.session['trans_id'], trans.get('status')))
         return (False, None)
 
-    # Prevent configuration from running twice.
-    request.session['configured_trans'] = request.session['trans_id']
-
     # Localize the product before sending it off to solitude/bango.
     _localize_pay_request(request)
 
@@ -104,6 +101,10 @@ def configure_transaction(request, trans=None, mcc=None, mnc=None):
                     request.session['notes'],
                     request.session['uuid'],
                     [p.name for p in providers])
+
+    # Now that the background task has been started successfully,
+    # prevent configuration from running twice.
+    request.session['configured_trans'] = request.session['trans_id']
 
     return (True, None)
 
