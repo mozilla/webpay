@@ -954,6 +954,17 @@ class TestConfigureTransaction(BaseStartPay):
         eq_(configured, False)  # Second call should do nothing.
         eq_(self.start_pay.call_count, 1)
 
+    def test_always_reconfigure_transaction_after_error(self):
+        self.start_pay.side_effect = RuntimeError('cannot connect to celery')
+        session = {}
+        for tries in range(2):
+            try:
+                self.start(session=session)
+            except RuntimeError:
+                pass
+        # Make sure the second call retries configuration:
+        eq_(self.start_pay.call_count, 2)
+
     def test_no_trans_id(self):
         request = RequestFactory().get('/')
         request.session = {}
