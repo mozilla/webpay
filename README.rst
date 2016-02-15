@@ -1,4 +1,7 @@
 
+.. image:: http://unmaintained.tech/badge.svg
+    :target: http://unmaintained.tech/
+
 .. image:: https://travis-ci.org/mozilla/webpay.svg?branch=master
     :target: https://travis-ci.org/mozilla/webpay
 
@@ -14,3 +17,5 @@ Documentation: https://webpay.readthedocs.org/
 
 .. _WebPaymentProvider: https://wiki.mozilla.org/WebAPI/WebPaymentProvider
 .. _`navigator.mozPay()`: https://wiki.mozilla.org/WebAPI/WebPayment
+
+Please note: this project is currently unmaintained and is not (or soon will not) be in active use by Mozilla.
